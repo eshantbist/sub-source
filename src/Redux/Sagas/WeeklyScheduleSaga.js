@@ -1,0 +1,36 @@
+
+import { put, call, takeEvery } from 'redux-saga/effects'
+import {
+    GET_PAYROLL_TAX_LIST, WEEKLY_SCHEDULE_INFO_DETAILS, GET_WEATHER_DETAILS_LIST, GET_WEEKLY_SCHEDULE_EMPLOYEE,
+    GET_WEEKLY_SCHEDULE_EMPLOYEE_RETURN, DELETE_EMPLOYEE_SCHEDULE, CREATE_UPDATE_EMPLOYEE_SCHEDULE, GET_WEEKLY_SCHEDULE_EMPLOYEE_COUNT,
+    GET_TIMEOFF_REASONS_LIST, CREATE_EMPLOYEE_TIMEOFF, GET_EMPLOYEE_TIMEOFF, NOTIFY_EMPLOYEE_SCHEDULES_ONPUBLISH, GET_IDLE_EMPLOYEES_REPORT,
+    GET_WEEKLY_SCHEDULE_SHARED_EMPLOYEE, GET_WEEKLY_SCHEDULE_SHARED_EMPLOYEE_SCHEDULE, GET_LINKED_EMPLOYEE_DETAILS, GET_WEEKLY_SCHEDULE_HOURS,
+    CHANGE_EMPLOYEE_STATUS, DELETE_EMPLOYEE_TIMEOFF_DAYWISE, GET_WEEK_DATES
+} from '../Types/types'
+
+import { asyncSaga, asyncSagaNoParams } from '../utils';
+
+export function* weeklyScheduleSaga() {
+    yield takeEvery(WEEKLY_SCHEDULE_INFO_DETAILS.REQ, asyncSaga);
+    yield takeEvery(GET_WEATHER_DETAILS_LIST.REQ, asyncSaga);
+    yield takeEvery(GET_WEEKLY_SCHEDULE_EMPLOYEE.REQ, asyncSaga);
+    yield takeEvery(GET_WEEKLY_SCHEDULE_EMPLOYEE_RETURN.REQ, asyncSaga);
+    yield takeEvery(DELETE_EMPLOYEE_SCHEDULE.REQ, asyncSaga);
+    yield takeEvery(CREATE_UPDATE_EMPLOYEE_SCHEDULE.REQ, asyncSaga);
+    yield takeEvery(GET_TIMEOFF_REASONS_LIST.REQ, asyncSagaNoParams);
+    yield takeEvery(CREATE_EMPLOYEE_TIMEOFF.REQ, asyncSaga);
+    yield takeEvery(GET_EMPLOYEE_TIMEOFF.REQ, asyncSaga);
+    yield takeEvery(NOTIFY_EMPLOYEE_SCHEDULES_ONPUBLISH.REQ, asyncSaga);
+    yield takeEvery(GET_IDLE_EMPLOYEES_REPORT.REQ, asyncSaga);
+    yield takeEvery(GET_WEEKLY_SCHEDULE_EMPLOYEE_COUNT.REQ, asyncSaga);
+    yield takeEvery(GET_PAYROLL_TAX_LIST.REQ, asyncSaga);
+    yield takeEvery(GET_WEEKLY_SCHEDULE_SHARED_EMPLOYEE.REQ, asyncSaga);
+    yield takeEvery(GET_WEEKLY_SCHEDULE_SHARED_EMPLOYEE_SCHEDULE.REQ, asyncSaga);
+    yield takeEvery(GET_LINKED_EMPLOYEE_DETAILS.REQ, asyncSaga);
+    yield takeEvery(GET_WEEKLY_SCHEDULE_HOURS.REQ, asyncSaga);
+    yield takeEvery(CHANGE_EMPLOYEE_STATUS.REQ, asyncSaga);
+    yield takeEvery(DELETE_EMPLOYEE_TIMEOFF_DAYWISE.REQ, asyncSaga);
+    yield takeEvery(GET_WEEK_DATES.REQ, asyncSaga);
+}
+
+export default weeklyScheduleSaga;
