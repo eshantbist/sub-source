@@ -41,11 +41,14 @@ class Publish extends React.Component {
     }
 
     UNSAFE_componentWillMount() {
-        self = this
+        // self = this
         // const employeeData = this.props.navigation.getParam('empData');
         if (this.props.navigation.state.params) {
             console.log('employeeData', this.props.navigation.state.params)
-            this.setState({ recipientsData: JSON.parse(this.props.navigation.state.params.empData) });
+            if(this.props.navigation.state.params.empData != undefined){
+                self = this
+                this.setState({ recipientsData: JSON.parse(this.props.navigation.state.params.empData) });
+            }
         }
     }
 

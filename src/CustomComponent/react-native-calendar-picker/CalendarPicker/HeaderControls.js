@@ -2,8 +2,6 @@ import React from 'react';
 import {
   View,
   Text,
-  Platform,
-  TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Utils } from './Utils';
@@ -16,63 +14,37 @@ export default function HeaderControls(props) {
     currentYear,
     onPressNext,
     onPressPrevious,
-    onPressMonth,
-    onPressYear,
     months,
-    previousComponent,
-    nextComponent,
     previousTitle,
     nextTitle,
-    previousTitleStyle,
-    nextTitleStyle,
     textStyle,
-    restrictMonthNavigation,
-    maxDate,
-    minDate,
-    headingLevel,
-    monthYearHeaderWrapperStyle,
   } = props;
-  const MONTHS = months || Utils.MONTHS; // English Month Array
-  const monthName = MONTHS[currentMonth];
+  const MONTHS = months? months : Utils.MONTHS; // English Month Array
+  // getMonth() call below will return the month number, we will use it as the
+  // index for month array in english
+  const previous = previousTitle ? previousTitle : 'Previous';
+  const next = nextTitle ? nextTitle : 'Next';
+  const month = MONTHS[currentMonth];
   const year = currentYear;
-
-  const disablePreviousMonth = restrictMonthNavigation && Utils.isSameMonthAndYear(minDate, currentMonth, currentYear);
-  const disableNextMonth = restrictMonthNavigation && Utils.isSameMonthAndYear(maxDate, currentMonth, currentYear);
-
-  const accessibilityProps = { accessibilityRole: 'header' };
-  if (Platform.OS === 'web') {
-    accessibilityProps['aria-level'] = headingLevel;
-  }
 
   return (
     <View style={styles.headerWrapper}>
       <Controls
-        disabled={disablePreviousMonth}
-        label={previousTitle}
-        component={previousComponent}
+        label={previous}
         onPressControl={onPressPrevious}
-        styles={styles.previousContainer}
-        textStyles={[styles.navButtonText, textStyle, previousTitleStyle]}
+        styles={[styles.monthSelector, styles.prev]}
+        textStyles={textStyle}
       />
-      <View style={[styles.monthYearHeaderWrapper,monthYearHeaderWrapperStyle]}>
-        <TouchableOpacity onPress={onPressMonth}>
-          <Text style={[styles.monthHeaderMainText, textStyle]} {...accessibilityProps}>
-            { monthName }
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={onPressYear}>
-          <Text style={[styles.yearHeaderMainText, textStyle]}>
-            { year }
-          </Text>
-        </TouchableOpacity>
+      <View>
+        <Text style={[styles.monthLabel, textStyle]}>
+           { month } { year }
+        </Text>
       </View>
       <Controls
-        disabled={disableNextMonth}
-        label={nextTitle}
-        component={nextComponent}
+        label={next}
         onPressControl={onPressNext}
-        styles={styles.nextContainer}
-        textStyles={[styles.navButtonText, textStyle, nextTitleStyle]}
+        styles={[styles.monthSelector, styles.next]}
+        textStyles={textStyle}
       />
     </View>
   );
@@ -83,6 +55,4 @@ HeaderControls.propTypes = {
   currentYear: PropTypes.number,
   onPressNext: PropTypes.func,
   onPressPrevious: PropTypes.func,
-  onPressMonth: PropTypes.func,
-  onPressYear: PropTypes.func,
 };

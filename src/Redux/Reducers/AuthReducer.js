@@ -4,7 +4,6 @@ const INITIAL_STATE = {}
 
 
 export default (state = INITIAL_STATE, action) => {
-  console.log('in reducer', action.type);
   switch (action.type) {
 
     case LOGIN.SUCCESS:

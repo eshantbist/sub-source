@@ -1,10 +1,7 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity
-} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
+import { Utils } from './Utils';
 import moment from 'moment';
 
 export default function Day(props) {
@@ -18,7 +15,6 @@ export default function Day(props) {
     selectedStartDate,
     selectedEndDate,
     allowRangeSelection,
-    allowBackwardRangeSelect,
     selectedDayStyle,
     selectedRangeStartStyle,
     selectedRangeStyle,
@@ -28,13 +24,13 @@ export default function Day(props) {
     minDate,
     maxDate,
     disabledDates,
-    disabledDatesTextStyle,
     minRangeDuration,
     maxRangeDuration,
-    enableDateChange
+    enableDateChange,
+    dateIsDisabled
   } = props;
 
-  const thisDay = moment({year, month, day, hour: 12 });
+  const thisDay = moment({ year, month, day });
   const today = moment();
 
   let dateOutOfRange;
@@ -43,9 +39,9 @@ export default function Day(props) {
   let propSelectedDayStyle;
   let dateIsBeforeMin = false;
   let dateIsAfterMax = false;
-  let dateIsDisabled = false;
-  let dateRangeLessThanMin = false;
-  let dateRangeGreaterThanMax = false;
+  let dateIsDisabledArr = false;
+  let dateIsBeforeMinDuration = false;
+  let dateIsAfterMaxDuration = false;
   let customContainerStyle, customDateStyle, customTextStyle;
 
   // First let's check if date is out of range
@@ -58,48 +54,78 @@ export default function Day(props) {
     dateIsBeforeMin = thisDay.isBefore(minDate, 'day');
   }
 
-  if (disabledDates) {
-    if (Array.isArray(disabledDates) && disabledDates.indexOf(thisDay.valueOf()) >= 0) {
-      dateIsDisabled = true;
-    }
-    else if (disabledDates instanceof Function) {
-      dateIsDisabled = disabledDates(thisDay);
+  // console.log('dis-->disabledDates-->',disabledDates);
+  // console.log('disable-->',thisDay.valueOf());
+  // console.log('disable-->',disabledDates.indexOf(thisDay.valueOf()));
+
+  if (disabledDates && disabledDates.indexOf(thisDay.valueOf()) >= 0) {
+    dateIsDisabledArr = true;
+  }
+
+  if (
+    allowRangeSelection &&
+    minRangeDuration &&
+    selectedStartDate &&
+    thisDay.isAfter(moment(selectedStartDate), 'day')
+  ) {
+    if (Array.isArray(minRangeDuration)) {
+      let i = minRangeDuration.findIndex(i =>
+        moment(i.date).isSame(moment(selectedStartDate, 'day'))
+      );
+      if (
+        i >= 0 &&
+        moment(selectedStartDate)
+          .add(minRangeDuration[i].minDuration, 'day')
+          .isAfter(thisDay, 'day')
+      ) {
+        dateIsBeforeMinDuration = true;
+      }
+    } else if (
+      moment(selectedStartDate)
+        .add(minRangeDuration, 'day')
+        .isAfter(thisDay, 'day')
+    ) {
+      dateIsBeforeMinDuration = true;
     }
   }
 
-  if (allowRangeSelection && selectedStartDate && !selectedEndDate) {
-    let daysDiff = thisDay.diff(selectedStartDate, 'days'); // may be + or -
-    daysDiff = allowBackwardRangeSelect ? Math.abs(daysDiff) : daysDiff;
-
-    if (maxRangeDuration) {
-      if (Array.isArray(maxRangeDuration)) {
-        let maxRangeEntry = maxRangeDuration.find(mrd => selectedStartDate.isSame(mrd.date, 'day') );
-        if (maxRangeEntry && daysDiff > maxRangeEntry.maxDuration) {
-          dateRangeGreaterThanMax = true;
-        }
-      } else if(daysDiff > maxRangeDuration) {
-        dateRangeGreaterThanMax = true;
+  if (
+    allowRangeSelection &&
+    maxRangeDuration &&
+    selectedStartDate &&
+    thisDay.isAfter(moment(selectedStartDate), "day")
+  ) {
+    if (Array.isArray(maxRangeDuration)) {
+      let i = maxRangeDuration.findIndex(i =>
+        moment(i.date).isSame(moment(selectedStartDate, "day"))
+      );
+      if (
+        i >= 0 &&
+        moment(selectedStartDate)
+          .add(maxRangeDuration[i].maxDuration, "day")
+          .isBefore(thisDay, "day")
+      ) {
+        dateIsAfterMaxDuration = true;
       }
-    }
-
-    if (minRangeDuration) {
-      if (Array.isArray(minRangeDuration)) {
-        let minRangeEntry = minRangeDuration.find(mrd => selectedStartDate.isSame(mrd.date, 'day') );
-        if (minRangeEntry && daysDiff < minRangeEntry.minDuration && daysDiff !== 0) {
-          dateRangeLessThanMin = true;
-        }
-      } else if(daysDiff < minRangeDuration && daysDiff !== 0) {
-        dateRangeLessThanMin = true;
-      }
-    }
-
-    if (!allowBackwardRangeSelect && daysDiff < 0) {
-      dateRangeLessThanMin = true;
+    } else if (
+      moment(selectedStartDate)
+        .add(maxRangeDuration, 'day')
+        .isBefore(thisDay, 'day')
+    ) {
+      dateIsAfterMaxDuration = true;
     }
   }
 
-  dateOutOfRange = dateIsAfterMax || dateIsBeforeMin || dateIsDisabled || dateRangeLessThanMin || dateRangeGreaterThanMax;
+  dateOutOfRange =
+    dateIsAfterMax ||
+    dateIsBeforeMin ||
+    dateIsDisabled ||
+    dateIsDisabledArr ||
+    dateIsBeforeMinDuration ||
+    dateIsAfterMaxDuration;
 
+  // console.log('dis-->dateOutOfRange-->', dateOutOfRange);
+  // console.log('dis-->day-->', day);
   // If date is in range let's apply styles
   if (!dateOutOfRange) {
     // set today's style
@@ -110,37 +136,34 @@ export default function Day(props) {
       selectedDayColorStyle = todayTextStyle || styles.selectedDayLabel;
     }
 
-    if (Array.isArray(customDatesStyles)) {
-      for (let cds of customDatesStyles) {
-        if (thisDay.isSame(moment(cds.date), 'day')) {
-          customContainerStyle = cds.containerStyle;
-          customDateStyle = cds.style;
-          customTextStyle = cds.textStyle;
-          break;
+    for (let cds of customDatesStyles) {
+      if (thisDay.isSame(moment(cds.date), 'day')) {
+        customContainerStyle = cds.containerStyle;
+        customDateStyle = cds.style;
+        customTextStyle = cds.textStyle;
+        if (isToday && customDateStyle) {
+          // Custom date style overrides 'today' style. It may be reset below
+          // by date selection styling.
+          daySelectedStyle = [daySelectedStyle, customDateStyle];
         }
+        break;
       }
-    }
-    else if (customDatesStyles instanceof Function) {
-      let cds = customDatesStyles(thisDay) || {};
-      customContainerStyle = cds.containerStyle;
-      customDateStyle = cds.style;
-      customTextStyle = cds.textStyle;
-    }
-    if (isToday && customDateStyle) {
-      // Custom date style overrides 'today' style. It may be reset below
-      // by date selection styling.
-      daySelectedStyle = [daySelectedStyle, customDateStyle];
     }
 
     let isThisDaySameAsSelectedStart = thisDay.isSame(selectedStartDate, 'day');
     let isThisDaySameAsSelectedEnd = thisDay.isSame(selectedEndDate, 'day');
 
     // set selected day style
-    if (!allowRangeSelection &&
-        selectedStartDate &&
-        isThisDaySameAsSelectedStart) {
+    if (
+      !allowRangeSelection &&
+      selectedStartDate &&
+      isThisDaySameAsSelectedStart
+    ) {
       daySelectedStyle = styles.selectedDay;
-      selectedDayColorStyle = [styles.selectedDayLabel, isToday && todayTextStyle];
+      selectedDayColorStyle = [
+        styles.selectedDayLabel,
+        isToday && todayTextStyle,
+      ];
       // selectedDayStyle prop overrides selectedDayColor (created via makeStyles)
       propSelectedDayStyle = selectedDayStyle || styles.selectedDayBackground;
     }
@@ -150,19 +173,33 @@ export default function Day(props) {
       if (selectedStartDate && selectedEndDate) {
         // Apply style for start date
         if (isThisDaySameAsSelectedStart) {
-          daySelectedStyle = [styles.startDayWrapper, selectedRangeStyle, selectedRangeStartStyle];
+          daySelectedStyle = [
+            styles.startDayWrapper,
+            selectedRangeStyle,
+            selectedRangeStartStyle,
+          ];
           selectedDayColorStyle = styles.selectedDayLabel;
         }
         // Apply style for end date
         if (isThisDaySameAsSelectedEnd) {
-          daySelectedStyle = [styles.endDayWrapper, selectedRangeStyle, selectedRangeEndStyle];
+          daySelectedStyle = [
+            styles.endDayWrapper,
+            selectedRangeStyle,
+            selectedRangeEndStyle,
+          ];
           selectedDayColorStyle = styles.selectedDayLabel;
         }
         // Apply style if start date is the same as end date
-        if (isThisDaySameAsSelectedEnd &&
-            isThisDaySameAsSelectedStart &&
-            selectedEndDate.isSame(selectedStartDate, 'day')) {
-          daySelectedStyle = [styles.selectedDay, styles.selectedDayBackground, selectedRangeStyle];
+        if (
+          isThisDaySameAsSelectedEnd &&
+          isThisDaySameAsSelectedStart &&
+          selectedEndDate.isSame(selectedStartDate, 'day')
+        ) {
+          daySelectedStyle = [
+            styles.selectedDay,
+            styles.selectedDayBackground,
+            selectedRangeStyle
+          ];
           selectedDayColorStyle = styles.selectedDayLabel;
         }
         // Apply style if this day is in range
@@ -172,10 +209,16 @@ export default function Day(props) {
         }
       }
       // Apply style if start date has been selected but end date has not
-      if (selectedStartDate &&
-          !selectedEndDate &&
-          isThisDaySameAsSelectedStart) {
-        daySelectedStyle = [styles.startDayWrapper, selectedRangeStyle, selectedRangeStartStyle];
+      if (
+        selectedStartDate &&
+        !selectedEndDate &&
+        isThisDaySameAsSelectedStart
+      ) {
+        daySelectedStyle = [
+          styles.startDayWrapper,
+          selectedRangeStyle,
+          selectedRangeStartStyle
+        ];
         selectedDayColorStyle = styles.selectedDayLabel;
       }
     }
@@ -184,21 +227,27 @@ export default function Day(props) {
       <View style={[styles.dayWrapper, customContainerStyle]}>
         <TouchableOpacity
           disabled={!enableDateChange}
-          style={[customDateStyle, daySelectedStyle, propSelectedDayStyle ]}
-          onPress={() => onPressDay(day) }>
-          <Text style={[styles.dayLabel, textStyle, customTextStyle, selectedDayColorStyle]}>
-            { day }
+          style={[customDateStyle, daySelectedStyle, propSelectedDayStyle]}
+          onPress={() => onPressDay(day)}
+        >
+          <Text
+            style={[
+              styles.dayLabel,
+              textStyle,
+              customTextStyle,
+              selectedDayColorStyle,
+            ]}
+          >
+            {day}
           </Text>
         </TouchableOpacity>
       </View>
     );
-  }
-  else {  // dateOutOfRange = true
+  } else {
+    // dateOutOfRange = true
     return (
       <View style={styles.dayWrapper}>
-        <Text style={[textStyle, styles.disabledText, disabledDatesTextStyle]}>
-          { day }
-        </Text>
+        <Text style={[textStyle, styles.disabledText]}>{day}</Text>
       </View>
     );
   }
@@ -206,13 +255,14 @@ export default function Day(props) {
 
 Day.defaultProps = {
   customDatesStyles: [],
-};
+} ;
 
 Day.propTypes = {
   styles: PropTypes.shape({}),
   day: PropTypes.number,
   onPressDay: PropTypes.func,
-  disabledDates: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
+  disabledDates: PropTypes.array,
+  dateIsDisabled: PropTypes.bool,
   minRangeDuration: PropTypes.oneOfType([PropTypes.array, PropTypes.number]),
   maxRangeDuration: PropTypes.oneOfType([PropTypes.array, PropTypes.number]),
-};
+} ;

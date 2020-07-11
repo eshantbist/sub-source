@@ -12,7 +12,6 @@ const ENVIRONMENT = STAGING;
 module.exports = {
 
     login(params) {
-        console.log('in api');
         return apiRequest(params, `${ENVIRONMENT}/ValidateLoginAttempt`, { 'Content-Type': 'application/x-www-form-urlencoded' }, 'POST')
     },
 

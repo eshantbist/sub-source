@@ -127,14 +127,15 @@ class Dashboard extends React.Component {
         // this.customerCommentsCount = false;
 
         const currentDate = moment(new Date()).format("MM/DD/YYYY");
-        let WeekEndingDate = '';
-        if(moment(currentDate).format('dddd') === 'Tuesday'){
-            WeekEndingDate = currentDate;
-        } else if(moment(currentDate).format('dddd') === 'Monday'){
-            WeekEndingDate = moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
-        } else {
-            WeekEndingDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
-        }
+        let WeekEndingDate =  moment(currentDate).format("MM/DD/YYYY");
+        console.log('weekending date-->',  moment(currentDate).format("MM/DD/YYYY"));
+        // if(moment(currentDate).format('dddd') === 'Tuesday'){
+        //     WeekEndingDate = currentDate;
+        // } else if(moment(currentDate).format('dddd') === 'Monday'){
+        //     WeekEndingDate = moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+        // } else {
+        //     WeekEndingDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+        // }
         // console.log('currentDate-->', currentDate) ;
         // console.log('currentDate-->', moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")) ;
         // console.log('currentDate-->', moment(currentDate).format('dddd')) ;
@@ -390,11 +391,12 @@ class Dashboard extends React.Component {
         // console.log('weekdate-->', date);
         // console.log('weekdate-->', moment(date).format('dddd'));
         // console.log('A date has been picked: ', moment(date).format('MMM DD, ddd'));
-        if(moment(date).format('dddd') === 'Tuesday') {
-            this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: '' })
-        } else {
-            this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: 'Please Select Valid Weekend Date'})
-        }
+        this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: '' });
+        // if(moment(date).format('dddd') === 'Tuesday') {
+        //     this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: '' })
+        // } else {
+        //     this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: 'Please Select Valid Weekend Date'})
+        // }
         this._hideDateTimePicker();
     };
     getRole() {
@@ -584,7 +586,7 @@ class Dashboard extends React.Component {
                                     ?
                                     <CalendarPicker
                                         onDateChange={this._handleDatePicked}
-                                        enableWeek="Tue"
+                                        // enableWeek="Tue"
                                         selectedDayColor={Colors.APPCOLOR}
                                         selectedDayTextColor={Colors.WHITE}
                                         previousTitle="<"
@@ -776,8 +778,7 @@ class Dashboard extends React.Component {
                                     <Text style={[Styles.serviceLabelStyle, { color: this.state.NPSDisplay === 'QTD' ? Colors.DARKAPPCOLOR : null }]}>QTD <Text style={{ color: Colors.ORANGE }}>{this.state.customerServices && this.state.customerServices.QuarterMonthCount}</Text></Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => { this.setState({ NPSDisplay: 'YTD'}) }}>
-                                    <Text style={[Styles.serviceLabelStyle, { color: this.state.NPSDisplay === 'YTD' ? Colors.DARKAPPCOLOR : null }]}>YTD 
-                                    <Text style={{ color: Colors.ORANGE }}>{this.state.customerServices && this.state.customerServices.CurrentYearCount}</Text></Text>
+                                    <Text style={[Styles.serviceLabelStyle, { color: this.state.NPSDisplay === 'YTD' ? Colors.DARKAPPCOLOR : null }]}>YTD <Text style={{ color: Colors.ORANGE }}>{this.state.customerServices && this.state.customerServices.CurrentYearCount}</Text></Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={Styles.borderStyle}>

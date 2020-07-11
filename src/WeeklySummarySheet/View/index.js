@@ -1263,6 +1263,7 @@ class WeeklySummarySheet extends React.Component {
                                     data={this.state.empRoleWiseData}
                                     extraData={this.state.selectedDate}
                                     renderItem={this.renderUserRole}
+                                    keyExtractor={(item, index) => index.toString()}
                                 />
                             : this.state.loading === false
                                 ? 
@@ -1390,6 +1391,7 @@ class WeeklySummarySheet extends React.Component {
                                                 )
                                             }}
                                             extraData={this.state}
+                                            keyExtractor={(item, index) => index.toString()}
                                         />   
                                     
                                     </View>
@@ -1427,6 +1429,7 @@ class WeeklySummarySheet extends React.Component {
                                                     data={this.state.punchDetailLogHistory}
                                                     style={{ height: Matrics.CountScale(150)}}
                                                     renderItem={this.logrenderitem}
+                                                    keyExtractor={(item, index) => index.toString()}
                                                 />
                                             </View>
                                         </View>

@@ -21,7 +21,6 @@ class TextInputView extends React.Component {
                 labelPadding={5}
                 labelFontSize={this.props.labelFontSize}
                 autoCorrect={false}
-                autoCapitalize={false}
                 ref={this.props.refField}
                 clearButtonMode={this.props.clearButtonMode}
                 //autoCapitalize={"none"}

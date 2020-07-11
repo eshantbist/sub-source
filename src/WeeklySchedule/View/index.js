@@ -304,7 +304,7 @@ class WeeklySchedule extends React.Component {
                     lastFilterselectedStoreName: data.Report.store_list[0].DisplayStoreNumber,
                 });
                 if(this.state.getFilterData) {
-                    this.componentWillMount();
+                    this.UNSAFE_componentWillMount();
                 }
             }
 
@@ -1363,7 +1363,7 @@ class WeeklySchedule extends React.Component {
                             data={this.state.empRoleData}
                             extraData={this.state}
                             renderItem={this.renderUserRole}
-                        // keyExtractor={(item, index) => index.toString()}
+                            keyExtractor={(item, index) => index.toString()}
                         />
 
                         <View style={Styles.containerStyle} >
@@ -1457,6 +1457,7 @@ class WeeklySchedule extends React.Component {
                                             ListEmptyComponent={
                                                 <Text style={Styles.text}>No Data Found!</Text>
                                             }
+                                            keyExtractor={(item, index) => index.toString()}
                                         />
                                     </View>
                                     : null
@@ -1817,6 +1818,7 @@ class WeeklySchedule extends React.Component {
                                 renderItem={this.renderLinkEmpDetails}
                                 ListEmptyComponent={() => <Text style={[Styles.fontStyle, { padding: Matrics.CountScale(10) }]}>Oops! Their Is Nothing To Display</Text>}
                                 style={{ height: Matrics.CountScale(400) }}
+                                keyExtractor={(item, index) => index.toString()}
                             />
                         </View>
                     </View>

@@ -24,7 +24,7 @@ import { getHeaderFilterValues, getCheckDocumentStatusHiringReturnRequest, getCh
 let self;
 let NOD = ['30', '60', '90', 'All'];
 let status = ['All status', 'Declined', 'Delivered', 'Created','Completed','Voided', 'Exception','Sent'];
-let perPageRecord = 2;
+let perPageRecord = 10;
 let empListData = [];
 let pageNumArr = [];
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -550,7 +550,7 @@ class CheckDoucmentStatus extends React.Component {
                         <TouchableOpacity onPress={() => { this.onClickedInProgress() }} >
                             <View style={[Styles.statusCardContainer, selected == 'InProgress' ? { backgroundColor: Colors.INPROGRESS } : { borderColor: Colors.INPROGRESS, borderWidth: 1.5 }]}>
                                 <Text style={[Styles.countTextStyle, selected == 'InProgress' ? { color: Colors.WHITE } : { color: Colors.INPROGRESS }]}>{Object.keys(this.state.TitlesArr).length > 0 ? this.state.TitlesArr.InProcess : 0}</Text>
-                                <Text style={[Styles.labelTextStyle, selected == 'InProgress' ? { color: Colors.WHITE } : { color: Colors.INPROGRESS }]}>In Progress</Text>
+                                <Text style={[Styles.labelTextStyle, selected == 'InProgress' ? { color: Colors.WHITE } : { color: Colors.INPROGRESS }]}>In Process</Text>
                             </View>
                         </TouchableOpacity>
                     </ScrollView>
@@ -576,6 +576,7 @@ class CheckDoucmentStatus extends React.Component {
                                     extraData={this.state}
                                     data={this.state.empListArr[this.state.selectedIndex]}
                                     renderItem={this._renderItem}
+                                    keyExtractor={(item, index) => index.toString()}
                                 />
                                 {
                                     this.state.Totalpage >  1

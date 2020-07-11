@@ -10,7 +10,6 @@ export function asyncAction(action) {
 }
 
 export function* asyncSaga({ params, api, constant }) {
-  console.log(params,api,'apiapiapiapiapiapi=======>>')
   try {
     const response = yield call(api, params);
     console.log('saga..', response)
@@ -40,7 +39,6 @@ export function* asyncSagaNoParams({ api, constant }) {
 
 export async function apiRequest(params, apiUrl, headers, method) {
   // alert(global.loginResponse.UserStoreGuid)
-  console.log('api request utils====>>');
   var formBody = [];
   for (var property in params) {
     var encodedKey = encodeURIComponent(property);

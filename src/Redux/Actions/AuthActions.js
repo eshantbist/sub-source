@@ -17,7 +17,7 @@ import Api from '../../Services/Api'
 
 
 export const loginRequest = (params) => {
-  console.log('called...***',params)
+  console.log('called...***')
   return {
     type: LOGIN.REQ,
     params,

@@ -4,7 +4,7 @@
 
 This is a Calendar Picker Component for React Native
 
-![alt tag](https://user-images.githubusercontent.com/6295083/82028634-87a2b880-965b-11ea-90ce-1bde67f31157.gif)
+![alt tag](https://raw.githubusercontent.com/stephy/CalendarPicker/master/assets/basic-react-native-calendar-picker.gif)
 
 To use the calendar you just need to:
 ```sh
@@ -17,11 +17,7 @@ If you need the old code I saved it on a branch <a href="https://github.com/step
 
 # Prerequisites
 
-CalendarPicker requires Moment JS >=2.0.  Date props may be anything parseable by Moment: Javascript Date, Moment date, or ISO8601 datetime string.
-
-```
-npm install --save moment
-```
+CalendarPicker requires Moment JS.  Date props may be anything parseable by Moment: Javascript Date, Moment date, or ISO8601 datetime string.
 
 # Example
 
@@ -79,32 +75,24 @@ const styles = StyleSheet.create({
 | **`weekdays`** | `Array` | Optional. List of week days. Eg. `['Mon', 'Tue', ...]` Must be 7 days |
 | **`months`** | `Array` | Optional. List of months names. Eg. `['Jan', 'Feb', ...]` Must be 12 months |
 | **`startFromMonday`** | `Boolean` | Optional. Default first day of week will be Sunday. You can set start of week from Monday by setting this to true. Default is `false` |
-| **`showDayStragglers`** | `Boolean` | Optional. Populate previous & next month days in empty slots. Default is `false` |
 | **`allowRangeSelection`** | `Boolean` | Optional. Allow to select date ranges. Default is `false` |
-| **`allowBackwardRangeSelect`** | `Boolean` | Optional. Allow selecting range in reverse. Default is `false` |
 | **`previousTitle`** | `String` | Optional. Title of button for previous month. Default is `Previous` |
 | **`nextTitle`** | `String` | Optional. Title of button for next month. Default is `Next` |
-| **`previousTitleStyle`** | `TextStyle` | Optional. Text styling for Previous text.|
-| **`nextTitleStyle`** | `TextStyle` | Optional. Text styling for Next text.|
-| **`previousComponent`** | `Object` | Optional. Component to use in `Previous` button. Overrides `previousTitle` & `previousTitleStyle`. |
-| **`nextComponent`** | `Object` | Optional. Component to use in `Next` button. Overrides `nextTitle` & `nextTitleStyle`.  |
 | **`selectedDayColor`** | `String` | Optional. Color for selected day |
 | **`selectedDayStyle`** | `ViewStyle` | Optional. Style for selected day. May override selectedDayColor.|
 | **`selectedDayTextColor`** | `String` | Optional. Text color for selected day |
 | **`selectedRangeStartStyle`** | `ViewStyle` | Optional. Style for range selected start day. |
 | **`selectedRangeEndStyle`** | `ViewStyle` | Optional. Style for range selected end day. |
 | **`selectedRangeStyle`** | `ViewStyle` | Optional. Style for all days in range selection. |
-| **`disabledDates`** | `Array` or `Function` | Optional. Specifies dates that cannot be selected. Array of Dates, or a function that returns true for a given Moment date (apologies for the inverted logic). |
-| **`disabledDatesTextStyle`** | `TextStyle` | Optional. Text styling for disabled dates. |
+| **`disabledDates`** | `Array` | Optional. Specifies dates that cannot be selected. Array of Dates. |
 | **`selectedStartDate`** | `Date` | Optional. Specifies a selected Start Date. |
 | **`selectedEndDate`** | `Date` | Optional. Specifies a selected End Date. |
-| **`minRangeDuration`** | `Number or Array` | Optional. Specifies a minimum range duration when using allowRangeSelection. Can either pass a number to be used for all dates or an Array of objects if the minimum range duration depends on the date `{date: Moment-parsable date, minDuration: Number}` |
-| **`maxRangeDuration`** | `Number or Array` | Optional. Specifies a maximum range duration when using allowRangeSelection. Can either pass a number to be used for all dates or an Array of objects if the maximum range duration depends on the date `{date: Moment-parsable date, maxDuration: Number}` |
+| **`minRangeDuration`** | `Number or Array` | Optional. Specifies a minimum range duration when using allowRangeSelection. Can either pass a number to be used for all dates or an Array of objects if the minimum range duration depends on the date `{date: Moment-parsable date, minDuration: Number` |
+| **`maxRangeDuration`** | `Number or Array` | Optional. Specifies a maximum range duration when using allowRangeSelection. Can either pass a number to be used for all dates or an Array of objects if the maximum range duration depends on the date `{date: Moment-parsable date, maxDuration: Number` |
 | **`todayBackgroundColor`** | `String` | Optional. Background color for today. Default is `#cccccc` |
 | **`todayTextStyle`** | `TextStyle` | Optional. Text styling for today. |
-| **`textStyle`** | `TextStyle` | Optional. Style overall text. Change fontFamily, color, etc. |
-| **`customDatesStyles`** | `Array` or `Func` | Optional. Style individual date(s). Supports an array of objects `{date: Moment-parseable date, containerStyle: ViewStyle, style: ViewStyle, textStyle: TextStyle}`, or a callback which receives a date param and returns `{containerStyle: ViewStyle, style: ViewStyle, textStyle: TextStyle}` for that date. |
-| **`customDayHeaderStyles`** | `Func` | Optional. Style day of week header (Monday - Sunday). Callback that receives ISO `{dayOfWeek, month, year}` and should return `{style: ViewStyle, textStyle: TextStyle}` |
+| **`textStyle`** | `Object` | Optional. Style overall text. Change fontFamily, color, etc. |
+| **`customDatesStyles`** | `Array` | Optional. Style individual date(s). Array of objects `{date: Moment-parseable date, containerStyle: ViewStyle, style: ViewStyle, textStyle: TextStyle}` |
 | **`scaleFactor`** | `Number` | Optional. Default (375) scales to window width |
 | **`minDate`** | `Date` | Optional. Specifies minimum date to be selected |
 | **`maxDate`** | `Date` | Optional. Specifies maximum date to be selected |
@@ -114,18 +102,10 @@ const styles = StyleSheet.create({
 | **`swipeConfig`** | `Object` | Optional. Config passed to Swiper.|
 | **`enableSwipe`** | `Boolean` | Optional. Whether to enable swiping. Default is `true` |
 | **`enableDateChange`** | `Boolean` | Optional. Whether to enable pressing on day. Default is `true` |
-| **`restrictMonthNavigation`** | `Boolean` | Optional. Whether to disable Previous month button if it is before minDate or Next month button if it is after MaxDate. Default is `false` |
-| **`onDateChange`** | `Function` | Optional. Callback when a date is selected. Returns Moment `date` as first param; `START_DATE` or `END_DATE` as second param.|
+| **`onDateChange`** | `Function` | Optional. Callback when a date is selected. Returns Moment `date` as first parameter.|
 | **`onMonthChange`** | `Function` | Optional. Callback when Previous / Next month is pressed. Returns Moment `date` as first parameter.|
 | **`onSwipe`** | `Function` | Optional. Callback when swipe event is triggered. Returns swipe direction as first parameter.|
 | **`dayShape`** | `String` | Optional. Shape of the Day component. Default is `circle`. Available options are `circle` and `square`.|
-| **`headingLevel`** | `Number` | Optional. Sets the aria-level for the calendar title heading when on Web. Default is `1`.|
-| **`selectMonthTitle`** | `String` | Optional. Title of month selector view. Default is `Select Month`.|
-| **`selectYearTitle`** | `String` | Optional. Title of year selector view. Default is `Select Year`.|
-| **`dayLabelsWrapper`** | `ViewStyle` | Optional. Style for weekdays wrapper. E.g If you want to remove top and bottom divider line.|
-| **`dayOfWeekStyles`** | `Deprecated` | Use `customDatesStyles` & `customDayHeaderStyles` callbacks to style individual dates, days of week, and/or header. |
-| **`customDatesStylesPriority`** | `Deprecated` | Use `customDatesStyles` & `customDayHeaderStyles` callbacks to style individual dates, days of week, and/or header. |
-| **`monthYearHeaderWrapperStyle`** | `ViewStyle` | Optional. Style for header MonthYear title wrapper. E.g If you want to change the order of year and month.|
 
 # Styles
 Some styles will overwrite some won't. For instance:
@@ -141,7 +121,7 @@ Order of precedence:
 # More Examples
 
 ### Start from Monday, allowRangeSelection, Min and Max Dates and Styles Changes Example
-![alt tag](https://user-images.githubusercontent.com/6295083/82028654-8f625d00-965b-11ea-8076-45ae609be296.gif)
+![alt tag](https://raw.githubusercontent.com/stephy/CalendarPicker/master/assets/default-react-native-calendar-picker.gif)
 ```js
 import React, { Component } from 'react';
 import {
@@ -214,7 +194,7 @@ const styles = StyleSheet.create({
 
 ### Complex Example, Changing Fonts and Colors, Language and etc...
 
-![alt tag](https://user-images.githubusercontent.com/6295083/82028709-9c7f4c00-965b-11ea-9705-790ce38929c0.gif)
+![alt tag](https://github.com/stephy/CalendarPicker/blob/master/assets/react-native-calendar-picker-green-color-date-range.gif)
 
 ```js
 import React, { Component } from 'react';
@@ -327,54 +307,6 @@ render() {
 }
 ```
 
-### Styling each day of the week and the day name header.
-
-```js
-
-const customDayHeaderStylesCallback = {dayOfWeek, month, year} => {
-  switch(dayOfWeek) { // can also evaluate month, year
-    case 4: // Thursday
-      return {
-        style: {
-          borderRadius: 12,
-          backgroundColor: 'cyan',
-        },
-        textStyle: {
-          color: 'blue',
-          fontSize: 22,
-          fontWeight: 'bold',
-        }
-      };
-  }
-}
-
-const customDatesStylesCallback = date => {
-  switch(date.isoWeekday()) {
-    case 1: // Monday
-      return {
-        style:{
-          backgroundColor: '#909',
-        },
-        textStyle: {
-          color: '#0f0',
-          fontWeight: 'bold',
-        }
-      };
-    case 7: // Sunday
-      return {
-        textStyle: {
-          color: 'red',
-        }
-      };
-  }
-}
-
-<CalendarPicker
-      customDayHeaderStyles={customDayHeaderStylesCallback}
-      customDatesStyles={customDatesStylesCallback}
-    />
-```
-
 ## Methods
 
 These internal methods may be accessed through a ref to the CalendarPicker.
@@ -386,12 +318,6 @@ These internal methods may be accessed through a ref to the CalendarPicker.
 | **`handleOnPressPrevious`** |  | Programmatically advance to previous month. |
 | **`resetSelections`** |  | Clear date selections. Useful for resetting date range selection when user has picked a start date but not an end date. |
 
-## TypeScript
-
-Definitions are available at https://www.npmjs.com/package/@types/react-native-calendar-picker courtesy of [automatensalat](https://github.com/automatensalat).
-```
-npm install --save @types/react-native-calendar-picker
-```
 
 
 # Suggestions?
@@ -412,16 +338,27 @@ I would like to call out some contributors who have been helping with this proje
 - [peacechen](https://github.com/peacechen)
 
 
-# Sample Application
+# Development
 
-The sample app is an Expo project created with `create-react-native-app`.
 ```sh
-cd example
-npm run cp
+git clone git@github.com:stephy/CalendarPicker.git CalendarPicker
 npm install
-npm start
 ```
 
-## Development
+In Package.json modify
+```sh
+"main": "./CalendarPicker",
+```
+to
+```sh
+"main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+```
 
-The source files are copied from the project root directory into `example/node_modules` using `npm run cp`.  If a source file is modified, it must be copied over again with `npm run cp`.
+#### Running on device
+```sh
+npm start
+```
+#### Running on iOS Simulator
+```sh
+npm run ios
+```

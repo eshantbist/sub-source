@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/latest/SubsourceManagerApp/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-gu/values-gu.xml",
+            "outputFile": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/Gitlab_Latest/subsourcemanagerapp/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-gu/values-gu.xml",
             "map": [
                 {
                     "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/4f509a65121478d6153615d7ef5b7c5f/core-1.1.0/res/values-gu/values-gu.xml",

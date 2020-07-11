@@ -56,7 +56,6 @@ class EditProfile extends React.Component {
             <ScrollView style={{ backgroundColor: Colors.WHITE }}>
                 <View style={Styles.profileImgStyle}>
                     <TouchableOpacity>
-
                         <Image style={{ height: Matrics.CountScale(100), width: Matrics.CountScale(100), borderRadius: Matrics.CountScale(50) }}
                             source={{ uri: this.state.profile }}></Image>
                     </TouchableOpacity>

@@ -1,4 +1,4 @@
-#Thu Jul 09 10:47:06 IST 2020
-base.0=/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/latest/SubsourceManagerApp/android/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+#Sat Jul 11 09:28:58 IST 2020
+base.0=/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/Gitlab_Latest/subsourcemanagerapp/android/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
 renamed.0=classes.dex
 path.0=classes.dex
