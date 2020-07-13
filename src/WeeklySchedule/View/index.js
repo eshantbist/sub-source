@@ -603,7 +603,6 @@ class WeeklySchedule extends React.Component {
         });
     }
     calculateTotalHoursSchedule() {
-        console.log('in total hours')
         let TotalScheduleHours = 0;
         this.state.ScheduleHoursArr.forEach( child => {
             TotalScheduleHours = TotalScheduleHours + child.ScheduleHours
