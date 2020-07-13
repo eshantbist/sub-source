@@ -1,6 +1,8 @@
 import React from 'react'
-import { View, AsyncStorage, BackAndroid, BackHandler } from 'react-native'
+import { View, BackAndroid, BackHandler } from 'react-native'
 import { NavigationActions, StackActions } from 'react-navigation'
+import AsyncStorage from '@react-native-community/async-storage';
+
 class SplashScreen extends React.Component {
     state = {
         loading: false

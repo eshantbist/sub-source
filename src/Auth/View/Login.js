@@ -1,9 +1,10 @@
 //LIBRARIES
 import React from 'react';
-import { View, ScrollView, AsyncStorage, Modal, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, ScrollView, Modal, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { connect } from 'react-redux';
-import { StackActions, NavigationActions } from 'react-navigation'
+import { StackActions, NavigationActions } from 'react-navigation';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 //ASSETS

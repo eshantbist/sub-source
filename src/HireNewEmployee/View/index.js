@@ -1,11 +1,12 @@
 // ======>>>>> Libraries <<<<<=========
 import React from 'react';
-import { View, Text, Platform, Switch, Picker, ScrollView, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, Platform, Switch, ScrollView, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import { Dropdown } from 'react-native-material-dropdown';
 import moment from 'moment';
+import {Picker} from '@react-native-community/picker';
 import { getStoreListWithSettingRequest, getStoreSettingDetailsListRequest, EmployeeExistenceCheckOnHiringRequest, HireNewEmployeeManageRequest } from '@Redux/Actions/HirePacketsActions';
 import { getUserRoleRequest } from '@Redux/Actions/DashboardActions'
 // ======>>>>> Assets <<<<<=========
@@ -98,8 +99,36 @@ class HireNewEmployee extends React.Component {
             // console.log('data-->role-->', data);
             if(data.Status === 1){
                 const roleList = data.UserRoleList;
-                // console.log('data-->role-->', roleList);
-                await this.setState({ roleList })
+                var sortBy = (function () {
+                    var toString = Object.prototype.toString,
+                        // default parser function
+                        parse = function (x) { return x; },
+                        // gets the item to be sorted
+                        getItem = function (x) {
+                          var isObject = x != null && typeof x === "object";
+                          var isProp = isObject && this.prop in x;
+                          return this.parser(isProp ? x[this.prop] : x);
+                        };
+                    return function sortby (array, cfg) {
+                      if (!(array instanceof Array && array.length)) return [];
+                      if (toString.call(cfg) !== "[object Object]") cfg = {};
+                      if (typeof cfg.parser !== "function") cfg.parser = parse;
+                      cfg.desc = !!cfg.desc ? -1 : 1;
+                      return array.sort(function (a, b) {
+                        a = getItem.call(cfg, a);
+                        b = getItem.call(cfg, b);
+                        return cfg.desc * (a < b ? -1 : +(a > b));
+                      });
+                    };
+                  }());
+                  const sortedRoleList = sortBy(roleList, {
+                    prop: "RoleLevel",
+                    desc: true,
+                    parser: function(item) { return new Date(item); }
+                  });
+
+                console.log('data-->role-->', sortedRoleList);
+                await this.setState({ roleList: sortedRoleList })
                 if (this.state.roleList.length > 0) {
                     this.getSelectedWageType();
                 }
@@ -165,8 +194,8 @@ class HireNewEmployee extends React.Component {
     getSelectedWageType() {
         const lastElement = Array.from(this.state.roleList).pop();
         const firstElement = this.state.roleList[0];
-        // console.log('lastelement-->', lastElement);
-        // console.log('firstElement-->', firstElement);
+        console.log('lastelement-->', lastElement);
+        console.log('firstElement-->', firstElement);
         const wageType = firstElement.WageTypeName;
         const wageTypeId = firstElement.WageTypeID;
         this.setState({ wageType, wageTypeId, position: firstElement.RoleName, roleId: firstElement.RoleID, PositionType: firstElement.PositionType });

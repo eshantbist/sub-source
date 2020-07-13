@@ -2,7 +2,7 @@
 import React from 'react';
 import {
     View, Text, Image, ScrollView, TouchableOpacity, StyleSheet, Modal, FlatList, Platform,
-    Dimensions, TextInput, Alert, Picker
+    Dimensions, TextInput, Alert
 } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -19,6 +19,7 @@ import CalendarPicker from '../../CustomComponent/react-native-calendar-picker';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment'
+import {Picker} from '@react-native-community/picker';
 import _ from 'lodash'
 import {
     getPayrollTaxListRequest, getWeeklyScheduleInfoRequest, getWeatherDetailsListRequest, getWeeklyScheduleEmployeeRequest,

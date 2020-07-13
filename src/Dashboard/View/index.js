@@ -1,10 +1,11 @@
 // =======>>>>>>>>  Libraries   <<<<<<<<<<<=========
 import React from 'react';
-import { View, Picker, BackAndroid, Platform, Dimensions, TouchableOpacity, Modal, ScrollView, TouchableWithoutFeedback, Image, Text } from 'react-native';
+import { View, BackAndroid, Platform, Dimensions, TouchableOpacity, Modal, ScrollView, TouchableWithoutFeedback, Image, Text } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
 import moment from 'moment'
+import {Picker} from '@react-native-community/picker';
 
 {/* ====>>>>>>>>>>>    Assets   <<<<<<<<<<========== */ }
 import { Colors, Fonts, Matrics, Images } from '@Assets';

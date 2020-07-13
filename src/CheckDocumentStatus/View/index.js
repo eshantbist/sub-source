@@ -2,13 +2,14 @@
 import React from 'react';
 import {
     View, ScrollView, Text, TouchableOpacity, FlatList, StyleSheet,
-    Image, Modal, Picker, Platform, Dimensions
+    Image, Modal, Platform, Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import CalendarPicker from '../../CustomComponent/react-native-calendar-picker';
 import moment from 'moment';
 import _ from 'lodash';
+import {Picker} from '@react-native-community/picker';
 
 // ======>>>>> Assets <<<<<=========
 import { Colors, Fonts, Matrics, Images, MasterCss } from '@Assets'

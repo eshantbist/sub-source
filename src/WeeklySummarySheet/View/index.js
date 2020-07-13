@@ -2,7 +2,7 @@
 import React from 'react';
 import { 
     View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Modal, Dimensions,Platform,
-    FlatList, RefreshControl, Alert, Picker,
+    FlatList, RefreshControl, Alert,
 } from 'react-native';
 import { connect } from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -37,6 +37,7 @@ import Global from '../../GlobalFunction';
 import styles from '../../Resources/react-native-material-dropdown/src/components/dropdown/styles';
 import Header from '../../Components/Common/Header';
 import { colors } from 'react-native-elements';
+import {Picker} from '@react-native-community/picker';
 
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');

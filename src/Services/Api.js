@@ -1,5 +1,5 @@
 //LIBRARIES
-import { AsyncStorage, Platform } from 'react-native';
+import {  Platform } from 'react-native';
 
 import { apiRequest, apiGetRequest, apiBodyRequest, apiBodyWithParamsRequest } from '../Redux/utils'
 
