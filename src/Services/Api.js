@@ -6,8 +6,9 @@ import { apiRequest, apiGetRequest, apiBodyRequest, apiBodyWithParamsRequest } f
 
 const SUBSOURCESTAGING = "http://subsourceapi.subsource.com";
 const STAGING = "http://api.subsource.com";
+const NEWURL = "https://testapi.subsource.com";
 
-const ENVIRONMENT = STAGING;
+const ENVIRONMENT = NEWURL;
 
 module.exports = {
 

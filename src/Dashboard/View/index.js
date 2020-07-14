@@ -127,9 +127,9 @@ class Dashboard extends React.Component {
         // this.salesbuildingReportFlag = false;
         // this.customerCommentsCount = false;
 
-        const currentDate = moment(new Date()).format("MM/DD/YYYY");
-        let WeekEndingDate =  moment(currentDate).format("MM/DD/YYYY");
-        console.log('weekending date-->',  moment(currentDate).format("MM/DD/YYYY"));
+        // const currentDate = moment().format("MM/DD/YYYY");
+        let WeekEndingDate =  moment().format("MM/DD/YYYY");
+        console.log('weekending date-->',  moment().format("MM/DD/YYYY"));
         // if(moment(currentDate).format('dddd') === 'Tuesday'){
         //     WeekEndingDate = currentDate;
         // } else if(moment(currentDate).format('dddd') === 'Monday'){
@@ -230,7 +230,7 @@ class Dashboard extends React.Component {
                 let showCurrent = (current > total) ? total : current;
                 let empNeed =  keyFinancialData ? Math.abs(Math.ceil((keyFinancialData.Sales / 1000)-humanResource.ActiveEmployee)) : 0 ;
                 // let progressPercentage =  humanResource ? (humanResource.ActiveEmployee * 100) / (humanResource.ActiveEmployee + humanResource.RequiredMore) : 0; 
-                let progressPercentage =  humanResource ? Math.round((humanResource.ActiveEmployee * 100) / (humanResource.ActiveEmployee + empNeed)) : 0; 
+                let progressPercentage =  humanResource ? Math.round((humanResource.ActiveEmployee * 100) / (empNeed)) : 0; 
 
                 await this.setState({
                     //             salesPercentage: regionReport.SaleVariance,
@@ -376,7 +376,52 @@ class Dashboard extends React.Component {
         // console.log('in filter-->month-->',customerCommentsMonth);
         // console.log('in filter-->qtd-->',customerCommentsQTD);
         // console.log('in filter-->ytd-->',customerCommentsYTD);
-        this.setState({ customerCommentsMonth, customerCommentsQTD, customerCommentsYTD });
+
+        var sortBy = (function () {
+            var toString = Object.prototype.toString,
+                // default parser function
+                parse = function (x) { return x; },
+                // gets the item to be sorted
+                getItem = function (x) {
+                  var isObject = x != null && typeof x === "object";
+                  var isProp = isObject && this.prop in x;
+                  return this.parser(isProp ? x[this.prop] : x);
+                };
+            return function sortby (array, cfg) {
+              if (!(array instanceof Array && array.length)) return [];
+              if (toString.call(cfg) !== "[object Object]") cfg = {};
+              if (typeof cfg.parser !== "function") cfg.parser = parse;
+              cfg.desc = !!cfg.desc ? -1 : 1;
+              return array.sort(function (a, b) {
+                a = getItem.call(cfg, a);
+                b = getItem.call(cfg, b);
+                return cfg.desc * (a < b ? -1 : +(a > b));
+              });
+            };
+        }());
+        const sortedCommentsMonth = sortBy(customerCommentsMonth, {
+            prop: "VisitTimeStamp",
+            desc: true,
+            parser: function(item) { return new Date(item); }
+        });
+        const sortedCommentsQTD = sortBy(customerCommentsQTD, {
+            prop: "VisitTimeStamp",
+            desc: true,
+            parser: function(item) { return new Date(item); }
+        });
+        const sortedCommentsYTD = sortBy(customerCommentsYTD, {
+            prop: "VisitTimeStamp",
+            desc: true,
+            parser: function(item) { return new Date(item); }
+        });
+        // console.log('in filter-->month-->',sortedCommentsMonth);
+        // console.log('in filter-->qtd-->',sortedCommentsQTD);
+        // console.log('in filter-->ytd-->',sortedCommentsYTD);
+        this.setState({ 
+            customerCommentsMonth : sortedCommentsMonth, 
+            customerCommentsQTD : sortedCommentsQTD, 
+            customerCommentsYTD : sortedCommentsYTD
+        });
 
         // this.state.customerComments.forEach(child => {
         //     console.log('in filter-->child-->',child.VisitTimeStamp );
@@ -799,7 +844,7 @@ class Dashboard extends React.Component {
                                             }
                                         </Text>
                                     </View>
-                                    <Text style={[Styles.labelText, { textAlign: 'center' }]}>NPS Score</Text>
+                                    <Text style={[Styles.labelText, { textAlign: 'center' }]}>OSAT Score</Text>
                                 </View>
 
                                 <View style={{ flex: 1 }}>
@@ -815,7 +860,7 @@ class Dashboard extends React.Component {
                                             }
                                         </Text>
                                     </View>
-                                    <Text style={[Styles.labelText, { textAlign: 'center' }]}>NPS Count</Text>
+                                    <Text style={[Styles.labelText, { textAlign: 'center' }]}>OSAT Count</Text>
                                 </View>
                             </View>
                         </View>
@@ -877,7 +922,7 @@ class Dashboard extends React.Component {
                                     }}
                                     onPageScrollStateChanged={(e) => { console.log(e) }}
                                     onMomentumScrollEnd={(e, state, context) => {
-                                        // console.log(context.state.index)
+                                        console.log('active page-->',context.state.index);
 
                                         this.setState({ activePage: context.state.index + 1 })
 
@@ -983,7 +1028,7 @@ class Dashboard extends React.Component {
 
                             <View style={{ flex: 1 }}>
                                 <View style={[Styles.contentContainerStyle, { flex: 1, justifyContent: 'space-around' }]}>
-                                    <Text style={Styles.progressText}><Text style={{ color: Colors.PARROT }}>{this.state.humanResource && this.state.humanResource.ActiveEmployee}</Text> of {this.state.humanResource && this.state.humanResource.ActiveEmployee + this.state.employeeNeed}</Text>
+                                    <Text style={Styles.progressText}><Text style={{ color: Colors.PARROT }}>{this.state.humanResource && this.state.humanResource.ActiveEmployee}</Text> of {this.state.humanResource && this.state.humanResource.ActiveEmployee}</Text>
                                     <View style={{ height: 10, backgroundColor: Colors.LIGHTGREY, borderRadius: 10 }}>
                                         <View style={{ height: 10, width: `${this.state.progressPercentage}%`, borderRadius: 10, backgroundColor: Colors.PARROT }}></View>
                                     </View>
