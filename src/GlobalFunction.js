@@ -51,8 +51,37 @@ const Global = {
         }
         console.log(hour + ':' + min + ':' + sec);
         return hour + ':' + min;
-    }
+    },
 
+    getQuaterMonth(currentMonth) {
+        var quaterMonth = [];
+        if(currentMonth == '01'){
+            quaterMonth=['01','02','03','04'];
+        } else if(currentMonth == '02'){
+            quaterMonth=['02','03','04','05'];
+        } else if(currentMonth == '03'){
+            quaterMonth=['03','04','05','06'];
+        } else if(currentMonth == '04'){
+            quaterMonth=['04','05','06','07'];
+        } else if(currentMonth == '05'){
+            quaterMonth=['05','06','07','08'];
+        } else if(currentMonth == '06'){
+            quaterMonth=['06','07','08','09'];
+        } else if(currentMonth == '07'){
+            quaterMonth=['07','08','09','10'];
+        } else if(currentMonth == '08'){
+            quaterMonth=['08','09','10','11'];
+        } else if(currentMonth == '09'){
+            quaterMonth=['09','10','11','12'];
+        } else if(currentMonth == '10'){
+            quaterMonth=['10','11','12','01'];
+        } else if(currentMonth == '11'){
+            quaterMonth=['11','12','01','02'];
+        } else if(currentMonth == '12'){
+            quaterMonth=['12','01','02','03'];
+        }
+        return quaterMonth;
+    }
 }
 
 export default Global;

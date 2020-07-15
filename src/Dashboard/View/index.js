@@ -217,7 +217,7 @@ class Dashboard extends React.Component {
             if (this.dashboardDataFlag && this.roleFlag)
                 this.setState({ loading: false })
             let data = nextProps.response.data // this.setState({ userRole: data.UserRoleList })
-            console.log('Data***', JSON.stringify(data));
+            // console.log('Data***', JSON.stringify(data));
             if (data.Status == 1) {
                 let keyFinancialData = data.Data._keyFinacialObj;
                 let salesBuilding = data.Data._saleBuildingList ? data.Data._saleBuildingList[0] : [];
@@ -322,7 +322,10 @@ class Dashboard extends React.Component {
         const WeekEndingDateArr = this.state.WeekEndingDate.split('/');
         let CurrentMonth = WeekEndingDateArr[0];
         let QuaterMonthArr = [];
+        // console.log('filter comment-->', WeekEndingDateArr);
         console.log('filter comment-->', CurrentMonth);
+        // console.log('filter commentList-->', this.state.customerComments);
+        // console.log('filter commentList-->',JSON.stringify(this.state.customerComments));
         // let QuaterMonthdate1 = moment(this.state.WeekEndingDate).subtract(1, 'months').format('MM/DD/YYYY').split('/');
         // let QuaterMonthdate2 = moment(this.state.WeekEndingDate).subtract(2, 'months').format('MM/DD/YYYY').split('/');
         // let QuaterMonthdate3 = moment(this.state.WeekEndingDate).subtract(3, 'months').format('MM/DD/YYYY').split('/');
@@ -333,20 +336,23 @@ class Dashboard extends React.Component {
         // console.log('in filter-->QuaterMonth2-->', QuarterMonth2);
         // console.log('in filter-->QuaterMonth3-->', QuarterMonth3);
 
-        // console.log('in filter-->CurrentMonth-->', CurrentMonth);
-        if(CurrentMonth === 1 || CurrentMonth == 2 || CurrentMonth == 3 || CurrentMonth == 4) {
-            QuaterMonthArr = [1,2,3,4];
-        } else if (CurrentMonth === 5 || CurrentMonth == 6 || CurrentMonth == 7 || CurrentMonth == 8) {
-            QuaterMonthArr = [5,6,7,8];
-        } else if(CurrentMonth === 9 || CurrentMonth == 10|| CurrentMonth == 11 || CurrentMonth == 12) {
-            QuaterMonthArr = [9,10,11,12];
-        }
+        console.log('in filter-->CurrentMonth-->', CurrentMonth);
+        // if(CurrentMonth == 1 || CurrentMonth == 2 || CurrentMonth == 3 || CurrentMonth == 4) {
+        //     QuaterMonthArr = ['01','02','03','04'];
+        // } else if (CurrentMonth == 5 || CurrentMonth == 6 || CurrentMonth == 7 || CurrentMonth == 8) {
+        //     QuaterMonthArr = ['05','06','07','08'];
+        // } else if(CurrentMonth == 9 || CurrentMonth == 10|| CurrentMonth == 11 || CurrentMonth == 12) {
+        //     QuaterMonthArr = ['09','10','11','12'];
+        // }
+        QuaterMonthArr = Global.getQuaterMonth(CurrentMonth);
+        console.log('QuaterMonthArr-->', QuaterMonthArr);
 
         let QuaterMonthfinalArr = QuaterMonthArr.filter(e => e != CurrentMonth);
         let customerCommentsMonth = [];
         let customerCommentsQTD = [];
         let customerCommentsYTD = this.state.customerComments;
 
+        console.log('QuaterMonthfinalArr-->', QuaterMonthfinalArr);
         customerCommentsMonth = this.state.customerComments.filter((e) => {
             const date = e.VisitTimeStamp.split('T');
             return (date[0].split('-')[1] == CurrentMonth)
@@ -414,9 +420,9 @@ class Dashboard extends React.Component {
             desc: true,
             parser: function(item) { return new Date(item); }
         });
-        // console.log('in filter-->month-->',sortedCommentsMonth);
-        // console.log('in filter-->qtd-->',sortedCommentsQTD);
-        // console.log('in filter-->ytd-->',sortedCommentsYTD);
+        console.log('in filter-->month-->',sortedCommentsMonth);
+        console.log('in filter-->qtd-->',sortedCommentsQTD);
+        console.log('in filter-->ytd-->',sortedCommentsYTD);
         this.setState({ 
             customerCommentsMonth : sortedCommentsMonth, 
             customerCommentsQTD : sortedCommentsQTD, 
