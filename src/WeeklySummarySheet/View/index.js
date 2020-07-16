@@ -165,7 +165,7 @@ class WeeklySummarySheet extends React.Component {
 
     async UNSAFE_componentWillMount() {
       self = this;
-      const currentDate = moment(new Date()).format("MM/DD/YYYY");
+      const currentDate = moment().format("MM/DD/YYYY");
       let WeekEndingDate = '';
       if(moment(currentDate).format('dddd') === 'Tuesday'){
         WeekEndingDate = currentDate;
@@ -1187,13 +1187,13 @@ class WeeklySummarySheet extends React.Component {
 
     render() {
         console.log('render');
-        console.log('empRoleWiseData-->',this.state.empRoleWiseData);
-        console.log('empRoleWiseData-->',this.state.empRoleWiseData.length);
-        console.log('hoursBasicListArr-->',this.state.hoursBasicListArr.length);
-        console.log('bottomHoursBasicListArr-->',this.state.bottomHoursBasicListArr.length);
-        console.log('bottomTotalBasicListArr-->',this.state.bottomTotalBasicListArr.length);
-        console.log('hoursBasicAsUserStoreId-->',this.state.hoursBasicAsUserStoreId.length);
-        console.log('selectedDate-->',this.state.selectedDate);
+        // console.log('empRoleWiseData-->',this.state.empRoleWiseData);
+        // console.log('empRoleWiseData-->',this.state.empRoleWiseData.length);
+        // console.log('hoursBasicListArr-->',this.state.hoursBasicListArr.length);
+        // console.log('bottomHoursBasicListArr-->',this.state.bottomHoursBasicListArr.length);
+        // console.log('bottomTotalBasicListArr-->',this.state.bottomTotalBasicListArr.length);
+        // console.log('hoursBasicAsUserStoreId-->',this.state.hoursBasicAsUserStoreId.length);
+        // console.log('selectedDate-->',this.state.selectedDate);
         // console.log('newTimeoffDataArr-->', this.state.newTimeoffDataArr.length);
         return (
             <View style={{ flex: 1, backgroundColor: Colors.WHITE }}>

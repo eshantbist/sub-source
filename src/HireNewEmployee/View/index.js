@@ -44,7 +44,7 @@ class HireNewEmployee extends React.Component {
         topStoreSpace: 0,
         loading: true,
         roleList: [],
-        selectedStore: '',
+        selectedStore: 'Select Store',
         selectedStoreId: '',
         selectedStoreName: '',
         selectedWages: '',
@@ -141,7 +141,7 @@ class HireNewEmployee extends React.Component {
 
             let data = nextProps.response.data;
             if (data.Status === 1) {
-                // console.log('data-->', data)
+                console.log('data123-->', data)
                 this.setState({ storeWithSettingArr: data.Data });
             }
         } else if(nextProps.response.GetStoreSettingDetailsListSuccess) {
@@ -194,20 +194,22 @@ class HireNewEmployee extends React.Component {
     getSelectedWageType() {
         const lastElement = Array.from(this.state.roleList).pop();
         const firstElement = this.state.roleList[0];
-        console.log('lastelement-->', lastElement);
-        console.log('firstElement-->', firstElement);
+        // console.log('lastelement-->', lastElement);
+        // console.log('firstElement-->', firstElement);
         const wageType = firstElement.WageTypeName;
         const wageTypeId = firstElement.WageTypeID;
         this.setState({ wageType, wageTypeId, position: firstElement.RoleName, roleId: firstElement.RoleID, PositionType: firstElement.PositionType });
     }
 
     getStoreidforMinorAge() {
-        const settingDetailArr = this.state.storeSetingDetailList.filter(S => S.SettingName === 'minor age restriction');
-        const storeId = settingDetailArr[0].StoreID;
-        const storeData = this.state.storeWithSettingArr.filter(R => R.StoreID === storeId);
-        const minorAge = storeData[0].MinorAgeValue;
-        // console.log('minorAge-->', minorAge);
-        this.setState({ minorAge });
+        if(this.state.storeSetingDetailList.length > 0){
+            const settingDetailArr = this.state.storeSetingDetailList.filter(S => S.SettingName === 'minor age restriction');
+            const storeId = settingDetailArr[0].StoreID;
+            const storeData = this.state.storeWithSettingArr.filter(R => R.StoreID === storeId);
+            const minorAge = storeData[0].MinorAgeValue;
+            console.log('minorAge-->', minorAge);
+            this.setState({ minorAge });
+        }
     }
    
     async onSelectWageType(value, index, data) {
@@ -215,6 +217,8 @@ class HireNewEmployee extends React.Component {
     }
 
     async onSelectStore(value, index, data) {
+        console.log('onSelectStore-->', data,'----', index)
+        console.log('selectedStore-->', data[index].DisplayStoreNumber)
         await this.setState({ selectedStore: data[index].DisplayStoreNumber, selectedStoreName: data[index].StoreNumber, selectedStoreId: data[index].StoreID, errorStore: '', posId: `${data[index].DisplayStoreNumber}-` });
         let selectedShopArr = this.state.storeWithSettingArr.filter(R => R.StoreID === data[index].StoreID);
         const EVerify = selectedShopArr[0].IsEverifyAutomatedEnabled ? selectedShopArr[0].IsEverifyAutomatedEnabled : false;
@@ -238,6 +242,7 @@ class HireNewEmployee extends React.Component {
 
     handleDatePicked = (date) => {
         let age = this.getAge(moment(date).format('YYYY/MM/DD'));
+        console.log('age-->',age);
         if(age <= 12 ){
             this.setState({ errorDob: 'Please Select Valid Date Of Birth.'})
         }else if(this.state.selectedStore!== '' && age < this.state.minorAge) {
@@ -561,7 +566,7 @@ class HireNewEmployee extends React.Component {
                         containerWidth={180}
                         data={this.state.storeWithSettingArr}
                         label="Store #"
-                        value={'Select Store'}
+                        value={this.state.selectedStore}
                         onChangeText={(value, index, data) => this.onSelectStore(value, index, data)}
                         valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber}
                         inputContainerStyle={{ borderBottomColor: 'transparent', alignSelf: 'stretch', padding: 0, margin: 0 }}
