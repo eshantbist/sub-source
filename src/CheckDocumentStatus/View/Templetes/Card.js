@@ -6,7 +6,7 @@ import { NavigationActions } from 'react-navigation';
 import moment from 'moment';
 
 // =======>>>>>>>>  Assets   <<<<<<<<<<<=========
-import { Dropdown } from '../../../Resources/react-native-material-dropdown'
+import { Dropdown } from 'react-native-material-dropdown'
 import { Colors, Fonts, Matrics, Images, MasterCss } from '@Assets'
 
 {/* ====>>>>>>>>>>>    Class Declaration   <<<<<<<<<<========== */ }

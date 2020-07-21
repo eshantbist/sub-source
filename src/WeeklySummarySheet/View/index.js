@@ -34,7 +34,8 @@ import { getHeaderFilterValuesRequest } from '@Redux/Actions/HirePacketsActions'
 import { Colors, Fonts, Matrics, MasterCss, Images } from '@Assets'
 import { TextInputView, Button, LoadWheel } from "@Components";
 import Global from '../../GlobalFunction';
-import styles from '../../Resources/react-native-material-dropdown/src/components/dropdown/styles';
+// import styles from '../../Resources/react-native-material-dropdown/src/components/dropdown/styles';
+import styles from 'react-native-material-dropdown/src/components/dropdown/styles';
 import Header from '../../Components/Common/Header';
 import { colors } from 'react-native-elements';
 import {Picker} from '@react-native-community/picker';

@@ -16,7 +16,7 @@ import { Colors, Fonts, Matrics, Images, MasterCss } from '@Assets'
 import { TextInputView, Button, LoadWheel } from "@Components";
 import Header from '../../Components/Common/Header';
 import Card from './Templetes/Card';
-import { Dropdown } from '../../Resources/react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown';
 import CheckDocumentStatusHeader from './Templetes/Header';
 import { getHeaderFilterValues, getCheckDocumentStatusHiringReturnRequest, getCheckDocumentStatusEnvelopVoidRequest } from '../../Redux/Actions/DocumentStatusActions';
 

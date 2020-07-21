@@ -1,7 +1,7 @@
 // =======>>>>>>>>  Libraries   <<<<<<<<<<<=========
 import React from 'react';
 import { View, Image, Dimensions, Text, TouchableOpacity } from 'react-native';
-import { Dropdown } from '../../../Resources/react-native-material-dropdown'
+import { Dropdown } from 'react-native-material-dropdown'
 
 // =======>>>>>>>>  Assets   <<<<<<<<<<<=========
 import { Colors, Fonts, Matrics, Images, MasterCss } from '@Assets'

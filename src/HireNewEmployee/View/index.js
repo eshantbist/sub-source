@@ -558,8 +558,10 @@ class HireNewEmployee extends React.Component {
                     error={this.state.errorEmail}
                 />
                 <View style={{ flexDirection: 'row' }}>
+                    {console.log('selectedStore-->', this.state.selectedStore)}
                     <Dropdown
                         containerStyle={{
+                            width: '50%',
                             alignSelf: 'flex-start', top: Matrics.CountScale(20), marginLeft: Matrics.CountScale(10),
                             // backgroundColor: 'red'
                         }}

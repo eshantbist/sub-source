@@ -10,7 +10,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { Colors, Fonts, Images, Matrics, MasterCss } from '@Assets'
 import { connect } from 'react-redux';
 import { TextInputView, Button, LoadWheel } from "@Components";
-import { Dropdown } from '../../Resources/react-native-material-dropdown'
+import { Dropdown } from 'react-native-material-dropdown';
 import Header from '../../Components/Common/Header';
 import Collapsible from 'react-native-collapsible';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
