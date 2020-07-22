@@ -44,7 +44,7 @@ class HireNewEmployee extends React.Component {
         topStoreSpace: 0,
         loading: true,
         roleList: [],
-        selectedStore: 'Select Store',
+        selectedStore: '',
         selectedStoreId: '',
         selectedStoreName: '',
         selectedWages: '',
@@ -561,14 +561,13 @@ class HireNewEmployee extends React.Component {
                     {console.log('selectedStore-->', this.state.selectedStore)}
                     <Dropdown
                         containerStyle={{
-                            width: '50%',
                             alignSelf: 'flex-start', top: Matrics.CountScale(20), marginLeft: Matrics.CountScale(10),
-                            // backgroundColor: 'red'
+                            // borderBottomColor: 'red', borderBottomWidth: 1
                         }}
                         containerWidth={180}
                         data={this.state.storeWithSettingArr}
                         label="Store #"
-                        value={this.state.selectedStore}
+                        value={'Select Store'}
                         onChangeText={(value, index, data) => this.onSelectStore(value, index, data)}
                         valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber}
                         inputContainerStyle={{ borderBottomColor: 'transparent', alignSelf: 'stretch', padding: 0, margin: 0 }}
@@ -586,7 +585,7 @@ class HireNewEmployee extends React.Component {
                     <TextInputView
                         label="POS ID"
                         fontSize={18}
-                        containerStyle={Styles.Input}
+                        containerStyle={[Styles.Input]}
                         value={this.state.posId}
                         labelFontSize={14}
                         returnKeyType={"next"}

@@ -343,10 +343,10 @@ class WeeklySummarySheet extends React.Component {
         let data = nextProps.resSummarySheet.data;
         if(data.Status == 1) {
             await this.setState({ 
-                basicListArr: data.Data.Employees,
-                hoursBasicListArr: data.Data.EmployeeHours,
-                bottomHoursBasicListArr: data.Data.BottomHours,
-                bottomTotalBasicListArr: data.Data.BottomTotal,
+                basicListArr:  data.Data.Employees != null ? data.Data.Employees : [],
+                hoursBasicListArr: data.Data.EmployeeHours != null ? data.Data.EmployeeHours : [],
+                bottomHoursBasicListArr: data.Data.BottomHours != null ? data.Data.BottomHours : [],
+                bottomTotalBasicListArr: data.Data.BottomTotal != null ? data.Data.BottomTotal : [],
                
             });
             if (this.state.basicListArr.length > 0 && this.state.hoursBasicListArr.length > 0) {
@@ -604,7 +604,6 @@ class WeeklySummarySheet extends React.Component {
         // console.log('in punchInArr-->', this.state.punchInArr)
         // console.log('in punchOutArr-->', this.state.punchOutArr)
         // console.log('in currentIndex-->', this.state.currentIndex)
-
         if(this.state.punchInArr.length > 0 && this.state.punchOutArr.length == 0 && this.state.currentIndex !== undefined) {
             var mins = Global.getTimeDiff(moment(this.state.punchInArr[this.state.currentIndex], "HH:mm:ss").format('HH:mm:ss'),this.state.selectedPunchOut) 
             let Arr = this.state.TotalHoursArr;

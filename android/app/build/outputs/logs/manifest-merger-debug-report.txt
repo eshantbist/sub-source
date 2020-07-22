@@ -132,7 +132,7 @@ ADDED from /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/
 	android:launchMode
 		ADDED from /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/Gitlab_Latest/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:17:9-40
 	android:windowSoftInputMode
-		ADDED from /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/Gitlab_Latest/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:18:9-51
+		ADDED from /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/Gitlab_Latest/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:18:9-48
 	android:configChanges
 		ADDED from /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/Gitlab_Latest/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:16:9-86
 	android:name
