@@ -257,13 +257,14 @@ class WeeklySchedule extends React.Component {
             this.sharedEmployeeFlag = false;
             this.sharedEmployeeScheduleFlag = false;
             this.ScheduleHoursFlag = false;
-    
+            console.log('kkkk');
             this.props.getPayrollTaxListRequest({ BusinessTypeId: 1, PayrollTaxGUID: '', YearID: this.state.YearID });
             this.props.getWeeklyScheduleInfoRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
             this.props.getWeatherDetailsListRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
             this.props.getWeeklyScheduleEmployeeRequest({ StoreId: this.state.selectedStoreId, UserStoreID: -1, DayID: -1, WeekEnding: this.state.weekendDate });
             this.props.getWeeklyScheduleEmployeeReturnRequest({ StoreId: this.state.selectedStoreId, WeekEnding: this.state.weekendDate });
-            this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20 });
+            // this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20 });
+            this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20, orderByColumnName: 'StoreNumber', orderByValue: false});
             this.props.getWeeklyScheduleEmployeeCountRequest({ StoreId: this.state.selectedStoreId, Type: 1, WeekEnding: this.state.weekendDate });
             this.props.getweeklyScheduleSharedEmployeeRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
             this.props.getweeklyScheduleSharedEmployeeScheduleRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
@@ -400,7 +401,6 @@ class WeeklySchedule extends React.Component {
                 this.setState({ loading: false })
             let data = nextProps.response.data
             if (data.Status == 1) {
-                // console.log('idledata-->', data);
                 await this.setState({ IdleEmployeeList: data.Report.Data });
             }
         }
@@ -490,7 +490,8 @@ class WeeklySchedule extends React.Component {
                 this.setState({ addToScheduleStatusId: '', addToScheduleUserStoreID: '', confirmationModal: false, loading: true });
                 this.idleEmployeeReportFlag = false;
                 this.scheduleEmployeeReturnFlag = false;
-                this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20 });
+                // this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20 });
+                this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20, orderByColumnName: 'StoreNumber', orderByValue: false});
                 this.props.getWeeklyScheduleEmployeeReturnRequest({ StoreId: this.state.selectedStoreId, WeekEnding: this.state.weekendDate });
             } else {
                 Alert.alert(
@@ -1438,13 +1439,16 @@ class WeeklySchedule extends React.Component {
 
                         </View>
                         <View style={Styles.containerStyle}>
-                            <TouchableOpacity
-                                style={{ flexDirection: 'row', alignItems: 'center', padding: Matrics.CountScale(12) }}
-                                onPress={() => { this.setState({ IdleShow: !this.state.IdleShow }) }}
-                            >
-                                <Text style={[Styles.fontStyle, { flex: 1, color: Colors.APPCOLOR }]}>IDLE EMPLOYEE(S)</Text>
-                                <Image source={this.state.IdleShow ? Images.DownArrow : Images.NextArrow} style={{ tintColor: Colors.TEXTGREY, height: 20, width: 20 }} />
-                            </TouchableOpacity>
+                            {
+                                this.state.IdleEmployeeList.length > 0 &&
+                                <TouchableOpacity
+                                    style={{ flexDirection: 'row', alignItems: 'center', padding: Matrics.CountScale(12) }}
+                                    onPress={() => { this.setState({ IdleShow: !this.state.IdleShow }) }}
+                                >
+                                    <Text style={[Styles.fontStyle, { flex: 1, color: Colors.APPCOLOR }]}>IDLE EMPLOYEE(S)</Text>
+                                    <Image source={this.state.IdleShow ? Images.DownArrow : Images.NextArrow} style={{ tintColor: Colors.TEXTGREY, height: 20, width: 20 }} />
+                                </TouchableOpacity> 
+                            }
                             {
                                 this.state.IdleShow
                                     ?
@@ -1712,7 +1716,8 @@ class WeeklySchedule extends React.Component {
                                 this.props.getWeatherDetailsListRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
                                 this.props.getWeeklyScheduleEmployeeRequest({ StoreId: this.state.selectedStoreId, UserStoreID: -1, DayID: -1, WeekEnding: this.state.weekendDate });
                                 this.props.getWeeklyScheduleEmployeeReturnRequest({ StoreId: this.state.selectedStoreId, WeekEnding: this.state.weekendDate });
-                                this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20 });
+                                // this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20 });
+                                this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20, orderByColumnName: 'StoreNumber', orderByValue: false});
                                 this.props.getWeeklyScheduleEmployeeCountRequest({ StoreId: this.state.selectedStoreId, Type: 1, WeekEnding: this.state.weekendDate });
                                 this.props.getweeklyScheduleSharedEmployeeRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
                                 this.props.getweeklyScheduleSharedEmployeeScheduleRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });

@@ -38,6 +38,7 @@ export function* asyncSagaNoParams({ api, constant }) {
 };
 
 export async function apiRequest(params, apiUrl, headers, method) {
+  console.log('p-->apiUrl-->',apiUrl);
   // alert(global.loginResponse.UserStoreGuid)
   var formBody = [];
   for (var property in params) {
