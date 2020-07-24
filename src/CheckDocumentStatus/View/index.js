@@ -96,7 +96,7 @@ class CheckDoucmentStatus extends React.Component {
             StoreId: this.state.selectedStores,
             BusinessTypeId: 1,
             NoOfDays: this.state.selectedNOD,
-            TileID: 0,
+            TileID: 2,
             StatusType: this.state.selectedStatus,
             PageNumber: 1,
             PageSize: perPageRecord,
@@ -173,7 +173,7 @@ class CheckDoucmentStatus extends React.Component {
                     StoreId: this.state.selectedStores,
                     BusinessTypeId: 1,
                     NoOfDays: this.state.selectedNOD,
-                    TileID: 0,
+                    TileID: 2,
                     StatusType: this.state.selectedStatus,
                     PageNumber: 1,
                     PageSize: 20,
@@ -335,7 +335,7 @@ class CheckDoucmentStatus extends React.Component {
         if (this.state.selected === 'Completed') {
             TileID = 1;
         } else if (this.state.selected === 'ActionRequired') {
-            TileID = '';
+            TileID = 2;
         } else if (this.state.selected === 'InProgress') {
             TileID = 3;
         }
@@ -530,18 +530,6 @@ class CheckDoucmentStatus extends React.Component {
                 {/* header end */}
                 <View >
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        <TouchableOpacity onPress={() => { this.onClickedTotal() }} >
-                            <View style={[Styles.statusCardContainer, selected == 'Total' ? { backgroundColor: Colors.TOTAL } : { borderColor: Colors.TOTAL, borderWidth: 1.5 }]}>
-                                <Text style={[Styles.countTextStyle, selected == 'Total' ? { color: Colors.WHITE } : { color: Colors.TOTAL }]}>{Object.keys(this.state.TitlesArr).length > 0 ? this.state.TitlesArr.Total : 0}</Text>
-                                <Text style={[Styles.labelTextStyle, selected == 'Total' ? { color: Colors.WHITE } : { color: Colors.TOTAL }]}>Total</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { this.onClickedCompleted() }} >
-                            <View style={[Styles.statusCardContainer, selected == 'Completed' ? { backgroundColor: Colors.COMPLETED } : { borderColor: Colors.COMPLETED, borderWidth: 1.5 }]}>
-                                <Text style={[Styles.countTextStyle, selected == 'Completed' ? { color: Colors.WHITE } : { color: Colors.COMPLETED }]}>{Object.keys(this.state.TitlesArr).length > 0 ? this.state.TitlesArr.Completed : 0}</Text>
-                                <Text style={[Styles.labelTextStyle, selected == 'Completed' ? { color: Colors.WHITE } : { color: Colors.COMPLETED }]}>Completed</Text>
-                            </View>
-                        </TouchableOpacity>
                         <TouchableOpacity onPress={() => { this.onClickedActionRequired() }} >
                             <View style={[Styles.statusCardContainer, selected == 'ActionRequired' ? { backgroundColor: Colors.ACTIONREQUIRE } : { borderColor: Colors.ACTIONREQUIRE, borderWidth: 1.5 }]}>
                                 <Text style={[Styles.countTextStyle, selected == 'ActionRequired' ? { color: Colors.WHITE } : { color: Colors.ACTIONREQUIRE }]}>{Object.keys(this.state.TitlesArr).length > 0 ? this.state.TitlesArr.ActionRequired : 0}</Text>
@@ -552,6 +540,18 @@ class CheckDoucmentStatus extends React.Component {
                             <View style={[Styles.statusCardContainer, selected == 'InProgress' ? { backgroundColor: Colors.INPROGRESS } : { borderColor: Colors.INPROGRESS, borderWidth: 1.5 }]}>
                                 <Text style={[Styles.countTextStyle, selected == 'InProgress' ? { color: Colors.WHITE } : { color: Colors.INPROGRESS }]}>{Object.keys(this.state.TitlesArr).length > 0 ? this.state.TitlesArr.InProcess : 0}</Text>
                                 <Text style={[Styles.labelTextStyle, selected == 'InProgress' ? { color: Colors.WHITE } : { color: Colors.INPROGRESS }]}>In Process</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => { this.onClickedCompleted() }} >
+                            <View style={[Styles.statusCardContainer, selected == 'Completed' ? { backgroundColor: Colors.COMPLETED } : { borderColor: Colors.COMPLETED, borderWidth: 1.5 }]}>
+                                <Text style={[Styles.countTextStyle, selected == 'Completed' ? { color: Colors.WHITE } : { color: Colors.COMPLETED }]}>{Object.keys(this.state.TitlesArr).length > 0 ? this.state.TitlesArr.Completed : 0}</Text>
+                                <Text style={[Styles.labelTextStyle, selected == 'Completed' ? { color: Colors.WHITE } : { color: Colors.COMPLETED }]}>Completed</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => { this.onClickedTotal() }} >
+                            <View style={[Styles.statusCardContainer, selected == 'Total' ? { backgroundColor: Colors.TOTAL } : { borderColor: Colors.TOTAL, borderWidth: 1.5 }]}>
+                                <Text style={[Styles.countTextStyle, selected == 'Total' ? { color: Colors.WHITE } : { color: Colors.TOTAL }]}>{Object.keys(this.state.TitlesArr).length > 0 ? this.state.TitlesArr.Total : 0}</Text>
+                                <Text style={[Styles.labelTextStyle, selected == 'Total' ? { color: Colors.WHITE } : { color: Colors.TOTAL }]}>Total</Text>
                             </View>
                         </TouchableOpacity>
                     </ScrollView>
@@ -625,7 +625,7 @@ class CheckDoucmentStatus extends React.Component {
                                 if (this.state.selected === 'Completed') {
                                     TileID = 1;
                                 } else if (this.state.selected === 'ActionRequired') {
-                                    TileID = '';
+                                    TileID = 2;
                                 } else if (this.state.selected === 'InProgress') {
                                     TileID = 3;
                                 }

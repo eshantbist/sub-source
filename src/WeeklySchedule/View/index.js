@@ -270,7 +270,6 @@ class WeeklySchedule extends React.Component {
             this.props.getweeklyScheduleSharedEmployeeScheduleRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
             this.props.getweeklyScheduleHoursRequest({ StoreId: this.state.selectedStoreId, WeekEnding: this.state.weekendDate });
         }
-       
     }
 
     componentDidMount() {
@@ -633,8 +632,8 @@ class WeeklySchedule extends React.Component {
         this.setState({ TotalofEmployeeScheduleData })
     }
     setEmpData() {
-        // console.log('empdata***', this.state.employeeRerurnData)
-        // console.log('empdata***', this.state.employeeData)
+       // console.log('empdata***', this.state.employeeRerurnData)
+       // console.log('empdata***', this.state.employeeData)
         //common array
         let empShiftWise = [];
         this.state.employeeRerurnData.forEach((parent) => {
@@ -972,6 +971,14 @@ class WeeklySchedule extends React.Component {
         if(this.state.selectedDate == 'Total')
             console.log('TotalfinalSharedEmployeeData-->', this.state.TotalfinalSharedEmployeeData)
 
+        let ContactNumber = '';
+        if(item.ContactNumber != undefined && item.ContactNumber != ''){
+            var x = item.ContactNumber;
+            x = x.replace(/\D+/g, '')
+                .replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+            ContactNumber = x;
+        }
+
         return (
             <View style={[Styles.rowContainer, { backgroundColor: index % 2 == 0 ? Colors.ROWBGCOLOR : null }]}>
                 <View style={Styles.rowTitleStyle}>
@@ -981,7 +988,7 @@ class WeeklySchedule extends React.Component {
                     </View>
                     <Text style={Styles.roleText}>({item.RoleCode})</Text>
                     <View style={{ flexDirection: 'row', marginLeft: Matrics.CountScale(25) }}>
-                        <Text style={{ flex: 1, fontFamily: Fonts.NunitoSansRegular }}>{item.ContactNumber}</Text>
+                        <Text style={{ flex: 1, fontFamily: Fonts.NunitoSansRegular }}>{ContactNumber}</Text>
                         <Icon
                             style={{ alignSelf: 'flex-end', marginRight: Matrics.CountScale(5) }}
                             name="link" color="#03AAEE" size={20}
@@ -1119,11 +1126,13 @@ class WeeklySchedule extends React.Component {
 
     async onAddshift(button) {
         let repeatType = '';
+        let repeatDays = '';
         if (this.state.repeatEvery) {
             if (this.state.repeatEveryType === 'Day') {
                 repeatType = 2;
             } else if (this.state.repeatEveryType === 'Week') {
                 repeatType = 1;
+                repeatDays = "1,2,3,4,5,6,7";
             }
         } else {
             repeatType = -1;
@@ -1142,17 +1151,17 @@ class WeeklySchedule extends React.Component {
             if (button === 'Add') {
                 const dataAdd = {
                     "DailyScheduleID": 0,
-                    "StoreID": 41,
-                    "UserStoreID": this.state.UserStoreID,
-                    "ScheduleDate": moment(this.state.selectedDate).format('MM/DD/YYYY'),
-                    // "ScheduleDate": this.state.endingDate,
+                    "EndingDate": moment(this.state.selectedDate).format('MM/DD/YYYY'),
                     "InTime": Global.getTime12To24(this.state.shiftinTime),
                     "OutTime": Global.getTime12To24(this.state.shiftoutTime),
-                    "RepeatType": repeatType,
-                    "Notes": "",
-                    "ShiftValue": "",
                     "IsChecked": false,
-                    "EndingDate": moment(this.state.selectedDate).format('MM/DD/YYYY'),
+                    "Notes": "",
+                    "RepeatType": repeatType,
+                    "RepeatDays": repeatDays,
+                    "StoreID": this.state.selectedStoreId,
+                    "UserStoreID": this.state.UserStoreID,
+                    "ScheduleDate": moment(this.state.selectedDate).format('MM/DD/YYYY'),
+                    "ShiftValue": 0,
                     "UserStoreGUID": this.state.UserStoreGUID
                 };
                 // console.log('dataADD-->', dataAdd);
@@ -1163,16 +1172,17 @@ class WeeklySchedule extends React.Component {
                 } else {
                     const dataEdit = {
                         "DailyScheduleID": this.state.DailyScheduleID,
-                        "StoreID": 41,
-                        "UserStoreID": this.state.UserStoreID,
-                        "ScheduleDate": moment(this.state.ScheduleDate, 'YYYY.MM.DD HH:mm').format('MM/DD/YYYY'),
+                        "EndingDate": moment(this.state.selectedDate).format('MM/DD/YYYY'),
                         "InTime": Global.getTime12To24(this.state.shiftinTime),
                         "OutTime": Global.getTime12To24(this.state.shiftoutTime),
-                        "RepeatType": repeatType,
-                        "Notes": this.state.Notes,
-                        "ShiftValue": 0,
                         "IsChecked": false,
-                        "EndingDate": moment(this.state.selectedDate).format('MM/DD/YYYY'),
+                        "Notes": this.state.Notes,
+                        "RepeatType": repeatType,
+                        "RepeatDays": repeatDays,
+                        "StoreID": this.state.selectedStoreId,
+                        "UserStoreID": this.state.UserStoreID,
+                        "ScheduleDate": moment(this.state.ScheduleDate, 'YYYY.MM.DD HH:mm').format('MM/DD/YYYY'),
+                        "ShiftValue": 0,
                         "UserStoreGUID": this.state.UserStoreGUID
                     }
                     // console.log('dataEdit-->', dataEdit);
