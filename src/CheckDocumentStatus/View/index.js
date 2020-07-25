@@ -2,7 +2,7 @@
 import React from 'react';
 import {
     View, ScrollView, Text, TouchableOpacity, FlatList, StyleSheet,
-    Image, Modal, Platform, Dimensions
+    Image, Modal, Platform, Dimensions, RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -46,7 +46,7 @@ class CheckDoucmentStatus extends React.Component {
 
     //--------->>>State Initilization----------->>>
     state = {
-        selected: "Total",
+        selected: "ActionRequired",
         filterModal: false,
         selectedRoleId: 0,
         selectedNOD: 30,
@@ -72,6 +72,7 @@ class CheckDoucmentStatus extends React.Component {
         recipientsListArr: [],
         selctedTileID: 0,
         selctedPageNumber: 1,
+        refreshing: false,
         // isDateTimePickerVisible: false,
     };
 
@@ -137,10 +138,10 @@ class CheckDoucmentStatus extends React.Component {
                     selectedStoreName: data.Report.store_list[0].DisplayStoreNumber
                 });
             }
-        } else if (nextProps.response.CheckDocumentStatus.GetCheckDocumentStatusHiringReturnSucess && this.state.loading) {
+        } else if (nextProps.response.CheckDocumentStatus.GetCheckDocumentStatusHiringReturnSucess && (this.state.loading || this.state.refreshing)) {
             this.docStatusFlage = true;
             if (this.filterValFlag && this.docStatusFlage)
-                this.setState({ loading: false });
+                this.setState({ loading: false, refreshing: false });
 
             let data = nextProps.response.CheckDocumentStatus.data;
 
@@ -578,6 +579,12 @@ class CheckDoucmentStatus extends React.Component {
                                     data={this.state.empListArr[this.state.selectedIndex]}
                                     renderItem={this._renderItem}
                                     keyExtractor={(item, index) => index.toString()}
+                                    refreshControl={
+                                        <RefreshControl
+                                          refreshing={this.state.refreshing}
+                                          onRefresh={this.onRefresh}
+                                        />
+                                    }
                                 />
                                 {
                                     this.state.Totalpage >  1
@@ -745,6 +752,29 @@ class CheckDoucmentStatus extends React.Component {
 
     cardPress() {
 
+    }
+
+    onRefresh = () => {
+        let TileID = 0;
+        if (this.state.selected === 'Completed') {
+            TileID = 1;
+        } else if (this.state.selected === 'ActionRequired') {
+            TileID = 2;
+        } else if (this.state.selected === 'InProgress') {
+            TileID = 3;
+        }
+        this.setState({refreshing: true});
+        this.props.getCheckDocumentStatusHiringReturnRequest({
+            RoleId: this.state.selectedRoleId,
+            FilterId: -1,
+            StoreId: this.state.selectedStores,
+            BusinessTypeId: 1,
+            NoOfDays: this.state.selectedNOD,
+            TileID: TileID,
+            StatusType: this.state.selectedStatus,
+            PageNumber: 1,
+            PageSize: perPageRecord,
+        });
     }
 
     _renderItem = ({ item, index }) => {

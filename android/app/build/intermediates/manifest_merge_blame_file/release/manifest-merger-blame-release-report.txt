@@ -42,8 +42,8 @@
 25-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/Gitlab_Latest/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:15:9-41
 26            android:launchMode="singleTask"
 26-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/Gitlab_Latest/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:17:9-40
-27            android:windowSoftInputMode="adjustResize" >
-27-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/Gitlab_Latest/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:18:9-51
+27            android:windowSoftInputMode="adjustPan" >
+27-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/Gitlab_Latest/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:18:9-48
 28            <intent-filter>
 28-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/subsourceManager/Gitlab_Latest/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:19:9-22:25
 29                <action android:name="android.intent.action.MAIN" />

@@ -1,6 +1,6 @@
 // =======>>>>>>>>  Libraries   <<<<<<<<<<<=========
 import React from 'react';
-import { View, BackAndroid, Platform, Dimensions, TouchableOpacity, Modal, ScrollView, TouchableWithoutFeedback, Image, Text } from 'react-native';
+import { View, BackAndroid, Platform, Dimensions, TouchableOpacity, Modal, ScrollView, TouchableWithoutFeedback, Image, Text, RefreshControl } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
@@ -117,6 +117,7 @@ class Dashboard extends React.Component {
         currentWeekEndDate: '',
         lastFilterselectedRoleId: 0,
         lastFilterselectedStores: -1,
+        refreshing: false,
     }
     // ======>>>>>>> Life Cycle Methods  <<<<<<<========
     async UNSAFE_componentWillMount() {
@@ -211,11 +212,11 @@ class Dashboard extends React.Component {
             }
             // console.log(data)
         }
-        if (nextProps.response.getDashboardDataSuccess && this.state.loading) {
+        if (nextProps.response.getDashboardDataSuccess && (this.state.loading || this.state.refreshing)) {
             this.dashboardDataFlag = true
 
             if (this.dashboardDataFlag && this.roleFlag)
-                this.setState({ loading: false })
+                this.setState({ loading: false, refreshing: false })
             let data = nextProps.response.data // this.setState({ userRole: data.UserRoleList })
             // console.log('Data***', JSON.stringify(data));
             if (data.Status == 1) {
@@ -318,7 +319,6 @@ class Dashboard extends React.Component {
     }
 
     filterCustomerComments() {
-      
         const WeekEndingDateArr = this.state.WeekEndingDate.split('/');
         let CurrentMonth = WeekEndingDateArr[0];
         let QuaterMonthArr = [];
@@ -785,6 +785,16 @@ class Dashboard extends React.Component {
     //     }
     //     return comments;
     // }
+    onRefresh = () => {
+        this.setState({refreshing: true});
+        this.props.getDashBoardDataRequest({
+            RoleId: this.state.selectedRoleId,//this.state.selectedRoleId, 0
+            StoreId: this.state.selectedStores,//this.state.StoreID, -1
+            FilterId: -1,
+            BusinessTypeId: 1,
+            WeekEnding: this.state.WeekEndingDate // this.state.weekEnding
+        })
+    }
 
     _renderItem = ({ item, index }) => {
             let len = 0 ;
@@ -798,7 +808,14 @@ class Dashboard extends React.Component {
             this.state.activeSlide == 0 ?
             // index == 0 ?
                 <View style={Styles.slideStyle}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView showsVerticalScrollIndicator={false}
+                        refreshControl={
+                            <RefreshControl
+                              refreshing={this.state.refreshing}
+                              onRefresh={this.onRefresh}
+                            />
+                        }
+                    >
                         <Text style={Styles.labelText}>Financial</Text>
                         <View style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'center' }}>
                             <InfoViewContainer bgColor={Colors.PARROT} labelText={'SALES'} imgSrc={Images.Sales} contentText={this.state.totalSales} />
@@ -1022,7 +1039,14 @@ class Dashboard extends React.Component {
                 </View >
                 :
                 <View style={Styles.slideStyle}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView showsVerticalScrollIndicator={false}
+                        refreshControl={
+                            <RefreshControl
+                              refreshing={this.state.refreshing}
+                              onRefresh={this.onRefresh}
+                            />
+                        }
+                    >
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ flex: 1 }}>
                                 <View style={[Styles.contentContainerStyle, { paddingHorizontal: 0, alignItems: 'center', borderWidth: 2, borderColor: Colors.ORANGE }]}>

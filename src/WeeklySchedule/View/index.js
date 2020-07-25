@@ -2,7 +2,7 @@
 import React from 'react';
 import {
     View, Text, Image, ScrollView, TouchableOpacity, StyleSheet, Modal, FlatList, Platform,
-    Dimensions, TextInput, Alert
+    Dimensions, TextInput, Alert, RefreshControl
 } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -217,6 +217,7 @@ class WeeklySchedule extends React.Component {
         TotalfinalRoleEmployeeData: [],
         TotalfinalSharedEmployeeData: [],
         TotalScheduleHours: 0,
+        refreshing: false,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -257,7 +258,6 @@ class WeeklySchedule extends React.Component {
             this.sharedEmployeeFlag = false;
             this.sharedEmployeeScheduleFlag = false;
             this.ScheduleHoursFlag = false;
-            console.log('kkkk');
             this.props.getPayrollTaxListRequest({ BusinessTypeId: 1, PayrollTaxGUID: '', YearID: this.state.YearID });
             this.props.getWeeklyScheduleInfoRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
             this.props.getWeatherDetailsListRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
@@ -311,20 +311,20 @@ class WeeklySchedule extends React.Component {
 
         }
 
-        if (nextProps.response.GetPayrollTaxListSuccess && this.state.loading) {
+        if (nextProps.response.GetPayrollTaxListSuccess && (this.state.loading || this.state.refreshing)) {
             this.taxListFlag = true;
             if (this.taxListFlag && this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
-                this.setState({ loading: false })
+                this.setState({ loading: false, refreshing: false })
 
             let data = nextProps.response.data;
             if (data.Status == 1 && data.Data.length > 0) {
                 this.setState({ TaxValue: data.Data[0].TaxValue });
             }
         } 
-        else if (nextProps.response.weeklyScheduleInfoSuccess && this.state.loading) {
+        else if (nextProps.response.weeklyScheduleInfoSuccess && (this.state.loading || this.state.refreshing)) {
             this.infoFlag = true
             if (this.taxListFlag && this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
-                this.setState({ loading: false })
+                this.setState({ loading: false, refreshing: false })
 
             let data = nextProps.response.data;
             console.log('info-->', data);
@@ -345,10 +345,10 @@ class WeeklySchedule extends React.Component {
             }
 
         }
-        else if (nextProps.response.getWeatherDetailsListSuccess && this.state.loading) {
+        else if (nextProps.response.getWeatherDetailsListSuccess && (this.state.loading || this.state.refreshing)) {
             this.detailsListFlag = true
             if (this.taxListFlag && this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
-                this.setState({ loading: false })
+                this.setState({ loading: false, refreshing: false })
 
             let data = nextProps.response.data
 
@@ -357,11 +357,11 @@ class WeeklySchedule extends React.Component {
             }
 
         }
-        else if (nextProps.response.getWeeklyScheduleEmployeeSuccess && this.state.loading) {
+        else if (nextProps.response.getWeeklyScheduleEmployeeSuccess && (this.state.loading || this.state.refreshing)) {
             this.scheduleEmployeeFlag = true
 
             if (this.taxListFlag && this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
-                this.setState({ loading: false })
+                this.setState({ loading: false, refreshing: false })
 
             let data = nextProps.response.data
             if (data.Status == 1) {
@@ -371,10 +371,10 @@ class WeeklySchedule extends React.Component {
                 }
             }
         }
-        else if (nextProps.response.getWeeklyScheduleEmployeeReturnSuccess && this.state.loading) {
+        else if (nextProps.response.getWeeklyScheduleEmployeeReturnSuccess && (this.state.loading || this.state.refreshing)) {
             this.scheduleEmployeeReturnFlag = true
             if (this.taxListFlag && this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
-                this.setState({ loading: false })
+                this.setState({ loading: false , refreshing: false})
 
             let data = nextProps.response.data
             if (data.Status == 1) {
@@ -394,19 +394,19 @@ class WeeklySchedule extends React.Component {
                 await this.setState({ absenceReason: data.Data });
             }
         }
-        else if (nextProps.response.GetIdleEmployeesReportSuccess && this.state.loading) {
+        else if (nextProps.response.GetIdleEmployeesReportSuccess && (this.state.loading || this.state.refreshing)) {
             this.idleEmployeeReportFlag = true;
             if (this.taxListFlag && this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
-                this.setState({ loading: false })
+                this.setState({ loading: false , refreshing: false})
             let data = nextProps.response.data
             if (data.Status == 1) {
                 await this.setState({ IdleEmployeeList: data.Report.Data });
             }
         }
-        else if (nextProps.response.GetWeeklyScheduleEmployeeCountSuccess && this.state.loading) {
+        else if (nextProps.response.GetWeeklyScheduleEmployeeCountSuccess && (this.state.loading || this.state.refreshing)) {
             this.employeeCountFlag = true;
             if (this.taxListFlag && this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
-                this.setState({ loading: false })
+                this.setState({ loading: false , refreshing: false})
             let data = nextProps.response.data;
             
             if (data.Status == 1) {
@@ -416,30 +416,30 @@ class WeeklySchedule extends React.Component {
                 this.calculateTotalOfEmployeeSchedule()
             }
         }
-        else if (nextProps.response.GetweeklyScheduleSharedEmployeeSuccess && this.state.loading) {
+        else if (nextProps.response.GetweeklyScheduleSharedEmployeeSuccess && (this.state.loading || this.state.refreshing)) {
             this.sharedEmployeeFlag = true;
             if (this.taxListFlag && this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
-                this.setState({ loading: false })
+                this.setState({ loading: false , refreshing: false})
             let data = nextProps.response.data;
             if (data.Status == 1) {
                 await this.setState({ sharedEmployee: data.Data });
 
             }
         }
-        else if (nextProps.response.GetweeklyScheduleSharedEmployeeScheduleSuccess && this.state.loading) {
+        else if (nextProps.response.GetweeklyScheduleSharedEmployeeScheduleSuccess && (this.state.loading || this.state.refreshing)) {
             this.sharedEmployeeScheduleFlag = true;
             if (this.taxListFlag && this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
-                this.setState({ loading: false })
+                this.setState({ loading: false , refreshing: false})
             let data = nextProps.response.data;
             if (data.Status == 1) {
                 // console.log('sharedEmployeeschedule-->', data);
                 await this.setState({ sharedEmployeeSchedule: data.Data._shiftsList });
 
             }
-        } else if (nextProps.response.GetweeklyScheduleHoursSuccess && this.state.loading) {
+        } else if (nextProps.response.GetweeklyScheduleHoursSuccess && (this.state.loading || this.state.refreshing)) {
             this.ScheduleHoursFlag = true;
             if (this.taxListFlag && this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
-                this.setState({ loading: false })
+                this.setState({ loading: false , refreshing: false })
             let data = nextProps.response.data;
             if (data.Status == 1) {
                 await this.setState({ ScheduleHoursArr: data.Data });
@@ -1192,6 +1192,31 @@ class WeeklySchedule extends React.Component {
         }
     }
 
+    onRefresh = () => {
+        this.setState({refreshing: true});
+        this.taxListFlag = false;
+        this.infoFlag = false;
+        this.detailsListFlag = false;
+        this.scheduleEmployeeFlag = false;
+        this.scheduleEmployeeReturnFlag = false;
+        this.idleEmployeeReportFlag = false;
+        this.employeeCountFlag = false;
+        this.sharedEmployeeFlag = false;
+        this.sharedEmployeeScheduleFlag = false;
+        this.ScheduleHoursFlag = false;
+        this.props.getPayrollTaxListRequest({ BusinessTypeId: 1, PayrollTaxGUID: '', YearID: this.state.YearID });
+        this.props.getWeeklyScheduleInfoRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
+        this.props.getWeatherDetailsListRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
+        this.props.getWeeklyScheduleEmployeeRequest({ StoreId: this.state.selectedStoreId, UserStoreID: -1, DayID: -1, WeekEnding: this.state.weekendDate });
+        this.props.getWeeklyScheduleEmployeeReturnRequest({ StoreId: this.state.selectedStoreId, WeekEnding: this.state.weekendDate });
+        // this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20 });
+        this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20, orderByColumnName: 'StoreNumber', orderByValue: false});
+        this.props.getWeeklyScheduleEmployeeCountRequest({ StoreId: this.state.selectedStoreId, Type: 1, WeekEnding: this.state.weekendDate });
+        this.props.getweeklyScheduleSharedEmployeeRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
+        this.props.getweeklyScheduleSharedEmployeeScheduleRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
+        this.props.getweeklyScheduleHoursRequest({ StoreId: this.state.selectedStoreId, WeekEnding: this.state.weekendDate });
+    }
+
     onDeleteTimeoff() {
         this.props.DeleteEmployeeTimeOffDayWise({ TimeOffID: this.state.TimeOffID });
     }
@@ -1297,7 +1322,14 @@ class WeeklySchedule extends React.Component {
                     </TouchableOpacity>
                 </View>
 
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                          refreshing={this.state.refreshing}
+                          onRefresh={this.onRefresh}
+                        />
+                    }
+                >
                     <View style={Styles.headContainer}>
                         <TouchableOpacity style={Styles.jumpEmpContainer} onPress={() => this.props.navigation.navigate('EmployeeList')}>
                             <Image source={Images.SmallUserIcon} style={{ marginHorizontal: Matrics.CountScale(5) }}></Image>
