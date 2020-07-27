@@ -157,6 +157,9 @@ class WeeklySummarySheet extends React.Component {
         isFromFilter: false,
         currentWeekEndDate: '',
         weekDatesList: [],
+        HoursEmployeeName: '',
+        HoursEmployeeNumber: '',
+        HoursUserStoreID: '',
     };
 
     lastTap = null;
@@ -1055,9 +1058,19 @@ class WeeklySummarySheet extends React.Component {
                                                     : true
                                                 }
                                                 onRGPress={() => {
-                                                    if(resData[0].RG != undefined && resData[0].RG != 0) {
+                                                    if(resData[0].RG != undefined) {
                                                         this.props.getEmployeePunchDetailRequest({ StoreId: this.state.selectedStoreId, UserStoreID: res.UserStoreID, DayID: this.state.selectedDayId, WeekEnding: this.state.WeekEndingDate });
-                                                        this.setState({ hoursModal: true, adjustReason: '', showpunchSection: false, punchInArr: [], punchOutArr: [], TotalHoursArr: [] }) 
+                                                        this.setState({ 
+                                                            hoursModal: true,
+                                                            adjustReason: '',
+                                                            showpunchSection: false,
+                                                            punchInArr: [],
+                                                            punchOutArr: [],
+                                                            TotalHoursArr: [],
+                                                            HoursEmployeeName: res.FullName,
+                                                            HoursEmployeeNumber: res.EmployeeNumber,
+                                                            HoursUserStoreID: res.UserStoreID,
+                                                        }); 
                                                     }
                                                     //  alert(res.UserStoreID)
                                                 }}
@@ -1292,8 +1305,8 @@ class WeeklySummarySheet extends React.Component {
                             </View>
                             <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ justifyContent: 'center' }}>
                                 <View style={{ backgroundColor: 'white', padding: Matrics.CountScale(15) }}>
-                                    <Text style={Styles.titleFontStyle}>Name : <Text style={Styles.fontStyle}>{this.state.puchDetailArr.length > 0 ? this.state.puchDetailArr[0].EmployeeName : null}</Text></Text>
-                                    <Text style={Styles.titleFontStyle}>POS ID : <Text style={Styles.fontStyle}>{this.state.puchDetailArr.length > 0 ? this.state.puchDetailArr[0].EmployeeNumber : null}</Text></Text>
+                                    <Text style={Styles.titleFontStyle}>Name : <Text style={Styles.fontStyle}>{this.state.puchDetailArr.length > 0 ? this.state.puchDetailArr[0].EmployeeName : this.state.HoursEmployeeName}</Text></Text>
+                                    <Text style={Styles.titleFontStyle}>POS ID : <Text style={Styles.fontStyle}>{this.state.puchDetailArr.length > 0 ? this.state.puchDetailArr[0].EmployeeNumber : this.state.HoursEmployeeNumber}</Text></Text>
                                     <View style={{ flexDirection: 'row'}}>
                                         <Text style={[Styles.titleFontStyle, {flex: 1 }]}>Date : <Text style={Styles.fontStyle}>
                                                 {this.state.puchDetailArr.length > 0 
@@ -1457,21 +1470,20 @@ class WeeklySummarySheet extends React.Component {
                                         } else {
                                             this.setState({ showpunchSection: false });
                                             const lastPunchDetail =  this.state.puchDetailArr[this.state.puchDetailArr.length - 1];
-                                            // console.log('lastPunchDetail-->', lastPunchDetail);
                                             const newPunchData = {
                                                 "PunchIn": this.state.inTime,
                                                 "PunchOut": this.state.outTime,
                                                 "TotalHours": this.state.totalHour,
-                                                "AdjDescription": lastPunchDetail.AdjDescription,
-                                                "DayDate": lastPunchDetail.DayDate,
-                                                "EmployeeName": lastPunchDetail.EmployeeName,
-                                                "EmployeeNumber": lastPunchDetail.EmployeeNumber,
+                                                "AdjDescription": lastPunchDetail != undefined ? lastPunchDetail.AdjDescription : '',
+                                                "DayDate": lastPunchDetail != undefined ? lastPunchDetail.DayDate : this.state.selectedDate,
+                                                "EmployeeName": lastPunchDetail != undefined ? lastPunchDetail.EmployeeName : this.state.HoursEmployeeName,
+                                                "EmployeeNumber": lastPunchDetail != undefined ? lastPunchDetail.EmployeeNumber : this.state.HoursEmployeeNumber,
                                                 "IsAdjusted": false,
-                                                "OnJob": lastPunchDetail.OnJob,
+                                                "OnJob": lastPunchDetail != undefined ? lastPunchDetail.OnJob : false,
                                                 "PunchID": "",
                                                 "PunchInAdjusted": false,
                                                 "PunchOutAdjusted": false,
-                                                "UserStoreID": lastPunchDetail.UserStoreID
+                                                "UserStoreID": lastPunchDetail != undefined ? lastPunchDetail.UserStoreID : this.state.HoursUserStoreID,
                                             }
                                             this.state.puchDetailArr.push(newPunchData);
                                             this.setState({ puchDetailArr: this.state.puchDetailArr});

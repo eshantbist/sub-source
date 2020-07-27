@@ -37,6 +37,7 @@ class TextInputView extends React.Component {
                 onFocus={this.props.onFocus}
                 multiline={this.props.multiline}
                 keyboardType={this.props.keyboardType}
+                maxLength = {this.props.maxLength}
             />
         )
     }

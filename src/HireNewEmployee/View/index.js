@@ -219,7 +219,9 @@ class HireNewEmployee extends React.Component {
     async onSelectStore(value, index, data) {
         console.log('onSelectStore-->', data,'----', index)
         console.log('selectedStore-->', data[index].DisplayStoreNumber)
-        await this.setState({ selectedStore: data[index].DisplayStoreNumber, selectedStoreName: data[index].StoreNumber, selectedStoreId: data[index].StoreID, errorStore: '', posId: `${data[index].DisplayStoreNumber}-` });
+        await this.setState({ selectedStore: data[index].DisplayStoreNumber, selectedStoreName: data[index].StoreNumber, selectedStoreId: data[index].StoreID, errorStore: '', 
+            // posId: `${data[index].DisplayStoreNumber}-` 
+        });
         let selectedShopArr = this.state.storeWithSettingArr.filter(R => R.StoreID === data[index].StoreID);
         const EVerify = selectedShopArr[0].IsEverifyAutomatedEnabled ? selectedShopArr[0].IsEverifyAutomatedEnabled : false;
         const process = selectedShopArr[0].IsBGCAutomatedEnabled ? selectedShopArr[0].IsBGCAutomatedEnabled : false;
@@ -488,13 +490,13 @@ class HireNewEmployee extends React.Component {
 
                 }, 100)}>
                     <View style={Styles.pageBody}>
-                        <Text style={Styles.cardHeaderText}>Position</Text>
+                        <Text style={Styles.cardHeaderText}>Position *</Text>
                         {this.employeePosition()}
 
                         <Text style={Styles.cardHeaderText}>Employee Details</Text>
                         {this.employeeDetails()}
                         
-                        <Text style={Styles.cardHeaderText}>Date of Birth</Text>
+                        <Text style={Styles.cardHeaderText}>Date of Birth *</Text>
                         {this.employeeDateOfBirth()}
                         {
                             this.state.isMinor
@@ -518,7 +520,7 @@ class HireNewEmployee extends React.Component {
         return (
             <View style={[Styles.cardContainer, { paddingTop: Matrics.CountScale(20) }]}>
                 <TextInputView
-                    label="First Name"
+                    label="First Name *"
                     fontSize={18}
                     value={this.state.firstName}
                     returnKeyType={"next"}
@@ -535,10 +537,10 @@ class HireNewEmployee extends React.Component {
                     containerStyle={Styles.Input}
                     returnKeyType={"next"}
                     onChangeText={val => this.setState({ middleName: val, })}
-                    // error={this.state.errorUserName}
+                    maxLength = {1}
                 />
                 <TextInputView
-                    label="Last Name"
+                    label="Last Name *"
                     fontSize={18}
                     containerStyle={Styles.Input}
                     labelFontSize={14}
@@ -548,7 +550,7 @@ class HireNewEmployee extends React.Component {
                     error={this.state.errorLastName}
                 />
                 <TextInputView
-                    label="Email"
+                    label="Email *"
                     fontSize={18}
                     containerStyle={Styles.Input}
                     value={this.state.email}
@@ -566,7 +568,7 @@ class HireNewEmployee extends React.Component {
                         }}
                         containerWidth={180}
                         data={this.state.storeWithSettingArr}
-                        label="Store #"
+                        label="Store # *"
                         value={'Select Store'}
                         onChangeText={(value, index, data) => this.onSelectStore(value, index, data)}
                         valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber}
@@ -583,7 +585,7 @@ class HireNewEmployee extends React.Component {
                         animationDuration= {300}
                     />
                     <TextInputView
-                        label="POS ID"
+                        label="POS ID *"
                         fontSize={18}
                         containerStyle={[Styles.Input]}
                         value={this.state.posId}
@@ -633,7 +635,7 @@ class HireNewEmployee extends React.Component {
                 
 
                 <TextInputView
-                    label="Wage Rate"
+                    label="Wage Rate *"
                     fontSize={18}
                     containerStyle={Styles.Input}
                     value={this.state.wageRate}
@@ -734,7 +736,7 @@ class HireNewEmployee extends React.Component {
                     ?
                         <View style={{ flex: 1, flexDirection: 'row', padding: Matrics.CountScale(10), borderBottomColor: Colors.LIGHTGREY, borderBottomWidth: 1 }}>
                             <Text style={{ flex: 8, color: Colors.APPCOLOR, alignSelf: 'center' }}>
-                                E-Verify
+                                Process E-Verify
                             </Text>
                             <Switch
                                 value={this.state.EVerify}
@@ -743,8 +745,7 @@ class HireNewEmployee extends React.Component {
                                     this.setState({ EVerify: !this.state.EVerify })
                                 }}></Switch>
                         </View>
-                    :
-                     null
+                    : null
                 }
                 {
                     this.state.selectedShopArr.length === 0
@@ -752,7 +753,7 @@ class HireNewEmployee extends React.Component {
                         <View>
                             <View style={{ flex: 1, flexDirection: 'row', padding: Matrics.CountScale(10), borderBottomColor: Colors.LIGHTGREY, borderBottomWidth: 1 }}>
                                 <Text style={{ flex: 8, color: Colors.APPCOLOR, alignSelf: 'center' }}>
-                                    E-Verify
+                                    Process E-Verify
                                 </Text>
                                 <Switch
                                     value={this.state.EVerify}
@@ -806,7 +807,7 @@ const Styles = StyleSheet.create({
         borderRadius: 3,
     },
     Input: {
-        margin: Matrics.CountScale(10)
+        margin: Matrics.CountScale(10),
     },
     documentContainer: {
         flex: 1,
