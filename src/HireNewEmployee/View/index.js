@@ -565,6 +565,9 @@ class HireNewEmployee extends React.Component {
                         containerStyle={{
                             alignSelf: 'flex-start', top: Matrics.CountScale(20), marginLeft: Matrics.CountScale(10),
                             // borderBottomColor: 'red', borderBottomWidth: 1
+                            textAlign: 'left',
+                            width: '50%',
+                            // backgroundColor: 'red'
                         }}
                         containerWidth={180}
                         data={this.state.storeWithSettingArr}
@@ -587,7 +590,7 @@ class HireNewEmployee extends React.Component {
                     <TextInputView
                         label="POS ID *"
                         fontSize={18}
-                        containerStyle={[Styles.Input]}
+                        containerStyle={[Styles.Input,{}]}
                         value={this.state.posId}
                         labelFontSize={14}
                         returnKeyType={"next"}

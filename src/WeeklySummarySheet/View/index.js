@@ -1009,7 +1009,7 @@ class WeeklySummarySheet extends React.Component {
                         ?
                             item.data.map(res => {
                                 let resData = this.state.hoursBasicListArr.filter(p => p.UserStoreID == res.UserStoreID && p.DayDate == this.state.selectedDate);
-                                // console.log('resData-->', resData);
+                                console.log('resData-->', resData);
                                 return(
                                     resData.length > 0
                                     ? resData[0].TimeOffCombineID != 0 
@@ -1045,10 +1045,10 @@ class WeeklySummarySheet extends React.Component {
                                         : // emp name shift data
                                             <TextColumn 
                                                 name={res.FullName} 
-                                                RG={resData[0].RG != undefined ? resData[0].RG.toFixed(2) : null} 
-                                                OT={resData[0].OT != undefined ? resData[0].OT.toFixed(2): null} 
-                                                DT={resData[0].DT != undefined ? resData[0].DT.toFixed(2) : null} 
-                                                BW={resData[0].BW != undefined ? resData[0].BW.toFixed(2) : null} 
+                                                RG={resData[0].RG != undefined ? resData[0].RG != 0 ? resData[0].RG.toFixed(2) : null : null} 
+                                                OT={resData[0].OT != undefined ? resData[0].OT != 0 ? resData[0].OT.toFixed(2): null : null} 
+                                                DT={resData[0].DT != undefined ? resData[0].DT != 0 ? resData[0].DT.toFixed(2) : null : null} 
+                                                BW={resData[0].BW != undefined ? resData[0].BW != 0 ? resData[0].BW.toFixed(2) : null : null} 
                                                 onRgDisable={false}
                                                 onBwDisable={
                                                     resData[0].BW != undefined 
@@ -1093,37 +1093,40 @@ class WeeklySummarySheet extends React.Component {
                             <View>
                                 <TextColumn 
                                     name={'Total Hours'} 
-                                    RG={resTotalHours.length > 0 ? resTotalHours[0].RG != undefined ? resTotalHours[0].RG.toFixed(2) : null : null} 
-                                    OT={resTotalHours.length > 0 ? resTotalHours[0].OT != undefined ? resTotalHours[0].OT.toFixed(2): null : null} 
-                                    DT={resTotalHours.length > 0 ? resTotalHours[0].DT != undefined ? resTotalHours[0].DT.toFixed(2) : null : null} 
-                                    BW={resTotalHours.length > 0 ? resTotalHours[0].BW != undefined ? resTotalHours[0].BW.toFixed(2) : null : null} 
+                                    RG={resTotalHours.length > 0 ? resTotalHours[0].RG != undefined ? resTotalHours[0].RG != 0 ? resTotalHours[0].RG.toFixed(2) : null : null :  null} 
+                                    OT={resTotalHours.length > 0 ? resTotalHours[0].OT != undefined ? resTotalHours[0].OT != 0 ? resTotalHours[0].OT.toFixed(2): null : null : null} 
+                                    DT={resTotalHours.length > 0 ? resTotalHours[0].DT != undefined ? resTotalHours[0].DT != 0 ? resTotalHours[0].DT.toFixed(2) : null : null : null} 
+                                    BW={resTotalHours.length > 0 ? resTotalHours[0].BW != undefined ? resTotalHours[0].BW != 0 ? resTotalHours[0].BW.toFixed(2) : null : null : null} 
                                     onRgDisable={true}
                                     onBwDisable={true}
                                 />
-                                <TextRow labelText={'Total Unit'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].TotalUnit ? TotalUnitArr[0].TotalUnit.toFixed(2) : null : null} />
-                                <TextRow labelText={'Productivity'} contentbgColor={TotalUnitArr.length > 0 ? TotalUnitArr[0].ProductivityColorCode ? TotalUnitArr[0].ProductivityColorCode : null : null} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].Productivity ? TotalUnitArr[0].Productivity.toFixed(2) : null : null} bgColor={Colors.ROWBGCOLOR} />
+                                {console.log('ProductivityColorCode-->',TotalUnitArr.length > 0 ? TotalUnitArr[0].ProductivityColorCode && TotalUnitArr[0].ProductivityColorCode : 'kk')}
+                                <TextRow labelText={'Total Unit'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].TotalUnit ? TotalUnitArr[0].TotalUnit != 0 ? TotalUnitArr[0].TotalUnit.toFixed(2) : null : null : null} />
+                                <TextRow labelText={'Productivity'} contentbgColor={TotalUnitArr.length > 0 ? TotalUnitArr[0].ProductivityColorCode ? TotalUnitArr[0].ProductivityColorCode != 'red' ? TotalUnitArr[0].ProductivityColorCode : null : null : null}
+                                         contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].Productivity ? TotalUnitArr[0].Productivity != 0 ? TotalUnitArr[0].Productivity.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
                                 <TextColumn 
                                     name={'Payroll Dollars'} 
-                                    RG={resPayrollDollars.length > 0 ? resPayrollDollars[0].RG != undefined ? resPayrollDollars[0].RG.toFixed(2) : null : null} 
-                                    OT={resPayrollDollars.length > 0 ? resPayrollDollars[0].OT != undefined ? resPayrollDollars[0].OT.toFixed(2) : null : null} 
-                                    DT={resPayrollDollars.length > 0 ? resPayrollDollars[0].DT != undefined ? resPayrollDollars[0].DT.toFixed(2) : null : null} 
-                                    BW={resPayrollDollars.length > 0 ? resPayrollDollars[0].BW != undefined ? resPayrollDollars[0].BW.toFixed(2) : null : null} 
+                                    RG={resPayrollDollars.length > 0 ? resPayrollDollars[0].RG != undefined ? resPayrollDollars[0].RG != 0 ? resPayrollDollars[0].RG.toFixed(2) : null : null : null} 
+                                    OT={resPayrollDollars.length > 0 ? resPayrollDollars[0].OT != undefined ? resPayrollDollars[0].OT != 0 ? resPayrollDollars[0].OT.toFixed(2) : null : null : null} 
+                                    DT={resPayrollDollars.length > 0 ? resPayrollDollars[0].DT != undefined ? resPayrollDollars[0].DT != 0 ? resPayrollDollars[0].DT.toFixed(2) : null : null : null} 
+                                    BW={resPayrollDollars.length > 0 ? resPayrollDollars[0].BW != undefined ? resPayrollDollars[0].BW != 0 ? resPayrollDollars[0].BW.toFixed(2) : null : null : null} 
                                     onRgDisable={true}
                                     onBwDisable={true}
                                 />
-                                <TextRow labelText={'Net Payroll'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].NetPayroll !== undefined ? TotalUnitArr[0].NetPayroll.toFixed(2) : null : null} bgColor={Colors.ROWBGCOLOR} />
-                                <TextRow labelText={'Payroll Tax'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].PayrollTax !== undefined ? TotalUnitArr[0].PayrollTax.toFixed(2) : null : null} />
-                                <TextRow labelText={'Gross Payroll'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].GrossPayroll !== undefined ? TotalUnitArr[0].GrossPayroll.toFixed(2) : null : null} bgColor={Colors.ROWBGCOLOR} />
-                                <TextRow labelText={'Payroll(%)'} contentbgColor={TotalUnitArr.length > 0 ? TotalUnitArr[0].PayrollColorCode ? TotalUnitArr[0].PayrollColorCode : null : null} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].PayrollPercentage !== undefined ? TotalUnitArr[0].PayrollPercentage.toFixed(2) : null : null} />
+                                <TextRow labelText={'Net Payroll'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].NetPayroll !== undefined ? TotalUnitArr[0].NetPayroll != 0 ? TotalUnitArr[0].NetPayroll.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
+                                <TextRow labelText={'Payroll Tax'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].PayrollTax !== undefined ? TotalUnitArr[0].PayrollTax != 0 ? TotalUnitArr[0].PayrollTax.toFixed(2) : null : null : null} />
+                                <TextRow labelText={'Gross Payroll'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].GrossPayroll !== undefined ? TotalUnitArr[0].GrossPayroll != 0 ? TotalUnitArr[0].GrossPayroll.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
+                                <TextRow labelText={'Payroll(%)'} contentbgColor={TotalUnitArr.length > 0 ? TotalUnitArr[0].PayrollColorCode ? TotalUnitArr[0].PayrollColorCode : null : null} 
+                                        contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].PayrollPercentage !== undefined ?  TotalUnitArr[0].PayrollPercentage != 0 ? TotalUnitArr[0].PayrollPercentage.toFixed(2) : null : null : null} />
     
                                 
-                                <TextRow labelText={'Food Invoices'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].FoodInvoices !== undefined ? TotalUnitArr[0].FoodInvoices.toFixed(2) : null : null} bgColor={Colors.ROWBGCOLOR} />
-                                <TextRow labelText={'Food/Coke Invoice Credits'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].FoodInvoiceCredit !== undefined ? TotalUnitArr[0].FoodInvoiceCredit.toFixed(2) : null : null} />
-                                <TextRow labelText={'Coke'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].Coke !== undefined ? TotalUnitArr[0].Coke.toFixed(2) : null : null} bgColor={Colors.ROWBGCOLOR} />
-                                <TextRow labelText={'Food Cost (%)'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].FoodCostPercentage !== undefined ? TotalUnitArr[0].FoodCostPercentage.toFixed(2) : null : null} bgColor={Colors.ROWBGCOLOR} />
-                                <TextRow labelText={'Coke Cost (%)'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].CokePercentage !== undefined ? TotalUnitArr[0].CokePercentage.toFixed(2) : null : null} bgColor={Colors.ROWBGCOLOR} />
+                                <TextRow labelText={'Food Invoices'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].FoodInvoices !== undefined ? TotalUnitArr[0].FoodInvoices != 0 ? TotalUnitArr[0].FoodInvoices.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
+                                <TextRow labelText={'Food/Coke Invoice Credits'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].FoodInvoiceCredit !== undefined ? TotalUnitArr[0].FoodInvoiceCredit != 0 ? TotalUnitArr[0].FoodInvoiceCredit.toFixed(2) : null : null : null} />
+                                <TextRow labelText={'Coke'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].Coke !== undefined ? TotalUnitArr[0].Coke != 0 ? TotalUnitArr[0].Coke.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
+                                <TextRow labelText={'Food Cost (%)'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].FoodCostPercentage !== undefined ? TotalUnitArr[0].FoodCostPercentage != 0 ? TotalUnitArr[0].FoodCostPercentage.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
+                                <TextRow labelText={'Coke Cost (%)'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].CokePercentage !== undefined ? TotalUnitArr[0].CokePercentage != 0 ? TotalUnitArr[0].CokePercentage.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
                                 
-                                <TextRow labelText={'Total COGS & Labor(%)'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].TotalCOGPercentage ? TotalUnitArr[0].TotalCOGPercentage.toFixed(2) : null : null} bgColor={Colors.ROWBGCOLOR} />
+                                <TextRow labelText={'Total COGS & Labor(%)'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].TotalCOGPercentage ? TotalUnitArr[0].TotalCOGPercentage != 0 ? TotalUnitArr[0].TotalCOGPercentage.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
                             </View>
                     :item.data.length > 0  // Total Column logic
                         ? 
@@ -1672,6 +1675,7 @@ class WeeklySummarySheet extends React.Component {
                                             textStyle: {color: Colors.WHITE}, 
                                             containerStyle: [],
                                         }]}
+                                        maxDate={this.state.currentWeekEndDate}
                                     />
                                     : null
                                 }
