@@ -1,8 +1,6 @@
 import React from 'react'
-import { View, BackAndroid, BackHandler } from 'react-native'
+import { View, AsyncStorage, BackAndroid, BackHandler } from 'react-native'
 import { NavigationActions, StackActions } from 'react-navigation'
-import AsyncStorage from '@react-native-community/async-storage';
-
 class SplashScreen extends React.Component {
     state = {
         loading: false
@@ -11,6 +9,7 @@ class SplashScreen extends React.Component {
         // AsyncStorage.clear()
         let login = await AsyncStorage.getItem('login')
         let UserDetails = await AsyncStorage.getItem('tokenDetails');
+        let subsourceModule = await AsyncStorage.getItem('subsourceModule');
         if (UserDetails) {
             global.user = JSON.parse(UserDetails);
             userDetails = JSON.parse(UserDetails);
@@ -23,12 +22,16 @@ class SplashScreen extends React.Component {
             if (date.getTime() > exDate.getTime()) {
                 AsyncStorage.removeItem('login');
                 this.navigateToScreen('Login')
-            }
-            else {
-                if (login == 'true') {
+            } else {
+                if (login == 'true' && subsourceModule == 'Manager') {
+                    console.log('manager splash')
+                    // this.navigateToScreen('Login')
                     this.navigateToScreen('TabBar')
-                }
-                else {
+                } else if (login == 'true' && subsourceModule == 'Employee') {
+                    console.log('employee splash')
+                    // this.navigateToScreen('Login')
+                    this.navigateToScreen('EmpTabBar')
+                } else {
                     this.navigateToScreen('Login')
                 }
             }

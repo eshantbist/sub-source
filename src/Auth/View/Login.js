@@ -1,10 +1,8 @@
 //LIBRARIES
 import React from 'react';
-import { View, ScrollView, Modal, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { View, ScrollView, AsyncStorage, Modal, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { StackActions, NavigationActions } from 'react-navigation';
-import AsyncStorage from '@react-native-community/async-storage';
+import { StackActions, NavigationActions } from 'react-navigation'
 
 
 //ASSETS
@@ -33,7 +31,7 @@ class Login extends React.Component {
         super(props)
 
     }
-    UNSAFE_componentWillMount() {
+    componentWillMount() {
         console.log(this.props);
 
     }
@@ -51,8 +49,7 @@ class Login extends React.Component {
 
 
 
-    async UNSAFE_componentWillReceiveProps(nextProps) {
-        console.log('will receive propos call')
+    async componentWillReceiveProps(nextProps) {
         clearTimeout(this.state.clearId)
         if (nextProps.auth.loginSuccess && this.state.loading) {
             this.setState({ loading: false })
@@ -60,12 +57,31 @@ class Login extends React.Component {
 
             if (data.access_token) {
                 AsyncStorage.setItem('tokenDetails', JSON.stringify(data));
-                AsyncStorage.setItem('login', 'true')
+                AsyncStorage.setItem('login', 'true');
 
+                let res = JSON.parse(data.LoginObject);
+                console.log('res-->', res);
+                AsyncStorage.setItem('AuthToken', data.access_token)
+               
+                
                 global.user = data;
                 global.loginResponse = JSON.parse(data.LoginObject).Login //userDetails.LoginObject.Login
 
-                this.navigateToScreen('TabBar')
+                // console.log('loginobject-->', global.loginResponse.UserName);
+                // console.log('loginobject-->', isNaN(global.loginResponse.UserName));
+                if(global.loginResponse.UserGUID === null && isNaN(global.loginResponse.UserName)){
+                    console.log('manager')
+                    AsyncStorage.setItem('subsourceModule', 'Manager')
+                    this.navigateToScreen('TabBar')
+                } else if(global.loginResponse.UserGUID !== null) {
+                    console.log('employee')
+                    AsyncStorage.setItem('subsourceModule', 'Employee')
+                    AsyncStorage.setItem('UserID', res.Login.UserID.toString())
+                    AsyncStorage.setItem('UserGUID', res.Login.UserGUID)
+                    AsyncStorage.setItem('UserStoreGuid', res.Login.UserStoreGuid)
+                    this.navigateToScreen('EmpTabBar')
+                }
+                // this.navigateToScreen('TabBar')
 
 
                 // if (UserDetails) {

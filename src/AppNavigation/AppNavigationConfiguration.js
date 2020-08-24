@@ -5,31 +5,52 @@ import { TabNavigator, createBottomTabNavigator, StackNavigator, DrawerNavigator
 
 // ========>>>>>>>> ASSETS <<<<<<<============
 import { Colors, Matrics, Images } from '@Assets'
-// import AuthNavigator from '@Auth/AuthNavigationConfiguration'
 import Login from '../Auth/View/Login'
 import ResetPassword from '../Auth/View/ResetPassword';
 import ConfirmPassword from '../Auth/View/ConfirmPassword';
 import LinkSent from '../Auth/View/LinkSent';
 import Congrats from '../Auth/View/Congrats';
 import SplashScreen from '../SplashScreen';
-import CheckDoucmentStatus from '../CheckDocumentStatus/View'
-import DocumentDetails from '../CheckDocumentStatus/View/DocumentDetails';
-// import CheckDoucmentStatusNavigator from '../CheckDocumentStatus/CheckDocumentStatusNavigationConfiguration';
-import HireNewEmployee from '../HireNewEmployee/View';
-import Dashboard from '../Dashboard/View'
-import CustomerComments from '../Dashboard/View/CustomerComments'
-import Profile from '../Dashboard/View/Profile';
-import EditProfile from '../Dashboard/View/EditProfile';
-import WeeklySchedule from '../WeeklySchedule/View';
-import EmployeeList from '../WeeklySchedule/View/EmployeeList'
-import Publish from '../WeeklySchedule/View/Publish'
-import WeeklySummarySheet from '../WeeklySummarySheet/View'
-import BreakWaiver from '../WeeklySummarySheet/View/BreakWaiver'
-import Minor from '../HireNewEmployee/View/Minor'
+import CheckDoucmentStatus from '../Manager/CheckDocumentStatus/View'
+import DocumentDetails from '../Manager/CheckDocumentStatus/View/DocumentDetails';
+import HireNewEmployee from '../Manager/HireNewEmployee/View';
+import Dashboard from '../Manager/Dashboard/View'
+import CustomerComments from '../Manager/Dashboard/View/CustomerComments'
+import Profile from '../Manager/Dashboard/View/Profile';
+import EditProfile from '../Manager/Dashboard/View/EditProfile';
+import WeeklySchedule from '../Manager/WeeklySchedule/View';
+import EmployeeList from '../Manager/WeeklySchedule/View/EmployeeList'
+import Publish from '../Manager/WeeklySchedule/View/Publish'
+import WeeklySummarySheet from '../Manager/WeeklySummarySheet/View'
+import BreakWaiver from '../Manager/WeeklySummarySheet/View/BreakWaiver'
+import Minor from '../Manager/HireNewEmployee/View/Minor'
+
+//Employeee
+import EmployeeDashboard from '../Employee/Dashboard/View/EmployeeDashboard';
+import EditProfileEmployee from '../Employee/Dashboard/View/EditProfileEmployee';
+import EndEmployment from '../Employee/Dashboard/View/EndEmployment';
+import FeedbackHistory from '../Employee/Dashboard/View/FeedbackHistory';
+import Notification from '../Employee/Dashboard/View/Notification';
+import ProfileEmployee from '../Employee/Dashboard/View/Profile';
+import Reason from '../Employee/Dashboard/View/Reason';
+import Signature from '../Employee/Dashboard/View/Signature';
+import NotificationDetail from '../Employee/Dashboard/View/NotificationDetail';
+import SwapOfferDetails from '../Employee/Dashboard/View/Templetes/SwapOfferDetail'
+import MySchedule from '../Employee/MySchedule/View/MySchedule';
+import CreateRequest from '../Employee/MySchedule/View/CreateRequest';
+import History from '../Employee/MySchedule/View/History';
+import SwapOffer from '../Employee/MySchedule/View/SwapOffer';
+import OfferDetail from '../Employee/MySchedule/View/OfferDetails';
+import HistoryDetail from '../Employee/MySchedule/View/HistoryDetails';
+import MyAvailability from '../Employee/Availability/View/MyAvailability';
+import CreateAvailability from '../Employee/Availability/View/CreateAvailability';
+import AllStore from '../Employee/StoreSchedule/View/AllStore';
+import StoreSchedule from '../Employee/StoreSchedule/View/StoreSchedule';
+
 
 
 // ========>>>>>>>> TABS DECLARATION <<<<<<<============
-const TabBarConfig = createBottomTabNavigator(
+const ManagerTabBarConfig = createBottomTabNavigator(
     {
         CheckDoucmentStatus: {
             screen: StackNavigator({
@@ -114,6 +135,108 @@ const TabBarConfig = createBottomTabNavigator(
     },
 );
 
+
+// employee tabnavigator //
+const EmployeeTabBarConfig = createBottomTabNavigator(
+    {
+        EmployeeDashboard: {
+            screen: EmployeeDashboard,
+            navigationOptions: ({ navigation }) => ({
+                gesturesEnabled: false,
+                swipeEnabled: false,
+                // tabBarVisible: navigation.state.params && navigation.state.params.tabBarVisible,
+                header: null
+            }),
+        },
+
+        Availability: {
+            screen: StackNavigator({
+                MyAvailability: {
+                    screen: MyAvailability,
+                    navigationOptions:
+                    {
+                        header: null
+                    },
+                },
+                CreateAvailability: {
+                    screen: CreateAvailability,
+                    navigationOptions:
+                    {
+                        header: null
+                    },
+                }
+            },
+                {
+                    initialRouteName: 'MyAvailability'
+                }),
+            navigationOptions: ({ navigation }) => ({
+                gesturesEnabled: false,
+                swipeEnabled: false,
+                // tabBarVisible: navigation.state.params && navigation.state.params.tabBarVisible,
+                header: null
+            }),
+        },
+        MySchedule: {
+            screen: MySchedule,
+            navigationOptions: ({ navigation }) => ({
+                gesturesEnabled: false,
+                swipeEnabled: false,
+                //tabBarVisible: navigation.state.params && navigation.state.params.tabBarVisible,
+                header: null
+            }),
+        },
+        AllStore: {
+            screen: AllStore,
+            navigationOptions: ({ navigation }) => ({
+                gesturesEnabled: false,
+                swipeEnabled: false,
+                //tabBarVisible: navigation.state.params && navigation.state.params.tabBarVisible,
+                header: null
+            }),
+        },
+
+    },
+    {
+        navigationOptions: ({ navigation }) => ({
+            tabBarIcon: ({ focused, tintColor }) => {
+                state = {
+                    modalVisible: false,
+                };
+                const { routeName } = navigation.state;
+                if (routeName === 'EmployeeDashboard') {
+                    return <Image style={{ width: Matrics.CountScale(20), padding: Matrics.CountScale(5), height: Matrics.CountScale(20) }} source={`${focused ? Images.EmpDashboardActiveIcon : Images.EmpDashboardIcon}`} ></Image>;
+                }
+                if (routeName === 'Availability') {
+                    return <Image style={{ width: Matrics.CountScale(21), padding: Matrics.CountScale(5), height: Matrics.CountScale(23) }} source={`${focused ? Images.AvailabilityActiveIcon : Images.AvailabilityIcon}`} ></Image>;
+                }
+                if (routeName === 'MySchedule') {
+                    return <Image style={{ width: Matrics.CountScale(28), padding: Matrics.CountScale(5), height: Matrics.CountScale(22) }} source={`${focused ? Images.MyScheduleActiveIcon : Images.MyScheduleIcon}`} ></Image>;
+                }
+                if (routeName === 'AllStore') {
+                    return <Image style={{ width: Matrics.CountScale(23), padding: Matrics.CountScale(5), height: Matrics.CountScale(21) }} source={`${focused ? Images.StoreActiveIcon : Images.StoreInactiveIcon}`} ></Image>;
+                }
+            },
+
+            tabBarOnPress: (scene, jumpToIndex) => {
+                navigation.navigate(scene.navigation.state.key, { changes: true })
+            }
+        }),
+        tabBarOptions: {
+
+            labelStyle: {
+                fontSize: 15,
+            },
+            style: {
+                backgroundColor: 'white',
+                shadowOffset: { width: 2, height: 2, },
+                shadowColor: 'black',
+                shadowOpacity: 0.3,
+                // backgroundColor: 'white',
+            },
+            showLabel: false
+        },
+    },
+);
 //=======APP STACK DECLARATION=========//
 
 const AppNavigator = StackNavigator({
@@ -126,7 +249,7 @@ const AppNavigator = StackNavigator({
     Login: {
         screen: Login,
         navigationOptions: {
-            header: null
+            header: null,
         }
     },
     ResetPassword: {
@@ -154,7 +277,13 @@ const AppNavigator = StackNavigator({
         }
     },
     TabBar: {
-        screen: TabBarConfig,
+        screen: ManagerTabBarConfig,
+        navigationOptions: {
+            header: null,
+        }
+    },
+    EmpTabBar: {
+        screen: EmployeeTabBarConfig,
         navigationOptions: {
             header: null,
         }
@@ -185,6 +314,106 @@ const AppNavigator = StackNavigator({
     },
     Minor: {
         screen: Minor
+    },
+    CreateRequest: {
+        screen: CreateRequest,
+        navigationOptions: {
+            header: null
+        }
+    },
+    History: {
+        screen: History,
+        navigationOptions: {
+            header: null
+        }
+    },
+    SwapOffer: {
+        screen: SwapOffer,
+        navigationOptions: {
+            header: null
+        }
+    },
+    OfferDetail: {
+        screen: OfferDetail,
+        navigationOptions: {
+            header: null
+        }
+    },
+    HistoryDetail: {
+        screen: HistoryDetail,
+        navigationOptions: {
+            header: null
+        }
+    },
+    StoreSchedule: {
+        screen: StoreSchedule,
+        navigationOptions:
+        {
+            header: null
+        },
+    },
+    EditProfileEmployee: {
+        screen: EditProfileEmployee,
+        navigationOptions:
+        {
+            header: null
+        },
+    },
+    EndEmployment: {
+        screen: EndEmployment,
+        navigationOptions: {
+            // gesturesEnabled: false,
+            header: null
+        }
+    },
+    FeedbackHistory: {
+        screen: FeedbackHistory,
+        navigationOptions: {
+            // gesturesEnabled: false,
+            header: null
+        }
+    },
+    Notification: {
+        screen: Notification,
+        navigationOptions: {
+            header: null,
+            // gesturesEnabled: false,
+        }
+    },
+    ProfileEmployee: {
+        screen: ProfileEmployee,
+        navigationOptions: {
+            // gesturesEnabled: false,
+            header: null
+        }
+    },
+    Reason: {
+        screen: Reason,
+        navigationOptions: {
+            // gesturesEnabled: false,
+            header: null
+        }
+    },
+    NotificationDetail: {
+        screen: NotificationDetail,
+        navigationOptions: {
+            // gesturesEnabled: false,
+            header: null
+        }
+    },
+    SwapOfferDetails: {
+        screen: SwapOfferDetails,
+        navigationOptions: {
+            // gesturesEnabled: false,
+            header: null
+        }
+    },
+    Signature: {
+        screen: Signature,
+        navigationOptions: {
+            // gesturesEnabled: false,
+            header: null
+        }
     }
 },
     {

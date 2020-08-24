@@ -4,18 +4,13 @@ const images = {
   // ====>>>> tab images <<<<=======
   CheckDocumentStatusActiveIcon: require('./Images/Tab/1Active.png'),
   CheckDocumentStatusInctiveIcon: require('./Images/Tab/1Inactive.png'),
-
   HireNewEmployeeActiveIcon: require('./Images/Tab/2Active.png'),
   HireNewEmployeeInctiveIcon: require('./Images/Tab/2Inactive.png'),
-
   DashboardActiveIcon: require('./Images/Tab/3Active.png'),
-
   WeeklyScheduleActiveIcon: require('./Images/Tab/4Active.png'),
   WeeklyScheduleInctiveIcon: require('./Images/Tab/4Inactive.png'),
-
   WeeklySummarySheetActiveIcon: require('./Images/Tab/5Active.png'),
   WeeklySummarySheetInctiveIcon: require('./Images/Tab/5Inactive.png'),
-
   // ====>>>> Dashboard Images <<<<=======
   FilterIcon: require('./Images/Dashboard/filter.png'),
   BreakViolation: require('./Images/Dashboard/break_violation.png'),
@@ -36,7 +31,6 @@ const images = {
   Onboarding: require('./Images/Dashboard/onboarding.png'),
   UnknownEmp: require('./Images/Dashboard/unknown_emp.png'),
   EmpOverHour: require('./Images/Dashboard/emp_over_hour.png'),
-
 
   // ====>>>> Check Document Status Images <<<<=======
   ResendIcon: require('./Images/CheckDocumentStatus/resend.png'),
@@ -77,9 +71,64 @@ const images = {
   Lock: require('./Images/WeeklySummarySheet/lock.png'),
   Close: require('./Images/WeeklySummarySheet/close.png'),
 
-
   // DownArrowGrey: require('./Images/WeeklySummarySheet/down_arrow_grey.png'),
 
+  // ====== EMPLOYEE MODULE==== //
+  EmpDashboardActiveIcon: require('./Images/Employee/dashboardActive.png'),
+  EmpDashboardIcon: require('./Images/Employee/dashboard.png'),
+  AvailabilityActiveIcon: require('./Images/Employee/availabilityActive.png'),
+  AvailabilityIcon: require('./Images/Employee/availability.png'),
+  MyScheduleActiveIcon: require('./Images/Employee/myScheduleActive.png'),
+  MyScheduleIcon: require('./Images/Employee/mySchedule.png'),
+  StoreActiveIcon: require('./Images/Employee/storeActive.png'),
+  StoreInactiveIcon: require('./Images/Employee/store.png'),
+  checkMark: require('./Images/Employee/checkMark.png'),
+  //for dashboard
+  BellIcon: require('./Images/Employee/Dashboard/bell.png'),
+  EmpWhiteBackIcon: require('./Images/Employee/Dashboard/back.png'),
+  LeftArrowIcon: require('./Images/Employee/Dashboard/rightGrey.png'),
+  EmpClockIcon: require('./Images/Employee/Dashboard/clock.png'),
+  StoreIcon: require('./Images/Employee/Dashboard/store.png'),
+  FileIcon: require('./Images/Employee/Dashboard/file.png'),
+  DownloadIcon: require('./Images/Employee/Dashboard/download.png'),
+  RequestApprove: require('./Images/Employee/requestApprove.png'),
+  StoreGrey: require('./Images/Employee/storeGrey.png'),
+  HeaderDots: require('./Images/Employee/Dashboard/headerDots.png'),
+  ProcessingDotIcon: require('./Images/Employee/processingDot.png'),
+  CalenderSelectedIcon: require('./Images/Employee/Dashboard/calenderSelected.png'),
+  CalenderCloseIcon: require('./Images/Employee/Dashboard/calenderClose.png'),
+
+  //common
+  EmpBackIcon: require('./Images/Employee/back.png'),
+  CapIcon: require('./Images/Employee/Login/cap.png'),
+  MessageIcon: require('./Images/Employee/Login/message.png'),
+  ProfileIconPlaceholder: require('./Images/Employee/profile_icon_placeholder.png'),
+  Camera: require('./Images/Employee/camera.png'),
+  Gallery: require('./Images/Employee/gallery.png'),
+
+  //availability
+  RedMinusIcon: require('./Images/Employee/redminus.png'),
+  AddIcon: require('./Images/Employee/plus.png'),
+  //my schedule
+  MyScheduleHeaderLeft: require('./Images/Employee/MySchedule/historyIcon.png'),
+  // MyScheduleHeaderRight: require('./Images/MySchedule/requestIcon.png'),
+  SwapApproveIcon: require('./Images/Employee/MySchedule/icon1.png'),
+  SwapDeniedIcon: require('./Images/Employee/MySchedule/icon2.png'),
+  RequestApproveIcon: require('./Images/Employee/MySchedule/icon4.png'),
+  RequestDeniedIcon: require('./Images/Employee/MySchedule/icon3.png'),
+  AttachIcon: require('./Images/Employee/MySchedule/attach.png'),
+  OperShiftImg: require('./Images/Employee/MySchedule/openshift.png'),
+  AcceptImg: require('./Images/Employee/MySchedule/accept.png'),
+  DeclineImg: require('./Images/Employee/MySchedule/denied.png'),
+  CancelOpenShiftHeaderIcon: require('./Images/Employee/MySchedule/cancelClock.png'),
+  CloseIcon: require('./Images/Employee/MySchedule/close.png'),
+  SwapIcon: require('./Images/Employee/StoreSchedule/swapBtn.png'),
+  CoverIcon: require('./Images/Employee/StoreSchedule/coverBtn.png'),
+  ProcessigYellowIcon: require('./Images/Employee/StoreSchedule/processingIcon.png'),
+  MyScheduleHeaderRight: require('./Images/Employee/MySchedule/leaverequesticon.png'),
+  CoverBg: require('./Images/Employee/cover.png'),
+  DefaultCoverBg: require('./Images/Employee/DefaultCover.png'),
+  DefCoverBg: require('./Images/Employee/coverBg.png'),
 };
 
 export default images;

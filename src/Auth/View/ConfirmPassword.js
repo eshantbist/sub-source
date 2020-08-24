@@ -23,9 +23,9 @@ class ConfirmPassword extends React.Component {
 
   //------------>>>LifeCycle Methods------------->>>
 
-  UNSAFE_componentWillMount() { }
+  componentWillMount() { }
 
-  async UNSAFE_componentWillReceiveProps(nextProps) {
+  async componentWillReceiveProps(nextProps) {
     if(nextProps.auth.changePasswordSuccess && this.state.loading) {
       this.setState({ loading: false })
       const { data } = nextProps.auth

@@ -1,6 +1,6 @@
 //LIBRARIES
 import React from 'react';
-import { TextField } from '../../CustomComponent/react-native-material-textfield';
+import { TextField } from 'react-native-material-textfield';
 //ASSETS
 import { Fonts, Colors } from '@Assets'
 
@@ -21,6 +21,7 @@ class TextInputView extends React.Component {
                 labelPadding={5}
                 labelFontSize={this.props.labelFontSize}
                 autoCorrect={false}
+                autoCapitalize={false}
                 ref={this.props.refField}
                 clearButtonMode={this.props.clearButtonMode}
                 //autoCapitalize={"none"}
@@ -37,7 +38,6 @@ class TextInputView extends React.Component {
                 onFocus={this.props.onFocus}
                 multiline={this.props.multiline}
                 keyboardType={this.props.keyboardType}
-                maxLength = {this.props.maxLength}
             />
         )
     }

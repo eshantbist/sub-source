@@ -2,9 +2,9 @@
 //   LOGIN_USER_REQUESTING,
 //   LOGOUT_USER_REQUESTING,
 // } from '@Types/AuthTypes';
-import { LOGIN, FORGOT_PASSWORD, CHANGE_PASSWORD } from '../Types/types'
+import { LOGIN, FORGOT_PASSWORD, CHANGE_PASSWORD } from '../Types/types';
 
-import Api from '../../Services/Api'
+import Api from '../../Services/Api';
 
 //--->>Function to request User Login----->>>>>
 

@@ -9,6 +9,10 @@ import DashboardReducer from './DashboardReducer';
 import DocumentStatusReducer from './DocumentStatusReducer';
 import WeeklyScheduleReducer from './WeeklyScheduleReducer';
 import WeeklySummarySheetReducer from './WeeklySummarySheetReducer';
+import DashboardEmployeeReducer from './DashboardEmployeeReducer';
+import AvailabilityReducer from './AvailabilityReducer';
+import MyScheduleReducer from './MyScheduleReducer';
+import StoreScheduleReducer from './StoreScheduleReducer';
 
 let rootReducer = combineReducers({
   Auth: AuthReducer,
@@ -17,9 +21,9 @@ let rootReducer = combineReducers({
   CheckDocumentStatus: DocumentStatusReducer,
   WeeklySchedule: WeeklyScheduleReducer,
   WeeklySummarySheet: WeeklySummarySheetReducer,
-  // Availability: AvailabilityReducer,
-  // MySchedule: MyScheduleReducer,
-  // StoreSchedule: StoreScheduleReducer
-
+  DashboardEmployee: DashboardEmployeeReducer,
+  Availability: AvailabilityReducer,
+  MySchedule: MyScheduleReducer,
+  StoreSchedule: StoreScheduleReducer
 });
 export default rootReducer

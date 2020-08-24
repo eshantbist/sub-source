@@ -304,8 +304,20 @@ PODS:
     - React
   - RNDateTimePicker (2.6.0):
     - React
+  - RNDeviceInfo (5.6.5):
+    - React
+  - RNImageCropPicker (0.32.2):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.32.2)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.32.2):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNVectorIcons (7.0.0):
     - React
+  - TOCropViewController (2.5.2)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -363,11 +375,13 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCPicker (from `../node_modules/@react-native-community/picker`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/cocoapods/specs.git:
     - boost-for-react-native
     - CocoaAsyncSocket
     - CocoaLibEvent
@@ -379,6 +393,7 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - OpenSSL-Universal
+    - TOCropViewController
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -442,6 +457,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/picker"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -489,10 +508,13 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCPicker: 55b9b4240d0a9eba8733d02616775d4040de2e7d
   RNDateTimePicker: e386ff4ef3300964ed0cad97ce6f206e0effbfdb
+  RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095
+  RNImageCropPicker: f0557a908758c4a3f83978894ec7227651529b45
   RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976
+  TOCropViewController: e9da34f484aedd4e5d5a8ab230ba217cfe16c729
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
 PODFILE CHECKSUM: 1cd39b7316241f8cb2d7f8b43e78cb17daaf3bdd
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.6.1

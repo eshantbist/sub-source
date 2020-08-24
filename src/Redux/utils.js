@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { Platform, AsyncStorage } from 'react-native';
 import { put, call } from 'redux-saga/effects'
 
 export function asyncAction(action) {
@@ -38,7 +38,6 @@ export function* asyncSagaNoParams({ api, constant }) {
 };
 
 export async function apiRequest(params, apiUrl, headers, method) {
-  console.log('p-->apiUrl-->',apiUrl);
   // alert(global.loginResponse.UserStoreGuid)
   var formBody = [];
   for (var property in params) {
