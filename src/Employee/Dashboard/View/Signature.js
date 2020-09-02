@@ -1,7 +1,7 @@
 //LIBRARIES
 import React from 'react';
 import { View, Text, AsyncStorage, TouchableOpacity, TouchableHighlight, Dimensions } from 'react-native';
-// import SignatureCapture from "react-native-signature-capture";
+import SignatureCapture from "react-native-signature-capture";
 //ASSETS
 import { Colors, Fonts, Matrics, Images, MasterCssEmployee } from "@Assets";
 
@@ -89,7 +89,7 @@ class Signature extends React.Component {
                 By signing below and selected "Done", you</Text>
             <Text style={Styles.SignatureText2}> are confirming you end of employment.</Text>
             <View style={{ flex: 1, borderWidth: 1, borderColor: Colors.BLACK, borderRadius: 5 }}>
-                {/* <SignatureCapture
+                <SignatureCapture
                     style={[{ flex: 1 }, Styles.signature]}
                     ref="sign"
                     showBorder={false}
@@ -99,7 +99,7 @@ class Signature extends React.Component {
                     showNativeButtons={false}
                     showTitleLabel={false}
                     viewMode={"portrait"}
-                /> */}
+                />
             </View>
             <View style={{ flex: 1, flexDirection: "row" }}>
 

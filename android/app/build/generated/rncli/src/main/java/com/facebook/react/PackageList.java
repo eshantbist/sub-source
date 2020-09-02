@@ -17,8 +17,14 @@ import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;
 // @react-native-community/picker
 import com.reactnativecommunity.picker.RNCPickerPackage;
+// react-native-device-info
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 // react-native-document-picker
 import io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage;
+// react-native-image-crop-picker
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
+// react-native-signature-capture
+import com.rssignaturecapture.RSSignatureCapturePackage;
 // react-native-spinkit
 import com.react.rnspinkit.RNSpinkitPackage;
 // react-native-vector-icons
@@ -73,7 +79,10 @@ public class PackageList {
       new AsyncStoragePackage(),
       new RNDateTimePickerPackage(),
       new RNCPickerPackage(),
+      new RNDeviceInfo(),
       new DocumentPickerPackage(),
+      new PickerPackage(),
+      new RSSignatureCapturePackage(),
       new RNSpinkitPackage(),
       new VectorIconsPackage(),
       new RNCWebViewPackage()

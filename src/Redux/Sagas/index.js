@@ -8,10 +8,11 @@ import dashboardWatch from './DashboardEmployeeSaga';
 import availabilityWatch from './AvailabilitySaga';
 import watchMySchedule from './MyScheduleSaga';
 import watchStoreSchedule from './StoreScheduleSaga';
+import { all } from 'redux-saga/effects';
 
 //Main Root Saga
 const rootSaga = function* rootSaga() {
-  yield [
+  yield all([
     watchLogin(),
     hirePacketSaga(),
     dashboardSaga(),
@@ -22,6 +23,6 @@ const rootSaga = function* rootSaga() {
     availabilityWatch(),
     watchMySchedule(),
     watchStoreSchedule()
-  ]
+  ])
 };
 export default rootSaga;

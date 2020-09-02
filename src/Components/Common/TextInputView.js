@@ -37,6 +37,7 @@ class TextInputView extends React.Component {
                 onSubmitEditing={this.props.onSubmitEditing}
                 onFocus={this.props.onFocus}
                 multiline={this.props.multiline}
+                maxLength={this.props.maxLength}
                 keyboardType={this.props.keyboardType}
             />
         )
