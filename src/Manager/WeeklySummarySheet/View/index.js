@@ -686,15 +686,19 @@ class WeeklySummarySheet extends React.Component {
     _renderItem({ item, index }) {
       return(
         <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => { self.setState({ dayIndex: index, selectedDate: item.WeekDate, selectedDayId: item.DayID }) }}>
-          <View style={{ flex: 1, alignItems: 'center', backgroundColor: self.state.dayIndex == index ? Colors.SKYBLUE : null, paddingVertical: item.WeekDate === 'Total' ? Platform.OS == 'ios' ? Matrics.CountScale(43) : Matrics.CountScale(47) : Matrics.CountScale(10) }}>
+          <View style={{ flex: 1, alignItems: 'center', backgroundColor: self.state.dayIndex == index ? Colors.SKYBLUE : null,
+        //   paddingVertical: Matrics.CountScale(20)
+        //    paddingVertical: item.WeekDate === 'Total' ? Matrics.CountScale(43) : Matrics.CountScale(10) 
+            height: Matrics.CountScale(110)
+           }}>
             {
                 item.WeekDate === "Total"
                 ?
-                    <View>
-                        <Text style={[Styles.fontStyle, { color: self.state.dayIndex == index ? 'white' : null, fontWeight: 'bold' }]}>{item.WeekDate}</Text>
+                    <View style={{ flex: 1, justifyContent: 'center'}}>
+                        <Text style={[Styles.fontStyle, {color: self.state.dayIndex == index ? 'white' : null, fontWeight: 'bold' }]}>{item.WeekDate}</Text>
                     </View>
                 :
-                    <View style={{ paddingHorizontal: Matrics.CountScale(25) }}>
+                    <View style={{ paddingHorizontal: Matrics.CountScale(25), marginTop: Matrics.CountScale(5) }}>
                         <Text style={[Styles.fontStyle, { color: self.state.dayIndex == index ? 'white' : null, fontWeight: 'bold' }]}>{moment(item.WeekDate).format('MMM DD, YYYY ddd')}</Text>
                         {self.state.weatherListData[index] !== void 0
                             ? <Image source={self.state.dayIndex == index ? Images.CloudIcon2 : Images.CloudIcon1} style={{ marginVertical: Platform.OS == 'ios' ? Matrics.CountScale(10) : Matrics.CountScale(13)}} />
@@ -1010,9 +1014,11 @@ class WeeklySummarySheet extends React.Component {
                             item.data.map(res => {
                                 let resData = this.state.hoursBasicListArr.filter(p => p.UserStoreID == res.UserStoreID && p.DayDate == this.state.selectedDate);
                                 console.log('resData-->', resData);
+                                console.log('fullname-->', res.FullName);
                                 return(
                                     resData.length > 0
-                                    ? resData[0].TimeOffCombineID != 0 
+                                    // ? resData[0].TimeOffCombineID != 0 
+                                    ? resData[0].IsAbsent 
                                         ? // absonse emp
                                             <TextColumn 
                                                 name={res.FullName}  
@@ -1058,7 +1064,7 @@ class WeeklySummarySheet extends React.Component {
                                                     : true
                                                 }
                                                 onRGPress={() => {
-                                                    if(resData[0].RG != undefined) {
+                                                    if(resData[0].RG != undefined && resData[0].RG != '') {
                                                         this.props.getEmployeePunchDetailRequest({ StoreId: this.state.selectedStoreId, UserStoreID: res.UserStoreID, DayID: this.state.selectedDayId, WeekEnding: this.state.WeekEndingDate });
                                                         this.setState({ 
                                                             hoursModal: true,
@@ -1202,7 +1208,8 @@ class WeeklySummarySheet extends React.Component {
     //----------->>>Render Method-------------->>>
 
     render() {
-        console.log('render');
+        // console.log('render');
+        // console.log('absenceReason-->', this.state.absenceReason);
         // console.log('empRoleWiseData-->',this.state.empRoleWiseData);
         // console.log('empRoleWiseData-->',this.state.empRoleWiseData.length);
         // console.log('hoursBasicListArr-->',this.state.hoursBasicListArr.length);
@@ -1232,6 +1239,7 @@ class WeeklySummarySheet extends React.Component {
                             itemCount={8}
                             rippleColor='white'
                             rippleCentered={true}
+                            selectedTextStyle={{ textAlign: 'center'}}
                         /> */}
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{this.state.selectedStoreName}</Text>
                     </View>
@@ -1453,7 +1461,7 @@ class WeeklySummarySheet extends React.Component {
                                     : null
                                 }
                             </KeyboardAwareScrollView>
-                            <View style={{ flexDirection: "row", marginHorizontal: Matrics.CountScale(8) }}>
+                            <View style={{ flexDirection: "row", marginHorizontal: Matrics.CountScale(8), marginTop: Matrics.CountScale(10) }}>
                                 <TouchableOpacity 
                                     style={Styles.btnViewStyle} 
                                     onPress={() => {
@@ -1570,6 +1578,7 @@ class WeeklySummarySheet extends React.Component {
                                                 rippleColor='white'
                                                 rippleCentered={true}
                                                 error={this.state.resonError}
+                                                selectedTextStyle={{ textAlign: 'center'}}
                                             />
 
                                         </View>
@@ -1775,7 +1784,7 @@ const Styles = StyleSheet.create({
     },
     columnContentTextStyle: {
         fontFamily: Fonts.NunitoSansRegular,
-        color: Colors.TEXTRED,
+        // color: Colors.TEXTRED,
         textAlign: 'center',
     },
     modalViewContainer: {

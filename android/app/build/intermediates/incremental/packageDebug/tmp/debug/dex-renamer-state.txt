@@ -1,4 +1,7 @@
-#Mon Aug 24 11:59:54 IST 2020
-base.0=/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+#Sat Sep 05 12:42:14 IST 2020
+base.1=/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/dex/debug/mergeDexDebug/out/classes2.dex
+path.1=classes2.dex
+base.0=/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+renamed.1=classes2.dex
 renamed.0=classes.dex
 path.0=classes.dex

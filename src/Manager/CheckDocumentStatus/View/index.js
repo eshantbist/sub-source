@@ -517,6 +517,7 @@ class CheckDoucmentStatus extends React.Component {
                             itemCount={8}
                             rippleColor='white'
                             rippleCentered={true}
+                            selectedTextStyle={{ textAlign: 'center'}}
                         /> */}
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{this.state.selectedStoreName}</Text>
                     </View>

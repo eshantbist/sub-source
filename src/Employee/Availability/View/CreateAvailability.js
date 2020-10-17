@@ -12,7 +12,8 @@ import { TextInputView, Button, CustomModal, LoadWheel } from "@Components";
 import { saveUpdateEmployeeAvailability, deleteEmployeeAvailability } from '@Redux/Actions/AvailabilityActions'
 import { Colors, Fonts, Matrics, Images, MasterCssEmployee } from '@Assets'
 import moment from "moment";
-import styles from '../../../Resources/react-native-material-dropdown/src/components/dropdown/styles';
+// import styles from '../../../Resources/react-native-material-dropdown/src/components/dropdown/styles';
+import styles from 'react-native-material-dropdown/src/components/dropdown/styles';
 
 class CreateAvailability extends React.Component {
     state = {

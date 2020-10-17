@@ -49,6 +49,7 @@ const images = {
   // ====>>>> Hire New Employee Images <<<<=======
   AttachIcon: require('./Images/HireNewEmployee/attach.png'),
   CheckBoxChecked: require('./Images/HireNewEmployee/checkbox_selected.png'),
+  CheckBoxUncheckedBorder: require('./Images/HireNewEmployee/checkbox_unselected_border.png'),
   CheckBoxUnchecked: require('./Images/HireNewEmployee/checkbox_unselected.png'),
 
   // ====>>>> Weekly Schedule Images <<<<=======

@@ -3,7 +3,7 @@ import React from 'react'
 import { View, StatusBar, SectionList, BackHandler, Platform, ScrollView, FlatList, TouchableOpacity, TouchableWithoutFeedback, Image, Text } from 'react-native'
 import Swipeout from 'react-native-swipeout';
 import { NavigationActions } from 'react-navigation'
-import { Dropdown } from '../../../Resources/react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown';
 import { connect } from 'react-redux';
 import _ from 'lodash'
 import moment from "moment";
@@ -463,6 +463,7 @@ class MySchedule extends React.Component {
                         fontSize={17}
                         itemCount={8}
                         rippleCentered={true}
+                        selectedTextStyle={{ textAlign: 'center'}}
                         // onChangeText={(val) => {
                         //     console.log(val, "selected");
                         // }}

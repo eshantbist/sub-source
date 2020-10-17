@@ -38,6 +38,7 @@ class CheckDocumentStatusHeader extends React.Component {
                     itemCount={8}
                     rippleColor='white'
                     rippleCentered={true}
+                    selectedTextStyle={{ textAlign: 'center'}}
                     onChangeText={(val) => {
                         console.log(val, "selected");
                     }} />

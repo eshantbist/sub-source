@@ -1,6 +1,6 @@
 // ======>>>>> Libraries <<<<<=========
 import React from 'react';
-import { View, Text, Platform, Switch, ScrollView, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, Platform, Switch, ScrollView, Image, TouchableOpacity, StyleSheet, Alert, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
@@ -245,6 +245,7 @@ class HireNewEmployee extends React.Component {
     handleDatePicked = (date) => {
         let age = this.getAge(moment(date).format('YYYY/MM/DD'));
         console.log('age-->',age);
+        console.log('minorAge-->',this.state.minorAge);
         if(age <= 12 ){
             this.setState({ errorDob: 'Please Select Valid Date Of Birth.'})
         }else if(this.state.selectedStore!== '' && age < this.state.minorAge) {
@@ -559,23 +560,26 @@ class HireNewEmployee extends React.Component {
                     onChangeText={val => this.setState({ email: val, errorEmail: '' })}
                     error={this.state.errorEmail}
                 />
-                <View style={{ flexDirection: 'row' }}>
+                {/* <View style={{ flexDirection: 'row' }}> */}
                     {console.log('selectedStore-->', this.state.selectedStore)}
                     <Dropdown
                         containerStyle={{
-                            alignSelf: 'flex-start', top: Matrics.CountScale(20), marginLeft: Matrics.CountScale(10),
-                            // borderBottomColor: 'red', borderBottomWidth: 1
-                            textAlign: 'left',
-                            width: '50%',
-                            // backgroundColor: 'red'
+                            // alignSelf: 'flex-start',
+                            top: Matrics.CountScale(20), marginLeft: Matrics.CountScale(10),
+                            borderBottomColor: Colors.LIGHTGREY, borderBottomWidth: 1,
+                            // textAlign: 'left',
+                            // width: '100%',
+                            // backgroundColor: 'blue',
+                            // marginTop: Matrics.CountScale(10),
+                            marginHorizontal: Matrics.CountScale(10)
                         }}
-                        containerWidth={180}
+                        containerWidth={(Dimensions.get('window').width-50)}
                         data={this.state.storeWithSettingArr}
                         label="Store # *"
                         value={'Select Store'}
                         onChangeText={(value, index, data) => this.onSelectStore(value, index, data)}
                         valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber}
-                        inputContainerStyle={{ borderBottomColor: 'transparent', alignSelf: 'stretch', padding: 0, margin: 0 }}
+                        inputContainerStyle={{ borderBottomColor: 'transparent',padding: 0, margin: 0 }}
                         itemTextStyle={{ textAlign: 'left' }}
                         overlayStyle={{ top: this.state.topStoreSpace, borderWidth: 0,}}
                         dropdownOffset={{ top: 0, left: 0 }}
@@ -586,11 +590,12 @@ class HireNewEmployee extends React.Component {
                         labelFontSize={18}
                         rippleColor='white'
                         animationDuration= {300}
+                        selectedTextStyle={{ textAlign: 'left'}}
                     />
                     <TextInputView
                         label="POS ID *"
                         fontSize={18}
-                        containerStyle={[Styles.Input,{}]}
+                        containerStyle={[Styles.Input]}
                         value={this.state.posId}
                         labelFontSize={14}
                         returnKeyType={"next"}
@@ -598,7 +603,7 @@ class HireNewEmployee extends React.Component {
                         error={this.state.errorPosId}
                         keyboardType='numeric'
                     />
-                </View>
+                {/* </View> */}
 
                 <View renderToHardwareTextureAndroid={true} ref={view => { this.myComponent = view; }}
                 style={{ flexDirection: 'row',paddingVertical: Matrics.CountScale(10) }}
@@ -629,6 +634,7 @@ class HireNewEmployee extends React.Component {
                                     rippleCentered={true}
                                     error={this.state.errorWageType}
                                     rippleColor='white'
+                                    selectedTextStyle={{ textAlign: 'center'}}
                                 />
                             </View>
                             <View style={{ borderBottomColor: Colors.LIGHTGREY, borderBottomWidth: 1, marginHorizontal: Matrics.CountScale(10) }} />

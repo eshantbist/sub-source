@@ -9,149 +9,149 @@
 9        android:targetSdkVersion="28" />
 10
 11    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-11-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/debug/AndroidManifest.xml:5:5-77
-11-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/debug/AndroidManifest.xml:5:22-75
+11-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/debug/AndroidManifest.xml:5:5-77
+11-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/debug/AndroidManifest.xml:5:22-75
 12    <uses-permission android:name="android.permission.INTERNET" />
-12-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:4:5-67
-12-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:4:22-64
+12-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:4:5-67
+12-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:4:22-64
 13    <uses-permission android:name="android.permission.CAMERA" />
-13-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:5:5-64
-13-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:5:22-62
+13-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:5:5-64
+13-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:5:22-62
 14    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-14-->[com.facebook.flipper:flipper:0.33.1] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/3fd0002d7e8aad3b0e3f243bea72a373/jetified-flipper-0.33.1/AndroidManifest.xml:16:5-76
-14-->[com.facebook.flipper:flipper:0.33.1] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/3fd0002d7e8aad3b0e3f243bea72a373/jetified-flipper-0.33.1/AndroidManifest.xml:16:22-73
+14-->[com.facebook.flipper:flipper:0.33.1] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/68341580dc54659f60ca855c30cb53fe/jetified-flipper-0.33.1/AndroidManifest.xml:16:5-76
+14-->[com.facebook.flipper:flipper:0.33.1] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/68341580dc54659f60ca855c30cb53fe/jetified-flipper-0.33.1/AndroidManifest.xml:16:22-73
 15    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Required by older versions of Google Play services to create IID tokens -->
-15-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:10:5-81
-15-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:10:22-78
+15-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:10:5-81
+15-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:10:22-78
 16    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-16-->[com.google.android.gms:play-services-iid:17.0.0] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/72fb4bf3b9d1a4fb67c28eedb3c03b08/play-services-iid-17.0.0/AndroidManifest.xml:23:5-82
-16-->[com.google.android.gms:play-services-iid:17.0.0] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/72fb4bf3b9d1a4fb67c28eedb3c03b08/play-services-iid-17.0.0/AndroidManifest.xml:23:22-79
+16-->[com.google.android.gms:play-services-iid:17.0.0] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/72fb4bf3b9d1a4fb67c28eedb3c03b08/play-services-iid-17.0.0/AndroidManifest.xml:23:5-82
+16-->[com.google.android.gms:play-services-iid:17.0.0] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/72fb4bf3b9d1a4fb67c28eedb3c03b08/play-services-iid-17.0.0/AndroidManifest.xml:23:22-79
 17    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
-17-->[com.android.installreferrer:installreferrer:1.1.2] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/a09e382bfb3f8fa2f0c18724e52b5356/installreferrer-1.1.2/AndroidManifest.xml:9:5-110
-17-->[com.android.installreferrer:installreferrer:1.1.2] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/a09e382bfb3f8fa2f0c18724e52b5356/installreferrer-1.1.2/AndroidManifest.xml:9:22-107
+17-->[com.android.installreferrer:installreferrer:1.1.2] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/a09e382bfb3f8fa2f0c18724e52b5356/installreferrer-1.1.2/AndroidManifest.xml:9:5-110
+17-->[com.android.installreferrer:installreferrer:1.1.2] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/a09e382bfb3f8fa2f0c18724e52b5356/installreferrer-1.1.2/AndroidManifest.xml:9:22-107
 18
 19    <application
-19-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:6:5-25:19
+19-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:6:5-25:19
 20        android:name="com.subsourcemanagerapp.MainApplication"
-20-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:7:7-38
+20-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:7:7-38
 21        android:allowBackup="false"
-21-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:11:7-34
+21-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:11:7-34
 22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-22-->[androidx.core:core:1.1.0] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/4f509a65121478d6153615d7ef5b7c5f/core-1.1.0/AndroidManifest.xml:24:18-86
+22-->[androidx.core:core:1.1.0] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/4f509a65121478d6153615d7ef5b7c5f/core-1.1.0/AndroidManifest.xml:24:18-86
 23        android:debuggable="true"
 24        android:icon="@mipmap/ic_launcher"
-24-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:9:7-41
+24-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:9:7-41
 25        android:label="@string/app_name"
-25-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:8:7-39
+25-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:8:7-39
 26        android:roundIcon="@mipmap/ic_launcher_round"
-26-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:10:7-52
+26-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:10:7-52
 27        android:supportsRtl="true"
-27-->[:react-native-spinkit] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-spinkit/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:11:9-35
+27-->[:react-native-spinkit] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-spinkit/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:11:9-35
 28        android:theme="@style/AppTheme"
-28-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:12:7-38
+28-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:12:7-38
 29        android:usesCleartextTraffic="true" >
-29-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/debug/AndroidManifest.xml:7:18-53
+29-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/debug/AndroidManifest.xml:7:18-53
 30        <activity
-30-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:13:7-23:18
+30-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:13:7-23:18
 31            android:name="com.subsourcemanagerapp.MainActivity"
-31-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:14:9-37
+31-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:14:9-37
 32            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-32-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:16:9-86
+32-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:16:9-86
 33            android:label="@string/app_name"
-33-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:15:9-41
+33-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:15:9-41
 34            android:launchMode="singleTask"
-34-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:17:9-40
+34-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:17:9-40
 35            android:windowSoftInputMode="adjustPan" >
-35-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:18:9-48
+35-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:18:9-48
 36            <intent-filter>
-36-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:19:9-22:25
+36-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:19:9-22:25
 37                <action android:name="android.intent.action.MAIN" />
-37-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:20:13-65
-37-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:20:21-62
+37-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:20:13-65
+37-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:20:21-62
 38
 39                <category android:name="android.intent.category.LAUNCHER" />
-39-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:21:13-73
-39-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:21:23-70
+39-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:21:13-73
+39-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:21:23-70
 40            </intent-filter>
 41        </activity>
 42        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-42-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:24:7-84
-42-->/Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:24:17-81
+42-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:24:7-84
+42-->/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/src/main/AndroidManifest.xml:24:17-81
 43
 44        <receiver
-44-->[:react-native-device-info] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:13:9-21:20
+44-->[:react-native-device-info] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:13:9-21:20
 45            android:name="com.learnium.RNDeviceInfo.RNDeviceReceiver"
-45-->[:react-native-device-info] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-70
+45-->[:react-native-device-info] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-70
 46            android:enabled="true"
-46-->[:react-native-device-info] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-35
+46-->[:react-native-device-info] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-35
 47            android:exported="true" >
-47-->[:react-native-device-info] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:16:13-36
+47-->[:react-native-device-info] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:16:13-36
 48            <intent-filter>
-48-->[:react-native-device-info] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:18:13-20:29
+48-->[:react-native-device-info] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:18:13-20:29
 49                <action android:name="com.android.vending.INSTALL_REFERRER" />
-49-->[:react-native-device-info] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:19:17-79
-49-->[:react-native-device-info] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:19:25-76
+49-->[:react-native-device-info] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:19:17-79
+49-->[:react-native-device-info] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:19:25-76
 50            </intent-filter>
 51        </receiver>
 52
 53        <provider
-53-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:13:9-21:20
+53-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:13:9-21:20
 54            android:name="androidx.core.content.FileProvider"
-54-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-62
+54-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-62
 55            android:authorities="com.subsourcemanagerapp.provider"
-55-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-60
+55-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-60
 56            android:exported="false"
-56-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:16:13-37
+56-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:16:13-37
 57            android:grantUriPermissions="true" >
-57-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:17:13-47
+57-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:17:13-47
 58            <meta-data
-58-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:18:13-20:58
+58-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:18:13-20:58
 59                android:name="android.support.FILE_PROVIDER_PATHS"
-59-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:19:17-67
+59-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:19:17-67
 60                android:resource="@xml/provider_paths" />
-60-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:20:17-55
+60-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:20:17-55
 61        </provider>
 62
 63        <activity
-63-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:23:9-25:72
+63-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:23:9-25:72
 64            android:name="com.yalantis.ucrop.UCropActivity"
-64-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:24:13-60
+64-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:24:13-60
 65            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-65-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:25:13-69
+65-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:25:13-69
 66
 67        <provider
-67-->[:react-native-webview] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-webview/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:12:9-20:20
+67-->[:react-native-webview] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-webview/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:12:9-20:20
 68            android:name="com.reactnativecommunity.webview.RNCWebViewFileProvider"
-68-->[:react-native-webview] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-webview/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-83
+68-->[:react-native-webview] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-webview/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-83
 69            android:authorities="com.subsourcemanagerapp.fileprovider"
-69-->[:react-native-webview] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-webview/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-64
+69-->[:react-native-webview] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-webview/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-64
 70            android:exported="false"
-70-->[:react-native-webview] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-webview/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-37
+70-->[:react-native-webview] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-webview/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-37
 71            android:grantUriPermissions="true" >
-71-->[:react-native-webview] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-webview/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:16:13-47
+71-->[:react-native-webview] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-webview/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:16:13-47
 72            <meta-data
-72-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:18:13-20:58
+72-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:18:13-20:58
 73                android:name="android.support.FILE_PROVIDER_PATHS"
-73-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:19:17-67
+73-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:19:17-67
 74                android:resource="@xml/file_provider_paths" />
-74-->[:react-native-image-crop-picker] /Volumes/DATA/NAROLA/SUBSOURCE/NEW_CODE/new_manager/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:20:17-55
+74-->[:react-native-image-crop-picker] /Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:20:17-55
 75        </provider>
 76
 77        <activity
-77-->[com.google.android.gms:play-services-base:17.0.0] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/6d45d9e0505112f0eec54f8796757f91/play-services-base-17.0.0/AndroidManifest.xml:23:9-26:75
+77-->[com.google.android.gms:play-services-base:17.0.0] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/6d45d9e0505112f0eec54f8796757f91/play-services-base-17.0.0/AndroidManifest.xml:23:9-26:75
 78            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-78-->[com.google.android.gms:play-services-base:17.0.0] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/6d45d9e0505112f0eec54f8796757f91/play-services-base-17.0.0/AndroidManifest.xml:24:13-79
+78-->[com.google.android.gms:play-services-base:17.0.0] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/6d45d9e0505112f0eec54f8796757f91/play-services-base-17.0.0/AndroidManifest.xml:24:13-79
 79            android:exported="false"
-79-->[com.google.android.gms:play-services-base:17.0.0] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/6d45d9e0505112f0eec54f8796757f91/play-services-base-17.0.0/AndroidManifest.xml:25:13-37
+79-->[com.google.android.gms:play-services-base:17.0.0] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/6d45d9e0505112f0eec54f8796757f91/play-services-base-17.0.0/AndroidManifest.xml:25:13-37
 80            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-80-->[com.google.android.gms:play-services-base:17.0.0] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/6d45d9e0505112f0eec54f8796757f91/play-services-base-17.0.0/AndroidManifest.xml:26:13-72
+80-->[com.google.android.gms:play-services-base:17.0.0] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/6d45d9e0505112f0eec54f8796757f91/play-services-base-17.0.0/AndroidManifest.xml:26:13-72
 81
 82        <meta-data
-82-->[com.google.android.gms:play-services-basement:17.0.0] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/d69a9370bf88a54a4467d1c7f515badc/jetified-play-services-basement-17.0.0/AndroidManifest.xml:23:9-25:69
+82-->[com.google.android.gms:play-services-basement:17.0.0] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/0368bd701259967c8fa7ea8d3cbf74e1/jetified-play-services-basement-17.0.0/AndroidManifest.xml:23:9-25:69
 83            android:name="com.google.android.gms.version"
-83-->[com.google.android.gms:play-services-basement:17.0.0] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/d69a9370bf88a54a4467d1c7f515badc/jetified-play-services-basement-17.0.0/AndroidManifest.xml:24:13-58
+83-->[com.google.android.gms:play-services-basement:17.0.0] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/0368bd701259967c8fa7ea8d3cbf74e1/jetified-play-services-basement-17.0.0/AndroidManifest.xml:24:13-58
 84            android:value="@integer/google_play_services_version" />
-84-->[com.google.android.gms:play-services-basement:17.0.0] /Users/himanshu/.gradle/caches/transforms-2/files-2.1/d69a9370bf88a54a4467d1c7f515badc/jetified-play-services-basement-17.0.0/AndroidManifest.xml:25:13-66
+84-->[com.google.android.gms:play-services-basement:17.0.0] /Users/c100-177/.gradle/caches/transforms-2/files-2.1/0368bd701259967c8fa7ea8d3cbf74e1/jetified-play-services-basement-17.0.0/AndroidManifest.xml:25:13-66
 85    </application>
 86
 87</manifest>

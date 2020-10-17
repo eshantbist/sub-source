@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { NotifyEmployeeSchedulesOnPublishRequest } from '@Redux/Actions/WeeklyScheduleActions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LoadWheel } from "@Components";
+import { CheckBox, colors } from 'react-native-elements';
 
 // ======>>>>> Assets <<<<<=========
 import { Colors, Fonts, Images, Matrics, MasterCss } from '@Assets';
@@ -38,6 +39,10 @@ class Publish extends React.Component {
         emailError: '',
         messageError: '',
         loading: false,
+        ReceipientsChecked: [],
+        WeekEndingDate: '',
+        selectedStoreId: '',
+        selectedStoreName: '',
     }
 
     UNSAFE_componentWillMount() {
@@ -46,8 +51,20 @@ class Publish extends React.Component {
         if (this.props.navigation.state.params) {
             console.log('employeeData', this.props.navigation.state.params)
             if(this.props.navigation.state.params.empData != undefined){
-                self = this
-                this.setState({ recipientsData: JSON.parse(this.props.navigation.state.params.empData) });
+                const Recipients = JSON.parse(this.props.navigation.state.params.empData);
+                this.setState({ 
+                    recipientsData: JSON.parse(this.props.navigation.state.params.empData),
+                    WeekEndingDate: this.props.navigation.state.params.WeekEndingDate,
+                    selectedStoreId: this.props.navigation.state.params.selectedStoreId,
+                    selectedStoreName: this.props.navigation.state.params.selectedStoreName,
+                 });
+                let ReceipientsChecked = [];
+                if(Recipients.length > 0){
+                    Recipients.forEach((data) => {
+                        ReceipientsChecked.push(true);
+                    });
+                    this.setState({ReceipientsChecked});
+                }
             }
         }
     }
@@ -66,8 +83,6 @@ class Publish extends React.Component {
         if (nextProps.response.NotifyEmployeeSchedulesOnPublishSuccess && !NotifyEmployeeSchedule) {
             NotifyEmployeeSchedule = true;
             let data = nextProps.response.data
-            // console.log('publishdata-->', data);
-            // console.log(' this.NotifyEmployeeSchedule-->',  NotifyEmployeeSchedule);
             if (data.Status === 1) {
                 this.setState({ loading: false });
                 Alert.alert(
@@ -87,29 +102,34 @@ class Publish extends React.Component {
     onClickOfDone() {
         if (this.state.message !== '') {
             const empListArr = [];
-            this.state.recipientsData.forEach((child) => {
-                let empList = {
-                    "UserStoreID": child.UserStoreID,
-                    "EmployeeNumber": child.EmployeeNumber,
-                    "FullName": child.FullName,
-                    "EmailID": child.EmailID,
-                    "IsScheduled": child.IsScheduled,
-                    "IsChecked": true,
-                    "SMSEmailID": child.SMSEmailID,
-                    "ReceipientsMessage": this.state.message
-                }
-                empListArr.push(empList);
-            });
-            // console.log('emplistarr-->', empListArr);
+            if(this.state.recipientsData.length > 0 && this.state.ReceipientsChecked.length > 0){
+                this.state.recipientsData.forEach((child, index) => {
+                    this.state.ReceipientsChecked.forEach((data, key) => {
+                        if(index == key && data == true){
+                            let empList = {
+                                "UserStoreID": child.UserStoreID,
+                                "EmployeeNumber": child.EmployeeNumber,
+                                "FullName": child.FullName,
+                                "EmailID": child.EmailID,
+                                "IsScheduled": child.IsScheduled,
+                                "IsChecked": true,
+                                "SMSEmailID": child.SMSEmailID,
+                                "ReceipientsMessage": this.state.message
+                            }
+                            empListArr.push(empList);
+                        }
+                    })
+                });
+            }
+            console.log('emplistarr-->', empListArr);
             this.setState({ loading: true });
             this.props.NotifyEmployeeSchedulesOnPublishRequest({
-                'StoreId': "41", 'DisplayStoreNumber': "457", 'BusinessTypeId': 1, 'WeekEnding': '11/20/2018', 'DayID': -1,
+                'StoreId': this.state.selectedStoreId, 'DisplayStoreNumber': this.state.selectedStoreName, 'BusinessTypeId': 1, 'WeekEnding': this.state.WeekEndingDate, 'DayID': -1,
                 '_employeeList': empListArr
             });
         } else {
             this.setState({ messageError: 'Please Enter The Message' });
         }
-
     }
 
     // addShift() {
@@ -171,21 +191,41 @@ class Publish extends React.Component {
         return (
             item.EmailID
                 ?
-                <View style={{ backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: Matrics.CountScale(10), marginVertical: Matrics.CountScale(5) }}>
-                    <Text>{item.EmailID}</Text>
-                    <TouchableOpacity onPress={() => this.removeRecipients(item.EmailID)}>
+                <View style={{ backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', paddingLeft: Matrics.CountScale(10), marginVertical: Matrics.CountScale(5) }}>
+                    <Text style={{ flex: 1}}>{item.EmailID}</Text>
+                    {/* <TouchableOpacity onPress={() => this.removeRecipients(item.EmailID)}>
                         <Image style={{
                             width: Matrics.CountScale(15), height: Matrics.CountScale(30),
                             margin: Matrics.CountScale(10), tintColor: Colors.GREY
                         }} source={Images.Minus} />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    {/* <View style={{ 
+                        borderWidth: 1,
+                        borderColor: Colors.APPCOLOR,
+                        borderRadius: Matrics.CountScale(10),
+                        height: Matrics.CountScale(50),
+                        width: Matrics.CountScale(50),
+                        alignItems: 'center',
+                        marginVertical: Matrics.CountScale(10)
+                    }}> */}
+                        <CheckBox
+                            checkedIcon={<Image source={Images.CheckBoxChecked} />}
+                            uncheckedIcon={<Image source={Images.CheckBoxUncheckedBorder} />}
+                            checked={ this.state.ReceipientsChecked[index]}
+                            onPress={() => {
+                                let Arr = this.state.ReceipientsChecked;
+                                Arr[index] = !this.state.ReceipientsChecked[index];
+                                this.setState({ ReceipientsChecked: Arr });
+                            }}
+                            style={{ alignSelf: 'flex-end' }}
+                        />
+                    {/* </View> */}
                 </View>
                 : null
         )
     }
 
     render() {
-        console.log('recipientsData', this.state.recipientsData)
         return (
             <View style={{ flex: 1, paddingHorizontal: Matrics.CountScale(15) }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>

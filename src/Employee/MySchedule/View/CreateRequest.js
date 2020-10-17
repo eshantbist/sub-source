@@ -301,6 +301,7 @@ class CreateRequest extends React.Component {
                             itemCount={8}
                             rippleCentered={true}
                             error={this.state.resonError}
+                            selectedTextStyle={{ textAlign: 'center'}}
                         />
                     </View>
                     {/* <View style={{ flex: 1, alignItems: 'flex-end' }}>

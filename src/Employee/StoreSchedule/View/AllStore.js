@@ -10,7 +10,7 @@ import _ from 'lodash'
 /*  =============>>>>>>>>> Assets <<<<<<<<<<============= */
 import { getStoreSchedule, getAllStoreRequest } from '@Redux/Actions/StoreScheduleAction';
 import CalendarStrip from '../../../Resources/react-native-calendar-strip'
-import { Dropdown } from '../../../Resources/react-native-material-dropdown'
+import { Dropdown } from 'react-native-material-dropdown'
 import { Colors, Fonts, Matrics, Images, MasterCssEmployee } from '@Assets'
 import { LoadWheel } from "@Components";
 import Global from '../../../GlobalFunction'
@@ -350,6 +350,7 @@ class AllStore extends React.Component {
                         fontSize={17}
                         itemCount={8}
                         rippleCentered={true}
+                        selectedTextStyle={{ textAlign: 'center'}}
                     // onChangeText={(val) => {
                     //     console.log(val, "selected");
                     // }}

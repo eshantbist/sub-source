@@ -231,8 +231,8 @@ class Dashboard extends React.Component {
                 let showCurrent = (current > total) ? total : current;
                 let empNeed =  keyFinancialData ? Math.abs(Math.ceil((keyFinancialData.Sales / 1000)-humanResource.ActiveEmployee)) : 0 ;
                 // let progressPercentage =  humanResource ? (humanResource.ActiveEmployee * 100) / (humanResource.ActiveEmployee + humanResource.RequiredMore) : 0; 
-                let progressPercentage =  humanResource ? Math.round((humanResource.ActiveEmployee * 100) / (empNeed)) : 0; 
-
+                // let progressPercentage =  humanResource ? Math.round((humanResource.ActiveEmployee-empNeed * 100) / (empNeed)) : 0; 
+                let progressPercentage =  humanResource ? Math.round(100-(empNeed/humanResource.ActiveEmployee)*100) : 0; 
                 await this.setState({
                     //             salesPercentage: regionReport.SaleVariance,
                     nonSubSales: salesBuilding ? salesBuilding.TotalNonSubSales : 0,
@@ -819,9 +819,9 @@ class Dashboard extends React.Component {
                         <Text style={Styles.labelText}>Financial</Text>
                         <View style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'center' }}>
                             <InfoViewContainer bgColor={Colors.PARROT} labelText={'SALES'} imgSrc={Images.Sales} contentText={this.state.totalSales} />
-                            <InfoViewContainer bgColor={Colors.ORANGE} labelText={'LABOR'} imgSrc={Images.Labor} contentText={this.state.labourPercentage} />
+                            <InfoViewContainer bgColor={Colors.ORANGE} labelText={'LABOR'} imgSrc={Images.Labor} contentText={this.state.labourPercentage != undefined && `${this.state.labourPercentage}%`} />
                             <InfoViewContainer bgColor={Colors.PURPLE} labelText={'PRODUCTIVITY'} imgSrc={Images.Productivity} contentText={this.state.productivityPercentage} />
-                            <InfoViewContainer bgColor={Colors.SKY} labelText={'FOOD COST'} imgSrc={Images.FoodCost} contentText={this.state.foodCostPercentage} />
+                            <InfoViewContainer bgColor={Colors.SKY} labelText={'FOOD COST'} imgSrc={Images.FoodCost} contentText={this.state.foodCostPercentage != undefined && `${this.state.foodCostPercentage}%`} />
                             <InfoViewContainer bgColor={Colors.ORANGERED} labelText={'OVERTIME'} imgSrc={Images.Overtime} contentText={this.state.overTimePercentage} />
                             <InfoViewContainer bgColor={Colors.DARKAPPCOLOR} labelText={'BREAK VIOLATION'} imgSrc={Images.BreakViolation} contentText={this.state.breakViolationPercentage} />
 
@@ -1058,7 +1058,7 @@ class Dashboard extends React.Component {
 
                             <View style={{ flex: 1 }}>
                                 <View style={[Styles.contentContainerStyle, { flex: 1, justifyContent: 'space-around' }]}>
-                                    <Text style={Styles.progressText}><Text style={{ color: Colors.PARROT }}>{this.state.humanResource && this.state.humanResource.ActiveEmployee}</Text> of {this.state.humanResource && this.state.humanResource.ActiveEmployee}</Text>
+                                    <Text style={Styles.progressText}><Text style={{ color: Colors.PARROT }}>{this.state.humanResource && this.state.humanResource.ActiveEmployee-this.state.employeeNeed}</Text> of {this.state.humanResource && this.state.humanResource.ActiveEmployee}</Text>
                                     <View style={{ height: 10, backgroundColor: Colors.LIGHTGREY, borderRadius: 10 }}>
                                         <View style={{ height: 10, width: `${this.state.progressPercentage}%`, borderRadius: 10, backgroundColor: Colors.PARROT }}></View>
                                     </View>

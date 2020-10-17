@@ -702,13 +702,15 @@ class WeeklySchedule extends React.Component {
     }
 
     setSharedEmpData() {
+        console.log('this.state.sharedEmployee-->',this.state.sharedEmployee)
+        console.log('this.state.sharedEmployeeSchedule-->',this.state.sharedEmployeeSchedule)
         let finalSharedEmployeeData = [];
         let TotalfinalSharedEmployeeData = [];
         _.forEach(this.state.sharedEmployee, (res) => {
             let shiftData = [];
             _.forEach(this.state.sharedEmployeeSchedule, (child) => {
-                if (res.UserStoreID === child.UserStoreID) {
-                    tmpshiftData = {
+                // if (res.UserStoreID === child.UserStoreID) {
+                    const tmpshiftData = {
                         "DisplayStoreNumber": child.DisplayStoreNumber,
                         "InTime": child.InTime,
                         "OutTime": child.OutTime,
@@ -716,7 +718,7 @@ class WeeklySchedule extends React.Component {
                         "HoursCount": child.HoursCount
                     }
                     shiftData.push(tmpshiftData);
-                }
+                // }
             });
             let sharedEmpList = res;
             let sharedEmpShift = {
@@ -726,7 +728,7 @@ class WeeklySchedule extends React.Component {
             finalSharedEmployeeData.push(merged)
         });
         
-        // console.log('sharedEmployeefinal-->', finalSharedEmployeeData)
+        console.log('sharedEmployeefinal-->', finalSharedEmployeeData)
 
         finalSharedEmployeeData.forEach(child => {
             let TotalSharedEmpShiftHours = 0;
@@ -1310,6 +1312,7 @@ class WeeklySchedule extends React.Component {
                             itemCount={8}
                             rippleColor='white'
                             rippleCentered={true}
+                            selectedTextStyle={{ textAlign: 'center'}}
                         /> */}
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{this.state.selectedStoreName}</Text>
                     </View>
@@ -1337,7 +1340,12 @@ class WeeklySchedule extends React.Component {
                         </TouchableOpacity>
                         <View style={Styles.publishOuterContainer}>
                             <TouchableOpacity style={Styles.publishContainer} onPress={() => {
-                                this.props.navigation.navigate('Publish', { empData: JSON.stringify(this.state.empShiftWise) })
+                                this.props.navigation.navigate('Publish', { 
+                                    empData: JSON.stringify(this.state.empShiftWise), 
+                                    WeekEndingDate: this.state.weekendDate,
+                                    selectedStoreId: this.state.selectedStoreId,
+                                    selectedStoreName: this.state.selectedStoreName,
+                                })
                             }}>
                                 <Text style={Styles.publishTextStyle}>Publish</Text>
                             </TouchableOpacity>
@@ -1418,12 +1426,11 @@ class WeeklySchedule extends React.Component {
                                 ? this.state.selectedDate !== 'Total'
                                     ? this.state.ScheduleHoursArr.map(data => {
                                             if (this.state.selectedDate === data.WeekDate) {
-                                                console.log('in if')
                                                 return <Text style={Styles.hoursText}>{(data.ScheduleHours).toFixed(2)}</Text>
                                             }
                                         })
                                     : <Text style={Styles.hoursText}>{(this.state.TotalScheduleHours).toFixed(2)}</Text>
-                                : <Text style={Styles.hoursText}>0</Text>
+                                : <Text style={Styles.hoursText}>0.00</Text>
                             }
                         </View>
 
@@ -1456,7 +1463,7 @@ class WeeklySchedule extends React.Component {
                                                         return (
                                                             <TextRow
                                                                 labelText={`${Global.getTime24to12(TimeArr[0]).toUpperCase()} To ${Global.getTime24to12(TimeArr[1]).toUpperCase()}`}
-                                                                contentText={empdata.EmployeesCount}
+                                                                contentText={empdata.EmployeesCount.toFixed(2)}
                                                                 bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null}
                                                             />
                                                         )
@@ -1468,7 +1475,7 @@ class WeeklySchedule extends React.Component {
                                                         return (
                                                             <TextRow
                                                                 labelText={`${Global.getTime24to12(TimeArr[0]).toUpperCase()} To ${Global.getTime24to12(TimeArr[1]).toUpperCase()}`}
-                                                                contentText={empdata.EmployeesCount}
+                                                                contentText={empdata.EmployeesCount.toFixed(2)}
                                                                 bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null}
                                                             />
                                                         )
@@ -1579,6 +1586,7 @@ class WeeklySchedule extends React.Component {
                                                             onChangeText={(val) => {
                                                                 this.setState({ repeatEveryType: val })
                                                             }}
+                                                            selectedTextStyle={{ textAlign: 'center'}}
                                                         />
                                                     </View>
                                                     :
@@ -1649,6 +1657,7 @@ class WeeklySchedule extends React.Component {
                                                     rippleCentered={true}
                                                     rippleColor='white'
                                                     error={this.state.resonError}
+                                                    selectedTextStyle={{ textAlign: 'center'}}
                                                 />
                                             </View>
                                             <Text style={Styles.labelTextStyle}>Notes :</Text>

@@ -150,7 +150,7 @@ import CheckBox from "react-native-check-box";
 
 //ASSETS
 import { Colors, Fonts, Matrics, Images, MasterCssEmployee } from "@Assets"
-import styles from '../../../Resources/react-native-material-dropdown/src/components/dropdown/styles';
+import styles from 'react-native-material-dropdown/src/components/dropdown/styles';
 
 
 //====CLASS DECLARATION====//
