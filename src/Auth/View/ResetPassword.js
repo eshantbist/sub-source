@@ -52,14 +52,14 @@ class ResetPassword extends React.Component {
   //------------->>>Controllers/Functions------------>>>>
 
   onResetPassword() {
-    // if (this.state.userId == '') {
-    //   this.setState({ errorMsg: 'Please Enter The UserID' })
-    // }
-    // else {
-    //   this.setState({ loading: true })
-    //   this.props.ResetPasswordRequest({ UserName: this.state.userId, PassMail: '' })
-    // }
-    this.props.navigation.navigate("LinkSent")
+    if (this.state.userId == '') {
+      this.setState({ errorMsg: 'Please Enter The UserID' })
+    }
+    else {
+      this.setState({ loading: true })
+      this.props.ResetPasswordRequest({ UserName: this.state.userId, PassMail: '' })
+    }
+    // this.props.navigation.navigate("LinkSent")
     
   }
 

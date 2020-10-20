@@ -48,6 +48,7 @@ export async function apiRequest(params, apiUrl, headers, method) {
   formBody = formBody.join("&");
   url = method ? apiUrl : `${apiUrl}${formBody}`
 
+  console.log('p-->url-->',apiUrl)
   console.log('p-->body-->',JSON.stringify(formBody))
   return fetch(url, {
     method: method ? method : 'GET',
@@ -57,10 +58,10 @@ export async function apiRequest(params, apiUrl, headers, method) {
 }
 
 export async function apiBodyRequest(params,apiUrl,headers, method) {
-  // console.log('p-->url-->',apiUrl)
-  // console.log('p-->m-->',method)
-  // console.log('p-->header-->',headers)
-  // console.log('p-->body-->',JSON.stringify(params))
+  console.log('p-->url-->',apiUrl)
+  console.log('p-->m-->',method)
+  console.log('p-->header-->',headers)
+  console.log('p-->body-->',JSON.stringify(params))
 
   return fetch(`${apiUrl}`, {
     method: method,

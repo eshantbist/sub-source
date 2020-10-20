@@ -583,7 +583,7 @@ class WeeklySchedule extends React.Component {
             if(child.DayDate !== 'Total') {
                 TotalAVGSales6Weeks = TotalAVGSales6Weeks + child.AVGSales6Weeks;
                 TotalAVGUnitsWeeks = TotalAVGUnitsWeeks + child.AVGUnitsWeeks;
-                TotalLabourGoals = TotalLabourGoals +  Number((child.AVGUnitsWeeks / child.ProductivityGoal).toFixed(2));
+                TotalLabourGoals = TotalLabourGoals + child.AVGUnitsWeeks != 0 && child.ProductivityGoal != 0 ? Number((child.AVGUnitsWeeks / child.ProductivityGoal).toFixed(2)) : 0;
                 TotalHoursScheduled = TotalHoursScheduled + Number((child.TotalHoursScheduled).toFixed(2));
                 if((child.AVGSales6Weeks / child.TotalHoursScheduled).toFixed(2) !== 'Infinity'){
                     TotalScheduledProductivity = TotalScheduledProductivity + Number((child.AVGSales6Weeks / child.TotalHoursScheduled).toFixed(2));
@@ -1375,7 +1375,9 @@ class WeeklySchedule extends React.Component {
                                 <TextRow labelText={'Labor Goals(Hours)'} contentText={
                                     this.state.daysData.length > 0 ?
                                         this.state.selectedDate !== 'Total' ?
-                                            (this.state.daysData[this.state.dayIndex].AVGUnitsWeeks / this.state.daysData[this.state.dayIndex].ProductivityGoal).toFixed(2)
+                                        this.state.daysData[this.state.dayIndex].AVGUnitsWeeks != 0 && this.state.daysData[this.state.dayIndex].ProductivityGoal != 0
+                                            ? (this.state.daysData[this.state.dayIndex].AVGUnitsWeeks / this.state.daysData[this.state.dayIndex].ProductivityGoal).toFixed(2)
+                                            : 0.00
                                             : (this.state.TotalLabourGoals).toFixed(2)
                                         : null
                                 } bgColor={Colors.ROWBGCOLOR} />
@@ -1387,7 +1389,9 @@ class WeeklySchedule extends React.Component {
                                             this.state.daysData.length > 0 
                                             ? this.state.selectedDate !== 'Total' 
                                             ? (this.state.daysData[this.state.dayIndex].AVGSales6Weeks / this.state.daysData[this.state.dayIndex].TotalHoursScheduled).toFixed(2) !== 'Infinity' 
+                                                ? this.state.daysData[this.state.dayIndex].AVGSales6Weeks != 0 && this.state.daysData[this.state.dayIndex].TotalHoursScheduled !== 0 
                                                 ? (this.state.daysData[this.state.dayIndex].AVGSales6Weeks / this.state.daysData[this.state.dayIndex].TotalHoursScheduled).toFixed(2)
+                                                : 0
                                                 : null
                                             : this.state.TotalScheduledProductivity != 0 ? this.state.TotalScheduledProductivity.toFixed(2) : null
                                             : null
@@ -1434,18 +1438,21 @@ class WeeklySchedule extends React.Component {
                             }
                         </View>
 
-                        <View style={Styles.containerStyle} >
-                            <View style={Styles.headingStyle}>
-                                <Text style={{ color: 'white' }}>SHARED EMPLOYEE SCHEDULE</Text>
+                        {
+                            this.state.finalSharedEmployeeData.length > 0 &&
+                            <View style={Styles.containerStyle} >
+                                <View style={Styles.headingStyle}>
+                                    <Text style={{ color: 'white' }}>SHARED EMPLOYEE SCHEDULE</Text>
+                                </View>
+                                <FlatList
+                                    data={this.state.finalSharedEmployeeData}
+                                    extraData={this.state}
+                                    renderItem={this.renderSharedEmployee}
+                                    keyExtractor={(item, index) => item.UserStoreID.toString()}
+                                    ListEmptyComponent={() => <Text style={[Styles.fontStyle, { padding: Matrics.CountScale(10) }]}>Oops! Their Is Nothing To Display</Text>}
+                                />
                             </View>
-                            <FlatList
-                                data={this.state.finalSharedEmployeeData}
-                                extraData={this.state}
-                                renderItem={this.renderSharedEmployee}
-                                keyExtractor={(item, index) => item.UserStoreID.toString()}
-                                ListEmptyComponent={() => <Text style={[Styles.fontStyle, { padding: Matrics.CountScale(10) }]}>Oops! Their Is Nothing To Display</Text>}
-                            />
-                        </View>
+                        }
 
                         <View style={Styles.containerStyle} >
 

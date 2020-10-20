@@ -49,7 +49,7 @@ class CheckDoucmentStatus extends React.Component {
         selected: "ActionRequired",
         filterModal: false,
         selectedRoleId: 0,
-        selectedNOD: 30,
+        selectedNOD: -1,
         selectedStatus: 'All Status',
         userRoleList: [],
         userList: [],

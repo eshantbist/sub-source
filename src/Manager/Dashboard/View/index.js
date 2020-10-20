@@ -229,7 +229,8 @@ class Dashboard extends React.Component {
                 let total =  humanResource ? parseFloat(humanResource.ActiveEmployee * 4) : 0;
                 let current = operationOverview ? parseFloat(operationOverview.UosAvgValue) : 0;
                 let showCurrent = (current > total) ? total : current;
-                let empNeed =  keyFinancialData ? Math.abs(Math.ceil((keyFinancialData.Sales / 1000)-humanResource.ActiveEmployee)) : 0 ;
+                // let empNeed =  keyFinancialData ? Math.abs(Math.ceil((keyFinancialData.Sales / 1000)-humanResource.ActiveEmployee)) : 0 ;
+                let empNeed =  keyFinancialData ? Math.abs(Math.ceil((keyFinancialData.SixWeekSales / 1000))) : 0 ;
                 // let progressPercentage =  humanResource ? (humanResource.ActiveEmployee * 100) / (humanResource.ActiveEmployee + humanResource.RequiredMore) : 0; 
                 // let progressPercentage =  humanResource ? Math.round((humanResource.ActiveEmployee-empNeed * 100) / (empNeed)) : 0; 
                 let progressPercentage =  humanResource ? Math.round(100-(empNeed/humanResource.ActiveEmployee)*100) : 0; 
@@ -1051,14 +1052,14 @@ class Dashboard extends React.Component {
                             <View style={{ flex: 1 }}>
                                 <View style={[Styles.contentContainerStyle, { paddingHorizontal: 0, alignItems: 'center', borderWidth: 2, borderColor: Colors.ORANGE }]}>
                                     {/* <Text style={Styles.empNeedTextStyle}>{this.state.humanResource && this.state.humanResource.RequiredMore}</Text> */}
-                                    <Text style={Styles.empNeedTextStyle}>{this.state.employeeNeed}</Text>
+                                    <Text style={Styles.empNeedTextStyle}>{this.state.humanResource && this.state.employeeNeed >= this.state.humanResource.ActiveEmployee ? this.state.employeeNeed-this.state.humanResource.ActiveEmployee : 0}</Text>
                                     <Text style={[Styles.labelText, { fontSize: Matrics.CountScale(14) }]}>Employees needed</Text>
                                 </View>
                             </View>
 
                             <View style={{ flex: 1 }}>
                                 <View style={[Styles.contentContainerStyle, { flex: 1, justifyContent: 'space-around' }]}>
-                                    <Text style={Styles.progressText}><Text style={{ color: Colors.PARROT }}>{this.state.humanResource && this.state.humanResource.ActiveEmployee-this.state.employeeNeed}</Text> of {this.state.humanResource && this.state.humanResource.ActiveEmployee}</Text>
+                                    <Text style={Styles.progressText}><Text style={{ color: Colors.PARROT }}>{this.state.humanResource && this.state.humanResource.ActiveEmployee}</Text> of {this.state.employeeNeed}</Text>
                                     <View style={{ height: 10, backgroundColor: Colors.LIGHTGREY, borderRadius: 10 }}>
                                         <View style={{ height: 10, width: `${this.state.progressPercentage}%`, borderRadius: 10, backgroundColor: Colors.PARROT }}></View>
                                     </View>

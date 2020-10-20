@@ -107,7 +107,7 @@ class ConfirmPassword extends React.Component {
             />
           </View>
 
-          <TouchableOpacity style={Styles.cancelView} onPress={() => { navigation.pop() }}>
+          <TouchableOpacity style={Styles.cancelView} onPress={() => { navigation.popToTop() }}>
             <Text style={Styles.cancelText}>Cancel</Text>
           </TouchableOpacity>
         </KeyboardAwareScrollView>
