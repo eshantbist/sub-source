@@ -86,7 +86,7 @@ class Dashboard extends React.Component {
         ],
         filterModal: false,
         selectedRoleId: 0,
-        selectedUsers: '',
+        selectedUsers: 0,
         selectedStores: -1,
         isDateTimePickerVisible: false,
         selectedNOD: '',
@@ -204,11 +204,17 @@ class Dashboard extends React.Component {
                     RoleID: 0,
                     RoleName: 'Select Role'
                 }
+                const userSelect = {
+                    UserID: 0,
+                    UserName: 'Select User'
+                }
                 data.Report.store_list.unshift(storeselect);
                 data.Report.role_list.unshift(roleSelect);
-                // console.log("StoreList", data.Report.store_list);
+                // data.Report.user_list.unshift(userSelect);
+                console.log("StoreList", data.Report.store_list);
                 // console.log("RoleList",  data.Report.role_list);
-                await this.setState({ userRole: data.Report.role_list, Users:data.Report.user_list, Stores: data.Report.store_list })
+                console.log("UserList-->",  data.Report.user_list);
+                await this.setState({ userRole: data.Report.role_list, Users: data.Report.user_list, Stores: data.Report.store_list })
             }
             // console.log(data)
         }
@@ -463,7 +469,7 @@ class Dashboard extends React.Component {
     getUsers() {
         let data = []
         for (i = 0; i < this.state.Users.length; i++) {
-            data.push(<Picker.Item label={this.state.Users[i]} value={this.state.Users[i]} />)
+            data.push(<Picker.Item label={this.state.Users[i].UserName} value={this.state.Users[i].UserID} />)
         }
         return data
     }
@@ -661,20 +667,31 @@ class Dashboard extends React.Component {
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedRoleId}
-                                    onValueChange={value => this.setState({ selectedRoleId: value })}
+                                    onValueChange={value => {
+                                        this.setState({ selectedRoleId: value, loading: true });
+                                        this.roleFlag = false;
+                                        this.props.getHeaderFilterValuesRequest({
+                                            StoreId: -1, RoleId: value, FilterId: -1, BusinessTypeId: 1
+                                        });
+                                    }}
                                 >
                                     {this.getRole()}
                                 </Picker>
-                                <View style={Styles.labelBorderStyle}>
-                                    <Text style={Styles.pickerLabelStyle}>Users</Text>
-                                </View>
-                                <Picker
-                                    itemStyle={Styles.pickerItemStyle}
-                                    selectedValue={this.state.selectedUsers}
-                                    onValueChange={value => this.setState({ selectedUsers: value })}
-                                >
-                                    {this.getUsers()}
-                                </Picker>
+                                {
+                                    this.state.Users != '' &&
+                                    <View>
+                                        <View style={Styles.labelBorderStyle}>
+                                            <Text style={Styles.pickerLabelStyle}>Users</Text>
+                                        </View>
+                                        <Picker
+                                            itemStyle={Styles.pickerItemStyle}
+                                            selectedValue={this.state.selectedUsers}
+                                            onValueChange={value => this.setState({ selectedUsers: value })}
+                                        >
+                                            {this.getUsers()}
+                                        </Picker>
+                                    </View>
+                                }
                                 <Text style={Styles.pickerLabelStyle}>Stores</Text>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}

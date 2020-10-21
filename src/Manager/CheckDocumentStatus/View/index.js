@@ -697,18 +697,33 @@ class CheckDoucmentStatus extends React.Component {
                                     //     }
                                     // }}
                                     selectedValue={this.state.selectedRoleId}
-                                    onValueChange={value => this.setState({ selectedRoleId: value })}
+                                    onValueChange={value => {
+                                        this.setState({ selectedRoleId: value, loading: true })
+                                        this.filterValFlag = false;
+                                        this.props.getHeaderFilterValues({
+                                            RoleId: value,
+                                            FilterId: -1,
+                                            StoreId: -1,
+                                            BusinessTypeId: global.loginResponse.DefaultBusinessTypeID
+                                        });
+                                    }}
                                 >
                                     {this.getRole()}
                                 </Picker>
-                                <Text style={Styles.pickerLabelStyle}>Users</Text>
-                                <Picker
-                                    itemStyle={Styles.pickerItemStyle}
-                                    selectedValue={this.state.selectedUsers}
-                                    onValueChange={value => this.setState({ selectedUsers: value })}
-                                >
-                                    {this.getUsers()}
-                                </Picker>
+                                {
+                                    this.state.userList.length > 0 &&
+                                    <View>
+                                        <Text style={Styles.pickerLabelStyle}>Users</Text>
+                                        <Picker
+                                            itemStyle={Styles.pickerItemStyle}
+                                            selectedValue={this.state.selectedUsers}
+                                            onValueChange={value => this.setState({ selectedUsers: value })}
+                                        >
+                                            {this.getUsers()}
+                                        </Picker>
+                                    </View>
+                                }
+                                
                                 <Text style={Styles.pickerLabelStyle}>Stores</Text>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
