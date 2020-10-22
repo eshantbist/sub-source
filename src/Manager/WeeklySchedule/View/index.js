@@ -1220,7 +1220,23 @@ class WeeklySchedule extends React.Component {
     }
 
     onDeleteTimeoff() {
-        this.props.DeleteEmployeeTimeOffDayWise({ TimeOffID: this.state.TimeOffID });
+        Alert.alert(
+            'Are you sure you want to delete this?',
+            '',
+            [
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+              },
+              {
+                text: 'Yes', 
+                onPress: () => {
+                    this.props.DeleteEmployeeTimeOffDayWise({ TimeOffID: this.state.TimeOffID });
+                },
+              },
+            ],
+            {cancelable: false},
+        );
     }
 
     onCreateTimeOff() {
@@ -1280,6 +1296,26 @@ class WeeklySchedule extends React.Component {
         }
     }
 
+    deleteShift(){
+        Alert.alert(
+            'Are you sure you want to delete this shift?',
+            '',
+            [
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+              },
+              {
+                text: 'Yes', 
+                onPress: () => {
+                    this.props.DeleteEmployeeSchedule({ DailyScheduleID: this.state.DailyScheduleID })
+                },
+              },
+            ],
+            {cancelable: false},
+        );
+    }
+
     //----------->>>Render Method-------------->>>
 
     render() {
@@ -1315,6 +1351,7 @@ class WeeklySchedule extends React.Component {
                             selectedTextStyle={{ textAlign: 'center'}}
                         /> */}
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{this.state.selectedStoreName}</Text>
+                        <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${this.state.weekendDate}`}</Text>
                     </View>
 
                     <TouchableOpacity
@@ -1616,7 +1653,7 @@ class WeeklySchedule extends React.Component {
                                             >
                                                 <View><Text style={Styles.btnTextStyle}>Add Shift</Text></View>
                                             </TouchableOpacity>
-                                            <TouchableOpacity style={Styles.btnViewStyle} onPress={() => this.props.DeleteEmployeeSchedule({ DailyScheduleID: this.state.DailyScheduleID })}>
+                                            <TouchableOpacity style={Styles.btnViewStyle} onPress={() => this.deleteShift()}>
                                                 <View><Text style={Styles.btnTextStyle}>Delete Shift</Text></View>
                                             </TouchableOpacity>
                                         </View>

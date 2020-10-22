@@ -204,16 +204,19 @@ class Dashboard extends React.Component {
                     RoleID: 0,
                     RoleName: 'Select Role'
                 }
-                const userSelect = {
-                    UserID: 0,
-                    UserName: 'Select User'
+                if(data.Report.user_list.length > 0){
+                    const userSelect = {
+                        UserID: 0,
+                        UserName: 'Select User'
+                    }
+                    data.Report.user_list.unshift(userSelect);
                 }
                 data.Report.store_list.unshift(storeselect);
                 data.Report.role_list.unshift(roleSelect);
                 // data.Report.user_list.unshift(userSelect);
-                console.log("StoreList", data.Report.store_list);
+                // console.log("StoreList", data.Report.store_list);
                 // console.log("RoleList",  data.Report.role_list);
-                console.log("UserList-->",  data.Report.user_list);
+                // console.log("UserList-->",  data.Report.user_list);
                 await this.setState({ userRole: data.Report.role_list, Users: data.Report.user_list, Stores: data.Report.store_list })
             }
             // console.log(data)
@@ -514,7 +517,8 @@ class Dashboard extends React.Component {
         this.setState({
             selectedRoleId : 0,
             selectedStores : -1,
-            WeekEndingDate : this.state.currentWeekEndDate
+            WeekEndingDate : this.state.currentWeekEndDate,
+            selectedUsers: 0,
         })
     }
 

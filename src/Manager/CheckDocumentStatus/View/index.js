@@ -126,6 +126,13 @@ class CheckDoucmentStatus extends React.Component {
                     StoreID: -1,
                     DisplayStoreNumber: 'Select Store'
                 }
+                if(data.Report.user_list.length > 0){
+                    const userSelect = {
+                        UserID: 0,
+                        UserName: 'Select User'
+                    }
+                    data.Report.user_list.unshift(userSelect);
+                }
                 data.Report.store_list.unshift(storeselect);
                 data.Report.role_list.unshift(roleSelect);
                 console.log('filter success store-->', data.Report.store_list);

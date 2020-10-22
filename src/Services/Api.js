@@ -9,7 +9,6 @@ const STAGING = "http://api.subsource.com";
 const NEWURL = "https://testapi.subsource.com";
 
 const ENVIRONMENT = NEWURL;
-
 module.exports = {
 
     login(params) {
