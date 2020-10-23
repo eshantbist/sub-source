@@ -30,7 +30,6 @@ import {
 } from '@Redux/Actions/WeeklyScheduleActions';
 import { getHeaderFilterValuesRequest } from '@Redux/Actions/HirePacketsActions';
 import Global from '../../../GlobalFunction';
-import { colors } from 'react-native-elements';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
@@ -55,7 +54,7 @@ export const TextRow = ({ labelText, contentText, bgColor }) => {
 }
 
 
-export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData }) => {
+export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked }) => {
     if( selectedDate == 'Total')
         console.log('TotalfinalRoleEmployeeData-->',TotalfinalRoleEmployeeData.length)
 
@@ -63,9 +62,19 @@ export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, h
         <View style={[Styles.rowContainer, { backgroundColor: bgColor, borderBottomColor: Colors.BORDERCOLOR, borderBottomWidth: 2 }]}>
             <View style={Styles.rowTitleStyle}>
                 <Text style={Styles.mainContainerLabel}>{labelText}</Text>
+                <View style={{ flexDirection: 'row'}}>
                 <View style={{ flexDirection: 'row', marginTop: Matrics.CountScale(5), marginLeft: Matrics.CountScale(10), borderRadius: 15, alignItems: 'center', backgroundColor: Colors.BGYELLOW, alignSelf: 'flex-start', padding: Matrics.CountScale(4) }}>
                     <Image source={Images.Star} />
                     <Text style={{ fontSize: 8, marginHorizontal: Matrics.CountScale(3) }}>{experience}</Text>
+                </View>
+                {
+                    IsLinked == true &&
+                    <Icon
+                        style={{ alignSelf: 'center', marginLeft: Matrics.CountScale(5) }}
+                        name="link" color="#03AAEE" size={15}
+                        onPress={() => {}}
+                    />
+                }
                 </View>
             </View>
             <View style={{ flex: 1, alignItems: 'center' }}>
@@ -83,7 +92,7 @@ export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, h
                                             <View style={{ paddingTop: Matrics.CountScale(10) }}>
                                                 <TouchableOpacity
                                                     onPress={() => onPress(res)}
-                                                    style={{ borderWidth: 1, borderRadius: 3, backgroundColor: 'rgb(222,239,230)', borderColor: 'rgb(201,232,217)' }}
+                                                    style={{ borderWidth: 1, borderRadius: 3, backgroundColor: Global.getShiftBgColor(res.DayPartColor), borderColor: Global.getShiftBorderColor(res.DayPartColor) }}
                                                 >
                                                     <Text style={[Styles.fontStyle, { marginHorizontal: Matrics.CountScale(5), fontSize: Matrics.CountScale(12), color: Colors.APPCOLOR }]} >
                                                         {`${moment(res.InTime, "h:mm A").format('hh:mm a')} - ${moment(res.OutTime, "h:mm A").format('hh:mm a')}`}
@@ -98,7 +107,7 @@ export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, h
                                             <View style={{ paddingTop: Matrics.CountScale(10) }}>
                                                  <TouchableOpacity
                                                     onPress={() => onPress(res)}
-                                                    style={{ borderWidth: 1, borderRadius: 3, backgroundColor: 'rgb(222,239,230)', borderColor: 'rgb(201,232,217)' }}
+                                                    style={{ borderWidth: 1, borderRadius: 3, backgroundColor: Global.getShiftBgColor(res.DayPartColor), borderColor: Global.getShiftBorderColor(res.DayPartColor) }}
                                                 >
                                                     <Text style={[Styles.fontStyle, { marginHorizontal: Matrics.CountScale(5), fontSize: Matrics.CountScale(12), color: Colors.APPCOLOR }]} >
                                                         {res.Reason}
@@ -365,6 +374,7 @@ class WeeklySchedule extends React.Component {
 
             let data = nextProps.response.data
             if (data.Status == 1) {
+                console.log('getWeeklyScheduleEmployeeSuccess-->',data.Data._shiftsList )
                 await this.setState({ employeeData: data.Data._shiftsList })
                 if (this.state.employeeData.length > 0 && this.state.employeeRerurnData.length > 0) {
                     this.setEmpData()
@@ -378,8 +388,9 @@ class WeeklySchedule extends React.Component {
 
             let data = nextProps.response.data
             if (data.Status == 1) {
+                console.log('getWeeklyScheduleEmployeeReturnSuccess-->',data.Data )
                 await this.setState({ employeeRerurnData: data.Data })
-                if (this.state.employeeData.length > 0 && this.state.employeeRerurnData.length > 0) {
+                if (this.state.employeeRerurnData.length > 0) {
                     this.setEmpData()
                 }
             }
@@ -632,36 +643,38 @@ class WeeklySchedule extends React.Component {
         this.setState({ TotalofEmployeeScheduleData })
     }
     setEmpData() {
-       // console.log('empdata***', this.state.employeeRerurnData)
-       // console.log('empdata***', this.state.employeeData)
+       console.log('empdata***', this.state.employeeRerurnData)
+       console.log('empdata***', this.state.employeeData)
         //common array
         let empShiftWise = [];
         this.state.employeeRerurnData.forEach((parent) => {
             let shiftData = [];
-            this.state.employeeData.forEach((child) => {
-                if (parent.UserStoreID === child.UserStoreID) {
-                    const shiftTime = {
-                        "InTime": child.InTime,
-                        "OutTime": child.OutTime,
-                        "Notes": child.Notes,
-                        "EndingDate": child.EndingDate,
-                        "ScheduleDate": child.ScheduleDate,
-                        "DailyScheduleID": child.DailyScheduleID,
-                        "RepeatType": child.RepeatType,
-                        "TimeOffCombineID": child.TimeOffCombineID,
-                        "Reason": child.Reason,
-                        "HoursCount": child.HoursCount,
-
+            if(this.state.employeeData.length > 0){
+                this.state.employeeData.forEach((child) => {
+                    if (parent.UserStoreID === child.UserStoreID) {
+                        const shiftTime = {
+                            "InTime": child.InTime,
+                            "OutTime": child.OutTime,
+                            "Notes": child.Notes,
+                            "EndingDate": child.EndingDate,
+                            "ScheduleDate": child.ScheduleDate,
+                            "DailyScheduleID": child.DailyScheduleID,
+                            "RepeatType": child.RepeatType,
+                            "TimeOffCombineID": child.TimeOffCombineID,
+                            "Reason": child.Reason,
+                            "HoursCount": child.HoursCount,
+                            "DayPartColor": child.DayPartColor
+                        }
+                        shiftData.push(shiftTime);
                     }
-                    shiftData.push(shiftTime);
-                }
-            })
+                })
+            }
             let EmpData = parent;
             EmpData['ShiftData'] = shiftData;
             empShiftWise.push(EmpData);
         });
         this.setState({ empShiftWise });
-        // console.log('empShiftWise-->', JSON.stringify(empShiftWise));
+        console.log('empShiftWise-->', JSON.stringify(empShiftWise));
         //end of common array
 
         let empRoleData = [];
@@ -677,7 +690,7 @@ class WeeklySchedule extends React.Component {
             }
         })
         
-        // console.log('empRoleData-->', JSON.stringify(empRoleData));
+        console.log('empRoleData-->', JSON.stringify(empRoleData));
 
         let TotalfinalRoleEmployeeData = [];
         empRoleData.forEach(child => {
@@ -830,8 +843,8 @@ class WeeklySchedule extends React.Component {
     };
 
     _renderItem({ item, index }) {
-        if(self.state.weatherListData.length > 0 )
-            console.log('weatherListData-->',self.state.weatherListData);
+        // if(self.state.weatherListData.length > 0 )
+            // console.log('weatherListData-->',self.state.weatherListData);
 
         return (
             <TouchableOpacity onPress={() => { self.setState({ dayIndex: index, selectedDate: item.DayDate }) }}>
@@ -877,6 +890,7 @@ class WeeklySchedule extends React.Component {
                 selectedDate={this.state.selectedDate}
                 index={index}
                 TotalfinalRoleEmployeeData = {this.state.TotalfinalRoleEmployeeData}
+                IsLinked={item.IsLinked}
                 onPress={async (data) => {
                     console.log('timedata-->', data);
                     // 
@@ -1319,13 +1333,13 @@ class WeeklySchedule extends React.Component {
     //----------->>>Render Method-------------->>>
 
     render() {
-        console.log('selectedDate-->', this.state.selectedDate);
-        console.log('dayIndex-->', this.state.dayIndex);
-        if(this.state.selectedDate == 'Total')
-            console.log('TotalofEmployeeScheduleData-->', this.state.TotalofEmployeeScheduleData);
+        // console.log('selectedDate-->', this.state.selectedDate);
+        // console.log('dayIndex-->', this.state.dayIndex);
+        // if(this.state.selectedDate == 'Total')
+        //     console.log('TotalofEmployeeScheduleData-->', this.state.TotalofEmployeeScheduleData);
 
 
-        console.log('TotalScheduleHours-->',this.state.TotalScheduleHours);
+        // console.log('TotalScheduleHours-->',this.state.TotalScheduleHours);
 
         return (
             <View style={{ flex: 1 }}>

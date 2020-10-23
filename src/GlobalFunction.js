@@ -81,6 +81,76 @@ const Global = {
             quaterMonth=['12','01','02','03'];
         }
         return quaterMonth;
+    },
+    getShiftBgColor(DayPartColor){
+        let bgColor = 'white';
+        if('-c-1' == DayPartColor){
+            bgColor = '#f6e8e8';
+        } else if('-c-2' == DayPartColor){
+            bgColor = '#e7d8f9';
+        } else if('-c-3' == DayPartColor){
+            bgColor = '#bddbed';
+        } else if('-c-4' == DayPartColor){
+            bgColor = '#d0f9cc';
+        } else if('-c-5' == DayPartColor){
+            bgColor = '#fff5c9';
+        } else if('-c-6' == DayPartColor){
+            bgColor = '#fff5c9';
+        } else if('-c-7' == DayPartColor){
+            bgColor = '#fff5c9';
+        } else if('-c-8' == DayPartColor){
+            bgColor = '#bee2fe';
+        } else if('-c-9' == DayPartColor){
+            bgColor = '#a5e4bf';
+        } else if('-c-10' == DayPartColor){
+            bgColor = '#ffeee5';
+        } else if('-c-11' == DayPartColor){
+            bgColor = '#fda9a7';
+        } else if('-c-12' == DayPartColor){
+            bgColor = '#d2c1e6';
+        } else if('-c-13' == DayPartColor){
+            bgColor = '#c0f2f8';
+        } else if('-c-14' == DayPartColor){
+            bgColor = '#bef4e0';
+        } else if('-c-15' == DayPartColor){
+            bgColor = '#fcd7b3';
+        }
+        return bgColor;
+    },
+    getShiftBorderColor(DayPartColor){
+        let borderColor = 'rgb(201,232,217)';
+        if('-c-1' == DayPartColor){
+            borderColor = '#e0b1b1';
+        } else if('-c-2' == DayPartColor){
+            borderColor = '#be96ef';
+        } else if('-c-3' == DayPartColor){
+            borderColor = '#81badd';
+        } else if('-c-4' == DayPartColor){
+            borderColor = '#a6f49e';
+        } else if('-c-5' == DayPartColor){
+            borderColor = '#ffec96';
+        } else if('-c-6' == DayPartColor){
+            borderColor = '#ffec96';
+        } else if('-c-7' == DayPartColor){
+            borderColor = '#ffec96';
+        } else if('-c-8' == DayPartColor){
+            borderColor = '#8cccfd';
+        } else if('-c-9' == DayPartColor){
+            borderColor = '#6ad295';
+        } else if('-c-10' == DayPartColor){
+            borderColor = '#ffcdb2';
+        } else if('-c-11' == DayPartColor){
+            borderColor = '#fc7875';
+        } else if('-c-12' == DayPartColor){
+            borderColor = '#b89dd7';
+        } else if('-c-13' == DayPartColor){
+            borderColor = '#7be4f0';
+        } else if('-c-14' == DayPartColor){
+            borderColor = '#92edcb';
+        } else if('-c-15' == DayPartColor){
+            borderColor = '#fabd82';
+        }
+        return borderColor;
     }
 }
 
