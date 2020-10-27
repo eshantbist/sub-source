@@ -54,7 +54,7 @@ export const TextRow = ({ labelText, contentText, bgColor }) => {
 }
 
 
-export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked }) => {
+export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress}) => {
     if( selectedDate == 'Total')
         console.log('TotalfinalRoleEmployeeData-->',TotalfinalRoleEmployeeData.length)
 
@@ -72,7 +72,7 @@ export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, h
                     <Icon
                         style={{ alignSelf: 'center', marginLeft: Matrics.CountScale(5) }}
                         name="link" color="#03AAEE" size={15}
-                        onPress={() => {}}
+                        onPress={() => onLinkPress() }
                     />
                 }
                 </View>
@@ -460,6 +460,7 @@ class WeeklySchedule extends React.Component {
                 }
             }
         } else if (nextProps.response.GetLinkedEmployeeDetailsSuccess) {
+            console.log('linkdetails-->', nextProps.response.data)
             let data = nextProps.response.data;
             if (data.Status == 1) {
                 this.setState({ LinkedDetailsArr: data.Basic });
@@ -643,8 +644,8 @@ class WeeklySchedule extends React.Component {
         this.setState({ TotalofEmployeeScheduleData })
     }
     setEmpData() {
-       console.log('empdata***', this.state.employeeRerurnData)
-       console.log('empdata***', this.state.employeeData)
+    //    console.log('empdata***', this.state.employeeRerurnData)
+    //    console.log('empdata***', this.state.employeeData)
         //common array
         let empShiftWise = [];
         this.state.employeeRerurnData.forEach((parent) => {
@@ -674,7 +675,7 @@ class WeeklySchedule extends React.Component {
             empShiftWise.push(EmpData);
         });
         this.setState({ empShiftWise });
-        console.log('empShiftWise-->', JSON.stringify(empShiftWise));
+        // console.log('empShiftWise-->', JSON.stringify(empShiftWise));
         //end of common array
 
         let empRoleData = [];
@@ -690,7 +691,7 @@ class WeeklySchedule extends React.Component {
             }
         })
         
-        console.log('empRoleData-->', JSON.stringify(empRoleData));
+        // console.log('empRoleData-->', JSON.stringify(empRoleData));
 
         let TotalfinalRoleEmployeeData = [];
         empRoleData.forEach(child => {
@@ -882,6 +883,7 @@ class WeeklySchedule extends React.Component {
 
     renderUserRoleItem = ({ item, index }) => {
         // console.log('renderUserRoleItem--> time-->',item);
+        const fullnameArr = item.FullName != undefined && item.FullName != '' && item.FullName.split(' ');
         return (
             <ManagerArtistTextRow
                 labelText={item.FullName}
@@ -891,6 +893,7 @@ class WeeklySchedule extends React.Component {
                 index={index}
                 TotalfinalRoleEmployeeData = {this.state.TotalfinalRoleEmployeeData}
                 IsLinked={item.IsLinked}
+                onLinkPress={() => this.onLinkClick(item.UserStoreGUID, fullnameArr.length > 0 ? fullnameArr[0] : '', fullnameArr.length > 0 ? fullnameArr[2] : '')}
                 onPress={async (data) => {
                     console.log('timedata-->', data);
                     // 
@@ -1002,7 +1005,7 @@ class WeeklySchedule extends React.Component {
                         <Icon name="user-circle-o" size={20} color="#FF7B2A" />
                         <Text style={[Styles.mainContainerLabel, { color: '#FF7B2A' }]}>{item.FirstName}{item.LastName}</Text>
                     </View>
-                    <Text style={Styles.roleText}>({item.RoleCode})</Text>
+                    {/* <Text style={Styles.roleText}>({item.RoleCode})</Text> */}
                     <View style={{ flexDirection: 'row', marginLeft: Matrics.CountScale(25) }}>
                         <Text style={{ flex: 1, fontFamily: Fonts.NunitoSansRegular }}>{ContactNumber}</Text>
                         <Icon
@@ -1385,7 +1388,7 @@ class WeeklySchedule extends React.Component {
                     }
                 >
                     <View style={Styles.headContainer}>
-                        <TouchableOpacity style={Styles.jumpEmpContainer} onPress={() => this.props.navigation.navigate('EmployeeList')}>
+                        <TouchableOpacity style={Styles.jumpEmpContainer} onPress={() => this.props.navigation.navigate('EmployeeList', {employeeData: this.state.empShiftWise, ShopName: this.state.selectedStoreName})}>
                             <Image source={Images.SmallUserIcon} style={{ marginHorizontal: Matrics.CountScale(5) }}></Image>
                             <Text style={Styles.jumpEmpTextStyle}>Jump To Employee</Text>
                         </TouchableOpacity>
@@ -1508,7 +1511,7 @@ class WeeklySchedule extends React.Component {
                         <View style={Styles.containerStyle} >
 
                             <View style={Styles.headingStyle}>
-                                <Text style={{ color: 'white' }}># OF EMPLOYEED SCHEDULE</Text>
+                                <Text style={{ color: 'white' }}># OF EMPLOYEES SCHEDULED</Text>
                             </View>
 
                             <View>

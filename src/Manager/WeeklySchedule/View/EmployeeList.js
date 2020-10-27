@@ -1,6 +1,8 @@
 // ======>>>>> Libraries <<<<<=========
 import React from 'react';
 import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment'
 
 // ======>>>>> Assets <<<<<=========
 import { Colors, Fonts, Images, Matrics, MasterCss } from '@Assets'
@@ -23,16 +25,20 @@ class WeeklySchedule extends React.Component {
 
     //--------->>>State Initilization----------->>>
     state = {
-        employeeData: [1, 2, 3]
+        employeeData: [],
+        ShopName: '',
     };
 
     //------------>>>LifeCycle Methods------------->>>
 
-    UNSAFE_componentWillMount() {
+    componentDidMount(){
+        if (this.props.navigation.state.params) {
+            const employeeData = this.props.navigation.state.params.employeeData;
+            const ShopName = this.props.navigation.state.params.ShopName;
+            console.log('employeeData-->',employeeData)
+            this.setState({ employeeData, ShopName });
+        }
     }
-
-
-    componentWillUnmount() { }
 
 
     //------------->>>Controllers/Functions------------>>>>
@@ -41,16 +47,31 @@ class WeeklySchedule extends React.Component {
         return (
             <View style={Styles.itemContainerStyle}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image style={Styles.employeeImgStyle} />
+                    {
+                        item.ProfilePicture != '' ? 
+                            <Image style={Styles.employeeImgStyle}  source={ item.ProfilePicture != '' ? { uri: item.ProfilePicture} : Images.UserIcon} />
+                        :   <Icon name="user-circle" color="grey" size={40}  style={[Styles.employeeImgStyle,{marginLeft: Matrics.CountScale(5),}]} />
+                    }
+                    
                     <View>
-                        <Text style={Styles.nameStyle}>Martha Bryan</Text>
-                        <Text style={Styles.shopTextStyle}>Shop #11245</Text>
+                        <Text style={Styles.nameStyle}>{item.FullName}</Text>
+                        <Text style={Styles.shopTextStyle}>Shop #{this.state.ShopName}</Text>
                     </View>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={Images.Calendar} />
-                    <Text style={Styles.timingStyle}>Mar 30, Sat 10.00pm - 12.00pm</Text>
-                </View>
+                {
+                    item.ShiftData.length > 0 &&
+                    item.ShiftData.map((data) => {
+                        return(
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Image source={Images.Calendar} />
+                                <View>
+                                    {/* <Text style={Styles.timingStyle}>Mar 30, Sat 10.00pm - 12.00pm</Text> */}
+                                    <Text style={Styles.timingStyle}>{moment(item.ScheduleDate).format('MMM DD, ddd')} {`${moment(data.InTime, "h:mm A").format('hh:mm a')} - ${moment(data.OutTime, "h:mm A").format('hh:mm a')}`}</Text>
+                                </View>
+                            </View>
+                        )
+                    })
+                }
             </View>
         )
     }
@@ -63,6 +84,15 @@ class WeeklySchedule extends React.Component {
                 <FlatList
                     data={this.state.employeeData}
                     renderItem={this.renderItem}
+                    keyExtractor={(item,index) => index.toString()}
+                    contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+                    ListEmptyComponent={() => (
+                        <View>
+                            <Text style={{ textAlign: 'center',fontFamily: Fonts.NunitoSansRegular, fontSize: Matrics.CountScale(20) }}>
+                                No Data Found Please Try Again!!!
+                            </Text>
+                        </View>
+                    )}
                 />
             </View>
         );
@@ -93,7 +123,6 @@ const Styles = StyleSheet.create({
     employeeImgStyle: {
         height: Matrics.CountScale(40),
         width: Matrics.CountScale(40),
-        backgroundColor: 'grey',
         borderRadius: Matrics.CountScale(20),
         margin: Matrics.CountScale(10),
     }
