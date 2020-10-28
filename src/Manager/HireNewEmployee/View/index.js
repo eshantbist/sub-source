@@ -3,7 +3,8 @@ import React from 'react';
 import { View, Text, Platform, Switch, ScrollView, Image, TouchableOpacity, StyleSheet, Alert, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+// import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+import DocumentPicker from 'react-native-document-picker';
 import { Dropdown } from 'react-native-material-dropdown';
 import moment from 'moment';
 import {Picker} from '@react-native-community/picker';
@@ -223,6 +224,7 @@ class HireNewEmployee extends React.Component {
             // posId: `${data[index].DisplayStoreNumber}-` 
         });
         let selectedShopArr = this.state.storeWithSettingArr.filter(R => R.StoreID === data[index].StoreID);
+        console.log('selectedShopArr-->', selectedShopArr);
         const EVerify = selectedShopArr[0].IsEverifyAutomatedEnabled ? selectedShopArr[0].IsEverifyAutomatedEnabled : false;
         const process = selectedShopArr[0].IsBGCAutomatedEnabled ? selectedShopArr[0].IsBGCAutomatedEnabled : false;
         const isBGCAutomated = selectedShopArr[0].IsBGCAutomated ? selectedShopArr[0].IsBGCAutomated : false;
@@ -278,14 +280,28 @@ class HireNewEmployee extends React.Component {
         return age;
     }
 
-    onSelectFile() {
-        DocumentPicker.show({
-            filetype: [DocumentPickerUtil.allFiles()],
-        }, (error, res) => {
+    async onSelectFile() {
+        // DocumentPicker.show({
+        //     filetype: [DocumentPickerUtil.allFiles()],
+        // }, (error, res) => {
+        //     console.log('***name', res);
+        //     if (res != null)
+        //         this.setState({ attachFile: res.fileName, attachFilePath: res.uri })
+        // });
+        try {
+            const res = await DocumentPicker.pick({
+                type: [DocumentPicker.types.allFiles],
+            });
             console.log('***name', res);
             if (res != null)
-                this.setState({ attachFile: res.fileName, attachFilePath: res.uri })
-        });
+                this.setState({ attachFile: res.name, attachFilePath: res.uri })
+        } catch (err) {
+            if (DocumentPicker.isCancel(err)) {
+                console.log('cancel');
+            } else {
+                throw err;
+            }
+        }
     }
 
     callbackFunction = minorData => {

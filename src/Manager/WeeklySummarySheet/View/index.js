@@ -8,7 +8,8 @@ import { connect } from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import CalendarPicker from '../../../CustomComponent/react-native-calendar-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+// import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+import DocumentPicker from 'react-native-document-picker';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -674,13 +675,27 @@ class WeeklySummarySheet extends React.Component {
         await this.setState({ selectedStoreId: data[index].StoreID, selectedStoreName: value });
     }
 
-    onSelectFile() {
-        DocumentPicker.show({
-            filetype: [DocumentPickerUtil.allFiles()],
-        }, (error, res) => {
+    async onSelectFile() {
+        // DocumentPicker.show({
+        //     filetype: [DocumentPickerUtil.allFiles()],
+        // }, (error, res) => {
+        //     if (res != null)
+        //         this.setState({ attachFile: res.fileName })
+        // });
+        try {
+            const res = await DocumentPicker.pick({
+                type: [DocumentPicker.types.allFiles],
+            });
+            console.log('***name', res);
             if (res != null)
-                this.setState({ attachFile: res.fileName })
-        });
+            this.setState({ attachFile: res.fileName })
+        } catch (err) {
+            if (DocumentPicker.isCancel(err)) {
+                console.log('cancel');
+            } else {
+                throw err;
+            }
+        }
     }
 
     _renderItem({ item, index }) {
@@ -1242,6 +1257,7 @@ class WeeklySummarySheet extends React.Component {
                             selectedTextStyle={{ textAlign: 'center'}}
                         /> */}
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{this.state.selectedStoreName}</Text>
+                        <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${this.state.WeekEndingDate}`}</Text>
                     </View>
 
                     <TouchableOpacity 

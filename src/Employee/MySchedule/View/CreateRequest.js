@@ -15,7 +15,7 @@ import {
 import { connect } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
 import { Calendar } from 'react-native-calendars'
-import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+import DocumentPicker from 'react-native-document-picker';
 import moment from "moment";
 
 /* ====>>>>>>>>>>> Assets <<<<<<<<<<==========> */
@@ -229,14 +229,28 @@ class CreateRequest extends React.Component {
         }
     }
 
-    onAttach() {
-        DocumentPicker.show({
-            filetype: [DocumentPickerUtil.allFiles()],
-        }, (error, res) => {
+    async onAttach() {
+        // DocumentPicker.show({
+        //     filetype: [DocumentPickerUtil.allFiles()],
+        // }, (error, res) => {
+        //     console.log('***name', res);
+        //     if (res != null)
+        //         this.setState({ attachFile: res })
+        // });
+        try {
+            const res = await DocumentPicker.pick({
+                type: [DocumentPicker.types.allFiles],
+            });
             console.log('***name', res);
             if (res != null)
-                this.setState({ attachFile: res })
-        });
+            this.setState({ attachFile: res })
+        } catch (err) {
+            if (DocumentPicker.isCancel(err)) {
+                console.log('cancel');
+            } else {
+                throw err;
+            }
+        }
     }
 
     async onSelectReason(value, index, data) {

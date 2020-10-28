@@ -4,7 +4,8 @@ import { Colors, Fonts, Matrics, Images, MasterCss } from '@Assets';
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+// import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+import DocumentPicker from 'react-native-document-picker';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -122,14 +123,28 @@ export default class Minor extends React.Component {
   // };
 
 
-  onSelectFile() {
-    DocumentPicker.show({
-        filetype: [DocumentPickerUtil.allFiles()],
-    }, (error, res) => {
+  async onSelectFile() {
+    // DocumentPicker.show({
+    //     filetype: [DocumentPickerUtil.allFiles()],
+    // }, (error, res) => {
+    //     console.log('***name', res);
+    //     if (res != null)
+    //         this.setState({ permitFile: res.fileName, PermitFilePath: res.uri, permitFileError: '' })
+    // });
+    try {
+        const res = await DocumentPicker.pick({
+            type: [DocumentPicker.types.allFiles],
+        });
         console.log('***name', res);
         if (res != null)
-            this.setState({ permitFile: res.fileName, PermitFilePath: res.uri, permitFileError: '' })
-    });
+          this.setState({ permitFile: res.name, PermitFilePath: res.uri, permitFileError: '' })
+    } catch (err) {
+        if (DocumentPicker.isCancel(err)) {
+            console.log('cancel');
+        } else {
+            throw err;
+        }
+    }
   }
 
   onClickOfSubmit() {

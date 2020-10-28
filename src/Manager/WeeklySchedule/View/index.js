@@ -16,7 +16,8 @@ import Collapsible from 'react-native-collapsible';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import CalendarPicker from '../../../CustomComponent/react-native-calendar-picker';
-import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+// import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+import DocumentPicker from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment'
 import {Picker} from '@react-native-community/picker';
@@ -963,14 +964,28 @@ class WeeklySchedule extends React.Component {
         );
     }
 
-    onSelectFile() {
-        DocumentPicker.show({
-            filetype: [DocumentPickerUtil.allFiles()],
-        }, (error, res) => {
+    async onSelectFile() {
+        // DocumentPicker.show({
+        //     filetype: [DocumentPickerUtil.allFiles()],
+        // }, (error, res) => {
+        //     console.log('***name', res);
+        //     if (res != null)
+        //         this.setState({ attachFile: res.fileName, attachFilePath: res.uri })
+        // });
+        try {
+            const res = await DocumentPicker.pick({
+                type: [DocumentPicker.types.allFiles],
+            });
             console.log('***name', res);
             if (res != null)
-                this.setState({ attachFile: res.fileName, attachFilePath: res.uri })
-        });
+            this.setState({ attachFile: res.name, attachFilePath: res.uri })
+        } catch (err) {
+            if (DocumentPicker.isCancel(err)) {
+                console.log('cancel');
+            } else {
+                throw err;
+            }
+        }
     }
 
     onLinkClick(UserStoreGUID, FirstName, LastName) {
