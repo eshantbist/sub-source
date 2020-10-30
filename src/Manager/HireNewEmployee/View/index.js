@@ -248,6 +248,7 @@ class HireNewEmployee extends React.Component {
         let age = this.getAge(moment(date).format('YYYY/MM/DD'));
         console.log('age-->',age);
         console.log('minorAge-->',this.state.minorAge);
+        this.hideDateTimePicker();
         if(age < 12 ){
             this.setState({ errorDob: 'Please Select Valid Date Of Birth.'})
         }else if(this.state.selectedStore!== '' && age < this.state.minorAge) {
@@ -266,7 +267,7 @@ class HireNewEmployee extends React.Component {
             this.setState({ errorDob: ''});
         }
         this.setState({ dateOfBirth: moment(date).format('MMM DD, YYYY'), age })
-        this.hideDateTimePicker();
+        
     };
 
     getAge(dateString) {

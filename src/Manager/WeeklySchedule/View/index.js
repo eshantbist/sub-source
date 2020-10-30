@@ -804,6 +804,7 @@ class WeeklySchedule extends React.Component {
         // if(this.state.selectedVal == 'shift' && this.state.dateFlag == 'endingDate'){
         //     this.setState({ endingDate: moment(date).format('MM/DD/YYYY'), endingDateError: '' })
         // } else {
+        this._hideDateTimePicker();
         if (this.state.dateFlag == 'startDate') {
             this.setState({ timeoffStartDate: moment(date).format('MM/DD/YYYY'), startDateError: '' });
         } else {
@@ -825,7 +826,7 @@ class WeeklySchedule extends React.Component {
             }
         }
 
-        this._hideDateTimePicker();
+        
     };
 
     _showTimePicker(val) {
@@ -834,6 +835,7 @@ class WeeklySchedule extends React.Component {
     _hideTimePicker = () => this.setState({ isTimePickerVisible: false });
 
     _handleTimePicked = (time) => {
+        this._hideTimePicker();
         let val = moment(time).format('hh:mm:ssa')
         if (this.state.timeFlag == 'InTime') {
             this.setState({ shiftinTime: val, InTimeError: '' })
@@ -841,7 +843,7 @@ class WeeklySchedule extends React.Component {
         else if (this.state.timeFlag == 'OutTime') {
             this.setState({ shiftoutTime: val, outTimeError: '' })
         }
-        this._hideTimePicker();
+        // this._hideTimePicker();
     };
 
     _renderItem({ item, index }) {

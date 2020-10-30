@@ -49,22 +49,28 @@ class Publish extends React.Component {
         // self = this
         // const employeeData = this.props.navigation.getParam('empData');
         if (this.props.navigation.state.params) {
-            console.log('employeeData', this.props.navigation.state.params)
+            // console.log('employeeData', this.props.navigation.state.params)
             if(this.props.navigation.state.params.empData != undefined){
                 const Recipients = JSON.parse(this.props.navigation.state.params.empData);
                 this.setState({ 
-                    recipientsData: JSON.parse(this.props.navigation.state.params.empData),
+                    // recipientsData: JSON.parse(this.props.navigation.state.params.empData),
                     WeekEndingDate: this.props.navigation.state.params.WeekEndingDate,
                     selectedStoreId: this.props.navigation.state.params.selectedStoreId,
                     selectedStoreName: this.props.navigation.state.params.selectedStoreName,
                  });
                 let ReceipientsChecked = [];
+                let recipientsData = [];
                 if(Recipients.length > 0){
                     Recipients.forEach((data) => {
-                        ReceipientsChecked.push(true);
+                        if(data.ShiftData.length > 0){
+                            ReceipientsChecked.push(true);
+                            recipientsData.push(data);
+                        }
                     });
-                    this.setState({ReceipientsChecked});
+                    this.setState({recipientsData, ReceipientsChecked});
                 }
+                // console.log('recipientsData-->', recipientsData)
+                // console.log('ReceipientsChecked-->', ReceipientsChecked)
             }
         }
     }
@@ -107,21 +113,45 @@ class Publish extends React.Component {
                     this.state.ReceipientsChecked.forEach((data, key) => {
                         if(index == key && data == true){
                             let empList = {
-                                "UserStoreID": child.UserStoreID,
-                                "EmployeeNumber": child.EmployeeNumber,
-                                "FullName": child.FullName,
+                                "ContactNumber": child.ContactNumber,
+                                "CurriculumName": child.CurriculumName,
+                                "CurriculumPercentage": child.CurriculumPercentage,
+                                "DOB": child.DOB,
+                                "DateCompleted": child.DateCompleted,
+                                "DoH": child.DoH,
                                 "EmailID": child.EmailID,
-                                "IsScheduled": child.IsScheduled,
+                                "EmployeeAge": child.EmployeeAge,
+                                "EmployeeNumber": child.EmployeeNumber,
+                                "EmployeeStatus": child.EmployeeStatus,
+                                "EmployeeStatusID": child.EmployeeStatusID,
+                                "Experience": child.Experience,
+                                "FullName": child.FullName,
+                                "IsAvailability": child.IsAvailability,
                                 "IsChecked": true,
+                                "IsLinked": child.IsLinked,
+                                "IsMinorEmployee": child.IsMinorEmployee,
+                                "IsScheduled": child.IsScheduled,
+                                "IsSuggested": child.IsSuggested,
+                                "IsUosMappingAvailable": child.IsUosMappingAvailable,
+                                "ProfilePicture": child.ProfilePicture,
+                                "ReceipientsMessage": this.state.message,
+                                "RoleCode": child.RoleCode,
+                                "RoleID": child.RoleID,
+                                "RoleLevel": child.RoleLevel,
+                                "RoleName": child.RoleName,
                                 "SMSEmailID": child.SMSEmailID,
-                                "ReceipientsMessage": this.state.message
+                                "UosAllEmpID": child.UosAllEmpID,
+                                "UserID": child.UserID,
+                                "UserStoreGUID": child.UserStoreGUID,
+                                "UserStoreID": child.UserStoreID,
+                                "isUOS": child.isUOS
                             }
                             empListArr.push(empList);
                         }
                     })
                 });
             }
-            console.log('emplistarr-->', empListArr);
+            // console.log('emplistarr-->', empListArr);
             this.setState({ loading: true });
             this.props.NotifyEmployeeSchedulesOnPublishRequest({
                 'StoreId': this.state.selectedStoreId, 'DisplayStoreNumber': this.state.selectedStoreName, 'BusinessTypeId': 1, 'WeekEnding': this.state.WeekEndingDate, 'DayID': -1,
@@ -189,10 +219,13 @@ class Publish extends React.Component {
 
     renderRecipients = ({ item, index }) => {
         return (
-            item.EmailID
-                ?
+            // item.EmailID
+            //     ?
                 <View style={{ backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', paddingLeft: Matrics.CountScale(10), marginVertical: Matrics.CountScale(5) }}>
-                    <Text style={{ flex: 1}}>{item.EmailID}</Text>
+                    <View style={{ flex: 1}}>
+                        <Text>{item.FullName}</Text>
+                        <Text style={{ marginTop: Matrics.CountScale(5)}}>{item.EmailID}</Text>
+                    </View>
                     {/* <TouchableOpacity onPress={() => this.removeRecipients(item.EmailID)}>
                         <Image style={{
                             width: Matrics.CountScale(15), height: Matrics.CountScale(30),
@@ -221,7 +254,7 @@ class Publish extends React.Component {
                         />
                     {/* </View> */}
                 </View>
-                : null
+                // : null
         )
     }
 

@@ -550,6 +550,7 @@ class WeeklySummarySheet extends React.Component {
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
     _handleDatePicked = (date) => {
+        this._hideDateTimePicker();
         if(this.state.dateFlag == 'startDate') {
             this.setState({ timeoffStartDate: moment(date).format('MM/DD/YYYY'), startDateError: '' });
         } else {
@@ -567,8 +568,6 @@ class WeeklySummarySheet extends React.Component {
                 this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: 'Please Select Valid Weekend Date'})
             }
         }
-
-        this._hideDateTimePicker();
     };
 
     _showTimePicker(val, index, punchin, punchout) {
@@ -580,6 +579,7 @@ class WeeklySummarySheet extends React.Component {
         console.log('timeFlag-->',this.state.timeFlag);
         let val = moment.parseZone(time).format('HH:mm')
         console.log('val-->',val);
+        this._hideTimePicker();
         if (this.state.timeFlag == 'InTime') {
             await this.setState({ inTime: val })
         }
@@ -632,9 +632,6 @@ class WeeklySummarySheet extends React.Component {
         //         ? Global.getTimeDiff(moment(this.state.punchInArr[index],'hh:mm:ss').format('hh:mm:ss'),
         //             moment(this.state.punchOutArr[index],'hh:mm:ss').format('hh:mm:ss'))
         //         : Global.getTimeDiff(item.PunchIn, item.PunchOut)
-            
-
-        this._hideTimePicker();
     };
 
     getRole() {
@@ -1014,13 +1011,19 @@ class WeeklySummarySheet extends React.Component {
         // console.log('selected date-->', this.state.selectedDate)
         return(
             <View>
-                <View style={{ backgroundColor: Colors.APPCOLOR, flexDirection: 'row' }}>
-                    <View style={{ width: '48%' }}><Text style={[Styles.headingStyle, { color: 'white', textAlign: 'center' }]} >{item.RoleName}</Text></View>
-                    <View style={{ width: '13%', alignItems: 'center' }}><Text style={[Styles.headingStyle, { color: 'white' }]}>RG</Text></View>
-                    <View style={{ width: '13%', alignItems: 'center' }}><Text style={[Styles.headingStyle, { color: 'white' }]}>OT</Text></View>
-                    <View style={{ width: '13%', alignItems: 'center' }}><Text style={[Styles.headingStyle, { color: 'white' }]}>DT</Text></View>
-                    <View style={{ width: '13%', alignItems: 'center' }}><Text style={[Styles.headingStyle, { color: 'white' }]}>BW</Text></View>
-                </View>
+                {
+                    item.RoleName == "Weekly summary"
+                    ? <View style={{ borderColor: Colors.APPCOLOR, borderWidth: 2 }} />
+                    :
+                    <View style={{ backgroundColor: Colors.APPCOLOR, flexDirection: 'row' }}>
+                        <View style={{ width: '48%' }}><Text style={[Styles.headingStyle, { color: 'white', textAlign: 'center' }]} >{item.RoleName}</Text></View>
+                        <View style={{ width: '13%', alignItems: 'center' }}><Text style={[Styles.headingStyle, { color: 'white' }]}>RG</Text></View>
+                        <View style={{ width: '13%', alignItems: 'center' }}><Text style={[Styles.headingStyle, { color: 'white' }]}>OT</Text></View>
+                        <View style={{ width: '13%', alignItems: 'center' }}><Text style={[Styles.headingStyle, { color: 'white' }]}>DT</Text></View>
+                        <View style={{ width: '13%', alignItems: 'center' }}><Text style={[Styles.headingStyle, { color: 'white' }]}>BW</Text></View>
+                    </View>
+                }
+                
                 {
                     this.state.selectedDate !== 'Total'
                     ?

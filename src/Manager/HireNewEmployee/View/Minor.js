@@ -90,6 +90,7 @@ export default class Minor extends React.Component {
 
   _handleDatePicked = (date) => {
     // console.log('A date has been picked: ', moment(date).format('MMM DD, ddd'));
+    this._hideDateTimePicker();
     if(this.state.dateFlag == 'issueDate'){
         this.setState({ issueDate: moment(date).format('MM/DD/YYYY'), issueDateError: '' });
     } else if(this.state.dateFlag === 'expirationDate') {
@@ -103,7 +104,7 @@ export default class Minor extends React.Component {
         this.setState({ endDate: moment(date).format('MM/DD/YYYY'), endDateError: '' });
       }
     }
-    this._hideDateTimePicker();
+    
   };
 
   // _showTimePicker(val) {

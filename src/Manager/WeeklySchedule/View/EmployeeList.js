@@ -60,9 +60,12 @@ class WeeklySchedule extends React.Component {
                 </View>
                 {
                     item.ShiftData.length > 0 &&
-                    item.ShiftData.map((data) => {
+                    item.ShiftData.map((data, i) => {
                         return(
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View 
+                                key={i}
+                                style={{ flexDirection: 'row', alignItems: 'center' }}
+                            >
                                 <Image source={Images.Calendar} />
                                 <View>
                                     {/* <Text style={Styles.timingStyle}>Mar 30, Sat 10.00pm - 12.00pm</Text> */}
@@ -85,7 +88,9 @@ class WeeklySchedule extends React.Component {
                     data={this.state.employeeData}
                     renderItem={this.renderItem}
                     keyExtractor={(item,index) => index.toString()}
-                    contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+                    contentContainerStyle={{ flexGrow: 1, 
+                        justifyContent: this.state.employeeData.length == 0 ? 'center' : 'flex-start', 
+                    }}
                     ListEmptyComponent={() => (
                         <View>
                             <Text style={{ textAlign: 'center',fontFamily: Fonts.NunitoSansRegular, fontSize: Matrics.CountScale(20) }}>

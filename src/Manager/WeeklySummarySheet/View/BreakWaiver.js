@@ -74,8 +74,8 @@ class BreakWaiver extends React.Component {
 
     _handleDatePicked = (date) => {
         // console.log('A date has been picked: ', moment(date).format('MMM DD, ddd'));
-        this.setState({ warningDate: moment(date).format('MMM DD, ddd') })
         this._hideDateTimePicker();
+        this.setState({ warningDate: moment(date).format('MMM DD, ddd') })
     };
 
     _showTimePicker(val) {
@@ -86,6 +86,7 @@ class BreakWaiver extends React.Component {
     _handleTimePicked = (time) => {
         // console.log('A date has been picked: ', time);
         let val = moment(time).format('HH:mm')
+        this._hideTimePicker();
         if (this.state.timeFlag == 'InFrom') {
             this.setState({ shiftInTimeFrom: val })
         }
@@ -99,7 +100,7 @@ class BreakWaiver extends React.Component {
             this.setState({ shiftOutTimeTo: val })
         }
         // this.setState({ shiftInTimeFrom: moment(time).format('hh:mm') })
-        this._hideTimePicker();
+        
     };
 
     render() {
