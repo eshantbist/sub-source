@@ -217,6 +217,19 @@ class HireNewEmployee extends React.Component {
         await this.setState({ selectedWages: data[index].type, errorWageType: '', wageTypeId: data[index].value });
     }
 
+    async onSelectRole(value, index, data){
+        // console.log('val-->', value)
+        // console.log('data-->', data)
+        // console.log('index-->', index)
+        const roleArr = this.state.roleList.filter(R => R.RoleName === value);
+        // console.log('roleArr-->', roleArr)
+        const position = value;
+        const roleId = roleArr[0].RoleID;
+        const PositionType = roleArr[0].PositionType;
+        this.setState({ roleId: roleId, position, PositionType });
+        this.getWageType(position);
+    }
+
     async onSelectStore(value, index, data) {
         console.log('onSelectStore-->', data,'----', index)
         console.log('selectedStore-->', data[index].DisplayStoreNumber)
@@ -508,7 +521,9 @@ class HireNewEmployee extends React.Component {
 
                 }, 100)}>
                     <View style={Styles.pageBody}>
-                        <Text style={Styles.cardHeaderText}>Position *</Text>
+                        <Text style={Styles.cardHeaderText} 
+                            onLayout={(e) => this.setState({ dropdownpostion: e.nativeEvent.layout.height })}
+                        >Position *</Text>
                         {this.employeePosition()}
 
                         <Text style={Styles.cardHeaderText}>Employee Details</Text>
@@ -543,7 +558,7 @@ class HireNewEmployee extends React.Component {
                     value={this.state.firstName}
                     returnKeyType={"next"}
                     labelFontSize={14}
-                    containerStyle={Styles.Input}
+                    containerStyle={Styles.Inputcommon}
                     onChangeText={val => this.setState({ firstName: val, errorFirstName: '' })}
                     error={this.state.errorFirstName}
                 />
@@ -552,7 +567,7 @@ class HireNewEmployee extends React.Component {
                     fontSize={18}
                     value={this.state.middleName}
                     labelFontSize={14}
-                    containerStyle={Styles.Input}
+                    containerStyle={Styles.Inputcommon}
                     returnKeyType={"next"}
                     onChangeText={val => this.setState({ middleName: val, })}
                     maxLength = {1}
@@ -560,7 +575,7 @@ class HireNewEmployee extends React.Component {
                 <TextInputView
                     label="Last Name *"
                     fontSize={18}
-                    containerStyle={Styles.Input}
+                    containerStyle={Styles.Inputcommon}
                     labelFontSize={14}
                     value={this.state.lastName}
                     returnKeyType={"next"}
@@ -570,7 +585,7 @@ class HireNewEmployee extends React.Component {
                 <TextInputView
                     label="Email *"
                     fontSize={18}
-                    containerStyle={Styles.Input}
+                    containerStyle={Styles.Inputcommon}
                     value={this.state.email}
                     labelFontSize={14}
                     returnKeyType={"next"}
@@ -715,7 +730,7 @@ class HireNewEmployee extends React.Component {
             </View>
         )
     }
-    employeePosition() {
+    employeePositionold() {
         let positionItems = this.state.roleList.map( (key, val) => {
             return <Picker.Item key={val} value={key.RoleID} label={key.RoleName} />
         });
@@ -735,6 +750,47 @@ class HireNewEmployee extends React.Component {
                 </Picker>
                 <Text style={Styles.errorText}>{this.state.errorPosition}</Text>
             </View>
+        )
+    }
+
+    employeePosition() {
+        console.log('dropdownpostion-->', this.state.dropdownpostion)
+        return (
+            <Dropdown
+                containerStyle={
+                    [Styles.cardContainer,
+                    {
+                    //     // alignSelf: 'flex-start',
+                    //     top: Matrics.CountScale(20), marginLeft: Matrics.CountScale(10),
+                    //     borderBottomColor: Colors.LIGHTGREY, borderBottomWidth: 1,
+                    //     // textAlign: 'left',
+                    //     // width: '100%',
+                    //     // backgroundColor: 'blue',
+                        // marginTop: Matrics.CountScale(10),
+                        // marginHorizontal: Matrics.CountScale(10)
+                        paddingTop: Matrics.CountScale(10)
+                    }]
+                }
+                containerWidth={(Dimensions.get('window').width-50)}
+                data={this.state.roleList}
+                // label="Store # *"
+                value={this.state.position}
+                onChangeText={(value, index, data) => this.onSelectRole(value, index, data)}
+                valueExtractor={({ RoleName  }) => RoleName}
+                inputContainerStyle={{ borderBottomColor: 'transparent',padding: 0, margin: 0 }}
+                itemTextStyle={{ textAlign: 'left' }}
+                overlayStyle={{ borderWidth: 0, top: Dimensions.get('window').height >= 812 ? 2*this.state.dropdownpostion+30 : 2*this.state.dropdownpostion}}
+                dropdownOffset={{ top: 0, left: 0 }}
+                fontSize={17}
+                itemCount={8}
+                rippleCentered={true}
+                error={this.state.errorStore}
+                labelFontSize={18}
+                rippleColor='white'
+                animationDuration= {300}
+                selectedTextStyle={{ textAlign: 'left'}}
+                // onLayout={(e) => this.setState({ dropdownpostion: e.nativeEvent.layout.height})}
+            />
         )
     }
 
@@ -831,6 +887,9 @@ const Styles = StyleSheet.create({
     cardContainer: {
         backgroundColor: Colors.WHITE,
         borderRadius: 3,
+    },
+    Inputcommon: {
+        marginHorizontal: Matrics.CountScale(10)
     },
     Input: {
         margin: Matrics.CountScale(10),
