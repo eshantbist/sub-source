@@ -328,9 +328,9 @@ export default class Minor extends React.Component {
         this.props.navigation.state.params.callbackData({ MinorData });
       }
     }
-    else if(this.state.permitFile === '') {
-      this.setState({ permitFileError: 'please select permitfile' });
-    } 
+    // else if(this.state.permitFile === '') {
+    //   this.setState({ permitFileError: 'please select permitfile' });
+    // } 
     else {
       console.log('save Data');
       this.props.navigation.goBack();

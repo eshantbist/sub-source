@@ -118,6 +118,8 @@ class Dashboard extends React.Component {
         lastFilterselectedRoleId: 0,
         lastFilterselectedStores: -1,
         refreshing: false,
+        selectedRoleName: '',
+        lastFilterselectedUserId: 0,
     }
     // ======>>>>>>> Life Cycle Methods  <<<<<<<========
     async UNSAFE_componentWillMount() {
@@ -207,7 +209,8 @@ class Dashboard extends React.Component {
                 if(data.Report.user_list.length > 0){
                     const userSelect = {
                         UserID: 0,
-                        UserName: 'Select User'
+                        // UserName: 'Select User'
+                        UserName: `Select ${this.state.selectedRoleName} User`
                     }
                     data.Report.user_list.unshift(userSelect);
                 }
@@ -607,12 +610,15 @@ class Dashboard extends React.Component {
                         <Header centerText='Filter'
                             rightText='Save'
                             leftText='Cancel'
-                            onLeftPress={() => this.setState({ 
+                            onLeftPress={() => {
+                                this.setState({ 
                                 filterModal: false,
                                 WeekEndingDate: this.state.lastFilterWeekEndingDate,
                                 selectedRoleId: this.state.lastFilterselectedRoleId,
                                 selectedStores: this.state.lastFilterselectedStores,
-                            })}
+                                selectedUsers: this.state.lastFilterselectedUserId,
+                                Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
+                            })}}
                             onRightPress={() => { 
                                 // console.log('save'); 
                                 // console.log('save', this.state.WeekEndingDate); 
@@ -632,6 +638,8 @@ class Dashboard extends React.Component {
                                     lastFilterWeekEndingDate: this.state.WeekEndingDate,
                                     lastFilterselectedRoleId: this.state.selectedRoleId,
                                     lastFilterselectedStores: this.state.selectedStores,
+                                    lastFilterselectedUserId: this.state.selectedUsers,
+
                                 })
                             }}
                         />
@@ -672,7 +680,8 @@ class Dashboard extends React.Component {
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedRoleId}
                                     onValueChange={value => {
-                                        this.setState({ selectedRoleId: value, loading: true });
+                                        const roleNameArr = this.state.userRole.filter(R => R.RoleID == value);
+                                        this.setState({ selectedRoleId: value, loading: true, selectedRoleName: roleNameArr.length > 0 && roleNameArr[0].RoleName });
                                         this.roleFlag = false;
                                         this.props.getHeaderFilterValuesRequest({
                                             StoreId: -1, RoleId: value, FilterId: -1, BusinessTypeId: 1
@@ -690,7 +699,13 @@ class Dashboard extends React.Component {
                                         <Picker
                                             itemStyle={Styles.pickerItemStyle}
                                             selectedValue={this.state.selectedUsers}
-                                            onValueChange={value => this.setState({ selectedUsers: value })}
+                                            onValueChange={value => {
+                                                this.setState({ selectedUsers: value, loading: true })
+                                                this.roleFlag = false;
+                                                this.props.getHeaderFilterValuesRequest({
+                                                    StoreId: -1, RoleId: this.state.selectedRoleId, FilterId: value, BusinessTypeId: 1
+                                                });
+                                            }}
                                         >
                                             {this.getUsers()}
                                         </Picker>
@@ -723,7 +738,7 @@ class Dashboard extends React.Component {
 
                                 <TouchableOpacity 
                                     onPress={() => this.onResetFilterClick()}
-                                    style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 5, bottom: 20 }}
+                                    style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 5, marginVertical: 20 }}
                                 >
                                     <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
                                     <Text style={{ color: 'red' }}>Reset Filter</Text>
@@ -735,6 +750,7 @@ class Dashboard extends React.Component {
                             onConfirm={this._handleDatePicked}
                             onCancel={this._hideDateTimePicker}
                         /> */}
+                        <LoadWheel visible={this.state.loading} />
                     </View>
                 </Modal>
                 <LoadWheel visible={this.state.loading} />

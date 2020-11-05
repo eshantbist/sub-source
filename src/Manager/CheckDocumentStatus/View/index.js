@@ -73,6 +73,8 @@ class CheckDoucmentStatus extends React.Component {
         selctedTileID: 0,
         selctedPageNumber: 1,
         refreshing: false,
+        selectedRoleName: '',
+        lastFilterselectedUserId: 0,
         // isDateTimePickerVisible: false,
     };
 
@@ -129,7 +131,7 @@ class CheckDoucmentStatus extends React.Component {
                 if(data.Report.user_list.length > 0){
                     const userSelect = {
                         UserID: 0,
-                        UserName: 'Select User'
+                        UserName: `Select ${this.state.selectedRoleName} User`
                     }
                     data.Report.user_list.unshift(userSelect);
                 }
@@ -627,7 +629,9 @@ class CheckDoucmentStatus extends React.Component {
                                 selectedStores: this.state.lastFilterselectedStores, 
                                 selectedStoreName: this.state.lastFilterselectedselectedStoreName,
                                 selectedNOD: this.state.lastFilterselectedNOD,
-                                selectedStatus: this.state.lastFilterselectedStatus
+                                selectedStatus: this.state.lastFilterselectedStatus,
+                                selectedUsers: this.state.lastFilterselectedUserId,
+                                Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
                             })}
                             onRightPress={() => {
                                 console.log('save NOD->', this.state.selectedNOD);
@@ -664,6 +668,7 @@ class CheckDoucmentStatus extends React.Component {
                                     lastFilterselectedNOD: this.state.selectedNOD,
                                     lastFilterselectedStatus: this.state.selectedStatus,
                                     lastFilterselectedselectedStoreName: this.state.selectedStoreName,
+                                    lastFilterselectedUserId: this.state.selectedUsers,
                                 })
                             }}
                         />
@@ -705,13 +710,15 @@ class CheckDoucmentStatus extends React.Component {
                                     // }}
                                     selectedValue={this.state.selectedRoleId}
                                     onValueChange={value => {
-                                        this.setState({ selectedRoleId: value, loading: true })
+                                        const roleNameArr = this.state.userRoleList.filter(R => R.RoleID == value);
+                                        this.setState({ selectedRoleId: value, loading: true, 
+                                            selectedRoleName: roleNameArr.length > 0 && roleNameArr[0].RoleName })
                                         this.filterValFlag = false;
                                         this.props.getHeaderFilterValues({
                                             RoleId: value,
                                             FilterId: -1,
                                             StoreId: -1,
-                                            BusinessTypeId: global.loginResponse.DefaultBusinessTypeID
+                                            BusinessTypeId: global.loginResponse.DefaultBusinessTypeID,
                                         });
                                     }}
                                 >
@@ -724,7 +731,16 @@ class CheckDoucmentStatus extends React.Component {
                                         <Picker
                                             itemStyle={Styles.pickerItemStyle}
                                             selectedValue={this.state.selectedUsers}
-                                            onValueChange={value => this.setState({ selectedUsers: value })}
+                                            onValueChange={value => {
+                                                this.setState({ selectedUsers: value,loading: true,  })
+                                                this.filterValFlag = false;
+                                                this.props.getHeaderFilterValues({
+                                                    RoleId: this.state.selectedRoleId,
+                                                    FilterId: value,
+                                                    StoreId: -1,
+                                                    BusinessTypeId: global.loginResponse.DefaultBusinessTypeID,
+                                                });
+                                            }}
                                         >
                                             {this.getUsers()}
                                         </Picker>
@@ -766,6 +782,7 @@ class CheckDoucmentStatus extends React.Component {
                             onCancel={this._hideDateTimePicker}
                             date={this.state.weekendDate ? new Date(this.state.weekendDate) : new Date()}
                         /> */}
+                        <LoadWheel visible={this.state.loading} />
                     </View>
                 </Modal>
                 <LoadWheel visible={this.state.loading} />

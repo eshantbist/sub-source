@@ -161,6 +161,9 @@ class WeeklySummarySheet extends React.Component {
         HoursEmployeeName: '',
         HoursEmployeeNumber: '',
         HoursUserStoreID: '',
+        selectedUsers: 0,
+        selectedRoleName: '',
+        lastFilterselectedUserId: 0,
     };
 
     lastTap = null;
@@ -227,7 +230,7 @@ class WeeklySummarySheet extends React.Component {
 
       if(nextProps.headerFiltervalues.getHeaderFilterValuesSuccess && this.state.loading && !this.headerfilterFlag && !this.state.getFilterData) {
         this.headerfilterFlag = true
-
+        console.log('in value change success')
         if(this.headerfilterFlag && this.weekDayStatusFlag && this.weekDatesFlag && this.weatherListFlag && this.WeeklySummarySheetFlag &&  this.timeOffReasonsFlag)
             this.setState({ loading: false })
 
@@ -236,6 +239,13 @@ class WeeklySummarySheet extends React.Component {
             const roleSelect = {
                 RoleID: 0,
                 RoleName: 'Select Role'
+            }
+            if(data.Report.user_list.length > 0){
+                const userSelect = {
+                    UserID: 0,
+                    UserName: `Select ${this.state.selectedRoleName} User`
+                }
+                data.Report.user_list.unshift(userSelect);
             }
             data.Report.role_list.unshift(roleSelect);
             await this.setState({ 
@@ -247,6 +257,7 @@ class WeeklySummarySheet extends React.Component {
                 getFilterData: true, 
                 lastFilterselectedStoreId: data.Report.store_list[0].StoreID,
                 lastFilterselectedStoreName: data.Report.store_list[0].DisplayStoreNumber,
+                Users: data.Report.user_list,
             });
         }
         if(this.state.getFilterData) {
@@ -641,13 +652,12 @@ class WeeklySummarySheet extends React.Component {
         }
         return data;
     }
-
     getUsers() {
         let data = []
         for (i = 0; i < this.state.Users.length; i++) {
-            data.push(<Picker.Item label={this.state.Users[i]} value={this.state.Users[i]} />);
+            data.push(<Picker.Item label={this.state.Users[i].UserName} value={this.state.Users[i].UserID} />)
         }
-        return data;
+        return data
     }
 
     getStores() {
@@ -905,7 +915,8 @@ class WeeklySummarySheet extends React.Component {
             selectedRoleId : 0,
             selectedStoreId : this.state.StoresList.length > 0 ? this.state.StoresList[0].StoreID : -1,
             selectedStoreName : this.state.StoresList.length > 0 ? this.state.StoresList[0].DisplayStoreNumber : -1,
-            WeekEndingDate : this.state.currentWeekEndDate
+            WeekEndingDate : this.state.currentWeekEndDate,
+            selectedUsers: 0,
         })
     }
 
@@ -1172,10 +1183,10 @@ class WeeklySummarySheet extends React.Component {
                                 return(
                                     <TextColumn 
                                         name={res.FullName} 
-                                        RG={parseFloat(TotalRG).toFixed(2)} 
-                                        OT={parseFloat(TotalOT).toFixed(2)} 
-                                        DT={parseFloat(TotalDT).toFixed(2)} 
-                                        BW={parseFloat(TotalBW).toFixed(2)} 
+                                        RG={TotalRG != 0 ? parseFloat(TotalRG).toFixed(2) : null} 
+                                        OT={TotalOT != 0 ? parseFloat(TotalOT).toFixed(2) : null} 
+                                        DT={TotalDT != 0 ? parseFloat(TotalDT).toFixed(2) : null} 
+                                        BW={TotalBW != 0 ? parseFloat(TotalBW).toFixed(2) : null} 
                                         onRgDisable={true}
                                         onBwDisable={true}
                                     />
@@ -1185,37 +1196,37 @@ class WeeklySummarySheet extends React.Component {
                         <View>
                             <TextColumn 
                                 name={'Total Hours'} 
-                                RG={WeTotalHoursRG.toFixed(2)} 
-                                OT={WeTotalHoursOT.toFixed(2)} 
-                                DT={WeTotalHoursDT.toFixed(2)} 
-                                BW={WeTotalHoursBW.toFixed(2)} 
+                                RG={WeTotalHoursRG != 0 ? WeTotalHoursRG.toFixed(2) : null} 
+                                OT={WeTotalHoursOT != 0 ? WeTotalHoursOT.toFixed(2) : null} 
+                                DT={WeTotalHoursDT != 0 ? WeTotalHoursDT.toFixed(2) : null} 
+                                BW={WeTotalHoursBW != 0 ? WeTotalHoursBW.toFixed(2) : null} 
                                 onRgDisable={true}
                                 onBwDisable={true}
                             />
-                            <TextRow labelText={'Total Unit'} contentText={WeTotalUnit.toFixed(2)} />
-                            <TextRow labelText={'Productivity'} contentbgColor="green" contentText={WeProductivity.toFixed(2)} bgColor={Colors.ROWBGCOLOR} />
+                            <TextRow labelText={'Total Unit'} contentText={WeTotalUnit != 0 ? WeTotalUnit.toFixed(2) : null} />
+                            <TextRow labelText={'Productivity'} contentbgColor="green" contentText={WeProductivity != 0 ? WeProductivity.toFixed(2) : null} bgColor={Colors.ROWBGCOLOR} />
                             <TextColumn 
                                 name={'Payroll Dollars'} 
-                                RG={PayrollDollarsRG.toFixed(2)} 
-                                OT={PayrollDollarsOT.toFixed(2)} 
-                                DT={PayrollDollarsDT.toFixed(2)} 
-                                BW={PayrollDollarsBW.toFixed(2)} 
+                                RG={PayrollDollarsRG != 0 ? PayrollDollarsRG.toFixed(2) : null} 
+                                OT={PayrollDollarsOT != 0 ? PayrollDollarsOT.toFixed(2) : null} 
+                                DT={PayrollDollarsDT != 0 ? PayrollDollarsDT.toFixed(2) : null} 
+                                BW={PayrollDollarsBW !=0 ? PayrollDollarsBW.toFixed(2) : null} 
                                 onRgDisable={true}
                                 onBwDisable={true}
                             />
-                            <TextRow labelText={'Net Payroll'} contentText={WeNetPayroll.toFixed(2)} bgColor={Colors.ROWBGCOLOR} />
-                            <TextRow labelText={'Payroll Tax'} contentText={WePayrollTax.toFixed(2)} />
-                            <TextRow labelText={'Gross Payroll'} contentText={WeGrossPayroll.toFixed(2)} bgColor={Colors.ROWBGCOLOR} />
-                            <TextRow labelText={'Payroll(%)'} contentbgColor="red" contentText={WePayrollPercentage.toFixed(2)} />
+                            <TextRow labelText={'Net Payroll'} contentText={WeNetPayroll !=0 ? WeNetPayroll.toFixed(2) : null} bgColor={Colors.ROWBGCOLOR} />
+                            <TextRow labelText={'Payroll Tax'} contentText={WePayrollTax != 0 ? WePayrollTax.toFixed(2) : null} />
+                            <TextRow labelText={'Gross Payroll'} contentText={WeGrossPayroll != 0 ? WeGrossPayroll.toFixed(2) : null} bgColor={Colors.ROWBGCOLOR} />
+                            <TextRow labelText={'Payroll(%)'} contentbgColor="red" contentText={WePayrollPercentage != 0 ?WePayrollPercentage.toFixed(2) : null} />
 
                             
-                            <TextRow labelText={'Food Invoices'} contentText={WeFoodInvoices.toFixed(2)} bgColor={Colors.ROWBGCOLOR} />
-                            <TextRow labelText={'Food/Coke Invoice Credits'} contentText={WeFoodInvoiceCredit.toFixed(2)} />
-                            <TextRow labelText={'Coke'} contentText={WeCoke.toFixed(2)} bgColor={Colors.ROWBGCOLOR} />
-                            <TextRow labelText={'Food Cost (%)'} contentText={WeFoodCostPercentage.toFixed(2)} bgColor={Colors.ROWBGCOLOR} />
-                            <TextRow labelText={'Coke Cost (%)'} contentText={WeCokePercentage.toFixed(2)} bgColor={Colors.ROWBGCOLOR} />
+                            <TextRow labelText={'Food Invoices'} contentText={WeFoodInvoices != 0 ? WeFoodInvoices.toFixed(2) : null} bgColor={Colors.ROWBGCOLOR} />
+                            <TextRow labelText={'Food/Coke Invoice Credits'} contentText={WeFoodInvoiceCredit != 0 ? WeFoodInvoiceCredit.toFixed(2) : null} />
+                            <TextRow labelText={'Coke'} contentText={WeCoke !=0 ? WeCoke.toFixed(2) : null} bgColor={Colors.ROWBGCOLOR} />
+                            <TextRow labelText={'Food Cost (%)'} contentText={WeFoodCostPercentage != 0 ? WeFoodCostPercentage.toFixed(2) : null} bgColor={Colors.ROWBGCOLOR} />
+                            <TextRow labelText={'Coke Cost (%)'} contentText={WeCokePercentage != 0 ? WeCokePercentage.toFixed(2) : null} bgColor={Colors.ROWBGCOLOR} />
                             
-                            <TextRow labelText={'Total COGS & Labor(%)'} contentText={WeTotalCOGPercentage.toFixed(2)} bgColor={Colors.ROWBGCOLOR} />
+                            <TextRow labelText={'Total COGS & Labor(%)'} contentText={WeTotalCOGPercentage != 0 ? WeTotalCOGPercentage.toFixed(2) : null} bgColor={Colors.ROWBGCOLOR} />
                         </View>
                 }
             </View>
@@ -1653,6 +1664,8 @@ class WeeklySummarySheet extends React.Component {
                                     selectedRoleId: this.state.lastFilterselectedRoleId,
                                     selectedStoreId: this.state.lastFilterselectedStoreId,
                                     selectedStoreName: this.state.lastFilterselectedStoreName,
+                                    selectedUsers: this.state.lastFilterselectedUserId,
+                                    Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
                                 });
                             }}
                             onRightPress={() => {
@@ -1673,6 +1686,7 @@ class WeeklySummarySheet extends React.Component {
                                     lastFilterselectedRoleId: this.state.selectedRoleId,
                                     lastFilterselectedStoreId: this.state.selectedStoreId,
                                     lastFilterselectedStoreName: this.state.selectedStoreName,
+                                    lastFilterselectedUserId: this.state.selectedUsers,
                                 });
                                 
                             }}
@@ -1714,20 +1728,36 @@ class WeeklySummarySheet extends React.Component {
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedRoleId}
-                                    onValueChange={value => this.setState({ selectedRoleId: value })}
+                                    onValueChange={value => {
+                                        const roleNameArr = this.state.userRole.filter(R => R.RoleID == value);
+                                        this.setState({ selectedRoleId: value, loading: true, getFilterData: false, selectedRoleName: roleNameArr.length > 0 && roleNameArr[0].RoleName })
+                                        this.headerfilterFlag = false;
+                                        this.props.getHeaderFilterValuesRequest({
+                                            StoreId: this.state.selectedStoreId, RoleId: value, FilterId: -1, BusinessTypeId: 1
+                                        });
+                                    }}
                                 >
                                     {this.getRole()}
                                 </Picker>
-                                {/* <View style={Styles.labelBorderStyle}>
-                                    <Text style={Styles.pickerLabelStyle}>Users</Text>
-                                </View>
-                                <Picker
-                                    itemStyle={Styles.pickerItemStyle}
-                                    selectedValue={this.state.selectedUsers}
-                                    onValueChange={value => this.setState({ selectedUsers: value })}
-                                >
-                                    {this.getUsers()}
-                                </Picker> */}
+                                {
+                                    this.state.Users != '' &&
+                                    <View>
+                                        <View style={Styles.labelBorderStyle}>
+                                            <Text style={Styles.pickerLabelStyle}>Users</Text>
+                                        </View>
+                                        <Picker
+                                            itemStyle={Styles.pickerItemStyle}
+                                            selectedValue={this.state.selectedUsers}
+                                            onValueChange={value => {
+                                                this.setState({ selectedUsers: value, loading: true, getFilterData: false });
+                                                this.headerfilterFlag = false;
+                                                this.props.getHeaderFilterValuesRequest({ StoreId: this.state.selectedStoreId, RoleId: this.state.selectedRoleId, FilterId: value, BusinessTypeId: 1 });
+                                            }}
+                                        >
+                                            {this.getUsers()}
+                                        </Picker>
+                                    </View>
+                                }
                                 <Text style={Styles.pickerLabelStyle}>Stores</Text>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
@@ -1750,6 +1780,7 @@ class WeeklySummarySheet extends React.Component {
                             onConfirm={this._handleDatePicked}
                             onCancel={this._hideDateTimePicker}
                         /> */}
+                        <LoadWheel visible={this.state.loading} />
                     </View>
                 </Modal>
                 <LoadWheel visible={this.state.loading} />

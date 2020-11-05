@@ -95,7 +95,7 @@ export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, h
                                                     onPress={() => onPress(res)}
                                                     style={{ borderWidth: 1, borderRadius: 3, backgroundColor: Global.getShiftBgColor(res.DayPartColor), borderColor: Global.getShiftBorderColor(res.DayPartColor) }}
                                                 >
-                                                    <Text style={[Styles.fontStyle, { marginHorizontal: Matrics.CountScale(5), fontSize: Matrics.CountScale(12), color: Colors.APPCOLOR }]} >
+                                                    <Text style={[Styles.fontStyle, { marginHorizontal: Matrics.CountScale(5), fontSize: Matrics.CountScale(12), color: Colors.BLACK }]} >
                                                         {`${moment(res.InTime, "h:mm A").format('hh:mm a')} - ${moment(res.OutTime, "h:mm A").format('hh:mm a')}`}
                                                     </Text>
                                                 </TouchableOpacity>
@@ -110,7 +110,7 @@ export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, h
                                                     onPress={() => onPress(res)}
                                                     style={{ borderWidth: 1, borderRadius: 3, backgroundColor: Global.getShiftBgColor(res.DayPartColor), borderColor: Global.getShiftBorderColor(res.DayPartColor) }}
                                                 >
-                                                    <Text style={[Styles.fontStyle, { marginHorizontal: Matrics.CountScale(5), fontSize: Matrics.CountScale(12), color: Colors.APPCOLOR }]} >
+                                                    <Text style={[Styles.fontStyle, { marginHorizontal: Matrics.CountScale(5), fontSize: Matrics.CountScale(12), color: Colors.BLACK }]} >
                                                         {res.Reason}
                                                     </Text>
                                                 </TouchableOpacity>
@@ -228,6 +228,10 @@ class WeeklySchedule extends React.Component {
         TotalfinalSharedEmployeeData: [],
         TotalScheduleHours: 0,
         refreshing: false,
+        selectedUsers: 0,
+        Users: [],
+        selectedRoleName: '',
+        lastFilterselectedUserId: 0,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -304,6 +308,13 @@ class WeeklySchedule extends React.Component {
                     RoleID: 0,
                     RoleName: 'Select Role'
                 }
+                if(data.Report.user_list.length > 0){
+                    const userSelect = {
+                        UserID: 0,
+                        UserName: `Select ${this.state.selectedRoleName} User`
+                    }
+                    data.Report.user_list.unshift(userSelect);
+                }
                 data.Report.role_list.unshift(roleSelect);
                 await this.setState({
                     userRole: data.Report.role_list,
@@ -313,6 +324,7 @@ class WeeklySchedule extends React.Component {
                     getFilterData: true,
                     lastFilterselectedStoreId: data.Report.store_list[0].StoreID,
                     lastFilterselectedStoreName: data.Report.store_list[0].DisplayStoreNumber,
+                    Users: data.Report.user_list,
                 });
                 if(this.state.getFilterData) {
                     this.UNSAFE_componentWillMount();
@@ -788,6 +800,14 @@ class WeeklySchedule extends React.Component {
         return data;
     }
 
+    getUsers() {
+        let data = []
+        for (i = 0; i < this.state.Users.length; i++) {
+            data.push(<Picker.Item label={this.state.Users[i].UserName} value={this.state.Users[i].UserID} />)
+        }
+        return data
+    }
+
     getStores() {
         let data = []
         for (i = 0; i < this.state.Stores.length; i++) {
@@ -1156,7 +1176,8 @@ class WeeklySchedule extends React.Component {
             selectedRoleId : 0,
             selectedStoreId : this.state.Stores.length > 0 ? this.state.Stores[0].StoreID : -1,
             selectedStoreName : this.state.Stores.length > 0 ? this.state.Stores[0].DisplayStoreNumber : -1,
-            weekendDate : this.state.currentWeekEndDate
+            weekendDate : this.state.currentWeekEndDate,
+            selectedUsers: 0,
         })
     }
 
@@ -1822,6 +1843,8 @@ class WeeklySchedule extends React.Component {
                                 selectedRoleId: this.state.lastFilterselectedRoleId,
                                 selectedStoreId: this.state.lastFilterselectedStoreId,
                                 selectedStoreName: this.state.lastFilterselectedStoreName,
+                                selectedUsers: this.state.lastFilterselectedUserId,
+                                Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
                             })}
                             onRightPress={() => {
                                 // console.log('save'); 
@@ -1859,6 +1882,7 @@ class WeeklySchedule extends React.Component {
                                     lastFilterselectedRoleId: this.state.selectedRoleId,
                                     lastFilterselectedStoreId: this.state.selectedStoreId,
                                     lastFilterselectedStoreName: this.state.selectedStoreName,
+                                    lastFilterselectedUserId: this.state.selectedUsers,
                                 })
                             }}
                         />
@@ -1897,10 +1921,36 @@ class WeeklySchedule extends React.Component {
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedRoleId}
-                                    onValueChange={value => this.setState({ selectedRoleId: value })}
+                                    onValueChange={value => {
+                                        const roleNameArr = this.state.userRole.filter(R => R.RoleID == value);
+                                        this.setState({ selectedRoleId: value, loading: true, getFilterData: false, selectedRoleName: roleNameArr.length > 0 && roleNameArr[0].RoleName })
+                                        this.headerfilterFlag = false;
+                                        this.props.getHeaderFilterValuesRequest({
+                                            StoreId: this.state.selectedStoreId, RoleId: value, FilterId: -1, BusinessTypeId: 1
+                                        });
+                                    }}
                                 >
                                     {this.getRole()}
                                 </Picker>
+                                {
+                                    this.state.Users != '' &&
+                                    <View>
+                                        <View style={Styles.labelBorderStyle}>
+                                            <Text style={Styles.pickerLabelStyle}>Users</Text>
+                                        </View>
+                                        <Picker
+                                            itemStyle={Styles.pickerItemStyle}
+                                            selectedValue={this.state.selectedUsers}
+                                            onValueChange={value => {
+                                                this.setState({ selectedUsers: value, loading: true, getFilterData: false });
+                                                this.headerfilterFlag = false;
+                                                this.props.getHeaderFilterValuesRequest({ StoreId: this.state.selectedStoreId, RoleId: this.state.selectedRoleId, FilterId: value, BusinessTypeId: 1 });
+                                            }}
+                                        >
+                                            {this.getUsers()}
+                                        </Picker>
+                                    </View>
+                                }
                                 <Text style={Styles.pickerLabelStyle}>Stores</Text>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
@@ -1928,6 +1978,7 @@ class WeeklySchedule extends React.Component {
                                 : null
                         }
                     </View>
+                    <LoadWheel visible={this.state.loading} />
                 </Modal>
                 <Modal
                     visible={this.state.linkDetailModal}
