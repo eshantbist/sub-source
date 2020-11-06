@@ -55,12 +55,15 @@ export const TextRow = ({ labelText, contentText, bgColor }) => {
 }
 
 
-export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress}) => {
-    if( selectedDate == 'Total')
-        console.log('TotalfinalRoleEmployeeData-->',TotalfinalRoleEmployeeData.length)
-
+export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress, onLayout, selectedJumpEmpName}) => {
+    // if( selectedDate == 'Total')
+    //     console.log('TotalfinalRoleEmployeeData-->',TotalfinalRoleEmployeeData.length)
+    // console.log('selectedJumpEmpName-->', selectedJumpEmpName)
     return (
-        <View style={[Styles.rowContainer, { backgroundColor: bgColor, borderBottomColor: Colors.BORDERCOLOR, borderBottomWidth: 2 }]}>
+        <View style={[Styles.rowContainer, { backgroundColor: bgColor, borderBottomColor: Colors.BORDERCOLOR, borderBottomWidth: 2 }]}
+            onLayout={(e) => {selectedJumpEmpName != '' ? onLayout(e.nativeEvent.layout.height) : onLayout(0) }}
+            key={selectedJumpEmpName}
+        >
             <View style={Styles.rowTitleStyle}>
                 <Text style={Styles.mainContainerLabel}>{labelText}</Text>
                 <View style={{ flexDirection: 'row'}}>
@@ -151,7 +154,6 @@ export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, h
                     </View>
                 }
             </View>
-
         </View>
     )
 }
@@ -232,6 +234,10 @@ class WeeklySchedule extends React.Component {
         Users: [],
         selectedRoleName: '',
         lastFilterselectedUserId: 0,
+        JumtoEmpModal: false,
+        empShiftWise: [],
+        selectedJumpEmpName: '',
+        selectedEmpIndex: 0,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -982,7 +988,25 @@ class WeeklySchedule extends React.Component {
                         });
                     }
                 }}
-                bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null} />
+                bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null} 
+                onLayout={(height) => { 
+                    // console.log('height-->', height); 
+                    // console.log('item-->', this.state.selectedJumpEmpName == item.FullName ? item : {}); 
+                    // this.flatList.scrollToItem({
+                    //     animated: false,
+                    //     item: this.state.selectedJumpEmpName == item.FullName ? item : {} ,
+                    //     viewPosition: height
+                    // })
+                    if(this.state.selectedJumpEmpName == item.FullName){
+                        // console.log('index-->', index, height, this.state.selectedEmpIndex); 
+                        this.scrollview.scrollTo({
+                            y: (this.state.selectedEmpIndex*2)*height, animated: true
+                        });
+                    }
+                    
+                }}
+                selectedJumpEmpName={this.state.selectedJumpEmpName}
+            />
         );
     }
 
@@ -1118,6 +1142,7 @@ class WeeklySchedule extends React.Component {
 
     renderUserRole = ({ item, index }) => {
         // console.log('item-->', item);
+        // console.log('roleindex-->', index, '-----', item.RoleName);
         return (
             <View style={Styles.containerStyle} >
                 <TouchableOpacity onPress={() => {
@@ -1137,6 +1162,7 @@ class WeeklySchedule extends React.Component {
                                 renderItem={this.renderUserRoleItem}
                                 keyExtractor={(item, index) => index.toString()}
                                 extraData={this.state}
+                                ref={(ref) => this.flatList = ref}
                             />
                         </View>
                         : null
@@ -1371,6 +1397,45 @@ class WeeklySchedule extends React.Component {
         );
     }
 
+    renderJumEmpItem = ({ item, index }) => {
+        return (
+            <TouchableOpacity style={Styles.itemContainerStyle} 
+                onPress={() => {
+                    this.setState({ JumtoEmpModal: false, selectedJumpEmpName: item.FullName, selectedEmpIndex: index+1 });
+                }}
+            >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    {
+                        item.ProfilePicture != '' ? 
+                            <Image style={Styles.employeeImgStyle}  source={ item.ProfilePicture != '' ? { uri: item.ProfilePicture} : Images.UserIcon} />
+                        :   <Icon name="user-circle" color="grey" size={40}  style={[Styles.employeeImgStyle,{marginLeft: Matrics.CountScale(5),}]} />
+                    }
+                    
+                    <View>
+                        <Text style={Styles.nameStyle}>{item.FullName}</Text>
+                        <Text style={Styles.shopTextStyle}>Shop #{this.state.ShopName}</Text>
+                    </View>
+                </View>
+                {
+                    item.ShiftData.length > 0 &&
+                    item.ShiftData.map((data, i) => {
+                        return(
+                            <View 
+                                key={i}
+                                style={{ flexDirection: 'row', alignItems: 'center' }}
+                            >
+                                <Image source={Images.Calendar} />
+                                <View>
+                                    {/* <Text style={Styles.timingStyle}>Mar 30, Sat 10.00pm - 12.00pm</Text> */}
+                                    <Text style={Styles.timingStyle}>{moment(item.ScheduleDate).format('MMM DD, ddd')} {`${moment(data.InTime, "h:mm A").format('hh:mm a')} - ${moment(data.OutTime, "h:mm A").format('hh:mm a')}`}</Text>
+                                </View>
+                            </View>
+                        )
+                    })
+                }
+            </TouchableOpacity>
+        )
+    }
     //----------->>>Render Method-------------->>>
 
     render() {
@@ -1424,9 +1489,13 @@ class WeeklySchedule extends React.Component {
                           onRefresh={this.onRefresh}
                         />
                     }
+                    ref={ref => this.scrollview = ref}
                 >
                     <View style={Styles.headContainer}>
-                        <TouchableOpacity style={Styles.jumpEmpContainer} onPress={() => this.props.navigation.navigate('EmployeeList', {employeeData: this.state.empShiftWise, ShopName: this.state.selectedStoreName})}>
+                        <TouchableOpacity style={Styles.jumpEmpContainer} onPress={() => {
+                            this.setState({ JumtoEmpModal: true });
+                            // this.props.navigation.navigate('EmployeeList', {employeeData: this.state.empShiftWise, ShopName: this.state.selectedStoreName})
+                        }}>
                             <Image source={Images.SmallUserIcon} style={{ marginHorizontal: Matrics.CountScale(5) }}></Image>
                             <Text style={Styles.jumpEmpTextStyle}>Jump To Employee</Text>
                         </TouchableOpacity>
@@ -2038,6 +2107,44 @@ class WeeklySchedule extends React.Component {
                         </View>
                     </View>
                 </Modal>
+                <Modal
+                    visible={this.state.JumtoEmpModal}
+                    transparent={true}
+                >
+                    <View style={[Styles.modalViewContainer, { justifyContent: 'flex-start', }]}>
+                        <View style={[Styles.viewContainer, { flex: 1, marginTop: Matrics.CountScale(30),  backgroundColor: 'lightgrey'}]}>
+                            <View style={{ backgroundColor: Colors.APPCOLOR, alignItems: 'center', flexDirection: 'row',  }}>
+                                <TouchableOpacity  onPress={() => this.setState({ JumtoEmpModal: false })}>
+                                    <Image source={Images.BackIcon} style={{ 
+                                        height: Matrics.CountScale(15),
+                                        width: Matrics.CountScale(15),
+                                        marginLeft: Matrics.CountScale(20), 
+                                        tintColor: 'white' }} />
+                                </TouchableOpacity>
+                                <Text style={[Styles.titleFontStyle, { marginLeft: Matrics.CountScale(10), fontSize: Matrics.CountScale(15), color: 'white', paddingVertical: Matrics.CountScale(15) }]}>EMPLOYEES</Text>
+                            </View>
+                        
+                        <View style={{ flex: 1, paddingVertical: Matrics.CountScale(5) }}>
+                            <FlatList
+                                data={this.state.empShiftWise}
+                                renderItem={this.renderJumEmpItem}
+                                keyExtractor={(item,index) => index.toString()}
+                                contentContainerStyle={{ flexGrow: 1, 
+                                    justifyContent: this.state.empShiftWise.length == 0 ? 'center' : 'flex-start', 
+                                }}
+                                ListEmptyComponent={() => (
+                                    <View>
+                                        <Text style={{ textAlign: 'center',fontFamily: Fonts.NunitoSansRegular, fontSize: Matrics.CountScale(20) }}>
+                                            No Data Found Please Try Again!!!
+                                        </Text>
+                                    </View>
+                                )}
+                            />
+                        </View>
+                        </View>
+                    </View>
+                    
+                </Modal>
                 <LoadWheel visible={this.state.loading} />
             </View>
         );
@@ -2271,6 +2378,30 @@ const Styles = StyleSheet.create({
         fontFamily: Fonts.NunitoSansRegular,
         marginLeft: Matrics.CountScale(10),
         fontWeight: 'bold'
+    },
+    itemContainerStyle: {
+        backgroundColor: 'white', borderRadius: Matrics.CountScale(5),
+        marginVertical: Matrics.CountScale(5), marginHorizontal: Matrics.CountScale(15),
+        padding: Matrics.CountScale(10)
+    },
+    nameStyle: {
+        fontFamily: Fonts.NunitoSansRegular,
+        marginVertical: Matrics.CountScale(5)
+    },
+    shopTextStyle: {
+        fontFamily: Fonts.NunitoSansRegular,
+        color: Colors.GREY,
+        fontSize: Matrics.CountScale(12)
+    },
+    timingStyle: {
+        fontFamily: Fonts.NunitoSansRegular,
+        marginLeft: Matrics.CountScale(10)
+    },
+    employeeImgStyle: {
+        height: Matrics.CountScale(40),
+        width: Matrics.CountScale(40),
+        borderRadius: Matrics.CountScale(20),
+        margin: Matrics.CountScale(10),
     }
 });
 const mapStateToProps = (state) => {
