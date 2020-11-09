@@ -433,9 +433,9 @@ class Dashboard extends React.Component {
             desc: true,
             parser: function(item) { return new Date(item); }
         });
-        console.log('in filter-->month-->',sortedCommentsMonth);
-        console.log('in filter-->qtd-->',sortedCommentsQTD);
-        console.log('in filter-->ytd-->',sortedCommentsYTD);
+        // console.log('in filter-->month-->',sortedCommentsMonth);
+        // console.log('in filter-->qtd-->',sortedCommentsQTD);
+        // console.log('in filter-->ytd-->',sortedCommentsYTD);
         this.setState({ 
             customerCommentsMonth : sortedCommentsMonth, 
             customerCommentsQTD : sortedCommentsQTD, 

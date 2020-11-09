@@ -1323,7 +1323,7 @@ class WeeklySummarySheet extends React.Component {
                             : this.state.loading === false
                                 ? 
                                     <Text style={{ textAlign: 'center',paddingHorizontal:Matrics.CountScale(10) , marginTop: '50%', fontFamily: Fonts.NunitoSansRegular, fontSize: Matrics.CountScale(20) }}>
-                                        No Data Found Please Try Again!!!
+                                        There are no data for selected weekending. Please try with other dates!!!
                                     </Text>
                                 : null
                         }

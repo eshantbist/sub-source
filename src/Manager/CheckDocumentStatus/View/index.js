@@ -23,7 +23,7 @@ import { getHeaderFilterValues, getCheckDocumentStatusHiringReturnRequest, getCh
 
 
 let self;
-let NOD = ['30', '60', '90', 'All'];
+let NOD = ['All','30', '60', '90'];
 let status = ['All status', 'Declined', 'Delivered', 'Created','Completed','Voided', 'Exception','Sent'];
 let perPageRecord = 10;
 let empListData = [];
@@ -67,7 +67,7 @@ class CheckDoucmentStatus extends React.Component {
         empListArr1: [],
         lastFilterselectedRoleId: 0,
         lastFilterselectedStores: -1,
-        lastFilterselectedNOD: 30,
+        lastFilterselectedNOD: 'All',
         lastFilterselectedStatus: 'All Status',
         recipientsListArr: [],
         selctedTileID: 0,
@@ -365,6 +365,16 @@ class CheckDoucmentStatus extends React.Component {
                 PageSize: perPageRecord,
             });
         }
+    }
+
+    onResetFilterClick() {
+        this.setState({
+            selectedRoleId : 0,
+            selectedStores : -1,
+            selectedNOD: -1,
+            selectedStatus: 'All Status',
+            selectedUsers: 0,
+        })
     }
 
 
@@ -762,7 +772,7 @@ class CheckDoucmentStatus extends React.Component {
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedNOD}
-                                    onValueChange={value => this.setState({ selectedNOD: value })}
+                                    onValueChange={value => this.setState({ selectedNOD: value == 'All' ? -1 : value })}
                                 >
                                     {this.getNOD()}
                                 </Picker>
@@ -774,6 +784,13 @@ class CheckDoucmentStatus extends React.Component {
                                 >
                                     {this.getStatus()}
                                 </Picker>
+                                <TouchableOpacity 
+                                    onPress={() => this.onResetFilterClick()}
+                                    style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 5, marginVertical: 20 }}
+                                >
+                                    <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
+                                    <Text style={{ color: 'red' }}>Reset Filter</Text>
+                                </TouchableOpacity>
                             </ScrollView>
                         </View>
                         {/* <DateTimePicker
