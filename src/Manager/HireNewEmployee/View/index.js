@@ -56,8 +56,8 @@ class HireNewEmployee extends React.Component {
         MinorAge: '',
         isMinor: false,
         roleId: '',
-        isBGCAutomated: false,
-        isEverifyAutomated: false,
+        isBGCAutomatedEnabled: false,
+        isEverifyAutomatedEnabled: false,
         PositionType: '',
         attachFile: '',
     };
@@ -238,14 +238,15 @@ class HireNewEmployee extends React.Component {
         });
         let selectedShopArr = this.state.storeWithSettingArr.filter(R => R.StoreID === data[index].StoreID);
         console.log('selectedShopArr-->', selectedShopArr);
-        const EVerify = selectedShopArr[0].IsEverifyAutomatedEnabled ? selectedShopArr[0].IsEverifyAutomatedEnabled : false;
-        const process = selectedShopArr[0].IsBGCAutomatedEnabled ? selectedShopArr[0].IsBGCAutomatedEnabled : false;
-        const isBGCAutomated = selectedShopArr[0].IsBGCAutomated ? selectedShopArr[0].IsBGCAutomated : false;
-        const isEverifyAutomated = selectedShopArr[0].IsEverifyAutomated ? selectedShopArr[0].IsEverifyAutomated : false;
+        const isEverifyAutomatedEnabled = selectedShopArr[0].IsEverifyAutomatedEnabled ? selectedShopArr[0].IsEverifyAutomatedEnabled : false;
+        const isBGCAutomatedEnabled = selectedShopArr[0].IsBGCAutomatedEnabled ? selectedShopArr[0].IsBGCAutomatedEnabled : false;
+
+        const process = selectedShopArr[0].IsBGCAutomated ? selectedShopArr[0].IsBGCAutomated : false;
+        const EVerify = selectedShopArr[0].IsEverifyAutomated ? selectedShopArr[0].IsEverifyAutomated : false;
 
         this.props.getStoreSettingDetailsListRequest({ StoreId: data[index].StoreID });
 
-        await this.setState({ selectedShopArr, EVerify, process, isBGCAutomated, isEverifyAutomated });
+        await this.setState({ selectedShopArr, EVerify, process, isBGCAutomatedEnabled, isEverifyAutomatedEnabled });
         console.log('array-->', selectedShopArr);
         // console.log('array-->storeid-->', data[index].StoreID);
         // console.log('array-->shop-->', selectedShopArr);
@@ -798,7 +799,7 @@ class HireNewEmployee extends React.Component {
         return (
             <View style={Styles.cardContainer}>
                 {
-                     this.state.selectedShopArr.length > 0 
+                     this.state.isBGCAutomatedEnabled == true
                      ?
                      <View style={{ flex: 1, flexDirection: 'row', padding: Matrics.CountScale(10) }}>
                         <Text style={{ flex: 8, color: Colors.APPCOLOR, alignSelf: 'center' }}>
@@ -814,7 +815,7 @@ class HireNewEmployee extends React.Component {
                      : null
                 }
                 {
-                    this.state.selectedShopArr.length > 0 
+                    this.state.isEverifyAutomatedEnabled
                     ?
                         <View style={{ flex: 1, flexDirection: 'row', padding: Matrics.CountScale(10), borderBottomColor: Colors.LIGHTGREY, borderBottomWidth: 1 }}>
                             <Text style={{ flex: 8, color: Colors.APPCOLOR, alignSelf: 'center' }}>
@@ -829,36 +830,6 @@ class HireNewEmployee extends React.Component {
                         </View>
                     : null
                 }
-                {
-                    this.state.selectedShopArr.length === 0
-                    ?
-                        <View>
-                            <View style={{ flex: 1, flexDirection: 'row', padding: Matrics.CountScale(10), borderBottomColor: Colors.LIGHTGREY, borderBottomWidth: 1 }}>
-                                <Text style={{ flex: 8, color: Colors.APPCOLOR, alignSelf: 'center' }}>
-                                    Process E-Verify
-                                </Text>
-                                <Switch
-                                    value={this.state.EVerify}
-                                    style={{ alignSelf: "flex-end", justifyContent: 'flex-end', flex: 2 }}
-                                    onValueChange={() => {
-                                        this.setState({ EVerify: !this.state.EVerify })
-                                    }}></Switch>
-                            </View>
-                                <View style={{ flex: 1, flexDirection: 'row', padding: Matrics.CountScale(10) }}>
-                                <Text style={{ flex: 8, color: Colors.APPCOLOR, alignSelf: 'center' }}>
-                                    Process BGC
-                                </Text>
-                                <Switch
-                                    value={this.state.process}
-                                    style={{ alignSelf: "flex-end", justifyContent: 'flex-end', flex: 2 }}
-                                    onValueChange={() => {
-                                        this.setState({ process: !this.state.process })
-                                    }}></Switch>
-                            </View>
-                        </View>
-                    : null
-                }
-                
             </View>
         )
     }

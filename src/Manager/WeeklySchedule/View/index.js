@@ -81,7 +81,7 @@ export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, h
                 }
                 </View>
             </View>
-            <View style={{ flex: 1, alignItems: 'center' }}>
+            <View style={{ flex: 1, alignItems: 'center',paddingVertical: shiftData.length == 0 ? Matrics.CountScale(20) : 0 }}>
                 {
                     selectedDate !== 'Total'
                     ? shiftData.length > 0
@@ -93,7 +93,7 @@ export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, h
                                 res.ScheduleDate === selectedDate
                                     ? res.DailyScheduleID !== 0
                                         ? 
-                                            <View style={{ paddingTop: Matrics.CountScale(10) }}>
+                                            <View style={{ paddingTop: Matrics.CountScale(10)}}>
                                                 <TouchableOpacity
                                                     onPress={() => onPress(res)}
                                                     style={{ borderWidth: 1, borderRadius: 3, backgroundColor: Global.getShiftBgColor(res.DayPartColor), borderColor: Global.getShiftBorderColor(res.DayPartColor) }}
@@ -1515,7 +1515,7 @@ class WeeklySchedule extends React.Component {
                     <View style={{ marginHorizontal: Matrics.CountScale(5) }} >
 
 
-
+                        {console.log('dayIndex-->',this.state.dayIndex)}
                         <View style={Styles.containerStyle} ref={view => { this.myComponent = view; }}>
                             <Carousel
                                 ref={(c) => { this._carousel = c; }}
@@ -1527,7 +1527,8 @@ class WeeklySchedule extends React.Component {
                                 inactiveSlideScale={1}
                                 inactiveSlideOpacity={1}
                                 extraData={this.state}
-                                onSnapToItem={(index) => this.setState({ dayIndex: index, selectedDate: this.state.daysData[index].DayDate })}
+                                onSnapToItem={(index) => {this.setState({ dayIndex: index, selectedDate: this.state.daysData[index].DayDate })}}
+                                scrollEnabled={this.state.dayIndex == 6 ? false : true}
                             />
 
                             <View style={{ alignItems: 'center', marginHorizontal: Matrics.CountScale(5) }}>

@@ -1294,6 +1294,7 @@ class WeeklySummarySheet extends React.Component {
                       inactiveSlideOpacity={1}
                       extraData={this.state}
                       onSnapToItem={(index) => this.setState({ dayIndex: index, selectedDate: this.state.FinalWeekDatesDataArr[index].WeekDate, selectedDayId: this.state.FinalWeekDatesDataArr[index].DayID })}
+                      scrollEnabled={this.state.dayIndex == 6 ? false : true}
                   />
                   
                 </View>
