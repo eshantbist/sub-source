@@ -721,7 +721,7 @@ class WeeklySummarySheet extends React.Component {
                     </View>
                 :
                     <View style={{ paddingHorizontal: Matrics.CountScale(25), marginTop: Matrics.CountScale(5) }}>
-                        <Text style={[Styles.fontStyle, { color: self.state.dayIndex == index ? 'white' : null, fontWeight: 'bold' }]}>{moment(item.WeekDate).format('MMM DD, YYYY ddd')}</Text>
+                        <Text style={[Styles.fontStyle, { color: self.state.dayIndex == index ? 'white' : null, fontWeight: 'bold' }]}>{moment(item.WeekDate).format('MMM DD, ddd')}</Text>
                         {self.state.weatherListData[index] !== void 0
                             ? <Image source={self.state.dayIndex == index ? Images.CloudIcon2 : Images.CloudIcon1} style={{ marginVertical: Platform.OS == 'ios' ? Matrics.CountScale(10) : Matrics.CountScale(13)}} />
                             : <View style={{ paddingVertical: Platform.OS == 'ios' ? Matrics.CountScale(27) : Matrics.CountScale(35) }}/>
@@ -1271,7 +1271,8 @@ class WeeklySummarySheet extends React.Component {
                             selectedTextStyle={{ textAlign: 'center'}}
                         /> */}
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{this.state.selectedStoreName}</Text>
-                        <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${this.state.WeekEndingDate}`}</Text>
+                        {/* <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${this.state.WeekEndingDate}`}</Text> */}
+                        <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${moment(this.state.WeekEndingDate).format('MM/DD/YY')}`}</Text>
                     </View>
 
                     <TouchableOpacity 
@@ -1294,7 +1295,7 @@ class WeeklySummarySheet extends React.Component {
                       inactiveSlideOpacity={1}
                       extraData={this.state}
                       onSnapToItem={(index) => this.setState({ dayIndex: index, selectedDate: this.state.FinalWeekDatesDataArr[index].WeekDate, selectedDayId: this.state.FinalWeekDatesDataArr[index].DayID })}
-                      scrollEnabled={this.state.dayIndex == 6 ? false : true}
+                      scrollEnabled={this.state.dayIndex == 6 || this.state.dayIndex == 7 ? false : true}
                   />
                   
                 </View>

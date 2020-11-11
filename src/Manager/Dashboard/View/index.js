@@ -532,7 +532,8 @@ class Dashboard extends React.Component {
 
                 {/* ==========>>>>> Header For Dashboard  <<<<<<<=========== */}
                 <DashboardHeader
-                    centerText={`W/E ${this.state.WeekEndingDate}`}
+                    // centerText={`W/E ${this.state.WeekEndingDate}`}
+                    centerText={`W/E ${moment(this.state.WeekEndingDate).format('MM/DD/YY')}`}
                     // leftText={'Profile'}
                     rightImage={Images.FilterIcon}
                     onRightPress={(val) => {

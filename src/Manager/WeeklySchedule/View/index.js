@@ -238,6 +238,7 @@ class WeeklySchedule extends React.Component {
         empShiftWise: [],
         selectedJumpEmpName: '',
         selectedEmpIndex: 0,
+        disableEditDeleteShiftButton: false,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -882,7 +883,8 @@ class WeeklySchedule extends React.Component {
                     {
                         item.DayDate != 'Total' ?
                             <Text style={[Styles.fontStyle, self.state.dayIndex == index ? Styles.selectedDayfontStyle : null]}>
-                                {moment(item.DayDate).format('MMM DD, YYYY ddd')}
+                                {moment(item.DayDate).format('MMM DD, ddd')}
+                                {/* {moment(item.DayDate).format('MMM DD, YYYY ddd')} */}
                             </Text>
                         :
                             <Text style={[Styles.fontStyle, self.state.dayIndex == index ? Styles.selectedDayfontStyle : null]}>{item.DayDate}</Text>
@@ -955,7 +957,7 @@ class WeeklySchedule extends React.Component {
                                 this.setState({ Timeoffdata, selectedReasonId: Timeoffdata.ReasonID, selectedReasonName: Timeoffdata.ReasonName, timeoffNotes: Timeoffdata.ReasonDetail });
                                 // console.log('Timeoffdata-->', Timeoffdata);
                             });
-                            this.setState({ timingModal: true, selectedVal: 'time-off' });
+                            this.setState({ timingModal: true, selectedVal: 'time-off', disableEditDeleteShiftButton: false, resonError: '' });
                         } else {
                             this.setState({
                                 timingModal: true,
@@ -971,6 +973,9 @@ class WeeklySchedule extends React.Component {
                                 ScheduleDate: data.ScheduleDate,
                                 repeatEvery: data.RepeatType == 0 || data.RepeatType == -1 ? false : true,
                                 repeatEveryType: data.RepeatType == 1 ? 'Week' : 'Day',
+                                disableEditDeleteShiftButton: false,
+                                InTimeError: '',
+                                outTimeError: '',
                             });
                         }
                     } 
@@ -984,7 +989,11 @@ class WeeklySchedule extends React.Component {
                             endingDate: '',
                             DailyScheduleID: '',
                             UserStoreGUID: item.UserStoreGUID,
-                            UserStoreID: item.UserStoreID
+                            UserStoreID: item.UserStoreID,
+                            disableEditDeleteShiftButton: true,
+                            InTimeError: '',
+                            outTimeError: '',
+                            resonError: '',
                         });
                     }
                 }}
@@ -1471,7 +1480,8 @@ class WeeklySchedule extends React.Component {
                             selectedTextStyle={{ textAlign: 'center'}}
                         /> */}
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{this.state.selectedStoreName}</Text>
-                        <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${this.state.weekendDate}`}</Text>
+                        {/* <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${this.state.weekendDate}`}</Text> */}
+                        <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${moment(this.state.weekendDate).format('MM/DD/YY')}`}</Text>
                     </View>
 
                     <TouchableOpacity
@@ -1513,9 +1523,6 @@ class WeeklySchedule extends React.Component {
                         </View>
                     </View>
                     <View style={{ marginHorizontal: Matrics.CountScale(5) }} >
-
-
-                        {console.log('dayIndex-->',this.state.dayIndex)}
                         <View style={Styles.containerStyle} ref={view => { this.myComponent = view; }}>
                             <Carousel
                                 ref={(c) => { this._carousel = c; }}
@@ -1528,7 +1535,7 @@ class WeeklySchedule extends React.Component {
                                 inactiveSlideOpacity={1}
                                 extraData={this.state}
                                 onSnapToItem={(index) => {this.setState({ dayIndex: index, selectedDate: this.state.daysData[index].DayDate })}}
-                                scrollEnabled={this.state.dayIndex == 6 ? false : true}
+                                scrollEnabled={this.state.dayIndex == 6 || this.state.dayIndex == 7 ? false : true}
                             />
 
                             <View style={{ alignItems: 'center', marginHorizontal: Matrics.CountScale(5) }}>
@@ -1778,11 +1785,15 @@ class WeeklySchedule extends React.Component {
                                             >
                                                 <View><Text style={Styles.btnTextStyle}>Add Shift</Text></View>
                                             </TouchableOpacity>
-                                            <TouchableOpacity style={Styles.btnViewStyle} onPress={() => this.deleteShift()}>
+                                            <TouchableOpacity 
+                                                disabled={this.state.disableEditDeleteShiftButton}
+                                                style={Styles.btnViewStyle} onPress={() => this.deleteShift()}
+                                            >
                                                 <View><Text style={Styles.btnTextStyle}>Delete Shift</Text></View>
                                             </TouchableOpacity>
                                         </View>
                                         <TouchableOpacity
+                                            disabled={this.state.disableEditDeleteShiftButton}
                                             style={Styles.btnViewStyle2}
                                             onPress={() => this.onAddshift('Edit')}
                                         >
@@ -1854,7 +1865,10 @@ class WeeklySchedule extends React.Component {
                                                 >
                                                     <View><Text style={Styles.btnTextStyle}>Add</Text></View>
                                                 </TouchableOpacity>
-                                                <TouchableOpacity style={Styles.btnViewStyle} onPress={() => {this.onDeleteTimeoff()}}>
+                                                <TouchableOpacity 
+                                                    disabled={this.state.disableEditDeleteShiftButton}
+                                                    style={Styles.btnViewStyle} 
+                                                    onPress={() => {this.onDeleteTimeoff()}}>
                                                     <View><Text style={Styles.btnTextStyle}>Delete</Text></View>
                                                 </TouchableOpacity>
                                             </View> 

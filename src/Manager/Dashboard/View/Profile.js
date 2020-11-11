@@ -3,6 +3,7 @@ import React from 'react';
 import { View, ScrollView, StatusBar, ImageBackground, StyleSheet, Modal, TouchableOpacity, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 {/* ====>>>>>>>>>>>    Assets   <<<<<<<<<<========== */ }
 import { Colors, Fonts, Matrics, Images, MasterCss } from '@Assets'
@@ -281,7 +282,12 @@ class Profile extends React.Component {
                     <TouchableOpacity
                         onPress={() => {
                             AsyncStorage.clear();
-                            this.props.navigation.navigate('Login')
+                            // this.props.navigation.navigate('Login')
+                            const resetAction = StackActions.reset({
+                                index: 0,
+                                actions: [NavigationActions.navigate({ routeName: 'Login' })],
+                            });
+                            this.props.navigation.dispatch(resetAction)
                         }}
                         style={{ borderBottomColor: Colors.LIGHTGREY, borderBottomWidth: 1 }}>
                         <Text style={Styles.logoutText}>

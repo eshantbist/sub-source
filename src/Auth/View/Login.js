@@ -181,7 +181,12 @@ class Login extends React.Component {
 
                 </View>
 
-                <TouchableOpacity style={Styles.resetView} onPress={() => { this.props.navigation.navigate("ResetPassword") }}>
+                <TouchableOpacity style={Styles.resetView} 
+                    onPress={() => { 
+                        this.setState({ errorPassword: '', errorUserName: ''})
+                        this.props.navigation.navigate("ResetPassword") 
+                    }}
+                >
                     <Text style={Styles.resetText}>Can't access your account?</Text>
                     {/* <Text style={{ justifyContent: 'center', alignSelf: 'center', fontSize: 18 ,color:Colors.APPTEXTCOLOR}}></Text> */}
                 </TouchableOpacity>

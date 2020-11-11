@@ -280,7 +280,7 @@ class HireNewEmployee extends React.Component {
         } else {
             this.setState({ errorDob: ''});
         }
-        this.setState({ dateOfBirth: moment(date).format('MMM DD, YYYY'), age })
+        this.setState({ dateOfBirth: moment(date).format('MMMM DD, YYYY'), age })
         
     };
 
