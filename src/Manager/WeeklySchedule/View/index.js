@@ -868,7 +868,12 @@ class WeeklySchedule extends React.Component {
             this.setState({ shiftinTime: val, InTimeError: '' })
         }
         else if (this.state.timeFlag == 'OutTime') {
-            this.setState({ shiftoutTime: val, outTimeError: '' })
+            if(moment(val, "h:mm").format('hh:mm') <= moment(this.state.shiftinTime, "h:mm").format('hh:mm')){
+                this.setState({ outTimeError: 'Out Time ShouldBe GraterThan To InTime', shiftoutTime: '' })
+            } else {
+                this.setState({ shiftoutTime: val, outTimeError: '' })
+            }
+            
         }
         // this._hideTimePicker();
     };
