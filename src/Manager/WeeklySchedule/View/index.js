@@ -239,6 +239,7 @@ class WeeklySchedule extends React.Component {
         selectedJumpEmpName: '',
         selectedEmpIndex: 0,
         disableEditDeleteShiftButton: false,
+        upperSectionHeight: 1,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -537,7 +538,8 @@ class WeeklySchedule extends React.Component {
         }
         else if (nextProps.response.createTimeoffSuccess) {
             let data = nextProps.response.data;
-            if (data.Status == 1) {
+            // if (data.Status == 1) {
+            if(data.Message == 'Employee absence reason saved successfully!') {
                 this.scheduleEmployeeFlag = false;
                 this.scheduleEmployeeReturnFlag = false;
                 this.props.getWeeklyScheduleEmployeeRequest({ StoreId: this.state.selectedStoreId, UserStoreID: -1, DayID: -1, WeekEnding: this.state.weekendDate });
@@ -553,7 +555,8 @@ class WeeklySchedule extends React.Component {
                     loading: true,
                 });
 
-            } else if (data.Status == 0) {
+            // } else if (data.Status == 0) {
+            } else {
                 await setTimeout(() => {
                     Alert.alert(
                         '',
@@ -568,6 +571,7 @@ class WeeklySchedule extends React.Component {
             }
         } else if(nextProps.response.deleteEmployeeTimeoffDaywiseSuccess) {
             let data = nextProps.response.data;
+            console.log('timeoff success-->', data)
             if (data.Status == 1) {
                 this.scheduleEmployeeFlag = false;
                 this.scheduleEmployeeReturnFlag = false;
@@ -868,7 +872,11 @@ class WeeklySchedule extends React.Component {
             this.setState({ shiftinTime: val, InTimeError: '' })
         }
         else if (this.state.timeFlag == 'OutTime') {
-            if(moment(val, "h:mm").format('hh:mm') <= moment(this.state.shiftinTime, "h:mm").format('hh:mm')){
+            var date1 = new Date('01/01/2011 '+ moment(val, "h:mm A").format('h:mm A')); 
+            var date2 = new Date('01/01/2011 '+ moment(this.state.shiftinTime, "h:mm A").format('h:mm A'));
+            // console.log('date1-->', date1)
+            // console.log('date2-->', date2)
+            if(date2 >= date1){
                 this.setState({ outTimeError: 'Out Time ShouldBe GraterThan To InTime', shiftoutTime: '' })
             } else {
                 this.setState({ shiftoutTime: val, outTimeError: '' })
@@ -937,7 +945,7 @@ class WeeklySchedule extends React.Component {
                     if (data !== undefined) {
                         if(data.DailyScheduleID === 0) {
                             await this.getTimeoff(item.UserStoreGUID, data.TimeOffCombineID).then(data => {
-                                // console.log('getTimeOff-->timeOffData-->',data);
+                                console.log('getTimeOff-->timeOffData-->',data);
                                 Timeoffdata = [];
                                 if(data.Status == 1) {
                                     console.log('timedatalen-->', data.Basic.Data.length);
@@ -1013,8 +1021,11 @@ class WeeklySchedule extends React.Component {
                     // })
                     if(this.state.selectedJumpEmpName == item.FullName){
                         // console.log('index-->', index, height, this.state.selectedEmpIndex); 
+                        // console.log('upperSectionHeight-->', this.state.upperSectionHeight); 
                         this.scrollview.scrollTo({
-                            y: (this.state.selectedEmpIndex*2)*height, animated: true
+                            // y: index == 0 ? (this.state.selectedEmpIndex*2)*(height) : (this.state.selectedEmpIndex*2)*(index*height), 
+                            y: (this.state.selectedEmpIndex*height)+this.state.upperSectionHeight, 
+                            animated: true
                         });
                     }
                     
@@ -1528,7 +1539,9 @@ class WeeklySchedule extends React.Component {
                         </View>
                     </View>
                     <View style={{ marginHorizontal: Matrics.CountScale(5) }} >
-                        <View style={Styles.containerStyle} ref={view => { this.myComponent = view; }}>
+                        <View style={Styles.containerStyle} ref={view => { this.myComponent = view; }} 
+                            onLayout={(e) => { this.setState({ upperSectionHeight: e.nativeEvent.layout.height }) }}
+                        >
                             <Carousel
                                 ref={(c) => { this._carousel = c; }}
                                 data={this.state.daysData}
@@ -1783,7 +1796,7 @@ class WeeklySchedule extends React.Component {
                                             </View>
                                         </View>
 
-                                        <View style={{ flexDirection: "row", marginHorizontal: Matrics.CountScale(8), marginBottom: Matrics.CountScale(15), }}>
+                                        {/* <View style={{ flexDirection: "row", marginHorizontal: Matrics.CountScale(8), marginBottom: Matrics.CountScale(15), }}>
                                             <TouchableOpacity
                                                 style={Styles.btnViewStyle}
                                                 onPress={() => this.onAddshift('Add')}
@@ -1796,14 +1809,34 @@ class WeeklySchedule extends React.Component {
                                             >
                                                 <View><Text style={Styles.btnTextStyle}>Delete Shift</Text></View>
                                             </TouchableOpacity>
-                                        </View>
-                                        <TouchableOpacity
-                                            disabled={this.state.disableEditDeleteShiftButton}
-                                            style={Styles.btnViewStyle2}
-                                            onPress={() => this.onAddshift('Edit')}
-                                        >
-                                            <View><Text style={[Styles.btnTextStyle, { color: 'white' }]}>Save Changes</Text></View>
-                                        </TouchableOpacity>
+                                        </View> */}
+                                        {
+                                            this.state.disableEditDeleteShiftButton
+                                            ?
+                                                <TouchableOpacity
+                                                    style={Styles.btnViewStyle}
+                                                    onPress={() => this.onAddshift('Add')}
+                                                >
+                                                    <View><Text style={Styles.btnTextStyle}>Add Shift</Text></View>
+                                                </TouchableOpacity>
+                                            : 
+                                                <View>
+                                                    <TouchableOpacity 
+                                                        // disabled={this.state.disableEditDeleteShiftButton}
+                                                        style={Styles.btnViewStyle} 
+                                                        onPress={() => this.deleteShift()}
+                                                    >
+                                                        <View><Text style={Styles.btnTextStyle}>Delete Shift</Text></View>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity
+                                                        // disabled={this.state.disableEditDeleteShiftButton}
+                                                        style={Styles.btnViewStyle2}
+                                                        onPress={() => this.onAddshift('Edit')}
+                                                    >
+                                                        <View><Text style={[Styles.btnTextStyle, { color: 'white' }]}>Save Changes</Text></View>
+                                                    </TouchableOpacity>
+                                                </View>
+                                        }
                                     </View>
                                     :
                                     <KeyboardAwareScrollView >
@@ -1863,7 +1896,7 @@ class WeeklySchedule extends React.Component {
                                                 </TouchableOpacity>
                                                 <Text style={[Styles.rowLabelText, { flex: 1, marginLeft: Matrics.CountScale(15) }]}>{this.state.attachFile ? this.state.attachFile : null}</Text>
                                             </View>
-                                            <View style={{ flexDirection: "row",marginTop: Matrics.CountScale(15), marginBottom: Matrics.CountScale(15), }}>
+                                            {/* <View style={{ flexDirection: "row",marginTop: Matrics.CountScale(15), marginBottom: Matrics.CountScale(15), }}>
                                                 <TouchableOpacity
                                                     style={Styles.btnViewStyle}
                                                     onPress={() => this.onCreateTimeOff()}
@@ -1876,7 +1909,24 @@ class WeeklySchedule extends React.Component {
                                                     onPress={() => {this.onDeleteTimeoff()}}>
                                                     <View><Text style={Styles.btnTextStyle}>Delete</Text></View>
                                                 </TouchableOpacity>
-                                            </View> 
+                                            </View> */}
+                                            {
+                                                this.state.disableEditDeleteShiftButton 
+                                                ? 
+                                                    <TouchableOpacity
+                                                        style={[Styles.btnViewStyle, {marginTop: Matrics.CountScale(15)}]}
+                                                        onPress={() => this.onCreateTimeOff()}
+                                                    >
+                                                        <View><Text style={Styles.btnTextStyle}>Add</Text></View>
+                                                    </TouchableOpacity>
+                                                :
+                                                    <TouchableOpacity 
+                                                        // disabled={this.state.disableEditDeleteShiftButton}
+                                                        style={[Styles.btnViewStyle,{ marginTop: Matrics.CountScale(15)}]} 
+                                                        onPress={() => {this.onDeleteTimeoff()}}>
+                                                        <View><Text style={Styles.btnTextStyle}>Delete</Text></View>
+                                                    </TouchableOpacity>
+                                            } 
                                         </View>
                                     </KeyboardAwareScrollView>
 
@@ -2331,13 +2381,14 @@ const Styles = StyleSheet.create({
     },
     
     btnViewStyle: {
-        marginHorizontal: Matrics.CountScale(8),
-        flex: 1,
+        marginHorizontal: Matrics.CountScale(15),
+        // flex: 1,
         borderRadius: 5,
         borderColor: Colors.SKYBLUE,
         borderWidth: 1,
         padding: Matrics.CountScale(10),
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: Matrics.CountScale(15)
     },
     titleText: {
         fontFamily: Fonts.NunitoSansSemiBold,
