@@ -726,7 +726,7 @@ class HireNewEmployee extends React.Component {
                         <Image source={Images.AttachIcon} style={Styles.attachIconStyle}></Image>
                         <Text style={Styles.attachTextStyle}>Attach file</Text>
                     </TouchableOpacity>
-                    <Text style={{ alignSelf: 'flex-end', padding: Matrics.CountScale(20), marginRight: Matrics.CountScale(10)}}>{this.state.attachFile ? this.state.attachFile : null}</Text>
+                    <Text style={{ flexWrap: 'wrap', flex: 1, textAlign: 'right', alignSelf: 'flex-end', padding: Matrics.CountScale(20), marginRight: Matrics.CountScale(10)}}>{this.state.attachFile ? this.state.attachFile : null}</Text>
                 </View>
             </View>
         )
@@ -868,7 +868,7 @@ const Styles = StyleSheet.create({
     documentContainer: {
         flex: 1,
         padding: Matrics.CountScale(20),
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     labelTextStyle: {
         fontFamily: Fonts.NunitoSansRegular,

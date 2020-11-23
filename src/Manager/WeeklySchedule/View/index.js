@@ -870,6 +870,13 @@ class WeeklySchedule extends React.Component {
         let val = moment(time).format('hh:mm:ssa')
         if (this.state.timeFlag == 'InTime') {
             this.setState({ shiftinTime: val, InTimeError: '' })
+            var date1 = new Date('01/01/2011 '+ moment(this.state.shiftoutTime, "h:mm A").format('h:mm A')); 
+            var date2 = new Date('01/01/2011 '+ moment(val, "h:mm A").format('h:mm A'));
+            if(date2 >= date1){
+                this.setState({ outTimeError: 'Out Time ShouldBe GraterThan To InTime', shiftoutTime: '' })
+            } else {
+                this.setState({ outTimeError: '' })
+            }
         }
         else if (this.state.timeFlag == 'OutTime') {
             var date1 = new Date('01/01/2011 '+ moment(val, "h:mm A").format('h:mm A')); 

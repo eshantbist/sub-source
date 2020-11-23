@@ -259,14 +259,48 @@ export default class Minor extends React.Component {
       "MinorFilePath":""
     }
 
+    const IssueDate = new Date(this.state.issueDate);
+    const ExpiryDate = new Date(this.state.expirationDate);
+
+    var date1 = new Date('01/01/2011 '+ moment(this.state.OutTime, "h:mm A").format('h:mm A')); 
+    var date2 = new Date('01/01/2011 '+ moment(this.state.InTime, "h:mm A").format('h:mm A'));
+
+    // console.log('issueDate-->',this.state.issueDate)
+    // console.log('expirationDate-->', this.state.expirationDate)
+    // console.log('IssueDate-->', IssueDate)
+    // console.log('ExpiryDate-->',ExpiryDate)
+    // console.log('workingHoursWe1-->',this.state.workingHoursWe1)
+    // console.log('workingHoursWe1-->',reg.test(this.state.workingHoursWe1))
+    // console.log('workingHoursWe2-->',this.state.workingHoursWe2)
+    // console.log('workingHoursWe2-->',reg.test(this.state.workingHoursWe2))
+    // console.log('workingHoursTh1-->',this.state.workingHoursTh1)
+    // console.log('workingHoursTh1-->',reg.test(this.state.workingHoursTh1))
+    // console.log('workingHoursTh2-->',this.state.workingHoursTh2)
+    // console.log('workingHoursTh2-->',reg.test(this.state.workingHoursTh2))
+
+   let We1We2NotBlank = (this.state.workingHoursWe1 != '' || this.state.workingHoursWe2 != '') ? true : false;
+   let Th1Th2NotBlank = (this.state.workingHoursTh1 != '' || this.state.workingHoursTh2 != '') ? true : false;
+   let Fr1Fr2NotBlank = (this.state.workingHoursFr1 != '' || this.state.workingHoursFr2 != '') ? true : false;
+   let Sa1Sa2NotBlank = (this.state.workingHoursSa1 != '' || this.state.workingHoursSa2 != '') ? true : false;
+   let Su1Su2NotBlank = (this.state.workingHoursSu1 != '' || this.state.workingHoursSu2 != '') ? true : false;
+   let Mo1Mo2NotBlank = (this.state.workingHoursMo1 != '' || this.state.workingHoursMo2 != '') ? true : false;
+   let Tu1Tu2NotBlank = (this.state.workingHoursTu1 != '' || this.state.workingHoursTu2 != '') ? true : false;
+
+  //  console.log('We1We2NotBlank-->',We1We2NotBlank)
+  //  console.log('Th1Th2NotBlank-->',Th1Th2NotBlank)
+
     if(this.state.HSGchecked === false) {
       // console.log('if');
       if( this.state.issueDate === '') {
         this.setState({ issueDateError: 'Please Select The IssueDate' });
       } else if (this.state.expirationDate === ''){
         this.setState({ expirationDateError: 'Please Select The Expiration Date'});
-      } else if(this.state.offSessionChecked === true) {
-        // console.log('else if')
+      }
+      else if(IssueDate >= ExpiryDate){
+        this.setState({ expirationDateError: 'Expiration Date should be greater than two Issue Date'});
+      }
+      else if(this.state.offSessionChecked === true) {
+        console.log('else if')
         if(this.state.startDate === ''){
           this.setState({ startDateError: 'Please Select The Start Date' });
         } else if (this.state.endDate === ''){
@@ -283,47 +317,152 @@ export default class Minor extends React.Component {
         } else if(reg.test(this.state.OutTime)=== false) {
           alert('Invalid OutTime! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
           // this.setState({ OutTimeError: 'Invalid OutTime!\n Time should be in HH:MMam/pm\n Format. There should not\n be space in between \nMM(minutes) and AM/PM' });
-        } else if(
-          (this.state.workingHoursWe1 && reg.test(this.state.workingHoursWe1) === false) ||
-          (this.state.workingHoursWe2 && reg.test(this.state.workingHoursWe2) === false) ||
-          (this.state.workingHoursTh1 && reg.test(this.state.workingHoursTh1) === false) ||
-          (this.state.workingHoursTh2 && reg.test(this.state.workingHoursTh2) === false) ||
-          (this.state.workingHoursFr1 && reg.test(this.state.workingHoursFr1) === false) ||
-          (this.state.workingHoursFr2 && reg.test(this.state.workingHoursFr2) === false) ||
-          (this.state.workingHoursSa1 && reg.test(this.state.workingHoursSa1) === false) ||
-          (this.state.workingHoursSa2 && reg.test(this.state.workingHoursSa2) === false) ||
-          (this.state.workingHoursSu1 && reg.test(this.state.workingHoursSu1) === false) ||
-          (this.state.workingHoursSu2 && reg.test(this.state.workingHoursSu2) === false) ||
-          (this.state.workingHoursMo1 && reg.test(this.state.workingHoursMo1) === false) ||
-          (this.state.workingHoursMo2 && reg.test(this.state.workingHoursMo2) === false) ||
-          (this.state.workingHoursTu1 && reg.test(this.state.workingHoursTu1) === false) ||
-          (this.state.workingHoursTu2 && reg.test(this.state.workingHoursTu2) === false) 
+        } else if(date2 >= date1){
+          this.setState({ OutTimeError: 'Out Time ShouldBe GraterThan To InTime' });
+        } 
+        else if(
+          (this.state.workingHoursWe1 == '') &&
+          (this.state.workingHoursWe2 == '') &&
+          (this.state.workingHoursTh1 == '') &&
+          (this.state.workingHoursTh2 == '') &&
+          (this.state.workingHoursFr1 == '') &&
+          (this.state.workingHoursFr2 == '') &&
+          (this.state.workingHoursSa1 == '') &&
+          (this.state.workingHoursSa2 == '') &&
+          (this.state.workingHoursSu1 == '') &&
+          (this.state.workingHoursSu2 == '') &&
+          (this.state.workingHoursMo1 == '') &&
+          (this.state.workingHoursMo2 == '') &&
+          (this.state.workingHoursTu1 == '') &&
+          (this.state.workingHoursTu2 == '') 
+        ) {
+          alert('Working hours are required');
+        } else if( We1We2NotBlank == true &&
+          ((this.state.workingHoursWe1 == '' && reg.test(this.state.workingHoursWe1) === false) ||
+          (this.state.workingHoursWe2 == '' && reg.test(this.state.workingHoursWe2) === false) )
         ) {
           alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
-        } else {
+        }
+        else if( Th1Th2NotBlank == true &&
+          ((this.state.workingHoursTh1 == '' || reg.test(this.state.workingHoursTh1) === false) ||
+          (this.state.workingHoursTh2 == '' || reg.test(this.state.workingHoursTh2) === false) )
+        ){
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        }
+        else if( Fr1Fr2NotBlank == true &&
+          ((this.state.workingHoursFr1 == '' || reg.test(this.state.workingHoursFr1) === false) ||
+          (this.state.workingHoursFr2 == '' || reg.test(this.state.workingHoursFr2) === false) )
+        ){
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        }
+        else if( Sa1Sa2NotBlank == true &&
+          ((this.state.workingHoursSa1 == '' || reg.test(this.state.workingHoursSa1) === false) ||
+          (this.state.workingHoursSa2 == '' || reg.test(this.state.workingHoursSa2) === false) )
+        ){
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        }
+        else if( Su1Su2NotBlank == true &&
+          ((this.state.workingHoursSu1 == '' || reg.test(this.state.workingHoursSu1) === false) ||
+          (this.state.workingHoursSu2 == '' || reg.test(this.state.workingHoursSu2) === false) )
+        ){
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        }
+        else if( Mo1Mo2NotBlank == true &&
+          ((this.state.workingHoursMo1 == '' || reg.test(this.state.workingHoursMo1) === false) ||
+          (this.state.workingHoursMo2 == '' || reg.test(this.state.workingHoursMo2) === false) )
+        ){
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        }
+        else if( Tu1Tu2NotBlank == true &&
+          ((this.state.workingHoursTu1 == '' || reg.test(this.state.workingHoursTu1) === false) ||
+          (this.state.workingHoursTu2 == '' || reg.test(this.state.workingHoursTu2) === false) )
+        ){
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        }
+        // else if(
+        //   (this.state.workingHoursWe1 == '' || reg.test(this.state.workingHoursWe1) === false) ||
+        //   (this.state.workingHoursWe2 == '' || reg.test(this.state.workingHoursWe2) === false) ||
+        //   (this.state.workingHoursTh1 == '' || reg.test(this.state.workingHoursTh1) === false) ||
+        //   (this.state.workingHoursTh2 == '' || reg.test(this.state.workingHoursTh2) === false) ||
+        //   (this.state.workingHoursFr1 == '' || reg.test(this.state.workingHoursFr1) === false) ||
+        //   (this.state.workingHoursFr2 == '' || reg.test(this.state.workingHoursFr2) === false) ||
+        //   (this.state.workingHoursSa1 == '' || reg.test(this.state.workingHoursSa1) === false) ||
+        //   (this.state.workingHoursSa2 == '' || reg.test(this.state.workingHoursSa2) === false) ||
+        //   (this.state.workingHoursSu1 == '' || reg.test(this.state.workingHoursSu1) === false) ||
+        //   (this.state.workingHoursSu2 == '' || reg.test(this.state.workingHoursSu2) === false) ||
+        //   (this.state.workingHoursMo1 == '' || reg.test(this.state.workingHoursMo1) === false) ||
+        //   (this.state.workingHoursMo2 == '' || reg.test(this.state.workingHoursMo2) === false) ||
+        //   (this.state.workingHoursTu1 == '' || reg.test(this.state.workingHoursTu1) === false) ||
+        //   (this.state.workingHoursTu2 == '' || reg.test(this.state.workingHoursTu2) === false) 
+        // ) {
+        //   alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        // }
+        else {
           console.log('save Data');
           this.props.navigation.goBack();
           this.props.navigation.state.params.callbackData({ MinorData });
         }
-      } else if(
-        (this.state.workingHoursWe1 && reg.test(this.state.workingHoursWe1) === false) ||
-        (this.state.workingHoursWe2 && reg.test(this.state.workingHoursWe2) === false) ||
-        (this.state.workingHoursTh1 && reg.test(this.state.workingHoursTh1) === false) ||
-        (this.state.workingHoursTh2 && reg.test(this.state.workingHoursTh2) === false) ||
-        (this.state.workingHoursFr1 && reg.test(this.state.workingHoursFr1) === false) ||
-        (this.state.workingHoursFr2 && reg.test(this.state.workingHoursFr2) === false) ||
-        (this.state.workingHoursSa1 && reg.test(this.state.workingHoursSa1) === false) ||
-        (this.state.workingHoursSa2 && reg.test(this.state.workingHoursSa2) === false) ||
-        (this.state.workingHoursSu1 && reg.test(this.state.workingHoursSu1) === false) ||
-        (this.state.workingHoursSu2 && reg.test(this.state.workingHoursSu2) === false) ||
-        (this.state.workingHoursMo1 && reg.test(this.state.workingHoursMo1) === false) ||
-        (this.state.workingHoursMo2 && reg.test(this.state.workingHoursMo2) === false) ||
-        (this.state.workingHoursTu1 && reg.test(this.state.workingHoursTu1) === false) ||
-        (this.state.workingHoursTu2 && reg.test(this.state.workingHoursTu2) === false) 
+      } 
+      else if(
+        (this.state.workingHoursWe1 == '') &&
+        (this.state.workingHoursWe2 == '') &&
+        (this.state.workingHoursTh1 == '') &&
+        (this.state.workingHoursTh2 == '') &&
+        (this.state.workingHoursFr1 == '') &&
+        (this.state.workingHoursFr2 == '') &&
+        (this.state.workingHoursSa1 == '') &&
+        (this.state.workingHoursSa2 == '') &&
+        (this.state.workingHoursSu1 == '') &&
+        (this.state.workingHoursSu2 == '') &&
+        (this.state.workingHoursMo1 == '') &&
+        (this.state.workingHoursMo2 == '') &&
+        (this.state.workingHoursTu1 == '') &&
+        (this.state.workingHoursTu2 == '') 
+      ) {
+        alert('Working hours are required');
+      } else if( We1We2NotBlank == true &&
+        ((this.state.workingHoursWe1 == '' && reg.test(this.state.workingHoursWe1) === false) ||
+        (this.state.workingHoursWe2 == '' && reg.test(this.state.workingHoursWe2) === false) )
       ) {
         alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
-      } else {
-        console.log('save Data');
+      }
+      else if( Th1Th2NotBlank == true &&
+        ((this.state.workingHoursTh1 == '' || reg.test(this.state.workingHoursTh1) === false) ||
+        (this.state.workingHoursTh2 == '' || reg.test(this.state.workingHoursTh2) === false) )
+      ){
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+      }
+      else if( Fr1Fr2NotBlank == true &&
+        ((this.state.workingHoursFr1 == '' || reg.test(this.state.workingHoursFr1) === false) ||
+        (this.state.workingHoursFr2 == '' || reg.test(this.state.workingHoursFr2) === false) )
+      ){
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+      }
+      else if( Sa1Sa2NotBlank == true &&
+        ((this.state.workingHoursSa1 == '' || reg.test(this.state.workingHoursSa1) === false) ||
+        (this.state.workingHoursSa2 == '' || reg.test(this.state.workingHoursSa2) === false) )
+      ){
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+      }
+      else if( Su1Su2NotBlank == true &&
+        ((this.state.workingHoursSu1 == '' || reg.test(this.state.workingHoursSu1) === false) ||
+        (this.state.workingHoursSu2 == '' || reg.test(this.state.workingHoursSu2) === false) )
+      ){
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+      }
+      else if( Mo1Mo2NotBlank == true &&
+        ((this.state.workingHoursMo1 == '' || reg.test(this.state.workingHoursMo1) === false) ||
+        (this.state.workingHoursMo2 == '' || reg.test(this.state.workingHoursMo2) === false) )
+      ){
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+      }
+      else if( Tu1Tu2NotBlank == true &&
+        ((this.state.workingHoursTu1 == '' || reg.test(this.state.workingHoursTu1) === false) ||
+        (this.state.workingHoursTu2 == '' || reg.test(this.state.workingHoursTu2) === false) )
+      ){
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+      }
+       else {
         this.props.navigation.goBack();
         this.props.navigation.state.params.callbackData({ MinorData });
       }
@@ -332,7 +471,7 @@ export default class Minor extends React.Component {
     //   this.setState({ permitFileError: 'please select permitfile' });
     // } 
     else {
-      console.log('save Data');
+      console.log('save Data else');
       this.props.navigation.goBack();
       this.props.navigation.state.params.callbackData({ MinorData });
     }
@@ -402,10 +541,10 @@ export default class Minor extends React.Component {
               {
                 this.state.offSessionChecked
                 ?
-                  <View>
+                  <View style={{ }}>
                     <Text style={Styles.cardHeaderText}>Select Date</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                      <View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between'  }}>
+                      <View style={{ width: '50%'}}>
                         <TouchableOpacity 
                           onPress={() => this._showDateTimePicker('Form')} 
                           style={[Styles.cardContainer, { width: Matrics.CountScale(160) }]}
@@ -414,20 +553,20 @@ export default class Minor extends React.Component {
                         </TouchableOpacity>
                         <Text style={Styles.errorText}>{this.state.startDateError}</Text>
                       </View>
-                      <View>
+                      <View style={{ width: '50%',}}>
                         <TouchableOpacity 
                           onPress={() => this._showDateTimePicker('To')} 
-                          style={[Styles.cardContainer, { width: Matrics.CountScale(160) }]}
+                          style={[Styles.cardContainer, { width: Matrics.CountScale(160), marginLeft: Matrics.CountScale(9) }]}
                         >
                           <Text style={Styles.cardText}>{this.state.endDate == '' ? 'To' : this.state.endDate}</Text>
                         </TouchableOpacity>
-                        <Text style={Styles.errorText}>{this.state.endDateError}</Text>
+                        <Text style={[Styles.errorText, { marginLeft: Matrics.CountScale(9)}]}>{this.state.endDateError}</Text>
                       </View>
                     </View>
 
                     <Text style={Styles.cardHeaderText}>Working Hours</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                      <View>
+                      <View style={{width: '50%'}}>
                         <TextInput 
                           autoCorrect={false}
                           style={[Styles.cardContainer,{ width: Matrics.CountScale(160)}]}
@@ -444,10 +583,10 @@ export default class Minor extends React.Component {
                         </TouchableOpacity> */}
                         <Text style={Styles.errorText}>{this.state.InTimeError}</Text>
                       </View>
-                      <View>
+                      <View style={{width: '50%'}}>
                         <TextInput 
                           autoCorrect={false}
-                          style={[Styles.cardContainer,{ width: Matrics.CountScale(160)}]}
+                          style={[Styles.cardContainer,{ width: Matrics.CountScale(160),  marginLeft: Matrics.CountScale(9)}]}
                           placeholder={'OutTime'}
                           placeholderTextColor = {Colors.GREY}
                           onChangeText={(text) => this.setState({OutTime: text, OutTimeError: ''})}
@@ -459,7 +598,10 @@ export default class Minor extends React.Component {
                         >
                           <Text style={Styles.cardText}>{this.state.OutTime == '' ? 'Out Time' : this.state.OutTime}</Text>
                         </TouchableOpacity> */}
-                        <Text style={Styles.errorText}>{this.state.OutTimeError}</Text>
+                        <Text style={[Styles.errorText,{ marginLeft: Matrics.CountScale(9)}]}>
+                          {this.state.OutTimeError}
+                          {/* Out Time ShouldBe GraterThan To InTime */}
+                        </Text>
                       </View>
                     </View>
                   </View>
@@ -813,7 +955,10 @@ const Styles = StyleSheet.create({
     fontFamily: Fonts.NunitoSansRegular,
     color: Colors.APPCOLOR,
     fontSize: Matrics.CountScale(15),
-    alignItems: 'flex-end',
+    alignSelf: 'flex-end',
+    flexWrap: 'wrap',
+    flex: 1,
+    textAlign: 'right'
   },
   tableContainer: { 
     flex: 1, 
