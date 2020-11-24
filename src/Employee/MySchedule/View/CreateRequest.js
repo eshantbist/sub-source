@@ -43,7 +43,7 @@ class CreateRequest extends React.Component {
         resonError: '',
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         date = new Date;
         dt = moment(date).format('YYYY-MM-DD')
         selectedDate = { [dt]: { selected: true, selectedColor: Colors.APPCOLOR } }
@@ -69,7 +69,7 @@ class CreateRequest extends React.Component {
 
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         console.log(nextProps)
         if (nextProps.mySchedule.getLeaveTypeListSuccess) {
             this.setState({ loading: false })

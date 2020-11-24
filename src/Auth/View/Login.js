@@ -74,7 +74,7 @@ class Login extends React.Component {
                     AsyncStorage.setItem('subsourceModule', 'Manager')
                     this.navigateToScreen('TabBar')
                 } else if(global.loginResponse.UserGUID !== null) {
-                    console.log('employee')
+                    console.log('employee-->', res.Login)
                     AsyncStorage.setItem('subsourceModule', 'Employee')
                     AsyncStorage.setItem('UserID', res.Login.UserID.toString())
                     AsyncStorage.setItem('UserGUID', res.Login.UserGUID)

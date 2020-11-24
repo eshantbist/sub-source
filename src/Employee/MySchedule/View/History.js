@@ -41,7 +41,7 @@ class History extends React.Component {
         this.callGetMyScheduleHistory()
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.mySchedule.getMyScheduleHistorySuccess) {
             this.setState({ loading: false, loadmore: false })
             let response = nextProps.mySchedule.data

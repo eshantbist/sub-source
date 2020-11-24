@@ -55,7 +55,7 @@ class CreateAvailability extends React.Component {
         setTimeout(() => { console.log(this.state) }, 3000)
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         //console.log(this.props.navigation.getParam('DayData')[Object.keys(data)[0]][0])
         let tmp = JSON.parse(JSON.stringify((this.props.navigation.state.params.DayData)))
         console.log(tmp)
@@ -68,7 +68,7 @@ class CreateAvailability extends React.Component {
 
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.data.saveUpdateEmployeeAvailabilitySuccess) {
             this.setState({ loading: false })
             let response = nextProps.data.saveUpdateEmployeeAvailabilityData

@@ -12,7 +12,7 @@ class OfferDetail extends React.Component {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
-  componentWillUnmount() {
+  UNSAFE_componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
   }
 
@@ -28,7 +28,7 @@ class OfferDetail extends React.Component {
 
   }
 
-  componentWillReceiveProps() {
+  UNSAFE_componentWillReceiveProps() {
 
   }
 

@@ -32,7 +32,7 @@ class EndEmployment extends React.Component {
         this.props.getEndEmployeementReasonType({ ReasonID: -1 })
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.data.getEndEmployeementReasonSuccess && this.state.loading) {
             this.setState({ loading: false })
             let response = nextProps.data.data

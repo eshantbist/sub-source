@@ -15,7 +15,7 @@ class SwapOfferDetails extends React.Component {
             return true;
         });
     }
-    componentWillUnmount() {
+    UNSAFE_componentWillUnmount() {
         this.backHandler = BackHandler.removeEventListener('hardwareBackPress', () => {
             return true;
         });

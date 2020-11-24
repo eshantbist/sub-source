@@ -38,7 +38,7 @@ class FeedbackHistory extends React.Component {
         this.callGetEmployeeGuestFeedback()
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.data.employeeGuestFeedbackSuccess) {
             let data = nextProps.data.employeeGuestFeedbackdata
             //historyData:[...this.state.historyData, ...data.FeedBack]

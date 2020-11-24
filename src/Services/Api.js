@@ -1,5 +1,5 @@
 //LIBRARIES
-import {  Platform } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
 
 import { apiRequest, apiGetRequest, apiBodyRequest, apiBodyWithParamsRequest } from '../Redux/utils'
 
@@ -203,5 +203,554 @@ module.exports = {
     },
     getWeekDates(params) {
         return apiRequest(params, `${ENVIRONMENT}/GetWeekDates/?`, { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + global.user.access_token })
+    },
+    // Employee Module 
+
+    getEmployeeTotalWorkedHours(params) {
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedValue);
+        }
+        formBody = formBody.join("/");
+        return fetch(`${ENVIRONMENT}/GetEmployeeTotalWorkedHours/` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + global.user.access_token
+            },
+        }).then(response => {
+            return response;
+        });
+    },
+    getTimeOffReasons(params) {
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("/");
+        return fetch(`${ENVIRONMENT}/GetTimeOffReasons`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formBody
+        }).then(response => {
+            return response.json();
+        });
+    },
+    async getEmployeeTotalWorkedHours(param) {
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+        console.log('userStoreGuid-->', userStoreGuid);
+        const other_params = {
+            "UserStoreGuid": userStoreGuid,
+        }
+        let params = Object.assign(other_params, param);
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+        console.log(formBody)
+        return fetch(`${ENVIRONMENT}/GetEmployeeTotalWorkedHours/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        }).then((response) => response.json())
+    },
+    async getEmployeePersonalDetails() {
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+        authToken = await AsyncStorage.getItem('AuthToken');
+
+        const params = {
+            "UserStoreGuid": userStoreGuid,
+        }
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+        return fetch(`${ENVIRONMENT}/GetEmployeePersonalDetails/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + authToken
+            },
+        }).then((response) => response.json())
+    },
+    // getEmployeeBasicDetails(params) {
+    //     var formBody = [];
+    //     for (var property in params) {
+    //         var encodedKey = encodeURIComponent(property);
+    //         var encodedValue = encodeURIComponent(params[property]);
+    //         formBody.push(encodedValue);
+    //     }
+    //     formBody = formBody.join("/");
+    //     return fetch(`${ENVIRONMENT}/GetEmployeeBasicDetails/` + formBody, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/x-www-form-urlencoded',
+    //             'Authorization': 'Bearer ' + global.user.access_token
+    //         },
+    //     }).then(response => {
+    //         return response;
+    //     });
+    // },
+
+    updateEmployeePersonalDetails(params) {
+        return fetch(`${ENVIRONMENT}/UpdateEmployeePersonalDetails/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(params)
+        }).then(response => response.json());
+    },
+    updateEmployeeImage(params) {
+        return fetch(`${ENVIRONMENT}/UpdateEmployeeImages/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(params)
+        }).then(response => response.json());
+    },
+    async getEmployeeGuestFeedback(param) {
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+        // alert(userStoreGuid)
+        const other_params = {
+            "UserStoreGuid": userStoreGuid,
+        }
+        let params = Object.assign(param, other_params);
+        console.log('guestfeedback')
+        console.log(params, "Params")
+
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+        return fetch(`${ENVIRONMENT}/GetEmployeeGuestFeedback/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        }).then((response) => response.json())
+    },
+    async getNotificationList(param) {
+        console.log(param)
+        authToken = await AsyncStorage.getItem('AuthToken');
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+
+        const other_params = {
+            "UserStoreGuid": userStoreGuid,
+        }
+        let params = Object.assign(param, other_params);
+
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        return fetch(`${ENVIRONMENT}/GetEmployeeMessages/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${authToken}`
+            },
+        }).then((response) => response.json())
+    },
+    getEndEmployementReasonType(params) {
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+        return fetch(`${ENVIRONMENT}/EmployeeResignationReasonReturn/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + global.user.access_token
+            },
+        }).then((response) => response.json())
+    },
+    /* ++++++++++++++++++++++++++++ Availability API'S +++++++++++++++++++++++++++++++++++++*/
+    async getEmployeeAvailability() {
+
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+        const params = {
+            "UserStoreGuid": userStoreGuid,
+        }
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+        return fetch(`${ENVIRONMENT}/GetEmployeeAvailability/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + global.user.access_token
+            },
+        }).then((response) => response.json())
+    },
+    async saveUpdateEmployeeAvailability(param) {
+        console.log(param)
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+
+        return fetch(`${ENVIRONMENT}/SaveUpdateEmployeeAvailabilityList/?UserStoreGuid=` + userStoreGuid, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(param)
+        }).then((response) => response.json())
+    },
+
+
+    async deleteEmployeeAvailability(param) {
+        console.log(params, "Params")
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+        const other_params = {
+            "UserStoreGuid": userStoreGuid,
+        }
+
+        let params = Object.assign(param, other_params);
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+        return fetch(`${ENVIRONMENT}/DeleteEmployeeAvailability/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        }).then((response) => response.json())
+    },
+     /* ++++++++++++++++++++++++++++ My Schedule API'S +++++++++++++++++++++++++++++++++++++*/
+     async createEmployeeTimeOff(param) {
+        console.log(param, "Params")
+        authToken = await AsyncStorage.getItem('AuthToken');
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+        const other_params = {
+            "UserStoreGuid": userStoreGuid,
+        }
+        let params = Object.assign(param, other_params);
+
+        // var formBody = [];
+        // for (var property in params) {
+        //     var encodedKey = encodeURIComponent(property);
+        //     var encodedValue = encodeURIComponent(params[property]);
+        //     formBody.push(encodedKey + "=" + encodedValue);
+        // }
+        // formBody = formBody.join("&");
+        return fetch(`${ENVIRONMENT}/CreateEmployeeTimeOff/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify(params)
+        }).then((response) => response.json())
+    },
+    async getMySchedule(param) {
+
+        authToken = await AsyncStorage.getItem('AuthToken');
+        console.log(authToken)
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+        console.log('userGid-->',userStoreGuid)
+        const other_params = {
+            "UserStoreGuid": userStoreGuid,
+        }
+        let params = Object.assign(param, other_params);
+        console.log(params, "Params")
+
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        return fetch(`${ENVIRONMENT}/GetEmployeeSchedule/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${authToken}`
+            },
+        }).then((response) => response.json())
+    },
+    async getPendingSwapRequest(params) {
+        authToken = await AsyncStorage.getItem('AuthToken');
+
+        console.log(params, "Params")
+
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        return fetch(`${ENVIRONMENT}/GetPendingSwapRequestDetail/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${authToken}`
+            },
+        }).then((response) => response.json())
+    },
+    async openEmployeeShift(params) {
+        authToken = await AsyncStorage.getItem('AuthToken');
+
+        console.log(params, "Params")
+
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        return fetch(`${ENVIRONMENT}/SaveOpenShift/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${authToken}`
+            },
+        }).then((response) => response.json())
+    },
+    async acceptSwapShiftRequest(params) {
+        authToken = await AsyncStorage.getItem('AuthToken');
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        return fetch(`${ENVIRONMENT}/UpdateSwapShiftRequestStatus/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${authToken}`
+            },
+        }).then((response) => response.json())
+    },
+    async declineSwapShiftRequest(params) {
+        authToken = await AsyncStorage.getItem('AuthToken');
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        return fetch(`${ENVIRONMENT}/DeleteEmployeeSwapShift/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${authToken}`
+            },
+        }).then((response) => response.json())
+    },
+    async deleteEmployeeOpenShift(params) {
+        authToken = await AsyncStorage.getItem('AuthToken');
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        return fetch(`${ENVIRONMENT}/DeleteEmployeeOpenShift/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${authToken}`
+            },
+        }).then((response) => response.json())
+    },
+    async getEmployeeStore() {
+        authToken = await AsyncStorage.getItem('AuthToken');
+
+        return fetch(`${ENVIRONMENT}/GetEmployeeStores`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${authToken}`
+            },
+        }).then((response) => response.json())
+    },
+    async getMyScheduleHistory(param) {
+        console.log(param)
+        authToken = await AsyncStorage.getItem('AuthToken');
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+
+        const other_params = {
+            "UserStoreGuid": userStoreGuid,
+        }
+        let params = Object.assign(param, other_params);
+
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        return fetch(`${ENVIRONMENT}/GetEmployeeMessages/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${authToken}`
+            },
+        }).then((response) => response.json())
+    },
+    async getLeaveTypeList() {
+        authToken = await AsyncStorage.getItem('AuthToken');
+
+        return fetch(`${ENVIRONMENT}/GetTimeOffReasons`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${authToken}`
+            },
+        }).then((response) => response.json())
+    },
+    /* ++++++++++++++++++++++++++++ Store Schedule API'S +++++++++++++++++++++++++++++++++++++*/
+
+    getStoreList(params) {
+        console.log(params, "Params")
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("/");
+        return fetch(`${ENVIRONMENT}/GetFranchiseeActiveStoreList/` + formBody, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer hgbESF35VkbvPyAby_P-x49CZY4aW8Sti_m4TMNE-4IDmaiAAl18oY4js6YSTaNPw1mIqbOxTQYMRuV68wyjiSwAXOPttTOFjotaEUHXSMc-eUfaS3RdADp9Mnu8PXUJO9aXflaozvOGP9ycXJC4RrS259GxJ1VXxpGrckVV-NY2RhCKDPfrVc6JGzu1bZWPOKBbnKyq0ThveNjtQ6mGbQ9hKsfDhOvZ8Ih6FaIZsOx9O3YdArR-BMhjIwEH2EkUFd2ZfwccRZAWNK1q4JLVQPGacA5pajpY1wuEapfCDFXuHndw3jYC5_o5f35cJBf7PFv_rXOeErFsD7klklzpYlNcAUXS_8MNs87H4H4Cn9ODXH-KgLlLI2b1wlneGvJeVJWCC93Wta7rDpf7BWuPBel1qeytAWVbpEN2YvhEbn6Zp7Dos3nam0C1CQ4HRjUKZCQ46SkPtyYipVt6lw3OuRt0E66klIgcnP0ELJtLSS4tKCRM-CsKCzXJv-4HAw8Q'
+            },
+        }).then(response => {
+            console.log(formBody, "FormBody")
+            return response;
+        });
+    },
+    async getStoreSchedule(param) {
+        authToken = await AsyncStorage.getItem('AuthToken');
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+
+        const other_params = {
+            "UserStoreGuid": userStoreGuid,
+        }
+        let params = Object.assign(param, other_params);
+        console.log(params, "Params")
+
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        return fetch(`${ENVIRONMENT}/GetEmployeeStoreSchedule/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${authToken}`
+            },
+        }).then((response) => response.json())
+    },
+    async getAllStoreList() {
+        authToken = await AsyncStorage.getItem('AuthToken');
+
+        return fetch(`${ENVIRONMENT}/GetEmployeeStores`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer BSO0WWa4GRPZ4vIVxL37QBcwIi5aWF9_dTjgHuZbgojW3h3pYYq75TNuUa6Wjri2Gg677tKlLzgG6JjueIC7msk-b6kSuYa7QS6Py40ut_Q28yVCRO38quf-SjmgcunJ4OLRzGt_gsJFsCiJqOIV0GXVv-noDQQLpA1XmmLHHoD-j0sZaaC3YfEji1UbNr9hr9xzXs8SQyGPDTs8xxlafWa6qLQz6lFnhqht6BOfKdqlSIIYmHWaBynnEoTMDuNunsYr_IgMwXeXGR3NbakMD3YkOrFAwVHh8yWQjI_NSWPRQz8CnoQM1Yq5fgrK4nqAfAXT1mDte2cLMlgX1eZ_5wsxX9GjkIYdbSJFk9hnHxCGZXc5CodIrtbHdRZS0nUFD37hu1gFxbAynGyzHT1iILWNXUQGXWjIVsZCn36fk-wpE1ZsnE5oJssFf4CKFZ8UroC8KqD5D0TCb1NPA--5EVNEnNMu_q7NQO0EolQ0NY9Gt3OnFVWRcQgH0O1LgkUZLGCqvMZVR5FLfVRrao8GO8aZ9J5AjVEGm31Jn2Vey5iqFfCUtDkYZ8F2IyL2wpxkEp3cL5l2jFoqMkmpin-fU-xftmeonyDxzmMJoL-vbYI9mJwCM-3z6dw6i3v7hw1xjoC7WOSDEoMV-n57IYT0CA`
+            },
+        }).then((response) => response.json())
+    },
+    async offerOpenedShift(param) {
+
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+
+        const other_params = {
+            "UserStoreGuid": userStoreGuid,
+        }
+        let params = Object.assign(param, other_params);
+        console.log('**offer shift**', params)
+
+        return fetch(`${ENVIRONMENT}/SaveSwapRequest/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params)
+        }).then((response) => response.json())
+    },
+    async coverShift(param) {
+
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+
+        const other_params = {
+            "UserStoreGuid": userStoreGuid,
+        }
+        let params = Object.assign(param, other_params);
+        console.log('**offer shift**', params)
+
+        return fetch(`${ENVIRONMENT}/CoverOpenShift/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params)
+        }).then((response) => response.json())
+    },
+    async postSaveUpdateUserDevices(param) {
+        console.log(param, "Params")
+        authToken = await AsyncStorage.getItem('AuthToken');
+        let params = Object.assign(param);
+        return fetch(`${ENVIRONMENT}/SaveUpdateUserDevices/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify(params)
+        }).then((response) => response.json())
     },
 } 

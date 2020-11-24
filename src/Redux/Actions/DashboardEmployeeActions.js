@@ -20,6 +20,7 @@ export const getTimeOffReasons = (params) => {
 }
 
 export const getEmployeeTotalWorkedHours = (params) => {
+    console.log('action call')
     return {
         type: FETCH_EMPLOYEE_HOURS_REQUESTING,
         params

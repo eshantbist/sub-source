@@ -51,7 +51,7 @@ class Profile extends React.Component {
         return true;
     }
 
-    async componentWillMount() {
+    async UNSAFE_componentWillMount() {
         console.log(this.props, "ProfileProp");
         userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
 
@@ -106,7 +106,7 @@ class Profile extends React.Component {
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
     }
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.setState({ loading: false })
         console.log('will receive', nextProps.data.employeePersonalDetailsSuccess);
         if (nextProps.data.employeeBasicDetailsSuccess) {

@@ -240,6 +240,7 @@ class WeeklySchedule extends React.Component {
         selectedEmpIndex: 0,
         disableEditDeleteShiftButton: false,
         upperSectionHeight: 1,
+        headContainerHeight: 1,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -1027,11 +1028,13 @@ class WeeklySchedule extends React.Component {
                     //     viewPosition: height
                     // })
                     if(this.state.selectedJumpEmpName == item.FullName){
-                        // console.log('index-->', index, height, this.state.selectedEmpIndex); 
-                        // console.log('upperSectionHeight-->', this.state.upperSectionHeight); 
+                        console.log('index-->', index, height, this.state.selectedEmpIndex); 
+                        console.log('upperSectionHeight-->', this.state.upperSectionHeight); 
+                        console.log('headContainerHeight-->', this.state.headContainerHeight); 
+                        console.log('y-->', (this.state.selectedEmpIndex*height)+this.state.upperSectionHeight); 
                         this.scrollview.scrollTo({
                             // y: index == 0 ? (this.state.selectedEmpIndex*2)*(height) : (this.state.selectedEmpIndex*2)*(index*height), 
-                            y: (this.state.selectedEmpIndex*height)+this.state.upperSectionHeight, 
+                            y: (this.state.selectedEmpIndex*height)+this.state.upperSectionHeight+this.state.headContainerHeight, 
                             animated: true
                         });
                     }
@@ -1177,10 +1180,12 @@ class WeeklySchedule extends React.Component {
         // console.log('roleindex-->', index, '-----', item.RoleName);
         return (
             <View style={Styles.containerStyle} >
-                <TouchableOpacity onPress={() => {
-                    this.state.empRoleData[index].expand = !this.state.empRoleData[index].expand
-                    this.setState({ empRoleData: this.state.empRoleData })
-                }}>
+                <TouchableOpacity 
+                    onPress={() => {
+                        this.state.empRoleData[index].expand = !this.state.empRoleData[index].expand
+                        this.setState({ empRoleData: this.state.empRoleData })
+                    }}
+                >
                     <View style={Styles.headingStyle}>
                         <Text style={{ color: 'white' }}>{item.RoleName.toUpperCase()}</Text>
                         <Image source={item.expand ? Images.DownArrow : Images.UpArrow} style={{ marginLeft: Matrics.CountScale(10) }} />
@@ -1524,7 +1529,7 @@ class WeeklySchedule extends React.Component {
                     }
                     ref={ref => this.scrollview = ref}
                 >
-                    <View style={Styles.headContainer}>
+                    <View style={Styles.headContainer} onLayout={(e) => { this.setState({ headContainerHeight: e.nativeEvent.layout.height }) }}>
                         <TouchableOpacity style={Styles.jumpEmpContainer} onPress={() => {
                             this.setState({ JumtoEmpModal: true });
                             // this.props.navigation.navigate('EmployeeList', {employeeData: this.state.empShiftWise, ShopName: this.state.selectedStoreName})

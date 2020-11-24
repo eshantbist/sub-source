@@ -42,7 +42,7 @@ class SwapOfferDetails extends React.Component {
         this.getSwapRequestDetail()
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         console.log('***swap offer***')
         console.log(nextProps.mySchedule)
         if (nextProps.mySchedule.getPendingSwapRequestDetailsSuccess) {

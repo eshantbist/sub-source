@@ -169,7 +169,7 @@ class Reason extends React.Component {
 
   //------------>>>LifeCycle Methods------------->>>
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setState({ FlatListData: this.props.navigation.state.params.reasonTypes, selectedReasonId: this.props.navigation.state.params.selectedReasonId })
   }
 

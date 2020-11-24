@@ -30,7 +30,7 @@ class AllStore extends React.Component {
         allStoreData: [],
         refreshing: false
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         self = this;
         console.log(this.props, "receive");
         this.UserStoreGuid = JSON.parse(global.user.LoginObject).Login.UserStoreGuid
@@ -41,7 +41,7 @@ class AllStore extends React.Component {
         //alert(startDate)
         this.props.getStoreSchedule({ StartDate: startDate })
     }
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.storeSchedule.getStoreScheduleSuccess) {
             this.setState({ loading: false, refreshing: false })
             let response = nextProps.storeSchedule.data

@@ -57,7 +57,7 @@ class EmployeeDashboard extends React.Component {
     }
 
     // ======>>>>>>> Life Cycle Methods  <<<<<<<========
-    async componentWillMount() {
+    async UNSAFE_componentWillMount() {
         const UserId = await AsyncStorage.getItem('UserID');
         console.log('userId-->', UserId);
         console.log('DeviceInfo-->', DeviceInfo);
@@ -72,11 +72,11 @@ class EmployeeDashboard extends React.Component {
         } else {
             WeekEndingDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
         }
-
-        await DeviceInfo.getUniqueId().then(uniqueId => {
-            DeviceId = uniqueId;
-        });
-        console.log('DeviceInfo-->', DeviceId);
+        // await DeviceInfo.getUniqueId().then(uniqueId => {
+        //     DeviceId = uniqueId;
+        // });
+        DeviceId = DeviceInfo.getUniqueId();
+        console.log('DeviceInfo123-->', DeviceId);
         // ======>>>>>>> API CALLS  <<<<<<<========
         this.props.getEmployeeTotalWorkedHours({
             WeekEndDate: WeekEndingDate
@@ -93,7 +93,7 @@ class EmployeeDashboard extends React.Component {
             "DeviceID": DeviceId,
             "IsDeleted": 0
         })
-
+        console.log('4 api call -->');
         let sdate = new Date();
         // let startDate = Global.getDateValue(sdate)
         // let endDate = Global.getDateAfterSomeMonth(sdate, 2)
@@ -113,12 +113,14 @@ class EmployeeDashboard extends React.Component {
         this.profileflag = false
         this.feedbackflag = false
     }
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.data.employeeWorkHourSuccess) {
             this.feedbackflag = true
             if (this.profileflag && this.feedbackflag) {}
                 this.setState({ loading: false })
-            this.setState({ workedHours: nextProps.data.employeeWorkHourdata.Data.TotalHours })
+            console.log('workhours-->', nextProps.data.employeeWorkHourdata)
+            if(nextProps.data.employeeWorkHourdata.Data != null)
+                this.setState({ workedHours: nextProps.data.employeeWorkHourdata.Data.TotalHours })
         }
         else if (nextProps.data.employeePersonalDetailsSuccess) {
             this.profileflag = true

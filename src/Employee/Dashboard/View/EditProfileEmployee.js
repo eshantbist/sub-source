@@ -38,7 +38,7 @@ class EditProfileEmployee extends React.Component {
         profileImage: {},
         imagePickerModal: false,
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         console.log(this.props.navigation.state.params.Data)
         const { Address1
             , Address2
@@ -84,7 +84,7 @@ class EditProfileEmployee extends React.Component {
         })
     }
 
-    async componentWillReceiveProps(nextProps) {
+    async UNSAFE_componentWillReceiveProps(nextProps) {
         console.log(nextProps)
         if (nextProps.data.updateEmployeePersonalDetailsSuccess && this.state.loading) {
             await this.setState({ loading: false })

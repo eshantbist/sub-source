@@ -20,7 +20,7 @@ class Signature extends React.Component {
 
     //------------>>>LifeCycle Methods------------->>>
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
 
     }
 

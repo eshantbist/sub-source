@@ -40,7 +40,7 @@ class Notification extends React.Component {
         this.callGetNotifications()
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.data.getNotificationDetailsSuccess) {
             this.setState({ loading: false, loadmore: false })
 

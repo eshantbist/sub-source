@@ -25,10 +25,10 @@ class MyAvailability extends React.Component {
         this.props.getEmployeeAvailability()
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.getEmpAvailability()
     }
-    async componentWillReceiveProps(nextProps) {
+    async UNSAFE_componentWillReceiveProps(nextProps) {
         console.log(nextProps, "Receive Props")
 
         if (nextProps.data.employeeAvailabilitySuccess) {
