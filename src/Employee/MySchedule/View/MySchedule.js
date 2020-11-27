@@ -33,7 +33,7 @@ class MySchedule extends React.Component {
         this.getMyScheduleData()
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         console.log("PropsReceive", nextProps.mySchedule);
 
         // const setParamsAction = NavigationActions.setParams({

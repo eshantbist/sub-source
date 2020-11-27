@@ -23,9 +23,9 @@ class ResetPassword extends React.Component {
 
   //------------>>>LifeCycle Methods------------->>>
 
-  componentWillMount() { }
+  UNSAFE_componentWillMount() { }
 
-  async componentWillReceiveProps(nextProps) {
+  async UNSAFE_componentWillReceiveProps(nextProps) {
     if(nextProps.auth.forgotPasswordSuccess && this.state.loading) {
       this.setState({ loading: false })
       const { data } = nextProps.auth

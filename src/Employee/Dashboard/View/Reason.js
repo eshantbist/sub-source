@@ -32,7 +32,7 @@
 
 //   //------------->>>Controllers/Functions------------>>>>
 
-//   async componentWillReceiveProps(nextProps) {
+//   async UNSAFE_componentWillReceiveProps(nextProps) {
 //     clearTimeout(this.state.clearId)
 //     console.log(nextProps, "PropsReason");
 //     if (nextProps.reasons.reasonsSuccess) {

@@ -39,7 +39,7 @@ class StoreSchedule extends React.Component {
         //console.log('*****', this.props.navigation.state.params.offers)
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         console.log('.........', nextProps)
         if (nextProps.storeSchedule.offerOpenedShiftSuccess && this.state.loading) {
             this.setState({ loading: false })

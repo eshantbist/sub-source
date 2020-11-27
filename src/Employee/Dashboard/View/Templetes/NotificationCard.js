@@ -23,7 +23,7 @@ class NotificationCard extends React.Component {
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View>
-                        <Image style={Styles.imgStyle} source={{ uri: this.props.imgSrc }} />
+                        <Image style={Styles.imgStyle} source={this.props.imgSrc != '' ? { uri: this.props.imgSrc } : Images.ProfileIconPlaceholder} />
                     </View>
 
                     <View style={{ flex: 1 }}>

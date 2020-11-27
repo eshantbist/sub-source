@@ -3,9 +3,10 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    PanResponder, AsyncStorage, Platform, 
+    PanResponder, Platform, 
     BackAndroid, BackHandler, Dimensions, TouchableOpacity, Modal, ScrollView, TouchableWithoutFeedback, Image, Text
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { StackActions, NavigationActions } from 'react-navigation'
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
@@ -127,7 +128,7 @@ class EmployeeDashboard extends React.Component {
             if (this.profileflag && this.feedbackflag)
                 this.setState({ loading: false })
             let response = nextProps.data.employeePersonalDetailsdata
-
+            console.log('response-->', response.Status);
             if (response.Status == 1) {
                 const data = nextProps.data.employeePersonalDetailsdata.Data
                 console.log('userDetails-->', data);
@@ -148,8 +149,14 @@ class EmployeeDashboard extends React.Component {
                 })
             }
             else {
+                console.log('in else logout');
                 AsyncStorage.clear();
-                this.navigateToScreen('Login')
+                // this.navigateToScreen('Login')
+                const resetAction = StackActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: 'Login' })],
+                });
+                this.props.navigation.dispatch(resetAction)
                 //setTimeout(() => { alert(response.Message) }, Global.alert_timeout)
             }
 
@@ -377,7 +384,8 @@ class EmployeeDashboard extends React.Component {
                             this.props.navigation.navigate('ProfileEmployee');
                         }}>
                         <Image style={Styles.profileImg}
-                            source={{ uri: this.state.Profile }}></Image>
+                            source={this.state.Profile != '' ? { uri: this.state.Profile } : Images.ProfileIconPlaceholder} 
+                        />
                     </TouchableWithoutFeedback>
                 </View>
 
@@ -549,7 +557,7 @@ const Styles = {
         padding: Matrics.CountScale(25),
         flex: 0.1,
         paddingBottom: Matrics.CountScale(20),
-        paddingTop: Platform.OS == 'ios' ? (Matrics.screenHeight == 812 ? 35 : 20) : 0
+        paddingTop: Platform.OS == 'ios' ? (Matrics.screenHeight >= 812 ? 35 : 20) : 0
     },
     cardsContainer: {
         flexDirection: 'row',

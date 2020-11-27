@@ -29,6 +29,7 @@ class Notification extends React.Component {
     }
 
     callGetNotifications() {
+        console.log('api call-->', this.state.pageNo)
         this.props.getNotificationListDetails({
             MessageType: 4,
             IsInbox: true, PageSize: this.state.pageSize, PageNo: this.state.pageNo
@@ -45,6 +46,7 @@ class Notification extends React.Component {
             this.setState({ loading: false, loadmore: false })
 
             let response = nextProps.data.notificationDetailsdata
+            console.log('response-->',response)
             console.log(response)
             if (response.Status == 1) {
                 this.setState({ notificationTotal: response.Data.TotalRecords, notifications: [...this.state.notifications, ...response.Data.Messages] })
@@ -63,13 +65,11 @@ class Notification extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
 
-    loadMoreNotification() {
-        this.setState({ loadmore: true })
-        this.setState({
-            pageNo: this.state.pageNo + 1,
-        }, () => {
+    async loadMoreNotification() {
+        if(!this.state.loading && !this.state.loadmore && this.state.notificationTotal > this.state.notifications.length && this.state.notifications.length > 0){
+            await this.setState({ loadmore: true, pageNo: this.state.pageNo + 1 })
             this.callGetNotifications();
-        });
+        }
     }
 
     handleBackPress = () => {
@@ -80,7 +80,7 @@ class Notification extends React.Component {
         return true;
     }
 
-    renderNotifications = ({ item }) => {
+    renderNotifications = ({ item, index}) => {
         return (
             <NotificationCard
                 root={'NotificationDetail'}
@@ -94,6 +94,9 @@ class Notification extends React.Component {
     }
 
     render() {
+        console.log('len-->', this.state.notifications.length)
+        console.log('notificationTotal-->', this.state.notificationTotal)
+        console.log('loadmore-->', this.state.loadmore )
         return (
             <View style={Styles.pageBody}>
                 <Header titleText={'Notification'} navigation={this.props.navigation}></Header>
@@ -105,8 +108,15 @@ class Notification extends React.Component {
                         </View>}
                     data={this.state.notifications}
                     renderItem={this.renderNotifications}
-                    onEndReachedThreshold={0.5}
-                    onEndReached={() => this.state.notifications.length > 0 && this.state.notifications.length != this.state.notificationTotal && !this.state.loadmore ? this.loadMoreNotification() : null}
+                    keyExtractor={(item, index) => index.toString()}
+                    onEndReachedThreshold={Platform.OS == "android" ? 1 : 0}
+                    // onEndReachedThreshold={0.5}
+                    onEndReached={() => this.loadMoreNotification()}
+                    extraData={this.state.notifications}
+                    // onEndReached={() => 
+                    //     this.state.notifications.length > 0 && 
+                    //     this.state.notifications.length != this.state.notificationTotal && !this.state.loadmore 
+                    //     ? this.loadMoreNotification() : null}
                 />
                 {this.state.loadmore ?
                     <LoadMore />

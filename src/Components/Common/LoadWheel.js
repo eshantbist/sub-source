@@ -52,3 +52,9 @@ export const LoadWheel = ({ visible, text, onRequestClose }) => {
         </View>
     )
 }
+
+export const LoadMore = () => {
+    return (
+        <ActivityIndicator color={Colors.APPCOLOR} size="large" />
+    )
+}

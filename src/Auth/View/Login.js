@@ -1,8 +1,9 @@
 //LIBRARIES
 import React from 'react';
-import { View, ScrollView, AsyncStorage, Modal, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, ScrollView, Modal, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { StackActions, NavigationActions } from 'react-navigation'
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 //ASSETS
@@ -31,7 +32,7 @@ class Login extends React.Component {
         super(props)
 
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         console.log(this.props);
 
     }
@@ -49,7 +50,7 @@ class Login extends React.Component {
 
 
 
-    async componentWillReceiveProps(nextProps) {
+    async UNSAFE_componentWillReceiveProps(nextProps) {
         clearTimeout(this.state.clearId)
         if (nextProps.auth.loginSuccess && this.state.loading) {
             this.setState({ loading: false })

@@ -1,7 +1,8 @@
 //LIBRARIES
 import React from 'react';
-import { View, Text, AsyncStorage, TouchableOpacity, TouchableHighlight, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, TouchableHighlight, Dimensions } from 'react-native';
 import SignatureCapture from "react-native-signature-capture";
+import AsyncStorage from '@react-native-community/async-storage';
 //ASSETS
 import { Colors, Fonts, Matrics, Images, MasterCssEmployee } from "@Assets";
 

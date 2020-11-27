@@ -1,4 +1,4 @@
-import { Platform, AsyncStorage } from 'react-native';
+import { Platform } from 'react-native';
 import { put, call } from 'redux-saga/effects'
 
 export function asyncAction(action) {

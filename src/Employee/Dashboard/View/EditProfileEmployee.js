@@ -1,9 +1,10 @@
 //  ====>>>>>>>>>>> Libraries <<<<<<<<<<==========> 
 import React from 'react';
-import { View, StatusBar, ScrollView, TouchableOpacity, Image, Text, Alert, AsyncStorage } from 'react-native';
+import { View, StatusBar, ScrollView, TouchableOpacity, Image, Text, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import ImagePicker from "react-native-image-crop-picker";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import AsyncStorage from '@react-native-community/async-storage';
 
 //  ====>>>>>>>>>>> Assets <<<<<<<<<<==========> 
 import { Colors, Fonts, Matrics, Images, MasterCssEmployee } from '@Assets'

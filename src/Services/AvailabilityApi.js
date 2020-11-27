@@ -1,5 +1,6 @@
 //LIBRARIES
-import { AsyncStorage, Platform } from 'react-native';
+import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // const LIVE = 'https://mytowntv.com/api'   //main url endpoint
 const STAGING = "http://subsourceapi.subsource.com";

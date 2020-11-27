@@ -1,7 +1,8 @@
 {/* ====>>>>>>>>>>>   Libraries   <<<<<<<<<<========== */ }
 import React from 'react';
-import { View, BackHandler, PanResponder, AsyncStorage, ScrollView, StatusBar, ImageBackground, StyleSheet, Modal, TouchableOpacity, Image, Text } from 'react-native';
+import { View, BackHandler, PanResponder, ScrollView, StatusBar, ImageBackground, StyleSheet, Modal, TouchableOpacity, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 import { StackActions, NavigationActions } from 'react-navigation'
 
 {/* ====>>>>>>>>>>>    Assets   <<<<<<<<<<========== */ }
