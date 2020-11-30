@@ -616,6 +616,7 @@ class WeeklySchedule extends React.Component {
         let TotalScheduledProductivity = 0;
         let TotalProductivityGoal = 0;
         let TotalGrossPayroll = 0;
+        let TotalNetPayroll = 0;
         this.state.daysData.forEach( child => {
             if(child.DayDate !== 'Total') {
                 TotalAVGSales6Weeks = TotalAVGSales6Weeks + child.AVGSales6Weeks;
@@ -625,8 +626,9 @@ class WeeklySchedule extends React.Component {
                 if((child.AVGSales6Weeks / child.TotalHoursScheduled).toFixed(2) !== 'Infinity'){
                     TotalScheduledProductivity = TotalScheduledProductivity + Number((child.AVGSales6Weeks / child.TotalHoursScheduled).toFixed(2));
                 }
-                TotalProductivityGoal = TotalProductivityGoal + Number((child.ProductivityGoal).toFixed(2)) / 7;
+                TotalProductivityGoal = TotalProductivityGoal + Number((child.ProductivityGoal).toFixed(2));
                 TotalGrossPayroll = TotalGrossPayroll + Number(((child.AVGSales6Weeks * (this.state.TaxValue / 100)) + child.NetPayroll).toFixed(2));
+                TotalNetPayroll = TotalNetPayroll + Number((child.NetPayroll).toFixed(2));
             }
         });
         this.setState({
@@ -636,7 +638,8 @@ class WeeklySchedule extends React.Component {
             TotalHoursScheduled,
             TotalScheduledProductivity,
             TotalProductivityGoal,
-            TotalGrossPayroll
+            TotalGrossPayroll,
+            TotalNetPayroll
         });
     }
     calculateTotalHoursSchedule() {
@@ -1598,13 +1601,32 @@ class WeeklySchedule extends React.Component {
                                         bgColor={Colors.ROWBGCOLOR} />
 
                                         <TextRow labelText={'Productivity Goal'} contentText={this.state.daysData.length > 0 ? this.state.selectedDate !== 'Total' ? (this.state.daysData[this.state.dayIndex].ProductivityGoal).toFixed(2) : (this.state.TotalProductivityGoal).toFixed(2) : null} />
-                                        <TextRow labelText={'Gross Payroll'} contentText={
+                                        <TextRow labelText={'Scheduled Net Payroll ($)'} 
+                                            contentText={this.state.daysData.length > 0 ? this.state.selectedDate !== 'Total' ? (this.state.daysData[this.state.dayIndex].NetPayroll).toFixed(2) : (this.state.TotalNetPayroll).toFixed(2) : null} />
+                                        <TextRow labelText={'Estimated Payroll Tax ($)'} 
+                                           contentText={
+                                            this.state.daysData.length > 0 ?
+                                                this.state.selectedDate !== 'Total' ?
+                                                ((this.state.daysData[this.state.dayIndex].AVGSales6Weeks * (this.state.TaxValue / 100)) + this.state.daysData[this.state.dayIndex].NetPayroll).toFixed(2)
+                                                : (this.state.TotalGrossPayroll).toFixed(2)
+                                            : null
+                                            }
+                                        />
+                                        <TextRow labelText={'Scheduled Gross Pay ($)'} contentText={
                                             this.state.daysData.length > 0 ?
                                                 this.state.selectedDate !== 'Total' ?
                                                 ((this.state.daysData[this.state.dayIndex].AVGSales6Weeks * (this.state.TaxValue / 100)) + this.state.daysData[this.state.dayIndex].NetPayroll).toFixed(2)
                                                 : (this.state.TotalGrossPayroll).toFixed(2)
                                             : null
                                         } bgColor={Colors.ROWBGCOLOR} />
+                                        <TextRow labelText={'Scheduled Payroll %'} contentText={
+                                            this.state.daysData.length > 0 ?
+                                                this.state.selectedDate !== 'Total' ?
+                                                (this.state.TaxValue).toFixed(2)
+                                                : (this.state.TaxValue).toFixed(2)
+                                            : null
+                                            } 
+                                        />
                                     </View>
                                     : null}
                             </View>

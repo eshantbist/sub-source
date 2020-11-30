@@ -373,8 +373,16 @@ class Profile extends React.Component {
 
                     </View>
                     <TouchableOpacity
-                        onPress={() => {
-                            AsyncStorage.clear();
+                        onPress={async () => {
+                            const asyncStorageKeys = await AsyncStorage.getAllKeys();
+                            if (asyncStorageKeys.length > 0) {
+                                if (Platform.OS === 'android') {
+                                  await AsyncStorage.clear();
+                                }
+                                if (Platform.OS === 'ios') {
+                                  await AsyncStorage.multiRemove(asyncStorageKeys);
+                                }
+                              }
                             // this.props.navigation.dispatch(StackActions.popToTop());
                             this.navigateToScreen('Login')
                         }}
