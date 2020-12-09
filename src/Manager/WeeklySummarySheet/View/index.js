@@ -46,10 +46,23 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 const SLIDER_WIDTH = viewportWidth;
 let self = '';
 
-export const TextColumn = ({ name, RG, OT, DT, BW, bgColor, nullRecord, onBWPress, onRGPress, onRGLongPress, onAbsencePress, onRgDisable, onBwDisable }) => {
+export const TextColumn = ({ name,ProfilePicture, RG, OT, DT, BW, bgColor, nullRecord, onBWPress, onRGPress, onRGLongPress, onAbsencePress, onRgDisable, onBwDisable }) => {
     return (
         <View style={[Styles.rowContainer, { backgroundColor: bgColor }]}>
-            <View style={{ width: '48%' }}><Text style={Styles.headingStyle} >{name}</Text></View>
+            <View style={{ width: '48%', flexDirection:'row' }}>
+                <Image 
+                    source={
+                        ProfilePicture != ''
+                        ? {uri: ProfilePicture}
+                        : Images.ProfileIconPlaceholder
+                    }
+                    style={{
+                        height: Matrics.CountScale(30),
+                        width: Matrics.CountScale(30)
+                    }}
+                />
+                <Text style={Styles.headingStyle} >{name}</Text>
+            </View>
 
             {
                 nullRecord ? 
@@ -1043,14 +1056,15 @@ class WeeklySummarySheet extends React.Component {
                             item.data.map(res => {
                                 let resData = this.state.hoursBasicListArr.filter(p => p.UserStoreID == res.UserStoreID && p.DayDate == this.state.selectedDate);
                                 console.log('resData-->', resData);
-                                console.log('fullname-->', res.FullName);
+                                console.log('fullname-->', res);
                                 return(
                                     resData.length > 0
                                     // ? resData[0].TimeOffCombineID != 0 
                                     ? resData[0].IsAbsent 
                                         ? // absonse emp
                                             <TextColumn 
-                                                name={res.FullName}  
+                                                name={res.FullName} 
+                                                ProfilePicture={res.ProfilePicture} 
                                                 nullRecord={true} 
                                                 onAbsencePress={async () => {
                                                 await this.setState({ 
@@ -1078,8 +1092,10 @@ class WeeklySummarySheet extends React.Component {
                                                 });
                                             }} />    
                                         : // emp name shift data
+                                        
                                             <TextColumn 
                                                 name={res.FullName} 
+                                                ProfilePicture={res.ProfilePicture}
                                                 RG={resData[0].RG != undefined ? resData[0].RG != 0 ? resData[0].RG.toFixed(2) : null : null} 
                                                 OT={resData[0].OT != undefined ? resData[0].OT != 0 ? resData[0].OT.toFixed(2): null : null} 
                                                 DT={resData[0].DT != undefined ? resData[0].DT != 0 ? resData[0].DT.toFixed(2) : null : null} 
@@ -1120,7 +1136,6 @@ class WeeklySummarySheet extends React.Component {
                                                 // onBWPress={() => { this.props.navigation.navigate('BreakWaiver', { date: this.state.selectedDate }) }}
                                                 onBWPress={() => { this.props.navigation.navigate('BreakWaiver', { date: this.state.selectedDate, empName: res.FullName, DailyDetailID: resData[0].DailyDetailID, DayID: this.state.selectedDayId, Weekstartdate: this.state.WeekEndingDate, PosId: res.EmployeeNumber }) }}
                                             />
-
                                     : null
                                 );
                             })
@@ -1183,6 +1198,7 @@ class WeeklySummarySheet extends React.Component {
                                 return(
                                     <TextColumn 
                                         name={res.FullName} 
+                                        ProfilePicture={res.ProfilePicture}
                                         RG={TotalRG != 0 ? parseFloat(TotalRG).toFixed(2) : null} 
                                         OT={TotalOT != 0 ? parseFloat(TotalOT).toFixed(2) : null} 
                                         DT={TotalDT != 0 ? parseFloat(TotalDT).toFixed(2) : null} 
@@ -1772,7 +1788,7 @@ class WeeklySummarySheet extends React.Component {
                                 >
                                     {this.getStores()}
                                 </Picker>
-                                <TouchableOpacity onPress={() => this.resetFilterClick()} style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 5, }}>
+                                <TouchableOpacity onPress={() => this.resetFilterClick()} style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 10, margin: 40 }}>
                                     <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
                                     <Text style={{ color: 'red' }}>Reset Filter</Text>
                                 </TouchableOpacity>

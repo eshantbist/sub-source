@@ -1,6 +1,7 @@
 const images = {
   BackIcon: require('./Images/backButton.png'),
   WhiteBackIcon: require('./Images/backWhite.png'),
+  Logo: require('./Images/logo_rounded.png'),
   // ====>>>> tab images <<<<=======
   CheckDocumentStatusActiveIcon: require('./Images/Tab/1Active.png'),
   CheckDocumentStatusInctiveIcon: require('./Images/Tab/1Inactive.png'),

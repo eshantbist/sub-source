@@ -739,7 +739,7 @@ class Dashboard extends React.Component {
 
                                 <TouchableOpacity 
                                     onPress={() => this.onResetFilterClick()}
-                                    style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 5, marginVertical: 20 }}
+                                    style={{ alignSelf: 'center', flexDirection: 'row',justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 10, marginVertical: 40 }}
                                 >
                                     <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
                                     <Text style={{ color: 'red' }}>Reset Filter</Text>

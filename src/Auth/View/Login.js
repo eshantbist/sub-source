@@ -1,6 +1,6 @@
 //LIBRARIES
 import React from 'react';
-import { View, ScrollView, Modal, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, ScrollView, Modal, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { StackActions, NavigationActions } from 'react-navigation'
 import AsyncStorage from '@react-native-community/async-storage';
@@ -149,6 +149,10 @@ class Login extends React.Component {
         return (
             // <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} contentContainerStyle={Styles.loginBox1} enableOnAndroid={true}>
             <View style={Styles.loginBox}>
+                <Image 
+                    source={Images.Logo}
+                    style={Styles.logoImage}
+                />
                 <View style={Styles.inputBox}>
                     <TextInputView
                         label="UserID"
@@ -251,6 +255,12 @@ const Styles = StyleSheet.create({
 
         backgroundColor: 'white',
         // justifyContent: 'center',
+    },
+    logoImage: {
+        alignSelf: 'center',
+        height: Matrics.CountScale(100),
+        width: Matrics.CountScale(100),
+        marginBottom: Matrics.CountScale(20),
     },
     inputBox: {
         marginHorizontal: Matrics.CountScale(20),

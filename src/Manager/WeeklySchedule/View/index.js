@@ -55,7 +55,7 @@ export const TextRow = ({ labelText, contentText, bgColor }) => {
 }
 
 
-export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress, onLayout, selectedJumpEmpName}) => {
+export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress, onLayout, selectedJumpEmpName}) => {
     // if( selectedDate == 'Total')
     //     console.log('TotalfinalRoleEmployeeData-->',TotalfinalRoleEmployeeData.length)
     // console.log('selectedJumpEmpName-->', selectedJumpEmpName)
@@ -66,6 +66,7 @@ export const ManagerArtistTextRow = ({ experience, labelText, shiftData, time, h
         >
             <View style={Styles.rowTitleStyle}>
                 <Text style={Styles.mainContainerLabel}>{labelText}</Text>
+                <Text style={Styles.mainContainerLabel}>{employeeStatus}</Text>
                 <View style={{ flexDirection: 'row'}}>
                 <View style={{ flexDirection: 'row', marginTop: Matrics.CountScale(5), marginLeft: Matrics.CountScale(10), borderRadius: 15, alignItems: 'center', backgroundColor: Colors.BGYELLOW, alignSelf: 'flex-start', padding: Matrics.CountScale(4) }}>
                     <Image source={Images.Star} />
@@ -937,11 +938,12 @@ class WeeklySchedule extends React.Component {
     }
 
     renderUserRoleItem = ({ item, index }) => {
-        // console.log('renderUserRoleItem--> time-->',item);
+        // console.log('renderUserRoleItem--> EmployeeStatus-->',item.EmployeeStatus );
         const fullnameArr = item.FullName != undefined && item.FullName != '' && item.FullName.split(' ');
         return (
             <ManagerArtistTextRow
                 labelText={item.FullName}
+                employeeStatus={item.EmployeeStatus}
                 shiftData={item.ShiftData}
                 experience={Global.getYearMonthDiff(item.DoH)}
                 selectedDate={this.state.selectedDate}
@@ -1479,6 +1481,7 @@ class WeeklySchedule extends React.Component {
     //----------->>>Render Method-------------->>>
 
     render() {
+        // console.log('empRoleData-->', this.state.empRoleData);
         // console.log('selectedDate-->', this.state.selectedDate);
         // console.log('dayIndex-->', this.state.dayIndex);
         // if(this.state.selectedDate == 'Total')
@@ -2135,7 +2138,7 @@ class WeeklySchedule extends React.Component {
                                 >
                                     {this.getStores()}
                                 </Picker>
-                                <TouchableOpacity onPress={() => this.resetFilterClick()} style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 5, }}>
+                                <TouchableOpacity onPress={() => this.resetFilterClick()} style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 10, margin: 40 }}>
                                     <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
                                     <Text style={{ color: 'red' }}>Reset Filter</Text>
                                 </TouchableOpacity>

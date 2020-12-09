@@ -73,7 +73,7 @@
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/anim_catalyst_fade_out.xml.flat",
-        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/222ee95597f023db60efe5387bb11dfe/jetified-react-native-0.62.2/res/anim/catalyst_fade_out.xml"
+        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/8ef313c3e3cb7f4008497d3210378fdb/jetified-react-native-0.62.2/res/anim/catalyst_fade_out.xml"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_resources_reactnativecalendarstrip_src_assets_images_dashboard_bell.png.flat",
@@ -209,7 +209,7 @@
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/layout_fps_view.xml.flat",
-        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/222ee95597f023db60efe5387bb11dfe/jetified-react-native-0.62.2/res/layout/fps_view.xml"
+        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/8ef313c3e3cb7f4008497d3210378fdb/jetified-react-native-0.62.2/res/layout/fps_view.xml"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_assets_images_checkdocumentstatus_reddot.png.flat",
@@ -709,7 +709,7 @@
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/anim_catalyst_slide_up.xml.flat",
-        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/222ee95597f023db60efe5387bb11dfe/jetified-react-native-0.62.2/res/anim/catalyst_slide_up.xml"
+        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/8ef313c3e3cb7f4008497d3210378fdb/jetified-react-native-0.62.2/res/anim/catalyst_slide_up.xml"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable_abc_ratingbar_indicator_material.xml.flat",
@@ -901,7 +901,7 @@
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/anim_catalyst_slide_down.xml.flat",
-        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/222ee95597f023db60efe5387bb11dfe/jetified-react-native-0.62.2/res/anim/catalyst_slide_down.xml"
+        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/8ef313c3e3cb7f4008497d3210378fdb/jetified-react-native-0.62.2/res/anim/catalyst_slide_down.xml"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_resources_reactnativecalendarstrip_src_assets_images_login_message.png.flat",
@@ -1448,12 +1448,12 @@
         "source": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/generated/res/react/release/drawable-mdpi/src_assets_images_employee_myschedule_denied.png"
     },
     {
-        "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_assets_images_employee_plus.png.flat",
-        "source": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/generated/res/react/release/drawable-mdpi/src_assets_images_employee_plus.png"
-    },
-    {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-mdpi-v4_abc_list_divider_mtrl_alpha.9.png.flat",
         "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/2b7e6ebaa515cd43f42fb356f0d1941c/appcompat-1.1.0/res/drawable-mdpi-v4/abc_list_divider_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_assets_images_employee_plus.png.flat",
+        "source": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/generated/res/react/release/drawable-mdpi/src_assets_images_employee_plus.png"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_assets_images_dashboard_labor.png.flat",
@@ -1565,7 +1565,7 @@
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/layout_redbox_view.xml.flat",
-        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/222ee95597f023db60efe5387bb11dfe/jetified-react-native-0.62.2/res/layout/redbox_view.xml"
+        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/8ef313c3e3cb7f4008497d3210378fdb/jetified-react-native-0.62.2/res/layout/redbox_view.xml"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-mdpi-v4_abc_ic_star_black_16dp.png.flat",
@@ -1745,7 +1745,7 @@
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable_redbox_top_border_background.xml.flat",
-        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/222ee95597f023db60efe5387bb11dfe/jetified-react-native-0.62.2/res/drawable/redbox_top_border_background.xml"
+        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/8ef313c3e3cb7f4008497d3210378fdb/jetified-react-native-0.62.2/res/drawable/redbox_top_border_background.xml"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-xhdpi_src_assets_images_dashboard_full_comp.png.flat",
@@ -1794,6 +1794,10 @@
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-xxxhdpi_node_modules_reactnativecalendars_src_calendar_img_next.png.flat",
         "source": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/generated/res/react/release/drawable-xxxhdpi/node_modules_reactnativecalendars_src_calendar_img_next.png"
+    },
+    {
+        "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-xhdpi_src_assets_images_logo_rounded.png.flat",
+        "source": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/generated/res/react/release/drawable-xhdpi/src_assets_images_logo_rounded.png"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/anim_abc_grow_fade_in_from_bottom.xml.flat",
@@ -1889,7 +1893,7 @@
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/anim_catalyst_push_up_in.xml.flat",
-        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/222ee95597f023db60efe5387bb11dfe/jetified-react-native-0.62.2/res/anim/catalyst_push_up_in.xml"
+        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/8ef313c3e3cb7f4008497d3210378fdb/jetified-react-native-0.62.2/res/anim/catalyst_push_up_in.xml"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-mdpi-v4_abc_ic_menu_copy_mtrl_am_alpha.png.flat",
@@ -1989,7 +1993,7 @@
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/layout_redbox_item_frame.xml.flat",
-        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/222ee95597f023db60efe5387bb11dfe/jetified-react-native-0.62.2/res/layout/redbox_item_frame.xml"
+        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/8ef313c3e3cb7f4008497d3210378fdb/jetified-react-native-0.62.2/res/layout/redbox_item_frame.xml"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-xxhdpi_src_assets_images_dashboard_sales_building.png.flat",
@@ -2281,7 +2285,7 @@
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/anim_catalyst_push_up_out.xml.flat",
-        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/222ee95597f023db60efe5387bb11dfe/jetified-react-native-0.62.2/res/anim/catalyst_push_up_out.xml"
+        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/8ef313c3e3cb7f4008497d3210378fdb/jetified-react-native-0.62.2/res/anim/catalyst_push_up_out.xml"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-ldrtl-xxhdpi-v17_abc_spinner_mtrl_am_alpha.9.png.flat",
@@ -2429,7 +2433,7 @@
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/layout_redbox_item_title.xml.flat",
-        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/222ee95597f023db60efe5387bb11dfe/jetified-react-native-0.62.2/res/layout/redbox_item_title.xml"
+        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/8ef313c3e3cb7f4008497d3210378fdb/jetified-react-native-0.62.2/res/layout/redbox_item_title.xml"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/menu_ucrop_menu_activity.xml.flat",
@@ -2832,12 +2836,16 @@
         "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/2b7e6ebaa515cd43f42fb356f0d1941c/appcompat-1.1.0/res/drawable-hdpi-v4/abc_list_selector_disabled_holo_dark.9.png"
     },
     {
+        "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-xxhdpi_src_assets_images_logo_rounded.png.flat",
+        "source": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/generated/res/react/release/drawable-xxhdpi/src_assets_images_logo_rounded.png"
+    },
+    {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-xxhdpi-v4_abc_btn_radio_to_on_mtrl_015.png.flat",
         "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/2b7e6ebaa515cd43f42fb356f0d1941c/appcompat-1.1.0/res/drawable-xxhdpi-v4/abc_btn_radio_to_on_mtrl_015.png"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/anim_catalyst_fade_in.xml.flat",
-        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/222ee95597f023db60efe5387bb11dfe/jetified-react-native-0.62.2/res/anim/catalyst_fade_in.xml"
+        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/8ef313c3e3cb7f4008497d3210378fdb/jetified-react-native-0.62.2/res/anim/catalyst_fade_in.xml"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-xxhdpi_src_assets_images_dashboard_onboarding.png.flat",
@@ -2889,7 +2897,7 @@
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/layout_dev_loading_view.xml.flat",
-        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/222ee95597f023db60efe5387bb11dfe/jetified-react-native-0.62.2/res/layout/dev_loading_view.xml"
+        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/8ef313c3e3cb7f4008497d3210378fdb/jetified-react-native-0.62.2/res/layout/dev_loading_view.xml"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/layout_ucrop_fragment_photobox.xml.flat",
@@ -2945,7 +2953,7 @@
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/xml_rn_dev_preferences.xml.flat",
-        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/222ee95597f023db60efe5387bb11dfe/jetified-react-native-0.62.2/res/xml/rn_dev_preferences.xml"
+        "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/8ef313c3e3cb7f4008497d3210378fdb/jetified-react-native-0.62.2/res/xml/rn_dev_preferences.xml"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/anim_btn_checkbox_to_unchecked_icon_null_animation.xml.flat",
@@ -3126,6 +3134,10 @@
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/layout_abc_list_menu_item_checkbox.xml.flat",
         "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/2b7e6ebaa515cd43f42fb356f0d1941c/appcompat-1.1.0/res/layout/abc_list_menu_item_checkbox.xml"
+    },
+    {
+        "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_assets_images_logo_rounded.png.flat",
+        "source": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/generated/res/react/release/drawable-mdpi/src_assets_images_logo_rounded.png"
     },
     {
         "merged": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/res/merged/release/layout_abc_alert_dialog_material.xml.flat",
