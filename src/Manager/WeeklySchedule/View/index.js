@@ -55,7 +55,7 @@ export const TextRow = ({ labelText, contentText, bgColor }) => {
 }
 
 
-export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress, onLayout, selectedJumpEmpName}) => {
+export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,ContactNumber, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress, onLayout, selectedJumpEmpName}) => {
     // if( selectedDate == 'Total')
     //     console.log('TotalfinalRoleEmployeeData-->',TotalfinalRoleEmployeeData.length)
     // console.log('selectedJumpEmpName-->', selectedJumpEmpName)
@@ -67,6 +67,10 @@ export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus, shi
             <View style={Styles.rowTitleStyle}>
                 <Text style={Styles.mainContainerLabel}>{labelText}</Text>
                 <Text style={Styles.mainContainerLabel}>{employeeStatus}</Text>
+                {
+                    employeeStatus == 'Active' && ContactNumber != '' &&
+                    <Text style={Styles.mainContainerLabel}>{ContactNumber}</Text>
+                }
                 <View style={{ flexDirection: 'row'}}>
                 <View style={{ flexDirection: 'row', marginTop: Matrics.CountScale(5), marginLeft: Matrics.CountScale(10), borderRadius: 15, alignItems: 'center', backgroundColor: Colors.BGYELLOW, alignSelf: 'flex-start', padding: Matrics.CountScale(4) }}>
                     <Image source={Images.Star} />
@@ -316,7 +320,7 @@ class WeeklySchedule extends React.Component {
             if (data.Status === 1) {
                 const roleSelect = {
                     RoleID: 0,
-                    RoleName: 'Select Role'
+                    RoleName: 'shops'
                 }
                 if(data.Report.user_list.length > 0){
                     const userSelect = {
@@ -940,10 +944,18 @@ class WeeklySchedule extends React.Component {
     renderUserRoleItem = ({ item, index }) => {
         // console.log('renderUserRoleItem--> EmployeeStatus-->',item.EmployeeStatus );
         const fullnameArr = item.FullName != undefined && item.FullName != '' && item.FullName.split(' ');
+        let ContactNumber = '';
+        if(item.ContactNumber != undefined && item.ContactNumber != ''){
+            var x = item.ContactNumber;
+            x = x.replace(/\D+/g, '')
+                .replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+            ContactNumber = x;
+        }
         return (
             <ManagerArtistTextRow
                 labelText={item.FullName}
                 employeeStatus={item.EmployeeStatus}
+                ContactNumber={ContactNumber}
                 shiftData={item.ShiftData}
                 experience={Global.getYearMonthDiff(item.DoH)}
                 selectedDate={this.state.selectedDate}

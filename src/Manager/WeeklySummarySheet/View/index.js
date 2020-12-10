@@ -58,7 +58,8 @@ export const TextColumn = ({ name,ProfilePicture, RG, OT, DT, BW, bgColor, nullR
                     }
                     style={{
                         height: Matrics.CountScale(30),
-                        width: Matrics.CountScale(30)
+                        width: Matrics.CountScale(30),
+                        alignSelf: 'center',
                     }}
                 />
                 <Text style={Styles.headingStyle} >{name}</Text>
@@ -251,7 +252,7 @@ class WeeklySummarySheet extends React.Component {
         if (data.Status === 1) {
             const roleSelect = {
                 RoleID: 0,
-                RoleName: 'Select Role'
+                RoleName: 'shops'
             }
             if(data.Report.user_list.length > 0){
                 const userSelect = {
@@ -493,6 +494,8 @@ class WeeklySummarySheet extends React.Component {
     }
 
     async setEmpData() {
+        // console.log('basicListArr-->', this.state.basicListArr);
+        // console.log('hoursBasicListArr-->', this.state.hoursBasicListArr);
         let empRoleWiseData = [];
         // let newTimeoffDataArr = [];
         // let newTimeoffDataArrLen = 0;
@@ -1255,7 +1258,7 @@ class WeeklySummarySheet extends React.Component {
     render() {
         // console.log('render');
         // console.log('absenceReason-->', this.state.absenceReason);
-        // console.log('empRoleWiseData-->',this.state.empRoleWiseData);
+        console.log('empRoleWiseData-->',this.state.empRoleWiseData);
         // console.log('empRoleWiseData-->',this.state.empRoleWiseData.length);
         // console.log('hoursBasicListArr-->',this.state.hoursBasicListArr.length);
         // console.log('bottomHoursBasicListArr-->',this.state.bottomHoursBasicListArr.length);

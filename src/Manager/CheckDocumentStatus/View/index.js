@@ -122,7 +122,7 @@ class CheckDoucmentStatus extends React.Component {
                 console.log('filter success');
                 const roleSelect = {
                     RoleID: 0,
-                    RoleName: 'Select Role'
+                    RoleName: 'shops'
                 }
                 const storeselect = {
                     StoreID: -1,

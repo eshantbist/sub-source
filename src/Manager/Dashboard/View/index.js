@@ -195,7 +195,8 @@ class Dashboard extends React.Component {
             if (this.dashboardDataFlag && this.roleFlag)
                 this.setState({ loading: false })
 
-            let data = nextProps.headerFiltervalues.data
+            let data = nextProps.headerFiltervalues.data;
+            console.log('filterdata-->', data);
             if(data.Status == 1)
             {
                 const storeselect = {
@@ -204,7 +205,7 @@ class Dashboard extends React.Component {
                 }
                 const roleSelect = {
                     RoleID: 0,
-                    RoleName: 'Select Role'
+                    RoleName: 'shops'
                 }
                 if(data.Report.user_list.length > 0){
                     const userSelect = {
