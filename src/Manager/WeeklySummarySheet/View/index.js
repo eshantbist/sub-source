@@ -46,7 +46,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 const SLIDER_WIDTH = viewportWidth;
 let self = '';
 
-export const TextColumn = ({ name,ProfilePicture, RG, OT, DT, BW, bgColor, nullRecord, onBWPress, onRGPress, onRGLongPress, onAbsencePress, onRgDisable, onBwDisable }) => {
+export const TextColumn = ({ name,ProfilePicture,selectedDayIsOpen, RG, OT, DT, BW, bgColor, nullRecord, onBWPress, onRGPress, onRGLongPress, onAbsencePress, onRgDisable, onBwDisable }) => {
     return (
         <View style={[Styles.rowContainer, { backgroundColor: bgColor }]}>
             <View style={{ width: '48%', flexDirection:'row' }}>
@@ -73,12 +73,12 @@ export const TextColumn = ({ name,ProfilePicture, RG, OT, DT, BW, bgColor, nullR
                 :
                     <View style={{ flexDirection: 'row', flex: 1 }}>
                         <TouchableOpacity onPress={onRGPress} onLongPress={onRGLongPress} style={Styles.columnContentStyle} disabled={onRgDisable}>
-                            <Text style={Styles.columnContentTextStyle}>{RG}</Text>
+                            <Text style={[Styles.columnContentTextStyle,{color: selectedDayIsOpen ? Colors.TEXTRED : 'black'} ]}>{RG}</Text>
                         </TouchableOpacity>
-                            <View style={Styles.columnContentStyle}><Text style={Styles.columnContentTextStyle} >{OT}</Text></View>
-                            <View style={Styles.columnContentStyle}><Text style={Styles.columnContentTextStyle}>{DT}</Text></View>
+                            <View style={Styles.columnContentStyle}><Text style={[Styles.columnContentTextStyle,{color: selectedDayIsOpen ? Colors.TEXTRED : 'black'}]} >{OT}</Text></View>
+                            <View style={Styles.columnContentStyle}><Text style={[Styles.columnContentTextStyle,{color: selectedDayIsOpen ? Colors.TEXTRED : 'black'}]}>{DT}</Text></View>
                         <TouchableOpacity onPress={onBWPress} style={Styles.columnContentStyle} disabled={onBwDisable}>
-                            <Text style={Styles.columnContentTextStyle}>{BW}</Text>
+                            <Text style={[Styles.columnContentTextStyle,{color: selectedDayIsOpen ? Colors.TEXTRED : 'black'}]}>{BW}</Text>
                         </TouchableOpacity>
                     </View>
             }
@@ -178,6 +178,7 @@ class WeeklySummarySheet extends React.Component {
         selectedUsers: 0,
         selectedRoleName: '',
         lastFilterselectedUserId: 0,
+        prevIndex: 0,
     };
 
     lastTap = null;
@@ -722,8 +723,15 @@ class WeeklySummarySheet extends React.Component {
     }
 
     _renderItem({ item, index }) {
+        // console.log('is closed-->', !item.isClosed, '---', item.WeekDate)
       return(
-        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => { self.setState({ dayIndex: index, selectedDate: item.WeekDate, selectedDayId: item.DayID }) }}>
+        <TouchableOpacity style={{ flexDirection: 'row' }} 
+        onPress={() => { 
+            self.setState({ dayIndex: index, selectedDate: item.WeekDate, selectedDayId: item.DayID, selectedDayIsOpen: !item.isClosed, }) 
+            if(index >= 6){
+                self.setState({ prevIndex: index-1 });
+            }
+        }}>
           <View style={{ flex: 1, alignItems: 'center', backgroundColor: self.state.dayIndex == index ? Colors.SKYBLUE : null,
         //   paddingVertical: Matrics.CountScale(20)
         //    paddingVertical: item.WeekDate === 'Total' ? Matrics.CountScale(43) : Matrics.CountScale(10) 
@@ -1098,6 +1106,7 @@ class WeeklySummarySheet extends React.Component {
                                         
                                             <TextColumn 
                                                 name={res.FullName} 
+                                                selectedDayIsOpen={this.state.selectedDayIsOpen}
                                                 ProfilePicture={res.ProfilePicture}
                                                 RG={resData[0].RG != undefined ? resData[0].RG != 0 ? resData[0].RG.toFixed(2) : null : null} 
                                                 OT={resData[0].OT != undefined ? resData[0].OT != 0 ? resData[0].OT.toFixed(2): null : null} 
@@ -1258,7 +1267,9 @@ class WeeklySummarySheet extends React.Component {
     render() {
         // console.log('render');
         // console.log('absenceReason-->', this.state.absenceReason);
-        console.log('empRoleWiseData-->',this.state.empRoleWiseData);
+        // console.log('this.state.dayIndex-->', this.state.dayIndex);
+        // console.log('this.state.prevIndex-->', this.state.prevIndex);
+        // console.log('empRoleWiseData-->',this.state.empRoleWiseData);
         // console.log('empRoleWiseData-->',this.state.empRoleWiseData.length);
         // console.log('hoursBasicListArr-->',this.state.hoursBasicListArr.length);
         // console.log('bottomHoursBasicListArr-->',this.state.bottomHoursBasicListArr.length);
@@ -1313,8 +1324,17 @@ class WeeklySummarySheet extends React.Component {
                       inactiveSlideScale={1}
                       inactiveSlideOpacity={1}
                       extraData={this.state}
-                      onSnapToItem={(index) => this.setState({ dayIndex: index, selectedDate: this.state.FinalWeekDatesDataArr[index].WeekDate, selectedDayId: this.state.FinalWeekDatesDataArr[index].DayID })}
-                      scrollEnabled={this.state.dayIndex == 6 || this.state.dayIndex == 7 ? false : true}
+                      onSnapToItem={(index) => { 
+                        //   console.log('index-->',index); console.log('prev-->',index);
+                        this.setState({ dayIndex: index, selectedDate: this.state.FinalWeekDatesDataArr[index].WeekDate, selectedDayId: this.state.FinalWeekDatesDataArr[index].DayID, selectedDayIsOpen: !this.state.FinalWeekDatesDataArr[index].isClosed, })
+                        // if(this.state.prevIndex == 5){
+                        //     console.log('kkkk')
+                        //     this._carousel.snapToPrev({animated: true, fireCallback: true});
+                        // }
+                    }}
+                    scrollEnabled={ (this.state.dayIndex == 6 || this.state.dayIndex == 7) && this.state.prevIndex == 5 ? true : (this.state.dayIndex == 6 || this.state.dayIndex == 7) ? false  : true}
+                    // onBeforeSnapToItem = {(slideIndex) => console.log('before-->', slideIndex)}
+                    // scrollEnabled={(this.state.dayIndex == 6 || this.state.dayIndex == 7) && this.state.dayIndex != 5 ? false : true}
                   />
                   
                 </View>

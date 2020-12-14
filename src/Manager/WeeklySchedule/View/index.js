@@ -246,6 +246,7 @@ class WeeklySchedule extends React.Component {
         disableEditDeleteShiftButton: false,
         upperSectionHeight: 1,
         headContainerHeight: 1,
+        prevIndex: 0,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -907,7 +908,12 @@ class WeeklySchedule extends React.Component {
             // console.log('weatherListData-->',self.state.weatherListData);
 
         return (
-            <TouchableOpacity onPress={() => { self.setState({ dayIndex: index, selectedDate: item.DayDate }) }}>
+            <TouchableOpacity onPress={() => { 
+                self.setState({ dayIndex: index, selectedDate: item.DayDate }) 
+                if(index >= 6){
+                    self.setState({ prevIndex: index-1 });
+                }
+            }}>
                 <View style={[{ backgroundColor: self.state.dayIndex == index ? Colors.SKYBLUE : null, width: Matrics.screenWidth / 2 - Matrics.CountScale(10), alignItems: 'center', paddingVertical: item.DayDate === 'Total' ? Matrics.CountScale(43) : Matrics.CountScale(10), borderColor: Colors.BORDERCOLOR, borderRightWidth: self.state.daysData.length - 1 != index ? 1 : 0 }]}>
                     {
                         item.DayDate != 'Total' ?
@@ -1583,7 +1589,8 @@ class WeeklySchedule extends React.Component {
                                 inactiveSlideOpacity={1}
                                 extraData={this.state}
                                 onSnapToItem={(index) => {this.setState({ dayIndex: index, selectedDate: this.state.daysData[index].DayDate })}}
-                                scrollEnabled={this.state.dayIndex == 6 || this.state.dayIndex == 7 ? false : true}
+                                // scrollEnabled={this.state.dayIndex == 6 || this.state.dayIndex == 7 ? false : true}
+                                scrollEnabled={ (this.state.dayIndex == 6 || this.state.dayIndex == 7) && this.state.prevIndex == 5 ? true : (this.state.dayIndex == 6 || this.state.dayIndex == 7) ? false  : true}
                             />
 
                             <View style={{ alignItems: 'center', marginHorizontal: Matrics.CountScale(5) }}>
