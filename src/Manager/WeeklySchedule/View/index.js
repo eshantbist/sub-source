@@ -247,58 +247,79 @@ class WeeklySchedule extends React.Component {
         upperSectionHeight: 1,
         headContainerHeight: 1,
         prevIndex: 0,
+        isLoad: true,
     };
 
     //------------>>>LifeCycle Methods------------->>>
 
     async UNSAFE_componentWillMount() {
         self = this
-        const currentDate = moment(new Date()).format("MM/DD/YYYY");
-        let WeekEndingDate = '';
-        if(moment(currentDate).format('dddd') === 'Tuesday'){
-            WeekEndingDate = currentDate;
-        } else if(moment(currentDate).format('dddd') === 'Monday'){
-            WeekEndingDate = moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
-        } else {
-            WeekEndingDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
-        }
+        this.focusListener = this.props.navigation.addListener('didFocus', async () => {
+            console.log('will global.selectedStore-->', parseInt(global.selectedStore,10))
+            await this.setState({ 
+                selectedStoreId: parseInt(global.selectedStore,10), 
+                lastFilterselectedStoreId: parseInt(global.selectedStore,10), 
+                isLoad: true,
+                loading: true,
+                getFilterData: false
+            });
+            const currentDate = moment(new Date()).format("MM/DD/YYYY");
+            let WeekEndingDate = '';
+            if(moment(currentDate).format('dddd') === 'Tuesday'){
+                WeekEndingDate = currentDate;
+            } else if(moment(currentDate).format('dddd') === 'Monday'){
+                WeekEndingDate = moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+            } else {
+                WeekEndingDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+            }
 
-        const YearID = WeekEndingDate !== '' ? WeekEndingDate.split('/')[2] : '';
+            const YearID = WeekEndingDate !== '' ? WeekEndingDate.split('/')[2] : '';
+            
+
+            await this.setState({ weekendDate: WeekEndingDate,currentWeekEndDate: WeekEndingDate, YearID, lastFilterweekendDate: WeekEndingDate  })
+            console.log('will mount focus-->', this.state.selectedStoreId, '--isload--',this.state.isLoad )
+            if(this.state.isLoad) {
+                this.headerfilterFlag = false;
+                this.timeOffReasonsFlag = false;
+
+                this.props.getHeaderFilterValuesRequest({ StoreId: this.state.selectedStoreId, RoleId: this.state.selectedRoleId, FilterId: -1, BusinessTypeId: 1 });
+                this.props.getTimeOffReasonsListRequest();
+
+            }
+        });
+            console.log('will mount-->', this.state.selectedStoreId, '--isload--',this.state.isLoad )
+            // if(this.state.isLoad) {
+            //     this.headerfilterFlag = false;
+            //     this.timeOffReasonsFlag = false;
+
+            //     this.props.getHeaderFilterValuesRequest({ StoreId: this.state.selectedStoreId, RoleId: this.state.selectedRoleId, FilterId: -1, BusinessTypeId: 1 });
+            //     this.props.getTimeOffReasonsListRequest();
+
+            // } else 
+            if(this.state.selectedStoreId !== -1) {
+                this.taxListFlag = false;
+                this.infoFlag = false;
+                this.detailsListFlag = false;
+                this.scheduleEmployeeFlag = false;
+                this.scheduleEmployeeReturnFlag = false;
+                this.idleEmployeeReportFlag = false;
+                this.employeeCountFlag = false;
+                this.sharedEmployeeFlag = false;
+                this.sharedEmployeeScheduleFlag = false;
+                this.ScheduleHoursFlag = false;
+                this.props.getPayrollTaxListRequest({ BusinessTypeId: 1, PayrollTaxGUID: '', YearID: this.state.YearID });
+                this.props.getWeeklyScheduleInfoRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
+                this.props.getWeatherDetailsListRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
+                this.props.getWeeklyScheduleEmployeeRequest({ StoreId: this.state.selectedStoreId, UserStoreID: -1, DayID: -1, WeekEnding: this.state.weekendDate });
+                this.props.getWeeklyScheduleEmployeeReturnRequest({ StoreId: this.state.selectedStoreId, WeekEnding: this.state.weekendDate });
+                // this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20 });
+                this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20, orderByColumnName: 'StoreNumber', orderByValue: false});
+                this.props.getWeeklyScheduleEmployeeCountRequest({ StoreId: this.state.selectedStoreId, Type: 1, WeekEnding: this.state.weekendDate });
+                this.props.getweeklyScheduleSharedEmployeeRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
+                this.props.getweeklyScheduleSharedEmployeeScheduleRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
+                this.props.getweeklyScheduleHoursRequest({ StoreId: this.state.selectedStoreId, WeekEnding: this.state.weekendDate });
+            }
         
-
-        await this.setState({ weekendDate: WeekEndingDate,currentWeekEndDate: WeekEndingDate, YearID, lastFilterweekendDate: WeekEndingDate  })
-
-        // console.log('will mount-->', this.state.selectedStoreId )
-        if(this.state.selectedStoreId == -1) {
-            this.headerfilterFlag = false;
-            this.timeOffReasonsFlag = false;
-
-            this.props.getHeaderFilterValuesRequest({ StoreId: this.state.selectedStoreId, RoleId: this.state.selectedRoleId, FilterId: -1, BusinessTypeId: 1 });
-            this.props.getTimeOffReasonsListRequest();
-
-        } else if(this.state.selectedStoreId !== -1) {
-            this.taxListFlag = false;
-            this.infoFlag = false;
-            this.detailsListFlag = false;
-            this.scheduleEmployeeFlag = false;
-            this.scheduleEmployeeReturnFlag = false;
-            this.idleEmployeeReportFlag = false;
-            this.employeeCountFlag = false;
-            this.sharedEmployeeFlag = false;
-            this.sharedEmployeeScheduleFlag = false;
-            this.ScheduleHoursFlag = false;
-            this.props.getPayrollTaxListRequest({ BusinessTypeId: 1, PayrollTaxGUID: '', YearID: this.state.YearID });
-            this.props.getWeeklyScheduleInfoRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
-            this.props.getWeatherDetailsListRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
-            this.props.getWeeklyScheduleEmployeeRequest({ StoreId: this.state.selectedStoreId, UserStoreID: -1, DayID: -1, WeekEnding: this.state.weekendDate });
-            this.props.getWeeklyScheduleEmployeeReturnRequest({ StoreId: this.state.selectedStoreId, WeekEnding: this.state.weekendDate });
-            // this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20 });
-            this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20, orderByColumnName: 'StoreNumber', orderByValue: false});
-            this.props.getWeeklyScheduleEmployeeCountRequest({ StoreId: this.state.selectedStoreId, Type: 1, WeekEnding: this.state.weekendDate });
-            this.props.getweeklyScheduleSharedEmployeeRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
-            this.props.getweeklyScheduleSharedEmployeeScheduleRequest({ StoreId: this.state.selectedStoreId, DayID: -1, WeekEnding: this.state.weekendDate });
-            this.props.getweeklyScheduleHoursRequest({ StoreId: this.state.selectedStoreId, WeekEnding: this.state.weekendDate });
-        }
     }
 
     componentDidMount() {
@@ -313,6 +334,7 @@ class WeeklySchedule extends React.Component {
     async UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.headerFiltervalues.getHeaderFilterValuesSuccess && this.state.loading && !this.headerfilterFlag && !this.state.getFilterData) {
             this.headerfilterFlag = true;
+            console.log('filter success')
             // if (this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
             if (this.taxListFlag && this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
                 this.setState({ loading: false })
@@ -331,17 +353,20 @@ class WeeklySchedule extends React.Component {
                     data.Report.user_list.unshift(userSelect);
                 }
                 data.Report.role_list.unshift(roleSelect);
+                let selectedStoreArr = data.Report.store_list.filter(S => S.StoreID == parseInt(global.selectedStore,10));
                 await this.setState({
                     userRole: data.Report.role_list,
                     Stores: data.Report.store_list,
-                    selectedStoreId: data.Report.store_list[0].StoreID,
-                    selectedStoreName: data.Report.store_list[0].DisplayStoreNumber,
                     getFilterData: true,
-                    lastFilterselectedStoreId: data.Report.store_list[0].StoreID,
-                    lastFilterselectedStoreName: data.Report.store_list[0].DisplayStoreNumber,
+                    selectedStoreId: parseInt(global.selectedStore,10) != -1 ? parseInt(global.selectedStore,10) : data.Report.store_list[0].StoreID,
+                    selectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber : data.Report.store_list[0].DisplayStoreNumber,
+                    lastFilterselectedStoreId: parseInt(global.selectedStore,10) != -1 ? parseInt(global.selectedStore,10) : data.Report.store_list[0].StoreID,
+                    lastFilterselectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber : data.Report.store_list[0].DisplayStoreNumber,
                     Users: data.Report.user_list,
+                    isLoad: false,
                 });
                 if(this.state.getFilterData) {
+                    console.log('will mount call')
                     this.UNSAFE_componentWillMount();
                 }
             }

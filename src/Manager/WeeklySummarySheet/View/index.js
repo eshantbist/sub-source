@@ -179,6 +179,7 @@ class WeeklySummarySheet extends React.Component {
         selectedRoleName: '',
         lastFilterselectedUserId: 0,
         prevIndex: 0,
+        isLoad: true,
     };
 
     lastTap = null;
@@ -188,30 +189,50 @@ class WeeklySummarySheet extends React.Component {
 
     async UNSAFE_componentWillMount() {
       self = this;
-      const currentDate = moment().format("MM/DD/YYYY");
-      let WeekEndingDate = '';
-      if(moment(currentDate).format('dddd') === 'Tuesday'){
-        WeekEndingDate = currentDate;
-      } else if(moment(currentDate).format('dddd') === 'Monday'){
-        WeekEndingDate = moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
-      } else {
-        WeekEndingDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
-      }
+      this.focusListener = this.props.navigation.addListener('didFocus', async () => {
+        console.log('will summary global.selectedStore-->', parseInt(global.selectedStore,10))
+        await this.setState({ 
+            selectedStoreId: parseInt(global.selectedStore,10), 
+            lastFilterselectedStoreId: parseInt(global.selectedStore,10), 
+            isLoad: true,
+            loading: true,
+            getFilterData: false
+        });
+        const currentDate = moment().format("MM/DD/YYYY");
+        let WeekEndingDate = '';
+        if(moment(currentDate).format('dddd') === 'Tuesday'){
+            WeekEndingDate = currentDate;
+        } else if(moment(currentDate).format('dddd') === 'Monday'){
+            WeekEndingDate = moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+        } else {
+            WeekEndingDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+        }
 
-      await this.setState({ WeekEndingDate, lastFilterweekendDate: WeekEndingDate, currentWeekEndDate: WeekEndingDate, });
+        await this.setState({ WeekEndingDate, lastFilterweekendDate: WeekEndingDate, currentWeekEndDate: WeekEndingDate, });
+        if(this.state.isLoad) {
+            this.headerfilterFlag = false;
+            this.timeOffReasonsFlag = false;
 
+            this.props.getHeaderFilterValuesRequest({ StoreId: this.state.selectedStoreId, RoleId: this.state.selectedRoleId, FilterId: -1, BusinessTypeId: 1 });
+            this.props.getTimeOffReasonsListRequest();
+        
+        }
+      });
 
     //   console.log('date-->', moment.utc(WeekEndingDate).format())
     //   console.log('StoreId-->', this.state.selectedStoreId)
 
-      if(this.state.selectedStoreId == -1) {
-        this.headerfilterFlag = false;
-        this.timeOffReasonsFlag = false;
+    //   if(this.state.selectedStoreId == -1) {
+    //   if(this.state.isLoad) {
+    //     this.headerfilterFlag = false;
+    //     this.timeOffReasonsFlag = false;
 
-        this.props.getHeaderFilterValuesRequest({ StoreId: this.state.selectedStoreId, RoleId: this.state.selectedRoleId, FilterId: -1, BusinessTypeId: 1 });
-        this.props.getTimeOffReasonsListRequest();
+    //     this.props.getHeaderFilterValuesRequest({ StoreId: this.state.selectedStoreId, RoleId: this.state.selectedRoleId, FilterId: -1, BusinessTypeId: 1 });
+    //     this.props.getTimeOffReasonsListRequest();
         
-      } else if(this.state.selectedStoreId !== -1) {
+    //   } else
+      
+      if(this.state.selectedStoreId !== -1) {
         this.weatherListFlag = false;
         this.weekDayStatusFlag = false;
         this.WeeklySummarySheetFlag = false;
@@ -263,16 +284,18 @@ class WeeklySummarySheet extends React.Component {
                 data.Report.user_list.unshift(userSelect);
             }
             data.Report.role_list.unshift(roleSelect);
+            let selectedStoreArr = data.Report.store_list.filter(S => S.StoreID == parseInt(global.selectedStore,10));
             await this.setState({ 
                 userRole: data.Report.role_list,
                 StoresList: data.Report.store_list,
                 Users: data.Report.user_list,
-                selectedStoreId: data.Report.store_list[0].StoreID,
-                selectedStoreName: data.Report.store_list[0].DisplayStoreNumber,
+                selectedStoreId: parseInt(global.selectedStore,10) != -1 ? parseInt(global.selectedStore,10) : data.Report.store_list[0].StoreID,
+                selectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber : data.Report.store_list[0].DisplayStoreNumber,
                 getFilterData: true, 
-                lastFilterselectedStoreId: data.Report.store_list[0].StoreID,
-                lastFilterselectedStoreName: data.Report.store_list[0].DisplayStoreNumber,
+                lastFilterselectedStoreId: parseInt(global.selectedStore,10) != -1 ? parseInt(global.selectedStore,10) : data.Report.store_list[0].StoreID,
+                lastFilterselectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber : data.Report.store_list[0].DisplayStoreNumber,
                 Users: data.Report.user_list,
+                isLoad: false,
             });
         }
         if(this.state.getFilterData) {

@@ -148,6 +148,7 @@ class Dashboard extends React.Component {
         
         // this.setState({ WeekEndingDate: '11/20/2018'});
         await this.setState({ WeekEndingDate, currentWeekEndDate: WeekEndingDate, lastFilterWeekEndingDate: WeekEndingDate });
+        global.selectedStore = this.state.selectedStores;
         // console.log('WeekEndingDate-->', this.state.WeekEndingDate) ;
         // console.log('WeekEndingDate-->', this.state.selectedRoleId) ;
         // console.log('WeekEndingDate-->', this.state.selectedStores) ;
@@ -614,13 +615,15 @@ class Dashboard extends React.Component {
                             leftText='Cancel'
                             onLeftPress={() => {
                                 this.setState({ 
-                                filterModal: false,
-                                WeekEndingDate: this.state.lastFilterWeekEndingDate,
-                                selectedRoleId: this.state.lastFilterselectedRoleId,
-                                selectedStores: this.state.lastFilterselectedStores,
-                                selectedUsers: this.state.lastFilterselectedUserId,
-                                Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
-                            })}}
+                                    filterModal: false,
+                                    WeekEndingDate: this.state.lastFilterWeekEndingDate,
+                                    selectedRoleId: this.state.lastFilterselectedRoleId,
+                                    selectedStores: this.state.lastFilterselectedStores,
+                                    selectedUsers: this.state.lastFilterselectedUserId,
+                                    Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
+                                });
+                                global.selectedStore = this.state.lastFilterselectedStores;
+                            }}
                             onRightPress={() => { 
                                 // console.log('save'); 
                                 // console.log('save', this.state.WeekEndingDate); 
@@ -717,7 +720,11 @@ class Dashboard extends React.Component {
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedStores}
-                                    onValueChange={value => this.setState({ selectedStores: value })}
+                                    onValueChange={value => {
+                                        console.log('value-->', value);
+                                        this.setState({ selectedStores: value });
+                                        global.selectedStore = value;
+                                    }}
                                 >
                                     {this.getStores()}
                                 </Picker>

@@ -80,34 +80,45 @@ class CheckDoucmentStatus extends React.Component {
 
     //------------>>>LifeCycle Methods------------->>>
 
-    UNSAFE_componentWillMount() {
+    async UNSAFE_componentWillMount() {
         self = this;
-        this.filterValFlag = false;
-        this.docStatusFlage = false;
-
-        console.log(this.props, "=====>>>>>> Props IN Check Document Status <<<<<=====")
-        this.props.getHeaderFilterValues({
-            RoleId: global.loginResponse.RoleID,
-            FilterId: -1,
-            StoreId: -1,
-            BusinessTypeId: global.loginResponse.DefaultBusinessTypeID
-        });
-        pageNumArr.push(1);
-        this.props.getCheckDocumentStatusHiringReturnRequest({
-            RoleId: this.state.selectedRoleId,
-            FilterId: -1,
-            StoreId: this.state.selectedStores,
-            BusinessTypeId: 1,
-            NoOfDays: this.state.selectedNOD,
-            TileID: 2,
-            StatusType: this.state.selectedStatus,
-            PageNumber: 1,
-            PageSize: perPageRecord,
+        this.focusListener = this.props.navigation.addListener('willFocus', async () => {
+            this.filterValFlag = false;
+            this.docStatusFlage = false;
+            // console.log('global.selectedStore-->', parseInt(global.selectedStore,10))
+            await this.setState({ 
+                selectedStores: parseInt(global.selectedStore,10), 
+                lastFilterselectedStores: parseInt(global.selectedStore,10), 
+                loading: true 
+            });
+            
+            console.log(this.props, "=====>>>>>> Props IN Check Document Status <<<<<=====")
+            console.log('selectedStores-->', this.state.selectedStores)
+            this.props.getHeaderFilterValues({
+                RoleId: global.loginResponse.RoleID,
+                FilterId: -1,
+                StoreId: -1,
+                BusinessTypeId: global.loginResponse.DefaultBusinessTypeID
+            });
+            pageNumArr.push(1);
+            this.props.getCheckDocumentStatusHiringReturnRequest({
+                RoleId: this.state.selectedRoleId,
+                FilterId: -1,
+                StoreId: this.state.selectedStores,
+                BusinessTypeId: 1,
+                NoOfDays: this.state.selectedNOD,
+                TileID: 2,
+                StatusType: this.state.selectedStatus,
+                PageNumber: 1,
+                PageSize: perPageRecord,
+            });
         });
     }
 
 
-    componentWillUnmount() { }
+    componentWillUnmount() { 
+        this.focusListener.remove();
+    }
 
     async UNSAFE_componentWillReceiveProps(nextProps) {
         console.log(nextProps, "=====>>>>>> Next Props IN Check Document Status <<<<<=====")
@@ -119,7 +130,6 @@ class CheckDoucmentStatus extends React.Component {
             let data = nextProps.response.CheckDocumentStatus.data;
             // console.log(data)
             if (data.Status == 1) {
-                console.log('filter success');
                 const roleSelect = {
                     RoleID: 0,
                     RoleName: 'shops'
@@ -137,14 +147,16 @@ class CheckDoucmentStatus extends React.Component {
                 }
                 data.Report.store_list.unshift(storeselect);
                 data.Report.role_list.unshift(roleSelect);
-                console.log('filter success store-->', data.Report.store_list);
-                console.log('filter success role-->', data.Report.role_list);
+                // console.log('filter success store-->', data.Report.store_list);
+                // console.log('filter success role-->', data.Report.role_list);
+                let selectedStoreArr = data.Report.store_list.filter(S => S.StoreID == parseInt(global.selectedStore,10));
                 this.setState({
                     userRoleList: data.Report.role_list,
                     userList: data.Report.user_list,
                     storeList: data.Report.store_list,
-                    selectedStoreId: data.Report.store_list[0].StoreID,
-                    selectedStoreName: data.Report.store_list[0].DisplayStoreNumber
+                    // selectedStoreId: data.Report.store_list[0].StoreID,
+                    // selectedStoreName: data.Report.store_list[0].DisplayStoreNumber
+                    selectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber  : data.Report.store_list[0].DisplayStoreNumber
                 });
             }
         } else if (nextProps.response.CheckDocumentStatus.GetCheckDocumentStatusHiringReturnSucess && (this.state.loading || this.state.refreshing)) {
@@ -169,9 +181,15 @@ class CheckDoucmentStatus extends React.Component {
                 });
                 this.getNumberOfPage();
             } else {
-                // console.log('else-->',data.Message)
-                // console.log('else-->',empListData)
-                this.setState({ empListArr: empListData, TitlesArr: [] });
+                empListData[this.state.selectedIndex] = data.Report != null ? data.Report._list : [] ;
+                console.log('else-->',data.Message)
+                console.log('else-->',empListData)
+                console.log('else-->',empListData[0].length)
+                this.setState({ empListArr: empListData.length == 1 && empListData[0].length == 0 ? [] : empListData, TitlesArr: [], 
+                    TotalEmployeeCount: data.Report != null ? data.Report.PagingStats.TotalCount : 0,
+                    recipientsListArr:  data.Report != null ? data.Report._recipientsList : [],
+                    Totalpage: data.Report != null && 0,
+                });
             }
         } else if (nextProps.response.CheckDocumentStatus.GetCheckDocumentStatusEnvelopVoidSuccess) {
             let data = nextProps.response.CheckDocumentStatus.data;
@@ -229,14 +247,14 @@ class CheckDoucmentStatus extends React.Component {
     //     this._hideDateTimePicker();
     // };
 
-    async onSelectStore(value, index, data) {
-        await this.setState({ selectedStoreId: data[index].StoreID, selectedStoreName: value });
-    }
+    // async onSelectStore(value, index, data) {
+    //     await this.setState({ selectedStoreId: data[index].StoreID, selectedStoreName: value });
+    // }
 
     getRole() {
         let data = []
         for (i = 0; i < this.state.userRoleList.length; i++) {
-            data.push(<Picker.Item label={this.state.userRoleList[i].RoleName} value={this.state.userRoleList[i].RoleID} />)
+            data.push(<Picker.Item key={i} label={this.state.userRoleList[i].RoleName} value={this.state.userRoleList[i].RoleID} />)
         }
         return data
     }
@@ -244,7 +262,7 @@ class CheckDoucmentStatus extends React.Component {
     getUsers() {
         let data = []
         for (i = 0; i < this.state.userList.length; i++) {
-            data.push(<Picker.Item label={this.state.userList[i].UserName} value={this.state.userList[i].UserID} />)
+            data.push(<Picker.Item key={i} label={this.state.userList[i].UserName} value={this.state.userList[i].UserID} />)
         }
         return data
     }
@@ -252,14 +270,14 @@ class CheckDoucmentStatus extends React.Component {
     getStores() {
         let data = []
         for (i = 0; i < this.state.storeList.length; i++) {
-            data.push(<Picker.Item label={this.state.storeList[i].DisplayStoreNumber} value={this.state.storeList[i].StoreID} />)
+            data.push(<Picker.Item key={i} label={this.state.storeList[i].DisplayStoreNumber} value={this.state.storeList[i].StoreID} />)
         }
         return data
     }
     getNOD() {
         let data = []
         for (i = 0; i < NOD.length; i++) {
-            data.push(<Picker.Item label={NOD[i]} value={NOD[i]} />)
+            data.push(<Picker.Item key={i} label={NOD[i]} value={NOD[i]} />)
         }
         return data
     }
@@ -514,7 +532,6 @@ class CheckDoucmentStatus extends React.Component {
         }
         // console.log('storeList-->', this.state.storeList)
         // console.log('storeList-->', this.state.selectedStoreName)
-        // console.log('storeList-->', this.state.selectedStoreId)
         return (
             <View style={Styles.pageContainer}>
                 <View style={{ backgroundColor: Colors.WHITE, paddingTop: Platform.OS == 'ios' ? (Matrics.screenHeight == 812 ? 30 : 20) : 0, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
@@ -849,7 +866,7 @@ class CheckDoucmentStatus extends React.Component {
             PageSize: perPageRecord,
         }
         return (
-            <TouchableOpacity onPress={() => console.log(this.props)}>
+            <TouchableOpacity key={index} onPress={() => console.log(this.props)}>
                 <Card
                     item={item}
                     recipientsListArr={this.state.recipientsListArr}
