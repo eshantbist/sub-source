@@ -255,7 +255,8 @@ class WeeklySchedule extends React.Component {
     async UNSAFE_componentWillMount() {
         self = this
         this.focusListener = this.props.navigation.addListener('didFocus', async () => {
-            console.log('will global.selectedStore-->', parseInt(global.selectedStore,10))
+            // console.log('will global.selectedStore-->', parseInt(global.selectedStore,10))
+            // console.log('will global.weekenddate-->', global.WeekendDate)
             await this.setState({ 
                 selectedStoreId: parseInt(global.selectedStore,10), 
                 lastFilterselectedStoreId: parseInt(global.selectedStore,10), 
@@ -265,19 +266,27 @@ class WeeklySchedule extends React.Component {
             });
             const currentDate = moment(new Date()).format("MM/DD/YYYY");
             let WeekEndingDate = '';
-            if(moment(currentDate).format('dddd') === 'Tuesday'){
-                WeekEndingDate = currentDate;
-            } else if(moment(currentDate).format('dddd') === 'Monday'){
-                WeekEndingDate = moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+            if(global.WeekendDate != ''){
+                if(moment(global.WeekendDate).format('dddd') === 'Tuesday'){
+                    WeekEndingDate = global.WeekendDate;
+                } else if(moment(global.WeekendDate).format('dddd') === 'Monday'){
+                    WeekEndingDate = moment(global.WeekendDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+                } else {
+                    WeekEndingDate = moment(global.WeekendDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+                }
             } else {
-                WeekEndingDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+                if(moment(currentDate).format('dddd') === 'Tuesday'){
+                    WeekEndingDate = currentDate;
+                } else if(moment(currentDate).format('dddd') === 'Monday'){
+                    WeekEndingDate = moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+                } else {
+                    WeekEndingDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+                }
             }
-
             const YearID = WeekEndingDate !== '' ? WeekEndingDate.split('/')[2] : '';
             
 
             await this.setState({ weekendDate: WeekEndingDate,currentWeekEndDate: WeekEndingDate, YearID, lastFilterweekendDate: WeekEndingDate  })
-            console.log('will mount focus-->', this.state.selectedStoreId, '--isload--',this.state.isLoad )
             if(this.state.isLoad) {
                 this.headerfilterFlag = false;
                 this.timeOffReasonsFlag = false;

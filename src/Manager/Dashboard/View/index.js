@@ -132,7 +132,7 @@ class Dashboard extends React.Component {
 
         // const currentDate = moment().format("MM/DD/YYYY");
         let WeekEndingDate =  moment().format("MM/DD/YYYY");
-        console.log('weekending date-->',  moment().format("MM/DD/YYYY"));
+        console.log('weekending date-->', WeekEndingDate);
         // if(moment(currentDate).format('dddd') === 'Tuesday'){
         //     WeekEndingDate = currentDate;
         // } else if(moment(currentDate).format('dddd') === 'Monday'){
@@ -149,6 +149,7 @@ class Dashboard extends React.Component {
         // this.setState({ WeekEndingDate: '11/20/2018'});
         await this.setState({ WeekEndingDate, currentWeekEndDate: WeekEndingDate, lastFilterWeekEndingDate: WeekEndingDate });
         global.selectedStore = this.state.selectedStores;
+        global.WeekendDate = WeekEndingDate;
         // console.log('WeekEndingDate-->', this.state.WeekEndingDate) ;
         // console.log('WeekEndingDate-->', this.state.selectedRoleId) ;
         // console.log('WeekEndingDate-->', this.state.selectedStores) ;
@@ -459,6 +460,7 @@ class Dashboard extends React.Component {
         // console.log('weekdate-->', moment(date).format('dddd'));
         // console.log('A date has been picked: ', moment(date).format('MMM DD, ddd'));
         this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: '' });
+        global.WeekendDate=moment(date).format('MM/DD/YYYY');
         // if(moment(date).format('dddd') === 'Tuesday') {
         //     this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: '' })
         // } else {

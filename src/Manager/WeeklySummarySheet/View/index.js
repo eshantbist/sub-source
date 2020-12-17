@@ -94,9 +94,9 @@ export const TextRow = ({ labelText, contentText, bgColor, contentbgColor }) => 
                 <Text style={Styles.mainContainerLabel}>{labelText}</Text>
             </View>
             <View style={{ flex: 1, alignItems: 'center' }}>
-                <View style={{ 
-                    backgroundColor: contentbgColor === 'green' ? Colors.PARROT : contentbgColor === 'red' ? Colors.TEXTRED : 'white', 
-                    paddingHorizontal: Matrics.CountScale(25), paddingVertical: Matrics.CountScale(3), borderRadius: 25 }}>
+                <View style={{
+                    backgroundColor: contentbgColor === 'green' ? Colors.PARROT : contentbgColor === 'red' ? Colors.TEXTRED : bgColor, 
+                    paddingHorizontal: Matrics.CountScale(25), paddingVertical: Matrics.CountScale(3), borderRadius:  25  }}>
                     <Text style={[Styles.fontStyle, { textAlign: 'center', color: contentbgColor ? 'white' : null }]}>{contentText}</Text>
                 </View>
             </View>
@@ -200,14 +200,24 @@ class WeeklySummarySheet extends React.Component {
         });
         const currentDate = moment().format("MM/DD/YYYY");
         let WeekEndingDate = '';
-        if(moment(currentDate).format('dddd') === 'Tuesday'){
-            WeekEndingDate = currentDate;
-        } else if(moment(currentDate).format('dddd') === 'Monday'){
-            WeekEndingDate = moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+        if(global.WeekendDate != ''){
+            if(moment(global.WeekendDate).format('dddd') === 'Tuesday'){
+                WeekEndingDate = global.WeekendDate;
+            } else if(moment(global.WeekendDate).format('dddd') === 'Monday'){
+                WeekEndingDate = moment(global.WeekendDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+            } else {
+                WeekEndingDate = moment(global.WeekendDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+            }
         } else {
-            WeekEndingDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+            if(moment(currentDate).format('dddd') === 'Tuesday'){
+                WeekEndingDate = currentDate;
+            } else if(moment(currentDate).format('dddd') === 'Monday'){
+                WeekEndingDate = moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+            } else {
+                WeekEndingDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+            }
         }
-
+        
         await this.setState({ WeekEndingDate, lastFilterweekendDate: WeekEndingDate, currentWeekEndDate: WeekEndingDate, });
         if(this.state.isLoad) {
             this.headerfilterFlag = false;
