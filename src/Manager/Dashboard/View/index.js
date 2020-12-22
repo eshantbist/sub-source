@@ -17,6 +17,8 @@ import { getHeaderFilterValuesRequest } from '@Redux/Actions/HirePacketsActions'
 import Global from '../../../GlobalFunction';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import CalendarPicker from '../../../CustomComponent/react-native-calendar-picker';
+import SearchableDropdown from '../../../CustomComponent/react-native-searchable-dropdown';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const { width } = Dimensions.get('window');
 
@@ -120,6 +122,8 @@ class Dashboard extends React.Component {
         refreshing: false,
         selectedRoleName: '',
         lastFilterselectedUserId: 0,
+        selectedStoreIndex: -1,
+        lastFilterselectedIndex: -1, 
     }
     // ======>>>>>>> Life Cycle Methods  <<<<<<<========
     async UNSAFE_componentWillMount() {
@@ -203,7 +207,8 @@ class Dashboard extends React.Component {
             {
                 const storeselect = {
                     StoreID: -1,
-                    StoreNumber: 'Select Store'
+                    StoreNumber: 'Select Store',
+                    DisplayStoreNumber: 'Select Store',
                 }
                 const roleSelect = {
                     RoleID: 0,
@@ -217,8 +222,16 @@ class Dashboard extends React.Component {
                     }
                     data.Report.user_list.unshift(userSelect);
                 }
-                data.Report.store_list.unshift(storeselect);
+                // data.Report.store_list.unshift(storeselect);
                 data.Report.role_list.unshift(roleSelect);
+                if(data.Report.store_list.length > 0){
+                    var i;
+                    for(i = 0; i < data.Report.store_list.length; i++){
+                        data.Report.store_list[i].name = data.Report.store_list[i]['DisplayStoreNumber'];
+                        delete data.Report.store_list[i].key1;
+                    }
+                }
+                console.log('NewStores-->',data.Report.store_list);
                 // data.Report.user_list.unshift(userSelect);
                 // console.log("StoreList", data.Report.store_list);
                 // console.log("RoleList",  data.Report.role_list);
@@ -526,11 +539,16 @@ class Dashboard extends React.Component {
             selectedStores : -1,
             WeekEndingDate : this.state.currentWeekEndDate,
             selectedUsers: 0,
+            selectedStoreIndex: -1, 
         })
+        this.forceUpdate();
     }
 
     // ==========>>>>> Render Method  <<<<<<<===========
     render() {
+        console.log('stores-->', this.state.Stores)
+        console.log('selectedStoreIndex-->', this.state.selectedStoreIndex) 
+        console.log('selectedStoreIndex-->',typeof this.state.selectedStoreIndex) 
         return (
             <View style={{ flex: 1, backgroundColor: Colors.BODYBACKGROUND }}>
 
@@ -623,6 +641,7 @@ class Dashboard extends React.Component {
                                     selectedStores: this.state.lastFilterselectedStores,
                                     selectedUsers: this.state.lastFilterselectedUserId,
                                     Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
+                                    selectedStoreIndex: this.state.lastFilterselectedIndex
                                 });
                                 global.selectedStore = this.state.lastFilterselectedStores;
                             }}
@@ -630,7 +649,7 @@ class Dashboard extends React.Component {
                                 // console.log('save'); 
                                 // console.log('save', this.state.WeekEndingDate); 
                                 // console.log('save', this.state.selectedRoleId); 
-                                // console.log('save', this.state.selectedStores); 
+                                console.log('save', this.state.selectedStores); 
                                 this.dashboardDataFlag = false;
                                 this.props.getDashBoardDataRequest({
                                     RoleId: this.state.selectedRoleId,//this.state.selectedRoleId,
@@ -646,13 +665,15 @@ class Dashboard extends React.Component {
                                     lastFilterselectedRoleId: this.state.selectedRoleId,
                                     lastFilterselectedStores: this.state.selectedStores,
                                     lastFilterselectedUserId: this.state.selectedUsers,
+                                    lastFilterselectedIndex: this.state.selectedStores,
 
                                 })
                             }}
                         />
                         {console.log('save', this.state.WeekEndingDate)}
                         <View style={{ flex: 1, padding: Matrics.CountScale(10) }}>
-                            <ScrollView showsVerticalScrollIndicator={false}>
+                            {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+                            <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} contentContainerStyle={{ flex: 1}} enableOnAndroid={true}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker()}>
@@ -719,7 +740,7 @@ class Dashboard extends React.Component {
                                     </View>
                                 }
                                 <Text style={Styles.pickerLabelStyle}>Stores</Text>
-                                <Picker
+                                {/* <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedStores}
                                     onValueChange={value => {
@@ -729,7 +750,57 @@ class Dashboard extends React.Component {
                                     }}
                                 >
                                     {this.getStores()}
-                                </Picker>
+                                </Picker> */}
+                                
+                                    <SearchableDropdown
+                                        onItemSelect={(item) => {
+                                            console.log('item-->', item)
+                                            console.log('item-->', item.StoreID)
+                                            // const items = this.state.selectedItems;
+                                            // items.push(item)
+                                            const index = this.state.Stores.findIndex(s => s.StoreID === item.StoreID);
+                                            console.log('index-->',index);
+                                            console.log('index-->',typeof index);
+                                            this.setState({ selectedStores: item.StoreID, selectedStoreIndex: index });
+                                        }}
+                                        containerStyle={{ padding: 5 }}
+                                        onRemoveItem={(item, index) => {
+                                            console.log('on remove-->',item,'--',index)
+                                            // const items = this.state.selectedItems.filter((sitem) => sitem.id !== item.id);
+                                            // this.setState({ selectedItems: items });
+                                        }}
+                                        itemStyle={{
+                                            padding: 10,
+                                            marginTop: 2,
+                                            backgroundColor: '#ddd',
+                                            borderColor: '#bbb',
+                                            borderWidth: 1,
+                                            borderRadius: 5,
+                                        }}
+                                        itemTextStyle={{ color: '#222' }}
+                                        itemsContainerStyle={{ maxHeight: Matrics.CountScale(150), marginBottom: Matrics.CountScale(20)  }}
+                                        items={this.state.Stores}
+                                        defaultIndex={this.state.selectedStoreIndex}
+                                        resetValue={false}
+                                        textInputProps={
+                                        {
+                                            placeholder: "Select Store",
+                                            underlineColorAndroid: "transparent",
+                                            style: {
+                                                padding: 12,
+                                                borderWidth: 1,
+                                                borderColor: '#ccc',
+                                                borderRadius: 5,
+                                            },
+                                            onTextChange: text => console.log(text)
+                                        }
+                                        }
+                                        listProps={
+                                        {
+                                            nestedScrollEnabled: true,
+                                        }
+                                        }
+                                    />
                                 {/* <Text style={Styles.pickerLabelStyle}>No. Of Days</Text>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
@@ -754,7 +825,8 @@ class Dashboard extends React.Component {
                                     <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
                                     <Text style={{ color: 'red' }}>Reset Filter</Text>
                                 </TouchableOpacity>
-                            </ScrollView>
+                            {/* </ScrollView> */}
+                            </KeyboardAwareScrollView>
                         </View>
                         {/* <DateTimePicker
                             isVisible={this.state.isDateTimePickerVisible}

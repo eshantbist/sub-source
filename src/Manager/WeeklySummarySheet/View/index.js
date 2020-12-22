@@ -488,7 +488,9 @@ class WeeklySummarySheet extends React.Component {
       } 
     }
 
-    componentWillUnmount() { }
+    componentWillUnmount() {
+        this.focusListener.remove();
+     }
 
     setWeekDatesData() {
         console.log('weekDayStatusArr-->',this.state.weekDayStatusArr)

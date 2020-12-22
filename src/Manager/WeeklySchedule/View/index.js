@@ -643,6 +643,7 @@ class WeeklySchedule extends React.Component {
 
     componentWillUnmount() {
         console.log('unmount weekly')
+        this.focusListener.remove();
     }
 
 
