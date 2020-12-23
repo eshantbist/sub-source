@@ -23,7 +23,7 @@ export default class SearchableDropDown extends Component {
     this.state = {
       item: {},
       listItems: [],
-      focus: false
+      focus: false,
     };
   }
 
@@ -58,23 +58,15 @@ export default class SearchableDropDown extends Component {
   componentDidMount = () => {
     const listItems = this.props.items;
     const defaultIndex = this.props.defaultIndex;
-    // console.log('kk defaultIndex-->', defaultIndex)
-    // console.log('kk defaultIndex-->', listItems)
-    // console.log('kk defaultIndex-->', listItems)
     if (defaultIndex != -1 && listItems.length > defaultIndex) {
-      // console.log('in if-->',listItems[defaultIndex])
       this.setState({
         listItems,
-        item: listItems[defaultIndex]
+        item: listItems[defaultIndex],
       });
     } else {
       this.setState({ listItems });
     }
   };
-
-  componentDidUpdate(){
-    console.log('did update', this.state.item)
-  }
 
   searchedItems = searchedText => {
     let setSort = this.props.setSort;
@@ -226,6 +218,9 @@ export default class SearchableDropDown extends Component {
       <View
         keyboardShouldPersist="always"
         style={{ ...this.props.containerStyle }}
+        // onLayout={() => {
+        //   setTimeout(() => {this.setState({isLoad: false})}, 2000)
+        // }}
       >
         { this.renderSelectedItems() }
         { this.renderTextInput() }

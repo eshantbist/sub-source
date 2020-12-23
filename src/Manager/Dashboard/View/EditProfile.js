@@ -57,7 +57,7 @@ class EditProfile extends React.Component {
                 <View style={Styles.profileImgStyle}>
                     <TouchableOpacity>
                         <Image style={{ height: Matrics.CountScale(100), width: Matrics.CountScale(100), borderRadius: Matrics.CountScale(50) }}
-                            source={{ uri: this.state.profile }}></Image>
+                            source={this.state.Profile ? { uri: this.state.profile }: Images.ProfileIconPlaceholder}></Image>
                     </TouchableOpacity>
                     <Text style={{ color: Colors.APPCOLOR, padding: Matrics.CountScale(5), fontSize: Matrics.CountScale(15), fontFamily: Fonts.NunitoSansRegular }}>Change Profile Picture</Text>
                 </View>

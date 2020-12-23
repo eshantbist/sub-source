@@ -5,7 +5,7 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
 import moment from 'moment'
-import {Picker} from '@react-native-community/picker';
+import { Picker } from '@react-native-community/picker';
 
 {/* ====>>>>>>>>>>>    Assets   <<<<<<<<<<========== */ }
 import { Colors, Fonts, Matrics, Images } from '@Assets';
@@ -40,8 +40,8 @@ export const InfoViewContainer = ({ labelText, imgSrc, contentText, bgColor }) =
 
 export const OperationOverViewContainer = ({ labelText, imgSrc, onPress, textValue, fontStyle, contentStyle, children }) => {
     return (
-        <TouchableOpacity 
-            style={Styles.OperationOVContainer} 
+        <TouchableOpacity
+            style={Styles.OperationOVContainer}
             disabled={labelText === 'Employees Needed' ? false : true}
             onPress={() => onPress()}
         >
@@ -73,6 +73,7 @@ let self;
 {/* ====>>>>>>>>>>>    Class Declaration   <<<<<<<<<<========== */ }
 class Dashboard extends React.Component {
     state = {
+        resetFilter: false,
         entries: [
             {
                 title: 'Main',
@@ -123,7 +124,7 @@ class Dashboard extends React.Component {
         selectedRoleName: '',
         lastFilterselectedUserId: 0,
         selectedStoreIndex: -1,
-        lastFilterselectedIndex: -1, 
+        lastFilterselectedIndex: -1,
     }
     // ======>>>>>>> Life Cycle Methods  <<<<<<<========
     async UNSAFE_componentWillMount() {
@@ -135,8 +136,7 @@ class Dashboard extends React.Component {
         // this.customerCommentsCount = false;
 
         // const currentDate = moment().format("MM/DD/YYYY");
-        let WeekEndingDate =  moment().format("MM/DD/YYYY");
-        console.log('weekending date-->', WeekEndingDate);
+        let WeekEndingDate = moment().format("MM/DD/YYYY");
         // if(moment(currentDate).format('dddd') === 'Tuesday'){
         //     WeekEndingDate = currentDate;
         // } else if(moment(currentDate).format('dddd') === 'Monday'){
@@ -147,9 +147,9 @@ class Dashboard extends React.Component {
         // console.log('currentDate-->', currentDate) ;
         // console.log('currentDate-->', moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")) ;
         // console.log('currentDate-->', moment(currentDate).format('dddd')) ;
-        
 
-        
+
+
         // this.setState({ WeekEndingDate: '11/20/2018'});
         await this.setState({ WeekEndingDate, currentWeekEndDate: WeekEndingDate, lastFilterWeekEndingDate: WeekEndingDate });
         global.selectedStore = this.state.selectedStores;
@@ -192,19 +192,15 @@ class Dashboard extends React.Component {
     }
 
     async UNSAFE_componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps', this.state.loading);
-        console.log('componentWillReceiveProps', nextProps.response.getDashboardDataSuccess);
         // console.log('componentWillReceiveProps', nextProps.headerFiltervalues.getHeaderFilterValuesSuccess);
-       
+
         if (nextProps.headerFiltervalues.getHeaderFilterValuesSuccess && this.state.loading && !this.roleFlag) {
             this.roleFlag = true
             if (this.dashboardDataFlag && this.roleFlag)
                 this.setState({ loading: false })
 
             let data = nextProps.headerFiltervalues.data;
-            console.log('filterdata-->', data);
-            if(data.Status == 1)
-            {
+            if (data.Status == 1) {
                 const storeselect = {
                     StoreID: -1,
                     StoreNumber: 'Select Store',
@@ -214,7 +210,7 @@ class Dashboard extends React.Component {
                     RoleID: 0,
                     RoleName: 'shops'
                 }
-                if(data.Report.user_list.length > 0){
+                if (data.Report.user_list.length > 0) {
                     const userSelect = {
                         UserID: 0,
                         // UserName: 'Select User'
@@ -224,14 +220,14 @@ class Dashboard extends React.Component {
                 }
                 // data.Report.store_list.unshift(storeselect);
                 data.Report.role_list.unshift(roleSelect);
-                if(data.Report.store_list.length > 0){
+                if (data.Report.store_list.length > 0) {
                     var i;
-                    for(i = 0; i < data.Report.store_list.length; i++){
+                    for (i = 0; i < data.Report.store_list.length; i++) {
                         data.Report.store_list[i].name = data.Report.store_list[i]['DisplayStoreNumber'];
                         delete data.Report.store_list[i].key1;
                     }
                 }
-                console.log('NewStores-->',data.Report.store_list);
+                // console.log('NewStores-->', data.Report.store_list);
                 // data.Report.user_list.unshift(userSelect);
                 // console.log("StoreList", data.Report.store_list);
                 // console.log("RoleList",  data.Report.role_list);
@@ -254,14 +250,14 @@ class Dashboard extends React.Component {
                 let humanResource = data.Data._humanResourceObj ? data.Data._humanResourceObj : [];
                 let operationOverview = data.Data._complianeOverviewObj ? data.Data._complianeOverviewObj : [];
                 let customerComments = data.Data._customerCommentsList ? data.Data._customerCommentsList : [];
-                let total =  humanResource ? parseFloat(humanResource.ActiveEmployee * 4) : 0;
+                let total = humanResource ? parseFloat(humanResource.ActiveEmployee * 4) : 0;
                 let current = operationOverview ? parseFloat(operationOverview.UosAvgValue) : 0;
                 let showCurrent = (current > total) ? total : current;
                 // let empNeed =  keyFinancialData ? Math.abs(Math.ceil((keyFinancialData.Sales / 1000)-humanResource.ActiveEmployee)) : 0 ;
-                let empNeed =  keyFinancialData ? Math.abs(Math.ceil((keyFinancialData.SixWeekSales / 1000))) : 0 ;
+                let empNeed = keyFinancialData ? Math.abs(Math.ceil((keyFinancialData.SixWeekSales / 1000))) : 0;
                 // let progressPercentage =  humanResource ? (humanResource.ActiveEmployee * 100) / (humanResource.ActiveEmployee + humanResource.RequiredMore) : 0; 
                 // let progressPercentage =  humanResource ? Math.round((humanResource.ActiveEmployee-empNeed * 100) / (empNeed)) : 0; 
-                let progressPercentage =  humanResource ? Math.round(100-(empNeed/humanResource.ActiveEmployee)*100) : 0; 
+                let progressPercentage = humanResource ? Math.round(100 - (empNeed / humanResource.ActiveEmployee) * 100) : 0;
                 await this.setState({
                     //             salesPercentage: regionReport.SaleVariance,
                     nonSubSales: salesBuilding ? salesBuilding.TotalNonSubSales : 0,
@@ -280,7 +276,7 @@ class Dashboard extends React.Component {
                     employeeNeed: empNeed,
                     progressPercentage
                 });
-                if(customerComments.length > 0) {
+                if (customerComments.length > 0) {
                     this.filterCustomerComments();
                 }
             }
@@ -343,7 +339,7 @@ class Dashboard extends React.Component {
         else if (nextProps.response.isRequestFailed) {
             console.log('error')
             this.setState({ loading: false, msg: Global.error_msg, msgModal: true })
-        } 
+        }
 
     }
 
@@ -352,7 +348,7 @@ class Dashboard extends React.Component {
         let CurrentMonth = WeekEndingDateArr[0];
         let QuaterMonthArr = [];
         // console.log('filter comment-->', WeekEndingDateArr);
-        console.log('filter comment-->', CurrentMonth);
+        // console.log('filter comment-->', CurrentMonth);
         // console.log('filter commentList-->', this.state.customerComments);
         // console.log('filter commentList-->',JSON.stringify(this.state.customerComments));
         // let QuaterMonthdate1 = moment(this.state.WeekEndingDate).subtract(1, 'months').format('MM/DD/YYYY').split('/');
@@ -365,7 +361,7 @@ class Dashboard extends React.Component {
         // console.log('in filter-->QuaterMonth2-->', QuarterMonth2);
         // console.log('in filter-->QuaterMonth3-->', QuarterMonth3);
 
-        console.log('in filter-->CurrentMonth-->', CurrentMonth);
+        // console.log('in filter-->CurrentMonth-->', CurrentMonth);
         // if(CurrentMonth == 1 || CurrentMonth == 2 || CurrentMonth == 3 || CurrentMonth == 4) {
         //     QuaterMonthArr = ['01','02','03','04'];
         // } else if (CurrentMonth == 5 || CurrentMonth == 6 || CurrentMonth == 7 || CurrentMonth == 8) {
@@ -374,7 +370,7 @@ class Dashboard extends React.Component {
         //     QuaterMonthArr = ['09','10','11','12'];
         // }
         QuaterMonthArr = Global.getQuaterMonth(CurrentMonth);
-        console.log('QuaterMonthArr-->', QuaterMonthArr);
+        // console.log('QuaterMonthArr-->', QuaterMonthArr);
 
         let QuaterMonthfinalArr = QuaterMonthArr.filter(e => e != CurrentMonth);
         let customerCommentsMonth = [];
@@ -387,25 +383,25 @@ class Dashboard extends React.Component {
             return (date[0].split('-')[1] == CurrentMonth)
         });
 
-        customerCommentsQTD = this.state.customerComments.filter(e => 
+        customerCommentsQTD = this.state.customerComments.filter(e =>
             e.VisitTimeStamp.split('T')[0].split('-')[1] == QuaterMonthfinalArr[0] ||
             e.VisitTimeStamp.split('T')[0].split('-')[1] == QuaterMonthfinalArr[1] ||
             e.VisitTimeStamp.split('T')[0].split('-')[1] == QuaterMonthfinalArr[2]
         );
 
-        for(let i=0; i < customerCommentsYTD.length; i++ ){
-            for(let j=0; j < customerCommentsMonth.length; j++){
-                if(customerCommentsYTD[i].CommentID === customerCommentsMonth[j].CommentID){
-                    customerCommentsYTD.splice(i,1);
-                 }
+        for (let i = 0; i < customerCommentsYTD.length; i++) {
+            for (let j = 0; j < customerCommentsMonth.length; j++) {
+                if (customerCommentsYTD[i].CommentID === customerCommentsMonth[j].CommentID) {
+                    customerCommentsYTD.splice(i, 1);
+                }
             }
         }
 
-        for(let i=0; i < customerCommentsYTD.length; i++ ){
-            for(let j=0; j < customerCommentsQTD.length; j++){
-                if(customerCommentsYTD[i].CommentID === customerCommentsQTD[j].CommentID){
-                    customerCommentsYTD.splice(i,1);
-                 }
+        for (let i = 0; i < customerCommentsYTD.length; i++) {
+            for (let j = 0; j < customerCommentsQTD.length; j++) {
+                if (customerCommentsYTD[i].CommentID === customerCommentsQTD[j].CommentID) {
+                    customerCommentsYTD.splice(i, 1);
+                }
             }
         }
         // console.log('in filter-->month-->',customerCommentsMonth);
@@ -418,44 +414,44 @@ class Dashboard extends React.Component {
                 parse = function (x) { return x; },
                 // gets the item to be sorted
                 getItem = function (x) {
-                  var isObject = x != null && typeof x === "object";
-                  var isProp = isObject && this.prop in x;
-                  return this.parser(isProp ? x[this.prop] : x);
+                    var isObject = x != null && typeof x === "object";
+                    var isProp = isObject && this.prop in x;
+                    return this.parser(isProp ? x[this.prop] : x);
                 };
-            return function sortby (array, cfg) {
-              if (!(array instanceof Array && array.length)) return [];
-              if (toString.call(cfg) !== "[object Object]") cfg = {};
-              if (typeof cfg.parser !== "function") cfg.parser = parse;
-              cfg.desc = !!cfg.desc ? -1 : 1;
-              return array.sort(function (a, b) {
-                a = getItem.call(cfg, a);
-                b = getItem.call(cfg, b);
-                return cfg.desc * (a < b ? -1 : +(a > b));
-              });
+            return function sortby(array, cfg) {
+                if (!(array instanceof Array && array.length)) return [];
+                if (toString.call(cfg) !== "[object Object]") cfg = {};
+                if (typeof cfg.parser !== "function") cfg.parser = parse;
+                cfg.desc = !!cfg.desc ? -1 : 1;
+                return array.sort(function (a, b) {
+                    a = getItem.call(cfg, a);
+                    b = getItem.call(cfg, b);
+                    return cfg.desc * (a < b ? -1 : +(a > b));
+                });
             };
         }());
         const sortedCommentsMonth = sortBy(customerCommentsMonth, {
             prop: "VisitTimeStamp",
             desc: true,
-            parser: function(item) { return new Date(item); }
+            parser: function (item) { return new Date(item); }
         });
         const sortedCommentsQTD = sortBy(customerCommentsQTD, {
             prop: "VisitTimeStamp",
             desc: true,
-            parser: function(item) { return new Date(item); }
+            parser: function (item) { return new Date(item); }
         });
         const sortedCommentsYTD = sortBy(customerCommentsYTD, {
             prop: "VisitTimeStamp",
             desc: true,
-            parser: function(item) { return new Date(item); }
+            parser: function (item) { return new Date(item); }
         });
         // console.log('in filter-->month-->',sortedCommentsMonth);
         // console.log('in filter-->qtd-->',sortedCommentsQTD);
         // console.log('in filter-->ytd-->',sortedCommentsYTD);
-        this.setState({ 
-            customerCommentsMonth : sortedCommentsMonth, 
-            customerCommentsQTD : sortedCommentsQTD, 
-            customerCommentsYTD : sortedCommentsYTD
+        this.setState({
+            customerCommentsMonth: sortedCommentsMonth,
+            customerCommentsQTD: sortedCommentsQTD,
+            customerCommentsYTD: sortedCommentsYTD
         });
 
         // this.state.customerComments.forEach(child => {
@@ -473,7 +469,7 @@ class Dashboard extends React.Component {
         // console.log('weekdate-->', moment(date).format('dddd'));
         // console.log('A date has been picked: ', moment(date).format('MMM DD, ddd'));
         this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: '' });
-        global.WeekendDate=moment(date).format('MM/DD/YYYY');
+        global.WeekendDate = moment(date).format('MM/DD/YYYY');
         // if(moment(date).format('dddd') === 'Tuesday') {
         //     this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: '' })
         // } else {
@@ -535,20 +531,21 @@ class Dashboard extends React.Component {
 
     onResetFilterClick() {
         this.setState({
-            selectedRoleId : 0,
-            selectedStores : -1,
-            WeekEndingDate : this.state.currentWeekEndDate,
+            selectedRoleId: 0,
+            selectedStores: -1,
+            WeekEndingDate: this.state.currentWeekEndDate,
             selectedUsers: 0,
-            selectedStoreIndex: -1, 
+            selectedStoreIndex: -1,
+            resetFilter: true
         })
-        this.forceUpdate();
+        setTimeout(() => {
+            this.setState({ resetFilter: false })
+        }, 10);
+        // this.forceUpdate();
     }
 
     // ==========>>>>> Render Method  <<<<<<<===========
     render() {
-        console.log('stores-->', this.state.Stores)
-        console.log('selectedStoreIndex-->', this.state.selectedStoreIndex) 
-        console.log('selectedStoreIndex-->',typeof this.state.selectedStoreIndex) 
         return (
             <View style={{ flex: 1, backgroundColor: Colors.BODYBACKGROUND }}>
 
@@ -576,36 +573,36 @@ class Dashboard extends React.Component {
                         {this.renderIndicator(this.state.entries.length)}
                     </View>
                 </View> */}
-                <View style={{  }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',}}>
+                <View style={{}}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
 
-                        <TouchableOpacity 
-                            style={{  flex: 1, flexDirection: 'row',justifyContent: 'flex-start'}}
-                            onPress={() => {this.setState({ activeSlide: 0})}}
-                        > 
-                            <Text style={[Styles.slideTitleStyle,{color: 'rgb(171,208,190)', marginLeft: Matrics.CountScale(10)}]}>
-                                {   
+                        <TouchableOpacity
+                            style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }}
+                            onPress={() => { this.setState({ activeSlide: 0 }) }}
+                        >
+                            <Text style={[Styles.slideTitleStyle, { color: 'rgb(171,208,190)', marginLeft: Matrics.CountScale(10) }]}>
+                                {
                                     this.state.entries.length - 1 === this.state.activeSlide
-                                    ? this.state.entries[this.state.activeSlide - 1].title
-                                    : null
+                                        ? this.state.entries[this.state.activeSlide - 1].title
+                                        : null
                                 }
                             </Text>
                         </TouchableOpacity>
                         <Text style={Styles.slideTitleStyle}>{this.state.entries[this.state.activeSlide].title}</Text>
-                        
-                        <TouchableOpacity 
-                            style={{ flexDirection: 'row', justifyContent: 'flex-end', flex: 1, marginRight: Matrics.CountScale(10)}}
-                            onPress={() => {this.setState({ activeSlide: 1 })}}
+
+                        <TouchableOpacity
+                            style={{ flexDirection: 'row', justifyContent: 'flex-end', flex: 1, marginRight: Matrics.CountScale(10) }}
+                            onPress={() => { this.setState({ activeSlide: 1 }) }}
                         >
-                            <Text style={[Styles.slideTitleStyle,{ color: 'rgb(171,208,190)'}]}>
+                            <Text style={[Styles.slideTitleStyle, { color: 'rgb(171,208,190)' }]}>
                                 {
                                     this.state.entries.length - 1 !== this.state.activeSlide
-                                    ? this.state.entries[this.state.entries.length - 1].title
-                                    : null
+                                        ? this.state.entries[this.state.entries.length - 1].title
+                                        : null
                                 }
                             </Text>
                         </TouchableOpacity>
-                           
+
                     </View>
                     <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
                         {this.renderIndicator(this.state.entries.length)}
@@ -634,7 +631,7 @@ class Dashboard extends React.Component {
                             rightText='Save'
                             leftText='Cancel'
                             onLeftPress={() => {
-                                this.setState({ 
+                                this.setState({
                                     filterModal: false,
                                     WeekEndingDate: this.state.lastFilterWeekEndingDate,
                                     selectedRoleId: this.state.lastFilterselectedRoleId,
@@ -645,11 +642,7 @@ class Dashboard extends React.Component {
                                 });
                                 global.selectedStore = this.state.lastFilterselectedStores;
                             }}
-                            onRightPress={() => { 
-                                // console.log('save'); 
-                                // console.log('save', this.state.WeekEndingDate); 
-                                // console.log('save', this.state.selectedRoleId); 
-                                console.log('save', this.state.selectedStores); 
+                            onRightPress={() => {
                                 this.dashboardDataFlag = false;
                                 this.props.getDashBoardDataRequest({
                                     RoleId: this.state.selectedRoleId,//this.state.selectedRoleId,
@@ -658,8 +651,8 @@ class Dashboard extends React.Component {
                                     BusinessTypeId: 1,
                                     WeekEnding: this.state.WeekEndingDate // this.state.weekEnding
                                 });
-                                this.setState({ 
-                                    loading: true ,
+                                this.setState({
+                                    loading: true,
                                     filterModal: false,
                                     lastFilterWeekEndingDate: this.state.WeekEndingDate,
                                     lastFilterselectedRoleId: this.state.selectedRoleId,
@@ -670,10 +663,9 @@ class Dashboard extends React.Component {
                                 })
                             }}
                         />
-                        {console.log('save', this.state.WeekEndingDate)}
                         <View style={{ flex: 1, padding: Matrics.CountScale(10) }}>
                             {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-                            <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} contentContainerStyle={{ flex: 1}} enableOnAndroid={true}>
+                            <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} contentContainerStyle={{ flex: 1 }} enableOnAndroid={true}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker()}>
@@ -682,25 +674,26 @@ class Dashboard extends React.Component {
                                 </View>
                                 {
                                     this.state.isDateTimePickerVisible
-                                    ?
-                                    <CalendarPicker
-                                        onDateChange={this._handleDatePicked}
-                                        // enableWeek="Tue"
-                                        selectedDayColor={Colors.APPCOLOR}
-                                        selectedDayTextColor={Colors.WHITE}
-                                        previousTitle="<"
-                                        nextTitle=">"
-                                        initialDate={this.state.WeekEndingDate}
-                                        customDatesStyles={[
-                                            {date: this.state.WeekEndingDate,
-                                            style: {backgroundColor: Colors.APPCOLOR},
-                                            textStyle: {color: Colors.WHITE}, 
-                                            containerStyle: [],
-                                        }]}
-                                    />
-                                    : null
-                                } 
-                                <Text style={[Styles.errorText, { textAlign: 'right'}]}>{this.state.weekEndDateError}</Text>
+                                        ?
+                                        <CalendarPicker
+                                            onDateChange={this._handleDatePicked}
+                                            // enableWeek="Tue"
+                                            selectedDayColor={Colors.APPCOLOR}
+                                            selectedDayTextColor={Colors.WHITE}
+                                            previousTitle="<"
+                                            nextTitle=">"
+                                            initialDate={this.state.WeekEndingDate}
+                                            customDatesStyles={[
+                                                {
+                                                    date: this.state.WeekEndingDate,
+                                                    style: { backgroundColor: Colors.APPCOLOR },
+                                                    textStyle: { color: Colors.WHITE },
+                                                    containerStyle: [],
+                                                }]}
+                                        />
+                                        : null
+                                }
+                                <Text style={[Styles.errorText, { textAlign: 'right' }]}>{this.state.weekEndDateError}</Text>
                                 <View style={Styles.labelBorderStyle}>
                                     <Text style={Styles.pickerLabelStyle}>Role</Text>
                                 </View>
@@ -751,21 +744,17 @@ class Dashboard extends React.Component {
                                 >
                                     {this.getStores()}
                                 </Picker> */}
-                                
+                                {!this.state.resetFilter ?
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
-                                            console.log('item-->', item)
-                                            console.log('item-->', item.StoreID)
                                             // const items = this.state.selectedItems;
                                             // items.push(item)
                                             const index = this.state.Stores.findIndex(s => s.StoreID === item.StoreID);
-                                            console.log('index-->',index);
-                                            console.log('index-->',typeof index);
                                             this.setState({ selectedStores: item.StoreID, selectedStoreIndex: index });
                                         }}
                                         containerStyle={{ padding: 5 }}
                                         onRemoveItem={(item, index) => {
-                                            console.log('on remove-->',item,'--',index)
+                                            console.log('on remove-->', item, '--', index)
                                             // const items = this.state.selectedItems.filter((sitem) => sitem.id !== item.id);
                                             // this.setState({ selectedItems: items });
                                         }}
@@ -778,29 +767,30 @@ class Dashboard extends React.Component {
                                             borderRadius: 5,
                                         }}
                                         itemTextStyle={{ color: '#222' }}
-                                        itemsContainerStyle={{ maxHeight: Matrics.CountScale(150), marginBottom: Matrics.CountScale(20)  }}
+                                        itemsContainerStyle={{ maxHeight: Matrics.CountScale(150), marginBottom: Matrics.CountScale(20) }}
                                         items={this.state.Stores}
                                         defaultIndex={this.state.selectedStoreIndex}
                                         resetValue={false}
                                         textInputProps={
-                                        {
-                                            placeholder: "Select Store",
-                                            underlineColorAndroid: "transparent",
-                                            style: {
-                                                padding: 12,
-                                                borderWidth: 1,
-                                                borderColor: '#ccc',
-                                                borderRadius: 5,
-                                            },
-                                            onTextChange: text => console.log(text)
-                                        }
+                                            {
+                                                placeholder: "Select Store",
+                                                underlineColorAndroid: "transparent",
+                                                style: {
+                                                    padding: 12,
+                                                    borderWidth: 1,
+                                                    borderColor: '#ccc',
+                                                    borderRadius: 5,
+                                                },
+                                                onTextChange: text => console.log(text)
+                                            }
                                         }
                                         listProps={
-                                        {
-                                            nestedScrollEnabled: true,
-                                        }
+                                            {
+                                                nestedScrollEnabled: true,
+                                            }
                                         }
                                     />
+                                    : null}
                                 {/* <Text style={Styles.pickerLabelStyle}>No. Of Days</Text>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
@@ -818,14 +808,14 @@ class Dashboard extends React.Component {
                                     {this.getStatus()}
                                 </Picker> */}
 
-                                <TouchableOpacity 
+                                <TouchableOpacity
                                     onPress={() => this.onResetFilterClick()}
-                                    style={{ alignSelf: 'center', flexDirection: 'row',justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 10, marginVertical: 40 }}
+                                    style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 10, marginVertical: 40 }}
                                 >
                                     <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
                                     <Text style={{ color: 'red' }}>Reset Filter</Text>
                                 </TouchableOpacity>
-                            {/* </ScrollView> */}
+                                {/* </ScrollView> */}
                             </KeyboardAwareScrollView>
                         </View>
                         {/* <DateTimePicker
@@ -907,7 +897,7 @@ class Dashboard extends React.Component {
     //     return comments;
     // }
     onRefresh = () => {
-        this.setState({refreshing: true});
+        this.setState({ refreshing: true });
         this.props.getDashBoardDataRequest({
             RoleId: this.state.selectedRoleId,//this.state.selectedRoleId, 0
             StoreId: this.state.selectedStores,//this.state.StoreID, -1
@@ -918,8 +908,8 @@ class Dashboard extends React.Component {
     }
 
     _renderItem = ({ item, index }) => {
-            let len = 0 ;
-            this.state.NPSDisplay === 'QTD'  && this.state.customerServices && this.state.customerServices.QuarterMonthCount !== 0
+        let len = 0;
+        this.state.NPSDisplay === 'QTD' && this.state.customerServices && this.state.customerServices.QuarterMonthCount !== 0
             ? len = this.state.customerCommentsQTD.length
             : this.state.NPSDisplay === 'YTD' && this.state.customerServices && this.state.customerServices.CurrentYearCount !== 0
                 ? len = this.state.customerCommentsYTD.length
@@ -927,13 +917,13 @@ class Dashboard extends React.Component {
 
         return (
             this.state.activeSlide == 0 ?
-            // index == 0 ?
+                // index == 0 ?
                 <View style={Styles.slideStyle}>
                     <ScrollView showsVerticalScrollIndicator={false}
                         refreshControl={
                             <RefreshControl
-                              refreshing={this.state.refreshing}
-                              onRefresh={this.onRefresh}
+                                refreshing={this.state.refreshing}
+                                onRefresh={this.onRefresh}
                             />
                         }
                     >
@@ -961,13 +951,13 @@ class Dashboard extends React.Component {
                         <Text style={Styles.labelText}>Customer Services</Text>
                         <View style={Styles.contentContainerStyle}>
                             <View style={{ flexDirection: 'row' }}>
-                                <TouchableOpacity onPress={() => { this.setState({ NPSDisplay: 'Month'}) }}>
+                                <TouchableOpacity onPress={() => { this.setState({ NPSDisplay: 'Month' }) }}>
                                     <Text style={[Styles.serviceLabelStyle, { color: this.state.NPSDisplay === 'Month' ? Colors.DARKAPPCOLOR : null }]}>Current Month <Text style={{ color: Colors.ORANGE }}>{this.state.customerServices && this.state.customerServices.CurrentMonthCount}</Text></Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { this.setState({ NPSDisplay: 'QTD'}) }}>
+                                <TouchableOpacity onPress={() => { this.setState({ NPSDisplay: 'QTD' }) }}>
                                     <Text style={[Styles.serviceLabelStyle, { color: this.state.NPSDisplay === 'QTD' ? Colors.DARKAPPCOLOR : null }]}>QTD <Text style={{ color: Colors.ORANGE }}>{this.state.customerServices && this.state.customerServices.QuarterMonthCount}</Text></Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { this.setState({ NPSDisplay: 'YTD'}) }}>
+                                <TouchableOpacity onPress={() => { this.setState({ NPSDisplay: 'YTD' }) }}>
                                     <Text style={[Styles.serviceLabelStyle, { color: this.state.NPSDisplay === 'YTD' ? Colors.DARKAPPCOLOR : null }]}>YTD <Text style={{ color: Colors.ORANGE }}>{this.state.customerServices && this.state.customerServices.CurrentYearCount}</Text></Text>
                                 </TouchableOpacity>
                             </View>
@@ -981,10 +971,10 @@ class Dashboard extends React.Component {
                                         <Text style={[Styles.salesBuildingText, { marginLeft: Matrics.CountScale(15) }]}>
                                             {
                                                 this.state.NPSDisplay === 'QTD'
-                                                ? this.state.customerServices && this.state.customerServices.NPSQuarterScore
-                                                : this.state.NPSDisplay === 'YTD'
-                                                 ? this.state.customerServices && this.state.customerServices.NPSYearScore
-                                                 : this.state.customerServices && this.state.customerServices.NPSScore
+                                                    ? this.state.customerServices && this.state.customerServices.NPSQuarterScore
+                                                    : this.state.NPSDisplay === 'YTD'
+                                                        ? this.state.customerServices && this.state.customerServices.NPSYearScore
+                                                        : this.state.customerServices && this.state.customerServices.NPSScore
                                             }
                                         </Text>
                                     </View>
@@ -997,10 +987,10 @@ class Dashboard extends React.Component {
                                         <Text style={[Styles.salesBuildingText, { marginLeft: Matrics.CountScale(15) }]}>
                                             {
                                                 this.state.NPSDisplay === 'QTD'
-                                                ? this.state.customerServices && this.state.customerServices.NPSQuarterCount
-                                                : this.state.NPSDisplay === 'YTD'
-                                                    ? this.state.customerServices && this.state.customerServices.NPSYearCount
-                                                    : this.state.customerServices && this.state.customerServices.NPSCount
+                                                    ? this.state.customerServices && this.state.customerServices.NPSQuarterCount
+                                                    : this.state.NPSDisplay === 'YTD'
+                                                        ? this.state.customerServices && this.state.customerServices.NPSYearCount
+                                                        : this.state.customerServices && this.state.customerServices.NPSCount
                                             }
                                         </Text>
                                     </View>
@@ -1027,22 +1017,20 @@ class Dashboard extends React.Component {
                                 <Swiper height={Matrics.CountScale(160)} showsPagination={false}
                                     key={
                                         this.state.NPSDisplay === 'QTD'
-                                        ? this.state.customerCommentsQTD.length
-                                        : this.state.NPSDisplay === 'YTD'
-                                            ? this.state.customerCommentsYTD.length
-                                            : this.state.customerCommentsMonth.length
+                                            ? this.state.customerCommentsQTD.length
+                                            : this.state.NPSDisplay === 'YTD'
+                                                ? this.state.customerCommentsYTD.length
+                                                : this.state.customerCommentsMonth.length
                                     }
                                     scrollEnabled={true}
 
                                     onTouchStart={() => {
                                         if (Platform.OS == 'android') {
-                                            console.log('touchstart');
                                             // if(this.sta)
                                             this.setState({ scrollEnabled: false })
                                             clearTimeout(this.state.clearId)
                                             clearTimeout(this.state.clearscrollId)
                                             var clearscrollId = setTimeout(() => {
-                                                console.log('done..');
                                                 if (!this.state.scrollEnabled)
                                                     this.setState({ scrollEnabled: true })
                                             }, 1000)
@@ -1052,9 +1040,7 @@ class Dashboard extends React.Component {
 
                                     onTouchEnd={() => {
                                         if (Platform.OS == 'android') {
-                                            // console.log('touch end');
                                             var clearId = setTimeout(() => {
-                                                console.log('touch end');
                                                 this.setState({ scrollEnabled: true })
                                             }, 1000)
                                             this.setState({ clearId: clearId });
@@ -1066,61 +1052,59 @@ class Dashboard extends React.Component {
                                     }}
                                     onPageScrollStateChanged={(e) => { console.log(e) }}
                                     onMomentumScrollEnd={(e, state, context) => {
-                                        console.log('active page-->',context.state.index);
-
                                         this.setState({ activePage: context.state.index + 1 })
 
                                     }} >
                                     {/* {this.renderComments()} */}
                                     {
                                         this.state.NPSDisplay === 'QTD'
-                                        ? this.state.customerCommentsQTD.length > 0 && this.state.customerServices && this.state.customerServices.QuarterMonthCount !== 0
-                                            ? this.state.customerCommentsQTD.map((res, index) => {
-                                                return (
-                                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
-                                                        <View style={Styles.bottomBorderStyle}>
-                                                            <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YY, hh:mm a')}</Text></Text>
+                                            ? this.state.customerCommentsQTD.length > 0 && this.state.customerServices && this.state.customerServices.QuarterMonthCount !== 0
+                                                ? this.state.customerCommentsQTD.map((res, index) => {
+                                                    return (
+                                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
+                                                            <View style={Styles.bottomBorderStyle}>
+                                                                <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YY, hh:mm a')}</Text></Text>
 
-                                                        </View>
-                                                        <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
-                                                            {res.Comments}
-                                                        </Text>
-                                                    </TouchableOpacity>
-                                                )
-                                            })
-                                            : <Text style={Styles.labelText}>No comments available for Quater-To-Date.</Text>
-                                        : this.state.NPSDisplay === 'YTD' && this.state.customerServices && this.state.customerServices.CurrentYearCount !== 0
-                                            ?
+                                                            </View>
+                                                            <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
+                                                                {res.Comments}
+                                                            </Text>
+                                                        </TouchableOpacity>
+                                                    )
+                                                })
+                                                : <Text style={Styles.labelText}>No comments available for Quater-To-Date.</Text>
+                                            : this.state.NPSDisplay === 'YTD' && this.state.customerServices && this.state.customerServices.CurrentYearCount !== 0
+                                                ?
                                                 this.state.customerCommentsYTD.length > 0
-                                                ? this.state.customerCommentsYTD.map((res, index) => {
-                                                    return (
-                                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
-                                                            <View style={Styles.bottomBorderStyle}>
-                                                                <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YY, hh:mm a')}</Text></Text>
-        
-                                                            </View>
-                                                            <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
-                                                                {res.Comments}
-                                                            </Text>
-                                                        </TouchableOpacity>
-                                                    )
-                                                })
-                                                : <Text style={Styles.labelText}>No comments available for Year-To-Date.</Text>
-                                            : this.state.customerCommentsMonth.length > 0
-                                                ? this.state.customerCommentsMonth.map((res, index) => {
-                                                    return (
-                                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
-                                                            <View style={Styles.bottomBorderStyle}>
-                                                                <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YY, hh:mm a')}</Text></Text>
-        
-                                                            </View>
-                                                            <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
-                                                                {res.Comments}
-                                                            </Text>
-                                                        </TouchableOpacity>
-                                                    )
-                                                })
-                                                : <Text style={Styles.labelText}>No comments available for Current Month.</Text>
+                                                    ? this.state.customerCommentsYTD.map((res, index) => {
+                                                        return (
+                                                            <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
+                                                                <View style={Styles.bottomBorderStyle}>
+                                                                    <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YY, hh:mm a')}</Text></Text>
+
+                                                                </View>
+                                                                <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
+                                                                    {res.Comments}
+                                                                </Text>
+                                                            </TouchableOpacity>
+                                                        )
+                                                    })
+                                                    : <Text style={Styles.labelText}>No comments available for Year-To-Date.</Text>
+                                                : this.state.customerCommentsMonth.length > 0
+                                                    ? this.state.customerCommentsMonth.map((res, index) => {
+                                                        return (
+                                                            <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
+                                                                <View style={Styles.bottomBorderStyle}>
+                                                                    <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YY, hh:mm a')}</Text></Text>
+
+                                                                </View>
+                                                                <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
+                                                                    {res.Comments}
+                                                                </Text>
+                                                            </TouchableOpacity>
+                                                        )
+                                                    })
+                                                    : <Text style={Styles.labelText}>No comments available for Current Month.</Text>
                                     }
                                     {/* <View>
                                     <Text>slide 1</Text>
@@ -1137,11 +1121,11 @@ class Dashboard extends React.Component {
                             <View>
                                 {/* {this.pagination} */}
                             </View>
-                                
+
                             {
                                 len > 0
-                                ? <Text style={[Styles.labelText, { textAlign: 'center' }]}>{this.state.activePage}/ {len}</Text>
-                                : null
+                                    ? <Text style={[Styles.labelText, { textAlign: 'center' }]}>{this.state.activePage}/ {len}</Text>
+                                    : null
                             }
                         </View>
                         <Text style={Styles.labelText}>Operation Overview</Text>
@@ -1150,7 +1134,7 @@ class Dashboard extends React.Component {
                                 imgSrc={Images.University} ><Text style={[Styles.labelValueStyle, { color: Colors.PARROT }]}>{this.state.current}
                                     <Text style={{ color: 'black', fontSize: Matrics.CountScale(16) }}> / {this.state.total}</Text></Text></OperationOverViewContainer>
                             <OperationOverViewContainer labelText={'Employees Needed'} fontStyle={{ color: Colors.ORANGE }}
-                                textValue={this.state.employeeNeed} imgSrc={Images.EmpNeed} onPress={() => {this.setState({ activeSlide: 1 })}} />
+                                textValue={this.state.employeeNeed} imgSrc={Images.EmpNeed} onPress={() => { this.setState({ activeSlide: 1 }) }} />
                             <OperationOverViewContainer labelText={'In Full Compliance'}
                                 textValue={this.state.operationOverview && this.state.operationOverview.InFullCompliance} imgSrc={Images.FullComp} />
                             <OperationOverViewContainer labelText={'Out of Compliance'} fontStyle={{ fontWeight: 'bold' }}
@@ -1163,8 +1147,8 @@ class Dashboard extends React.Component {
                     <ScrollView showsVerticalScrollIndicator={false}
                         refreshControl={
                             <RefreshControl
-                              refreshing={this.state.refreshing}
-                              onRefresh={this.onRefresh}
+                                refreshing={this.state.refreshing}
+                                onRefresh={this.onRefresh}
                             />
                         }
                     >
@@ -1172,7 +1156,7 @@ class Dashboard extends React.Component {
                             <View style={{ flex: 1 }}>
                                 <View style={[Styles.contentContainerStyle, { paddingHorizontal: 0, alignItems: 'center', borderWidth: 2, borderColor: Colors.ORANGE }]}>
                                     {/* <Text style={Styles.empNeedTextStyle}>{this.state.humanResource && this.state.humanResource.RequiredMore}</Text> */}
-                                    <Text style={Styles.empNeedTextStyle}>{this.state.humanResource && this.state.employeeNeed >= this.state.humanResource.ActiveEmployee ? this.state.employeeNeed-this.state.humanResource.ActiveEmployee : 0}</Text>
+                                    <Text style={Styles.empNeedTextStyle}>{this.state.humanResource && this.state.employeeNeed >= this.state.humanResource.ActiveEmployee ? this.state.employeeNeed - this.state.humanResource.ActiveEmployee : 0}</Text>
                                     <Text style={[Styles.labelText, { fontSize: Matrics.CountScale(14) }]}>Employees needed</Text>
                                 </View>
                             </View>

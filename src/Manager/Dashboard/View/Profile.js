@@ -99,6 +99,8 @@ class Profile extends React.Component {
         this.props.navigation.navigate('EditProfile', { profileData: arr })
     }
     render() {
+        console.log('coverphoto-->', this.state.coverPhoto)
+        console.log('Profile-->', this.state.Profile)
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView style={Styles.pageBody}>
@@ -107,8 +109,9 @@ class Profile extends React.Component {
                     {/* ====>>>>>>>>>>>    Profile Image Container   <<<<<<<<<<========== */}
                     <ImageBackground
                         blurRadius={3}
-                        source={{ uri: this.state.coverPhoto }}
-                        style={{ flex: 2, backgroundColor: 'black' }}>
+                        source={this.state.coverPhoto && { uri: this.state.coverPhoto }}
+                        style={{ flex: 2, backgroundColor: 'black' }}
+                    >
                         <View style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
                             <View style={[MasterCss.headerContainer, MasterCss.headerStyle, { backgroundColor: 'transparent' }]}>
 
@@ -127,7 +130,7 @@ class Profile extends React.Component {
 
                             <View style={Styles.profileImgContainer}>
                                 <Image style={Styles.profileImgStyle}
-                                    source={{ uri: this.state.Profile }}></Image>
+                                    source={ this.state.Profile ? { uri: this.state.Profile } : Images.ProfileIconPlaceholder}></Image>
                                 <Text style={Styles.nameTextStyle}>
                                     {this.state.name}
                                 </Text>
