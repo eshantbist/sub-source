@@ -541,7 +541,6 @@ class Dashboard extends React.Component {
         setTimeout(() => {
             this.setState({ resetFilter: false })
         }, 10);
-        // this.forceUpdate();
     }
 
     // ==========>>>>> Render Method  <<<<<<<===========
@@ -643,6 +642,7 @@ class Dashboard extends React.Component {
                                 global.selectedStore = this.state.lastFilterselectedStores;
                             }}
                             onRightPress={() => {
+                                const index = this.state.Stores.length > 0 && this.state.Stores.findIndex(s => s.StoreID === this.state.selectedStores);
                                 this.dashboardDataFlag = false;
                                 this.props.getDashBoardDataRequest({
                                     RoleId: this.state.selectedRoleId,//this.state.selectedRoleId,
@@ -658,14 +658,14 @@ class Dashboard extends React.Component {
                                     lastFilterselectedRoleId: this.state.selectedRoleId,
                                     lastFilterselectedStores: this.state.selectedStores,
                                     lastFilterselectedUserId: this.state.selectedUsers,
-                                    lastFilterselectedIndex: this.state.selectedStores,
+                                    lastFilterselectedIndex: index,
 
                                 })
                             }}
                         />
                         <View style={{ flex: 1, padding: Matrics.CountScale(10) }}>
                             {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-                            <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} contentContainerStyle={{ flex: 1 }} enableOnAndroid={true}>
+                            <KeyboardAwareScrollView extraScrollHeight={100} keyboardShouldPersistTaps={'handled'} contentContainerStyle={{ flex: 1 }} enableOnAndroid={true}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker()}>
@@ -751,6 +751,7 @@ class Dashboard extends React.Component {
                                             // items.push(item)
                                             const index = this.state.Stores.findIndex(s => s.StoreID === item.StoreID);
                                             this.setState({ selectedStores: item.StoreID, selectedStoreIndex: index });
+                                            global.selectedStore = item.StoreID;
                                         }}
                                         containerStyle={{ padding: 5 }}
                                         onRemoveItem={(item, index) => {

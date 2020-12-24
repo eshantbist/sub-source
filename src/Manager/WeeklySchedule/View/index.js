@@ -5,6 +5,7 @@ import {
     Dimensions, TextInput, Alert, RefreshControl
 } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import SearchableDropdown from '../../../CustomComponent/react-native-searchable-dropdown';
 
 // ======>>>>> Assets <<<<<=========
 import { Colors, Fonts, Images, Matrics, MasterCss } from '@Assets'
@@ -248,6 +249,9 @@ class WeeklySchedule extends React.Component {
         headContainerHeight: 1,
         prevIndex: 0,
         isLoad: true,
+        selectedStoreIndex: -1,
+        lastFilterselectedIndex: -1,
+        resetFilter: false,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -362,7 +366,25 @@ class WeeklySchedule extends React.Component {
                     data.Report.user_list.unshift(userSelect);
                 }
                 data.Report.role_list.unshift(roleSelect);
+                if (data.Report.store_list.length > 0) {
+                    var i;
+                    for (i = 0; i < data.Report.store_list.length; i++) {
+                        data.Report.store_list[i].name = data.Report.store_list[i]['DisplayStoreNumber'];
+                        delete data.Report.store_list[i].key1;
+                    }
+                }
                 let selectedStoreArr = data.Report.store_list.filter(S => S.StoreID == parseInt(global.selectedStore,10));
+                let index = -1;
+                if(parseInt(global.selectedStore,10) != -1){
+                    index = data.Report.store_list.length > 0 && data.Report.store_list.findIndex(s => s.StoreID === parseInt(global.selectedStore,10));
+                } else {
+                    index = data.Report.store_list.length > 0 && data.Report.store_list.findIndex(s => s.StoreID === data.Report.store_list[0].StoreID);
+                }
+                // const index = data.Report.store_list.length > 0 && data.Report.store_list.findIndex(s => {
+                //     parseInt(global.selectedStore,10) != -1 ? s.StoreID === parseInt(global.selectedStore,10)
+                //                                             : s.StoreID === data.Report.store_list[0].StoreID
+                // });
+                console.log('kkindex-->', index)
                 await this.setState({
                     userRole: data.Report.role_list,
                     Stores: data.Report.store_list,
@@ -373,6 +395,8 @@ class WeeklySchedule extends React.Component {
                     lastFilterselectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber : data.Report.store_list[0].DisplayStoreNumber,
                     Users: data.Report.user_list,
                     isLoad: false,
+                    selectedStoreIndex: index,
+                    lastFilterselectedIndex: index,
                 });
                 if(this.state.getFilterData) {
                     console.log('will mount call')
@@ -1299,7 +1323,12 @@ class WeeklySchedule extends React.Component {
             selectedStoreName : this.state.Stores.length > 0 ? this.state.Stores[0].DisplayStoreNumber : -1,
             weekendDate : this.state.currentWeekEndDate,
             selectedUsers: 0,
+            selectedStoreIndex: -1,
+            resetFilter: true
         })
+        setTimeout(() => {
+            this.setState({ resetFilter: false })
+        }, 10);
     }
 
     async onAddshift(button) {
@@ -1536,6 +1565,7 @@ class WeeklySchedule extends React.Component {
     render() {
         // console.log('empRoleData-->', this.state.empRoleData);
         // console.log('selectedDate-->', this.state.selectedDate);
+        console.log('Stores-->', this.state.Stores);
         // console.log('dayIndex-->', this.state.dayIndex);
         // if(this.state.selectedDate == 'Total')
         //     console.log('TotalofEmployeeScheduleData-->', this.state.TotalofEmployeeScheduleData);
@@ -2075,13 +2105,14 @@ class WeeklySchedule extends React.Component {
                                 selectedStoreName: this.state.lastFilterselectedStoreName,
                                 selectedUsers: this.state.lastFilterselectedUserId,
                                 Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
+                                selectedStoreIndex: this.state.lastFilterselectedIndex
                             })}
                             onRightPress={() => {
                                 // console.log('save'); 
                                 // console.log('save', this.state.weekendDate); 
                                 // console.log('save', this.state.selectedRoleId); 
                                 // console.log('save', this.state.selectedStoreId); 
-
+                                const index = this.state.Stores.length > 0 && this.state.Stores.findIndex(s => s.StoreID === this.state.selectedStores);
                                 this.taxListFlag = false;
                                 this.infoFlag = false;
                                 this.detailsListFlag = false;
@@ -2113,11 +2144,16 @@ class WeeklySchedule extends React.Component {
                                     lastFilterselectedStoreId: this.state.selectedStoreId,
                                     lastFilterselectedStoreName: this.state.selectedStoreName,
                                     lastFilterselectedUserId: this.state.selectedUsers,
+                                    astFilterselectedIndex: index,
                                 })
                             }}
                         />
                         <View style={{ flex: 1, padding: Matrics.CountScale(10) }}>
-                            <ScrollView showsVerticalScrollIndicator={false}>
+                            <KeyboardAwareScrollView
+                                extraScrollHeight={100}
+                                keyboardShouldPersistTaps={'handled'}
+                                enableOnAndroid={true}
+                            >
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker('weekending')}>
@@ -2182,7 +2218,7 @@ class WeeklySchedule extends React.Component {
                                     </View>
                                 }
                                 <Text style={Styles.pickerLabelStyle}>Stores</Text>
-                                <Picker
+                                {/* <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedStoreId}
                                     onValueChange={value => {
@@ -2191,12 +2227,55 @@ class WeeklySchedule extends React.Component {
                                     }}
                                 >
                                     {this.getStores()}
-                                </Picker>
+                                </Picker> */}
+                                {!this.state.resetFilter ?
+                                    <SearchableDropdown
+                                        onItemSelect={(item) => {
+                                            const index = this.state.Stores.findIndex(s => s.StoreID === item.StoreID);
+                                            this.setState({ selectedStores: item.StoreID, selectedStoreName: item.DisplayStoreNumber, selectedStoreIndex: index });
+                                        }}
+                                        containerStyle={{ padding: 5, marginBottom: Matrics.CountScale(10) }}
+                                        onRemoveItem={(item, index) => {
+                                            console.log('on remove-->', item, '--', index)
+                                        }}
+                                        itemStyle={{
+                                            padding: 10,
+                                            marginTop: 2,
+                                            backgroundColor: '#ddd',
+                                            borderColor: '#bbb',
+                                            borderWidth: 1,
+                                            borderRadius: 5,
+                                        }}
+                                        itemTextStyle={{ color: '#222' }}
+                                        itemsContainerStyle={{ maxHeight: Matrics.CountScale(150), marginBottom: Matrics.CountScale(20) }}
+                                        items={this.state.Stores}
+                                        defaultIndex={this.state.selectedStoreIndex}
+                                        resetValue={false}
+                                        textInputProps={
+                                            {
+                                                placeholder: "Select Store",
+                                                underlineColorAndroid: "transparent",
+                                                style: {
+                                                    padding: 12,
+                                                    borderWidth: 1,
+                                                    borderColor: '#ccc',
+                                                    borderRadius: 5,
+                                                },
+                                                onTextChange: text => console.log(text)
+                                            }
+                                        }
+                                        listProps={
+                                            {
+                                                nestedScrollEnabled: true,
+                                            }
+                                        }
+                                    />
+                                    : null}
                                 <TouchableOpacity onPress={() => this.resetFilterClick()} style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 10, margin: 40 }}>
                                     <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
                                     <Text style={{ color: 'red' }}>Reset Filter</Text>
                                 </TouchableOpacity>
-                            </ScrollView>
+                            </KeyboardAwareScrollView>
                         </View>
                         {
                             this.state.dateFlag !== 'weekending' ?

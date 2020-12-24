@@ -10,6 +10,8 @@ import CalendarPicker from '../../../CustomComponent/react-native-calendar-picke
 import moment from 'moment';
 import _ from 'lodash';
 import {Picker} from '@react-native-community/picker';
+import SearchableDropdown from '../../../CustomComponent/react-native-searchable-dropdown';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 // ======>>>>> Assets <<<<<=========
 import { Colors, Fonts, Matrics, Images, MasterCss } from '@Assets'
@@ -76,6 +78,9 @@ class CheckDoucmentStatus extends React.Component {
         selectedRoleName: '',
         lastFilterselectedUserId: 0,
         // isDateTimePickerVisible: false,
+        selectedStoreIndex: -1,
+        lastFilterselectedIndex: -1,
+        resetFilter: false,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -145,10 +150,17 @@ class CheckDoucmentStatus extends React.Component {
                     }
                     data.Report.user_list.unshift(userSelect);
                 }
-                data.Report.store_list.unshift(storeselect);
+                // data.Report.store_list.unshift(storeselect);
                 data.Report.role_list.unshift(roleSelect);
                 // console.log('filter success store-->', data.Report.store_list);
                 // console.log('filter success role-->', data.Report.role_list);
+                if (data.Report.store_list.length > 0) {
+                    var i;
+                    for (i = 0; i < data.Report.store_list.length; i++) {
+                        data.Report.store_list[i].name = data.Report.store_list[i]['DisplayStoreNumber'];
+                        delete data.Report.store_list[i].key1;
+                    }
+                }
                 let selectedStoreArr = data.Report.store_list.filter(S => S.StoreID == parseInt(global.selectedStore,10));
                 this.setState({
                     userRoleList: data.Report.role_list,
@@ -156,8 +168,17 @@ class CheckDoucmentStatus extends React.Component {
                     storeList: data.Report.store_list,
                     // selectedStoreId: data.Report.store_list[0].StoreID,
                     // selectedStoreName: data.Report.store_list[0].DisplayStoreNumber
-                    selectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber  : data.Report.store_list[0].DisplayStoreNumber
+                    selectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber  : 'Select Store',
+                    lastFilterselectedselectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber  : 'Select Store',
                 });
+                if(parseInt(global.selectedStore,10) != ''){
+                    const index = data.Report.store_list.length > 0 && data.Report.store_list.findIndex(s => s.StoreID === parseInt(global.selectedStore,10));
+                    this.setState({
+                        selectedStoreIndex: index,
+                        lastFilterselectedIndex: index,
+                    })
+                }
+                
             }
         } else if (nextProps.response.CheckDocumentStatus.GetCheckDocumentStatusHiringReturnSucess && (this.state.loading || this.state.refreshing)) {
             this.docStatusFlage = true;
@@ -182,9 +203,6 @@ class CheckDoucmentStatus extends React.Component {
                 this.getNumberOfPage();
             } else {
                 empListData[this.state.selectedIndex] = data.Report != null ? data.Report._list : [] ;
-                console.log('else-->',data.Message)
-                console.log('else-->',empListData)
-                console.log('else-->',empListData[0].length)
                 this.setState({ empListArr: empListData.length == 1 && empListData[0].length == 0 ? [] : empListData, TitlesArr: [], 
                     TotalEmployeeCount: data.Report != null ? data.Report.PagingStats.TotalCount : 0,
                     recipientsListArr:  data.Report != null ? data.Report._recipientsList : [],
@@ -392,7 +410,12 @@ class CheckDoucmentStatus extends React.Component {
             selectedNOD: -1,
             selectedStatus: 'All Status',
             selectedUsers: 0,
+            selectedStoreIndex: -1,
+            resetFilter: true
         })
+        setTimeout(() => {
+            this.setState({ resetFilter: false })
+        }, 10);
     }
 
 
@@ -530,8 +553,6 @@ class CheckDoucmentStatus extends React.Component {
                 </TouchableOpacity>
             )
         }
-        // console.log('storeList-->', this.state.storeList)
-        // console.log('storeList-->', this.state.selectedStoreName)
         return (
             <View style={Styles.pageContainer}>
                 <View style={{ backgroundColor: Colors.WHITE, paddingTop: Platform.OS == 'ios' ? (Matrics.screenHeight == 812 ? 30 : 20) : 0, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
@@ -650,21 +671,21 @@ class CheckDoucmentStatus extends React.Component {
                         <Header centerText='Filter'
                             rightText='Save'
                             leftText='Cancel'
-                            onLeftPress={() => this.setState({ 
-                                filterModal: false,
-                                selectedRoleId: this.state.lastFilterselectedRoleId,
-                                selectedStores: this.state.lastFilterselectedStores, 
-                                selectedStoreName: this.state.lastFilterselectedselectedStoreName,
-                                selectedNOD: this.state.lastFilterselectedNOD,
-                                selectedStatus: this.state.lastFilterselectedStatus,
-                                selectedUsers: this.state.lastFilterselectedUserId,
-                                Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
-                            })}
+                            onLeftPress={() => {
+                                this.setState({ 
+                                    filterModal: false,
+                                    selectedRoleId: this.state.lastFilterselectedRoleId,
+                                    selectedStores: this.state.lastFilterselectedStores, 
+                                    selectedStoreName: this.state.lastFilterselectedselectedStoreName,
+                                    selectedNOD: this.state.lastFilterselectedNOD,
+                                    selectedStatus: this.state.lastFilterselectedStatus,
+                                    selectedUsers: this.state.lastFilterselectedUserId,
+                                    Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
+                                    selectedStoreIndex: this.state.lastFilterselectedIndex
+                                })
+                            }}
                             onRightPress={() => {
-                                console.log('save NOD->', this.state.selectedNOD);
-                                console.log('save STATUS->', this.state.selectedStatus);
-                                console.log('save ROLE->', this.state.selectedRoleId);
-                                console.log('save STORE->',this.state.selectedStores);
+                                const index = this.state.storeList.length > 0 && this.state.storeList.findIndex(s => s.StoreID === this.state.selectedStores);
                                 empListData = [];
                                 pageNumArr = [1];
                                 let TileID = 0;
@@ -696,11 +717,16 @@ class CheckDoucmentStatus extends React.Component {
                                     lastFilterselectedStatus: this.state.selectedStatus,
                                     lastFilterselectedselectedStoreName: this.state.selectedStoreName,
                                     lastFilterselectedUserId: this.state.selectedUsers,
+                                    lastFilterselectedIndex: index,
                                 })
                             }}
                         />
                         <View style={{ flex: 1, padding: Matrics.CountScale(10) }}>
-                            <ScrollView>
+                            <KeyboardAwareScrollView
+                                extraScrollHeight={100}
+                                keyboardShouldPersistTaps={'handled'}
+                                enableOnAndroid={true}
+                            >
                                 {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker()}>
@@ -775,7 +801,7 @@ class CheckDoucmentStatus extends React.Component {
                                 }
                                 
                                 <Text style={Styles.pickerLabelStyle}>Stores</Text>
-                                <Picker
+                                {/* <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedStores}
                                     onValueChange={value => { 
@@ -784,7 +810,50 @@ class CheckDoucmentStatus extends React.Component {
                                     }}
                                 >
                                     {this.getStores()}
-                                </Picker>
+                                </Picker> */}
+                                {!this.state.resetFilter ?
+                                    <SearchableDropdown
+                                        onItemSelect={(item) => {
+                                            const index = this.state.storeList.findIndex(s => s.StoreID === item.StoreID);
+                                            this.setState({ selectedStores: item.StoreID, selectedStoreName: item.DisplayStoreNumber, selectedStoreIndex: index });
+                                        }}
+                                        containerStyle={{ padding: 5, marginBottom: Matrics.CountScale(10) }}
+                                        onRemoveItem={(item, index) => {
+                                            console.log('on remove-->', item, '--', index)
+                                        }}
+                                        itemStyle={{
+                                            padding: 10,
+                                            marginTop: 2,
+                                            backgroundColor: '#ddd',
+                                            borderColor: '#bbb',
+                                            borderWidth: 1,
+                                            borderRadius: 5,
+                                        }}
+                                        itemTextStyle={{ color: '#222' }}
+                                        itemsContainerStyle={{ maxHeight: Matrics.CountScale(150), marginBottom: Matrics.CountScale(20) }}
+                                        items={this.state.storeList}
+                                        defaultIndex={this.state.selectedStoreIndex}
+                                        resetValue={false}
+                                        textInputProps={
+                                            {
+                                                placeholder: "Select Store",
+                                                underlineColorAndroid: "transparent",
+                                                style: {
+                                                    padding: 12,
+                                                    borderWidth: 1,
+                                                    borderColor: '#ccc',
+                                                    borderRadius: 5,
+                                                },
+                                                onTextChange: text => console.log(text)
+                                            }
+                                        }
+                                        listProps={
+                                            {
+                                                nestedScrollEnabled: true,
+                                            }
+                                        }
+                                    />
+                                    : null}
                                 <Text style={Styles.pickerLabelStyle}>No.OfDays</Text>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
@@ -808,7 +877,7 @@ class CheckDoucmentStatus extends React.Component {
                                     <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
                                     <Text style={{ color: 'red' }}>Reset Filter</Text>
                                 </TouchableOpacity>
-                            </ScrollView>
+                            </KeyboardAwareScrollView>
                         </View>
                         {/* <DateTimePicker
                             isVisible={this.state.isDateTimePickerVisible}
