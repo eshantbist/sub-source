@@ -380,10 +380,6 @@ class WeeklySchedule extends React.Component {
                 } else {
                     index = data.Report.store_list.length > 0 && data.Report.store_list.findIndex(s => s.StoreID === data.Report.store_list[0].StoreID);
                 }
-                // const index = data.Report.store_list.length > 0 && data.Report.store_list.findIndex(s => {
-                //     parseInt(global.selectedStore,10) != -1 ? s.StoreID === parseInt(global.selectedStore,10)
-                //                                             : s.StoreID === data.Report.store_list[0].StoreID
-                // });
                 console.log('kkindex-->', index)
                 await this.setState({
                     userRole: data.Report.role_list,
@@ -2144,7 +2140,7 @@ class WeeklySchedule extends React.Component {
                                     lastFilterselectedStoreId: this.state.selectedStoreId,
                                     lastFilterselectedStoreName: this.state.selectedStoreName,
                                     lastFilterselectedUserId: this.state.selectedUsers,
-                                    astFilterselectedIndex: index,
+                                    lastFilterselectedIndex: index,
                                 })
                             }}
                         />

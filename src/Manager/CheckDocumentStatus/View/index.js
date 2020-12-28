@@ -854,7 +854,7 @@ class CheckDoucmentStatus extends React.Component {
                                         }
                                     />
                                     : null}
-                                <Text style={Styles.pickerLabelStyle}>No.OfDays</Text>
+                                <Text style={Styles.pickerLabelStyle}>No.Of Days</Text>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedNOD}

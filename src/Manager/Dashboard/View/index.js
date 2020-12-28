@@ -1064,7 +1064,7 @@ class Dashboard extends React.Component {
                                                     return (
                                                         <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
                                                             <View style={Styles.bottomBorderStyle}>
-                                                                <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YY, hh:mm a')}</Text></Text>
+                                                                <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YYYY, hh:mm a')}</Text></Text>
 
                                                             </View>
                                                             <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
@@ -1081,7 +1081,7 @@ class Dashboard extends React.Component {
                                                         return (
                                                             <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
                                                                 <View style={Styles.bottomBorderStyle}>
-                                                                    <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YY, hh:mm a')}</Text></Text>
+                                                                    <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YYYY, hh:mm a')}</Text></Text>
 
                                                                 </View>
                                                                 <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
@@ -1096,7 +1096,7 @@ class Dashboard extends React.Component {
                                                         return (
                                                             <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
                                                                 <View style={Styles.bottomBorderStyle}>
-                                                                    <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YY, hh:mm a')}</Text></Text>
+                                                                    <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YYYY, hh:mm a')}</Text></Text>
 
                                                                 </View>
                                                                 <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>

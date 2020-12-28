@@ -13,6 +13,7 @@ import DocumentPicker from 'react-native-document-picker';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import SearchableDropdown from '../../../CustomComponent/react-native-searchable-dropdown';
 import _ from 'lodash';
 import moment from 'moment';
 import {
@@ -46,23 +47,27 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 const SLIDER_WIDTH = viewportWidth;
 let self = '';
 
-export const TextColumn = ({ name,ProfilePicture,selectedDayIsOpen, RG, OT, DT, BW, bgColor, nullRecord, onBWPress, onRGPress, onRGLongPress, onAbsencePress, onRgDisable, onBwDisable }) => {
+export const TextColumn = ({ name,ProfilePicture,ISProfilePicture, selectedDayIsOpen, RG, OT, DT, BW, bgColor, nullRecord, onBWPress, onRGPress, onRGLongPress, onAbsencePress, onRgDisable, onBwDisable }) => {
     return (
         <View style={[Styles.rowContainer, { backgroundColor: bgColor }]}>
             <View style={{ width: '48%', flexDirection:'row' }}>
-                <Image 
-                    source={
-                        ProfilePicture != ''
-                        ? {uri: ProfilePicture}
-                        : Images.ProfileIconPlaceholder
-                    }
-                    style={{
-                        height: Matrics.CountScale(30),
-                        width: Matrics.CountScale(30),
-                        alignSelf: 'center',
-                    }}
-                />
-                <Text style={Styles.headingStyle} >{name}</Text>
+                {
+                    ISProfilePicture &&
+                    <Image 
+                        source={
+                            ProfilePicture != ''
+                            ? {uri: ProfilePicture}
+                            : Images.ProfileIconPlaceholder
+                        }
+                        style={{
+                            height: Matrics.CountScale(25),
+                            width: Matrics.CountScale(25),
+                            alignSelf: 'center',
+                            marginLeft: Matrics.CountScale(5),
+                        }}
+                    />  
+                }
+                <Text style={[Styles.headingStyle,{ flexWrap: 'wrap', flex: 1 }]} >{name}</Text>
             </View>
 
             {
@@ -180,6 +185,9 @@ class WeeklySummarySheet extends React.Component {
         lastFilterselectedUserId: 0,
         prevIndex: 0,
         isLoad: true,
+        selectedStoreIndex: -1,
+        lastFilterselectedIndex: -1,
+        resetFilter: false,
     };
 
     lastTap = null;
@@ -294,7 +302,20 @@ class WeeklySummarySheet extends React.Component {
                 data.Report.user_list.unshift(userSelect);
             }
             data.Report.role_list.unshift(roleSelect);
+            if (data.Report.store_list.length > 0) {
+                var i;
+                for (i = 0; i < data.Report.store_list.length; i++) {
+                    data.Report.store_list[i].name = data.Report.store_list[i]['DisplayStoreNumber'];
+                    delete data.Report.store_list[i].key1;
+                }
+            }
             let selectedStoreArr = data.Report.store_list.filter(S => S.StoreID == parseInt(global.selectedStore,10));
+            let index = -1;
+            if(parseInt(global.selectedStore,10) != -1){
+                index = data.Report.store_list.length > 0 && data.Report.store_list.findIndex(s => s.StoreID === parseInt(global.selectedStore,10));
+            } else {
+                index = data.Report.store_list.length > 0 && data.Report.store_list.findIndex(s => s.StoreID === data.Report.store_list[0].StoreID);
+            }
             await this.setState({ 
                 userRole: data.Report.role_list,
                 StoresList: data.Report.store_list,
@@ -306,6 +327,8 @@ class WeeklySummarySheet extends React.Component {
                 lastFilterselectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber : data.Report.store_list[0].DisplayStoreNumber,
                 Users: data.Report.user_list,
                 isLoad: false,
+                selectedStoreIndex: index,
+                lastFilterselectedIndex: index,
             });
         }
         if(this.state.getFilterData) {
@@ -969,14 +992,18 @@ class WeeklySummarySheet extends React.Component {
     }
 
     resetFilterClick() {
-        // const storesArr =  this.state.Stores[0].StoreID;
         this.setState({
             selectedRoleId : 0,
             selectedStoreId : this.state.StoresList.length > 0 ? this.state.StoresList[0].StoreID : -1,
             selectedStoreName : this.state.StoresList.length > 0 ? this.state.StoresList[0].DisplayStoreNumber : -1,
             WeekEndingDate : this.state.currentWeekEndDate,
             selectedUsers: 0,
+            selectedStoreIndex: -1,
+            resetFilter: true
         })
+        setTimeout(() => {
+            this.setState({ resetFilter: false })
+        }, 10);
     }
 
     logrenderitem = ({item, index}) => {
@@ -1111,6 +1138,7 @@ class WeeklySummarySheet extends React.Component {
                                             <TextColumn 
                                                 name={res.FullName} 
                                                 ProfilePicture={res.ProfilePicture} 
+                                                ISProfilePicture={true} 
                                                 nullRecord={true} 
                                                 onAbsencePress={async () => {
                                                 await this.setState({ 
@@ -1143,6 +1171,7 @@ class WeeklySummarySheet extends React.Component {
                                                 name={res.FullName} 
                                                 selectedDayIsOpen={this.state.selectedDayIsOpen}
                                                 ProfilePicture={res.ProfilePicture}
+                                                ISProfilePicture={true} 
                                                 RG={resData[0].RG != undefined ? resData[0].RG != 0 ? resData[0].RG.toFixed(2) : null : null} 
                                                 OT={resData[0].OT != undefined ? resData[0].OT != 0 ? resData[0].OT.toFixed(2): null : null} 
                                                 DT={resData[0].DT != undefined ? resData[0].DT != 0 ? resData[0].DT.toFixed(2) : null : null} 
@@ -1190,6 +1219,7 @@ class WeeklySummarySheet extends React.Component {
                             <View>
                                 <TextColumn 
                                     name={'Total Hours'} 
+                                    ISProfilePicture={false} 
                                     RG={resTotalHours.length > 0 ? resTotalHours[0].RG != undefined ? resTotalHours[0].RG != 0 ? resTotalHours[0].RG.toFixed(2) : null : null :  null} 
                                     OT={resTotalHours.length > 0 ? resTotalHours[0].OT != undefined ? resTotalHours[0].OT != 0 ? resTotalHours[0].OT.toFixed(2): null : null : null} 
                                     DT={resTotalHours.length > 0 ? resTotalHours[0].DT != undefined ? resTotalHours[0].DT != 0 ? resTotalHours[0].DT.toFixed(2) : null : null : null} 
@@ -1203,6 +1233,7 @@ class WeeklySummarySheet extends React.Component {
                                          contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].Productivity ? TotalUnitArr[0].Productivity != 0 ? TotalUnitArr[0].Productivity.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
                                 <TextColumn 
                                     name={'Payroll Dollars'} 
+                                    ISProfilePicture={false} 
                                     RG={resPayrollDollars.length > 0 ? resPayrollDollars[0].RG != undefined ? resPayrollDollars[0].RG != 0 ? resPayrollDollars[0].RG.toFixed(2) : null : null : null} 
                                     OT={resPayrollDollars.length > 0 ? resPayrollDollars[0].OT != undefined ? resPayrollDollars[0].OT != 0 ? resPayrollDollars[0].OT.toFixed(2) : null : null : null} 
                                     DT={resPayrollDollars.length > 0 ? resPayrollDollars[0].DT != undefined ? resPayrollDollars[0].DT != 0 ? resPayrollDollars[0].DT.toFixed(2) : null : null : null} 
@@ -1246,6 +1277,7 @@ class WeeklySummarySheet extends React.Component {
                                     <TextColumn 
                                         name={res.FullName} 
                                         ProfilePicture={res.ProfilePicture}
+                                        ISProfilePicture={true} 
                                         RG={TotalRG != 0 ? parseFloat(TotalRG).toFixed(2) : null} 
                                         OT={TotalOT != 0 ? parseFloat(TotalOT).toFixed(2) : null} 
                                         DT={TotalDT != 0 ? parseFloat(TotalDT).toFixed(2) : null} 
@@ -1259,6 +1291,7 @@ class WeeklySummarySheet extends React.Component {
                         <View>
                             <TextColumn 
                                 name={'Total Hours'} 
+                                ISProfilePicture={false} 
                                 RG={WeTotalHoursRG != 0 ? WeTotalHoursRG.toFixed(2) : null} 
                                 OT={WeTotalHoursOT != 0 ? WeTotalHoursOT.toFixed(2) : null} 
                                 DT={WeTotalHoursDT != 0 ? WeTotalHoursDT.toFixed(2) : null} 
@@ -1270,6 +1303,7 @@ class WeeklySummarySheet extends React.Component {
                             <TextRow labelText={'Productivity'} contentbgColor="green" contentText={WeProductivity != 0 ? WeProductivity.toFixed(2) : null} bgColor={Colors.ROWBGCOLOR} />
                             <TextColumn 
                                 name={'Payroll Dollars'} 
+                                ISProfilePicture={false} 
                                 RG={PayrollDollarsRG != 0 ? PayrollDollarsRG.toFixed(2) : null} 
                                 OT={PayrollDollarsOT != 0 ? PayrollDollarsOT.toFixed(2) : null} 
                                 DT={PayrollDollarsDT != 0 ? PayrollDollarsDT.toFixed(2) : null} 
@@ -1743,9 +1777,11 @@ class WeeklySummarySheet extends React.Component {
                                     selectedStoreName: this.state.lastFilterselectedStoreName,
                                     selectedUsers: this.state.lastFilterselectedUserId,
                                     Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
+                                    selectedStoreIndex: this.state.lastFilterselectedIndex
                                 });
                             }}
                             onRightPress={() => {
+                                const index = this.state.StoresList.length > 0 && this.state.StoresList.findIndex(s => s.StoreID === this.state.selectedStores);
                                 this.weatherListFlag = false;
                                 this.weekDayStatusFlag = false;
                                 this.WeeklySummarySheetFlag = false;
@@ -1764,12 +1800,17 @@ class WeeklySummarySheet extends React.Component {
                                     lastFilterselectedStoreId: this.state.selectedStoreId,
                                     lastFilterselectedStoreName: this.state.selectedStoreName,
                                     lastFilterselectedUserId: this.state.selectedUsers,
+                                    lastFilterselectedIndex: index,
                                 });
                                 
                             }}
                         />
                         <View style={{ flex: 1, padding: Matrics.CountScale(10) }}>
-                            <ScrollView showsVerticalScrollIndicator={false}>
+                            <KeyboardAwareScrollView
+                                extraScrollHeight={100}
+                                keyboardShouldPersistTaps={'handled'}
+                                enableOnAndroid={true}
+                            >
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker('weekending')}>
@@ -1836,7 +1877,7 @@ class WeeklySummarySheet extends React.Component {
                                     </View>
                                 }
                                 <Text style={Styles.pickerLabelStyle}>Stores</Text>
-                                <Picker
+                                {/* <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedStoreId}
                                     onValueChange={value => {
@@ -1845,12 +1886,55 @@ class WeeklySummarySheet extends React.Component {
                                     }}
                                 >
                                     {this.getStores()}
-                                </Picker>
+                                </Picker> */}
+                                {!this.state.resetFilter ?
+                                    <SearchableDropdown
+                                        onItemSelect={(item) => {
+                                            const index = this.state.StoresList.findIndex(s => s.StoreID === item.StoreID);
+                                            this.setState({ selectedStoreId: item.StoreID, selectedStoreName: item.DisplayStoreNumber, selectedStoreIndex: index });
+                                        }}
+                                        containerStyle={{ padding: 5, marginBottom: Matrics.CountScale(10) }}
+                                        onRemoveItem={(item, index) => {
+                                            console.log('on remove-->', item, '--', index)
+                                        }}
+                                        itemStyle={{
+                                            padding: 10,
+                                            marginTop: 2,
+                                            backgroundColor: '#ddd',
+                                            borderColor: '#bbb',
+                                            borderWidth: 1,
+                                            borderRadius: 5,
+                                        }}
+                                        itemTextStyle={{ color: '#222' }}
+                                        itemsContainerStyle={{ maxHeight: Matrics.CountScale(150), marginBottom: Matrics.CountScale(20) }}
+                                        items={this.state.StoresList}
+                                        defaultIndex={this.state.selectedStoreIndex}
+                                        resetValue={false}
+                                        textInputProps={
+                                            {
+                                                placeholder: "Select Store",
+                                                underlineColorAndroid: "transparent",
+                                                style: {
+                                                    padding: 12,
+                                                    borderWidth: 1,
+                                                    borderColor: '#ccc',
+                                                    borderRadius: 5,
+                                                },
+                                                onTextChange: text => console.log(text)
+                                            }
+                                        }
+                                        listProps={
+                                            {
+                                                nestedScrollEnabled: true,
+                                            }
+                                        }
+                                    />
+                                    : null}
                                 <TouchableOpacity onPress={() => this.resetFilterClick()} style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 10, margin: 40 }}>
                                     <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
                                     <Text style={{ color: 'red' }}>Reset Filter</Text>
                                 </TouchableOpacity>
-                            </ScrollView>
+                            </KeyboardAwareScrollView>
                         </View>
                         {/* <DateTimePicker
                             isVisible={this.state.isDateTimePickerVisible}
