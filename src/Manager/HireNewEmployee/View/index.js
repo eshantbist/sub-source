@@ -155,9 +155,9 @@ class HireNewEmployee extends React.Component {
             }
         } else if(nextProps.response.EmployeeExistenceCheckOnHiringSuccess) {
             let data = nextProps.response.data;
-            // console.log('hdata-->', data);
-            if(data.Status === 0 && data.Message === 'No Record found!'){
-                // this.hireEmployeeSaveData(); 
+            console.log('hdata-->', data);
+            if(data.Status === 0 && data.Message === 'No such employee exists!'){
+                this.hireEmployeeSaveData(); 
             } else if(data.Status === 1 && data.Data.length > 0) {
                 this.setState({ loading: false });
                 Alert.alert(
@@ -174,9 +174,7 @@ class HireNewEmployee extends React.Component {
         else if(nextProps.response.HireNewEmployeeManageSuccess) {
             let data = nextProps.response.data;
             console.log('hiredata-->', data);
-            if(data.Status === 1) {
-                this.setState({ loading: false });
-            } else {
+            if(data.Status === 0) {
                 this.setState({ loading: false });
                 Alert.alert(
                     '',
@@ -185,6 +183,9 @@ class HireNewEmployee extends React.Component {
                         {text: 'OK', onPress: () => console.log('error'),},
                     ]
                 );
+            } else {
+                this.setState({ loading: false });
+                console.log('hire successfully');
             }
         }
     }
@@ -357,7 +358,7 @@ class HireNewEmployee extends React.Component {
             this.setState({ errorwageRate: 'Please Enter The WageRate' });
         } else if (this.state.dateOfBirth === ''){
             this.setState({ errorDob: 'Please Select DateOfBirth' });
-        } else if(this.state.age < this.state.minorAge) {
+        } else if(this.state.age < this.state.minorAge && this.state.minorData.length == 0) {
             this.setState({ isMinor: true });
             Alert.alert(
                 '',
@@ -498,10 +499,10 @@ class HireNewEmployee extends React.Component {
                 "_objMinorDetail":{}
             }
         }
-        // this.props.HireNewEmployeeManageRequest({
-        //     BusinessTypeId: 1,
-        //     jsonData,
-        // });
+        this.props.HireNewEmployeeManageRequest({
+            BusinessTypeId: 1,
+            jsonData,
+        });
         // this.setState({ loading: false });
     }
 

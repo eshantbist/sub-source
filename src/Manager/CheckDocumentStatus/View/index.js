@@ -25,7 +25,7 @@ import { getHeaderFilterValues, getCheckDocumentStatusHiringReturnRequest, getCh
 
 
 let self;
-let NOD = ['All','30', '60', '90'];
+let NOD = ['30', '60', '90','All'];
 let status = ['All status', 'Declined', 'Delivered', 'Created','Completed','Voided', 'Exception','Sent'];
 let perPageRecord = 10;
 let empListData = [];
@@ -51,7 +51,7 @@ class CheckDoucmentStatus extends React.Component {
         selected: "ActionRequired",
         filterModal: false,
         selectedRoleId: 0,
-        selectedNOD: -1,
+        selectedNOD: 30,
         selectedStatus: 'All Status',
         userRoleList: [],
         userList: [],
@@ -69,7 +69,7 @@ class CheckDoucmentStatus extends React.Component {
         empListArr1: [],
         lastFilterselectedRoleId: 0,
         lastFilterselectedStores: -1,
-        lastFilterselectedNOD: 'All',
+        lastFilterselectedNOD: 30,
         lastFilterselectedStatus: 'All Status',
         recipientsListArr: [],
         selctedTileID: 0,
@@ -407,7 +407,7 @@ class CheckDoucmentStatus extends React.Component {
         this.setState({
             selectedRoleId : 0,
             selectedStores : -1,
-            selectedNOD: -1,
+            selectedNOD: 30,
             selectedStatus: 'All Status',
             selectedUsers: 0,
             selectedStoreIndex: -1,
@@ -857,8 +857,12 @@ class CheckDoucmentStatus extends React.Component {
                                 <Text style={Styles.pickerLabelStyle}>No.Of Days</Text>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
-                                    selectedValue={this.state.selectedNOD}
-                                    onValueChange={value => this.setState({ selectedNOD: value == 'All' ? -1 : value })}
+                                    selectedValue={this.state.selectedNOD == -1 ? 'All' : this.state.selectedNOD}
+                                    onValueChange={value => {
+                                        console.log('value-->', value)
+                                        console.log('value-->',typeof value)
+                                         this.setState({ selectedNOD: value == 'All' ? -1 : value })
+                                    }}
                                 >
                                     {this.getNOD()}
                                 </Picker>
