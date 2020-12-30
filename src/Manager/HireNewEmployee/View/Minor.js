@@ -186,7 +186,9 @@ export default class Minor extends React.Component {
             "OutTime": this.state.workingHoursWe2,
             "disabled":false,
             "IsValidInTime":true,
-            "IsValidOutTime":true
+            "IsValidOutTime":true,
+            "PlaceHolderInTime": this.state.anyHoursCheckedWe ? '12:00' : "HH:MM",
+            "PlaceHolderOutTime": this.state.anyHoursCheckedWe ? '11:59' : "HH:MM",
         },
         {
             "DayID":5,
@@ -197,7 +199,9 @@ export default class Minor extends React.Component {
             "OutTime": this.state.workingHoursTh2,
             "disabled":true,
             "IsValidInTime":true,
-            "IsValidOutTime":true
+            "IsValidOutTime":true,
+            "PlaceHolderInTime": this.state.anyHoursCheckedTh ? '12:00' : "HH:MM",
+            "PlaceHolderOutTime": this.state.anyHoursCheckedTh ? '11:59' : "HH:MM",
         },
         {
             "DayID":6,
@@ -208,7 +212,9 @@ export default class Minor extends React.Component {
             "OutTime": this.state.workingHoursFr2,
             "disabled":false,
             "IsValidInTime":true,
-            "IsValidOutTime":true
+            "IsValidOutTime":true,
+            "PlaceHolderInTime": this.state.anyHoursCheckedFr ? '12:00' : "HH:MM",
+            "PlaceHolderOutTime": this.state.anyHoursCheckedFr ? '11:59' : "HH:MM",
         },
         {
             "DayID":7,
@@ -219,7 +225,9 @@ export default class Minor extends React.Component {
             "OutTime": this.state.workingHoursSa2,
             "disabled":false,
             "IsValidInTime":true,
-            "IsValidOutTime":true
+            "IsValidOutTime":true,
+            "PlaceHolderInTime": this.state.anyHoursCheckedSa ? '12:00' : "HH:MM",
+            "PlaceHolderOutTime": this.state.anyHoursCheckedSa ? '11:59' : "HH:MM",
         },
         {
             "DayID":1,
@@ -230,7 +238,9 @@ export default class Minor extends React.Component {
             "OutTime": this.state.workingHoursSu2,
             "disabled":false,
             "IsValidInTime":true,
-            "IsValidOutTime":true
+            "IsValidOutTime":true,
+            "PlaceHolderInTime": this.state.anyHoursCheckedSu ? '12:00' : "HH:MM",
+            "PlaceHolderOutTime": this.state.anyHoursCheckedSu ? '11:59' : "HH:MM",
         },
         {
             "DayID":2,
@@ -241,7 +251,9 @@ export default class Minor extends React.Component {
             "OutTime": this.state.workingHoursMo2,
             "disabled":false,
             "IsValidInTime":true,
-            "IsValidOutTime":true
+            "IsValidOutTime":true,
+            "PlaceHolderInTime": this.state.anyHoursCheckedMo ? '12:00' : "HH:MM",
+            "PlaceHolderOutTime": this.state.anyHoursCheckedMo ? '11:59' : "HH:MM",
         },
         {
             "DayID":3,
@@ -252,7 +264,9 @@ export default class Minor extends React.Component {
             "OutTime": this.state.workingHoursTu2,
             "disabled":false,
             "IsValidInTime":true,
-            "IsValidOutTime":true
+            "IsValidOutTime":true,
+            "PlaceHolderInTime": this.state.anyHoursCheckedTu ? '12:00' : "HH:MM",
+            "PlaceHolderOutTime": this.state.anyHoursCheckedTu ? '11:59' : "HH:MM",
         }
       ],
       "MinorFileName":"",
@@ -321,6 +335,13 @@ export default class Minor extends React.Component {
           this.setState({ OutTimeError: 'Out Time ShouldBe GraterThan To InTime' });
         } 
         else if(
+          (!this.state.anyHoursCheckedWe) &&
+          (!this.state.anyHoursCheckedTh) &&
+          (!this.state.anyHoursCheckedFr) &&
+          (!this.state.anyHoursCheckedSa) &&
+          (!this.state.anyHoursCheckedSu) &&
+          (!this.state.anyHoursCheckedMo) &&
+          (!this.state.anyHoursCheckedTu) &&
           (this.state.workingHoursWe1 == '') &&
           (this.state.workingHoursWe2 == '') &&
           (this.state.workingHoursTh1 == '') &&
@@ -404,6 +425,13 @@ export default class Minor extends React.Component {
         }
       } 
       else if(
+        (!this.state.anyHoursCheckedWe) &&
+        (!this.state.anyHoursCheckedTh) &&
+        (!this.state.anyHoursCheckedFr) &&
+        (!this.state.anyHoursCheckedSa) &&
+        (!this.state.anyHoursCheckedSu) &&
+        (!this.state.anyHoursCheckedMo) &&
+        (!this.state.anyHoursCheckedTu) &&
         (this.state.workingHoursWe1 == '') &&
         (this.state.workingHoursWe2 == '') &&
         (this.state.workingHoursTh1 == '') &&
@@ -682,14 +710,14 @@ export default class Minor extends React.Component {
           <TextInput 
             autoCorrect={false}
             style={Styles.inputWorkStyle}
-            // placeholder={'Type here'}
+            placeholder={this.state.anyHoursCheckedWe ? '12:00' :'HH:MM'}
             onChangeText={(text) => this.setState({workingHoursWe1: text})}
             value={this.state.workingHoursWe1}
           />
           <TextInput 
             autoCorrect={false}
             style={Styles.inputWorkStyle}
-            // placeholder={'Type here'}
+            placeholder={this.state.anyHoursCheckedWe ? '11:59' :'HH:MM'}
             onChangeText={(text) => this.setState({workingHoursWe2: text})}
             value={this.state.workingHoursWe2}
           />
@@ -716,14 +744,14 @@ export default class Minor extends React.Component {
         <TextInput 
           autoCorrect={false}
           style={Styles.inputWorkStyle}
-          // placeholder={'Type here'}
+          placeholder={this.state.anyHoursCheckedTh ? '12:00' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursTh1: text})}
           value={this.state.workingHoursTh1}
         />
         <TextInput 
           autoCorrect={false}
           style={Styles.inputWorkStyle}
-          // placeholder={'Type here'}
+          placeholder={this.state.anyHoursCheckedTh ? '11:59':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursTh2: text})}
           value={this.state.workingHoursTh2}
         />
@@ -749,14 +777,14 @@ export default class Minor extends React.Component {
         <TextInput 
           autoCorrect={false}
           style={Styles.inputWorkStyle}
-          // placeholder={'Type here'}
+          placeholder={this.state.anyHoursCheckedFr ? '12:00' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursFr1: text})}
           value={this.state.workingHoursFr1}
         />
         <TextInput 
           autoCorrect={false}
           style={Styles.inputWorkStyle}
-          // placeholder={'Type here'}
+          placeholder={this.state.anyHoursCheckedFr ? '11:59':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursFr2: text})}
           value={this.state.workingHoursFr2}
         />
@@ -782,14 +810,14 @@ export default class Minor extends React.Component {
         <TextInput 
           autoCorrect={false}
           style={Styles.inputWorkStyle}
-          // placeholder={'Type here'}
+          placeholder={this.state.anyHoursCheckedSa ? '12:00' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursSa1: text})}
           value={this.state.workingHoursSa1}
         />
         <TextInput 
           autoCorrect={false}
           style={Styles.inputWorkStyle}
-          // placeholder={'Type here'}
+          placeholder={this.state.anyHoursCheckedSa ? '11:59':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursSa2: text})}
           value={this.state.workingHoursSa2}
         />
@@ -816,7 +844,7 @@ export default class Minor extends React.Component {
         <TextInput 
           autoCorrect={false}
           style={Styles.inputWorkStyle}
-          // placeholder={'Type here'}
+          placeholder={this.state.anyHoursCheckedSu ? '12:00' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursSu1: text})}
           value={this.state.workingHoursSu1}
           containerStyle={{ alignSelf: 'center'}}
@@ -824,7 +852,7 @@ export default class Minor extends React.Component {
         <TextInput 
           autoCorrect={false}
           style={Styles.inputWorkStyle}
-          // placeholder={'Type here'}
+          placeholder={this.state.anyHoursCheckedSu ? '11:59':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursSu2: text})}
           value={this.state.workingHoursSu2}
         />
@@ -850,14 +878,14 @@ export default class Minor extends React.Component {
         <TextInput 
           autoCorrect={false}
           style={Styles.inputWorkStyle}
-          // placeholder={'Type here'}
+          placeholder={this.state.anyHoursCheckedMo ? '12:00' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursMo1: text})}
           value={this.state.workingHoursMo1}
         />
         <TextInput 
           autoCorrect={false}
           style={Styles.inputWorkStyle}
-          // placeholder={'Type here'}
+          placeholder={this.state.anyHoursCheckedMo ? '11:59':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursMo2: text})}
           value={this.state.workingHoursMo2}
         />
@@ -883,14 +911,14 @@ export default class Minor extends React.Component {
         <TextInput 
           autoCorrect={false}
           style={Styles.inputWorkStyle}
-          // placeholder={'Type here'}
+          placeholder={this.state.anyHoursCheckedTu ? '12:00' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursTu1: text})}
           value={this.state.workingHoursTu1}
         />
         <TextInput 
           autoCorrect={false}
           style={Styles.inputWorkStyle}
-          // placeholder={'Type here'}
+          placeholder={this.state.anyHoursCheckedTu ? '11:59':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursTu2: text})}
           value={this.state.workingHoursTu2}
         />
@@ -1007,6 +1035,7 @@ const Styles = StyleSheet.create({
     borderWidth: 1,
     width: Matrics.CountScale(65),
     height: Matrics.CountScale(40),
+    textAlign: 'center'
   },
   errorText: {
     color: 'red',

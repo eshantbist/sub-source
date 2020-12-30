@@ -157,10 +157,10 @@ module.exports = {
         return apiRequest(params, `${ENVIRONMENT}/CheckDocumentStatusEnvelopVoid/?`, { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + global.user.access_token })
     },
     EmployeeExistenceCheckOnHiring(params) {
-        return apiBodyWithParamsRequest(params, `${ENVIRONMENT}/EmployeeExistenceCheckOnHiring/?`, { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + global.user.access_token }, 'POST')
+        return apiBodyWithParamsRequest(params, `${ENVIRONMENT}/EmployeeExistenceCheckOnHiring/`, { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + global.user.access_token }, 'POST')
     },
     HireNewEmployeeManage(params) {
-        return apiBodyWithParamsRequest(params, `${ENVIRONMENT}/HireNewEmployeeManage/?`, { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + global.user.access_token }, 'POST')
+        return apiBodyWithParamsRequest(params, `${ENVIRONMENT}/HireNewEmployeeManage/`, { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + global.user.access_token }, 'POST')
     },
     getweeklyScheduleSharedEmployee(params) {
         return apiRequest(params, `${ENVIRONMENT}/GetweeklyScheduleSharedEmployee/?`, { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + global.user.access_token })

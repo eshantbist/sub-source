@@ -185,7 +185,13 @@ class HireNewEmployee extends React.Component {
                 );
             } else {
                 this.setState({ loading: false });
-                console.log('hire successfully');
+                Alert.alert(
+                    '',
+                    data.Message,
+                    [
+                        {text: 'OK', onPress: () => console.log('ok'),},
+                    ]
+                );
             }
         }
     }
@@ -429,9 +435,9 @@ class HireNewEmployee extends React.Component {
         if(this.state.isMinor){
             jsonData = {"_objEmpDetail":
                 {
-                    "FirstName": this.state.FirstName,
+                    "FirstName": this.state.firstName,
                     "MiddleName": this.state.middleName,
-                    "LastName": this.state.LastName,
+                    "LastName": this.state.lastName,
                     "StoreID": this.state.selectedStoreId,
                     "EmpNumber": this.state.posId,
                     "EmailID": this.state.email,
@@ -465,9 +471,9 @@ class HireNewEmployee extends React.Component {
         } else {
             jsonData = {"_objEmpDetail":
                 {
-                    "FirstName": this.state.FirstName,
+                    "FirstName": this.state.firstName,
                     "MiddleName": this.state.middleName,
-                    "LastName": this.state.LastName,
+                    "LastName": this.state.lastName,
                     "StoreID": this.state.selectedStoreId,
                     "EmpNumber": this.state.posId,
                     "EmailID": this.state.email,
@@ -500,7 +506,7 @@ class HireNewEmployee extends React.Component {
             }
         }
         this.props.HireNewEmployeeManageRequest({
-            BusinessTypeId: 1,
+            BusinessTypeID: 1,
             jsonData,
         });
         // this.setState({ loading: false });

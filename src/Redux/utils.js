@@ -77,13 +77,17 @@ export async function apiBodyWithParamsRequest(params,apiUrl,headers, method) {
     var encodedKey = encodeURIComponent(property);
     var encodedValue = encodeURIComponent(params[property]);
     if(encodedKey != 'jsonData'){
-      formBody.push(encodedKey + "=" + encodedValue);
+      if(encodedKey == 'BusinessTypeID'){
+        formBody.push(encodedValue);
+      } else {
+        formBody.push(encodedKey + "=" + encodedValue);
+      }
     }
   }
   formBody = formBody.join("&");
   url =`${apiUrl}${formBody}`
   console.log('p-->formBody-->',(formBody))
-  console.log('p-->url-->',apiUrl)
+  console.log('p-->url-->',url)
   console.log('p-->m-->',method)
   console.log('p-->header-->',headers)
   console.log('p-->body-->',JSON.stringify(params))
