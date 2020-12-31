@@ -557,7 +557,8 @@ const Styles = {
         padding: Matrics.CountScale(25),
         flex: 0.1,
         paddingBottom: Matrics.CountScale(20),
-        paddingTop: Platform.OS == 'ios' ? (Matrics.screenHeight >= 812 ? 35 : 20) : 0
+        // paddingTop: Platform.OS == 'ios' ? (Matrics.screenHeight >= 812 ? Matrics.CountScale(35) : Matrics.CountScale(20)) : 0
+        marginTop: Platform.OS == 'ios' ? Matrics.CountScale(20) : 0
     },
     cardsContainer: {
         flexDirection: 'row',

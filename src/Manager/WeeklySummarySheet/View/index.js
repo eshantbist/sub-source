@@ -783,7 +783,7 @@ class WeeklySummarySheet extends React.Component {
     _renderItem({ item, index }) {
         // console.log('is closed-->', !item.isClosed, '---', item.WeekDate)
       return(
-        <TouchableOpacity style={{ flexDirection: 'row' }} 
+        <TouchableOpacity style={{ flexDirection: 'row', }} 
         onPress={() => { 
             self.setState({ dayIndex: index, selectedDate: item.WeekDate, selectedDayId: item.DayID, selectedDayIsOpen: !item.isClosed, }) 
             if(index >= 6){
@@ -1388,7 +1388,7 @@ class WeeklySummarySheet extends React.Component {
                       data={this.state.FinalWeekDatesDataArr}
                       renderItem={this._renderItem.bind(this)}
                       sliderWidth={SLIDER_WIDTH}
-                      itemWidth={Matrics.screenWidth / 2 - Matrics.CountScale(10)}
+                      itemWidth={Matrics.screenWidth / 2}
                       activeSlideAlignment={'start'}
                       inactiveSlideScale={1}
                       inactiveSlideOpacity={1}

@@ -109,14 +109,15 @@ class Profile extends React.Component {
     }
     UNSAFE_componentWillReceiveProps(nextProps) {
         this.setState({ loading: false })
-        console.log('will receive', nextProps.data.employeePersonalDetailsSuccess);
         if (nextProps.data.employeeBasicDetailsSuccess) {
-            const basicData = nextProps.data.employeeBasicDetailsdata.Data
-            this.setState({
-                Position: basicData.Position,
-                Experience: basicData.Experience,
-                UserGUID: basicData.UserGUID
-            })
+            console.log('kkkkkkkkkkkkkkk')
+            // const basicData = nextProps.data.employeeBasicDetailsdata.Data
+            // console.log('basicData-->', basicData)
+            // this.setState({
+            //     Position: basicData.Position,
+            //     Experience: basicData.Experience,
+            //     UserGUID: basicData.UserGUID
+            // })
         }
         if (nextProps.data.employeePersonalDetailsSuccess) {
             const data = nextProps.data.employeePersonalDetailsdata.Data
@@ -190,7 +191,9 @@ class Profile extends React.Component {
 
                             <View style={Styles.profileImgContainer}>
                                 <Image style={Styles.profileImgStyle}
-                                    source={{ uri: this.state.Profile }}></Image>
+                                    // source={{ uri: this.state.Profile }}
+                                    source={this.state.Profile != '' ? { uri: this.state.Profile } : Images.ProfileIconPlaceholder}
+                                />
                                 <Text style={Styles.nameTextStyle}>
                                     {this.state.name}
                                 </Text>

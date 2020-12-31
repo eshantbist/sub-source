@@ -79,8 +79,7 @@ export const watchEmployeeBasicDetailsAsync = function* watchEmployeeBasicDetail
     try {
         console.log('---------------SAGA CALLING DASHBOARD')
         const response = yield call(Api.getEmployeeBasicDetails, params)
-        console.log(response, "Dashboard")
-        yield put({ type: FETCH_EMPLOYEE_BASIC_DETAILS_SUCCESS, payload: JSON.parse(response._bodyInit) });
+        yield put({ type: FETCH_EMPLOYEE_BASIC_DETAILS_SUCCESS, payload: response });
     }
     catch (e) {
         console.log(e, 'error');
@@ -107,7 +106,6 @@ export const watchEmployeeGuestFeedbackAsync = function* watchEmployeeGuestFeedb
 /************************ Get Employee Personal Details function ****************************/
 
 export const watchEmployeePersonalDetailsAsync = function* watchEmployeePersonalDetailsAsync() {
-    // console.log(params, "Dashboard")
     try {
         console.log('---------------SAGA CALLING DASHBOARD')
         const response = yield call(Api.getEmployeePersonalDetails)
