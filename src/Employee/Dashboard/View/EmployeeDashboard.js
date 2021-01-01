@@ -633,8 +633,8 @@ const Styles = {
         width: Matrics.CountScale(16)
     },
     storeIcon: {
-        height: Matrics.CountScale(20),
-        width: Matrics.CountScale(18)
+        // height: Matrics.CountScale(23),
+        // width: Matrics.CountScale(18)
     },
     shopTextStle: {
         color: 'grey',

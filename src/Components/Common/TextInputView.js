@@ -46,4 +46,3 @@ class TextInputView extends React.Component {
 
 
 export { TextInputView };
-

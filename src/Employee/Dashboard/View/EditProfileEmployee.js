@@ -142,6 +142,7 @@ class EditProfileEmployee extends React.Component {
             includeBase64: true,
             cropping: true
         }).then(image => {
+            console.log('image-->', image)
             let imgdata = {
                 uri: image.path,
                 type: image.mime,
@@ -286,7 +287,7 @@ class EditProfileEmployee extends React.Component {
                         <TouchableOpacity onPress={() => this.setState({ imagePickerModal: true })}>
                             {Object.keys(this.state.profileImage).length == 0 ?
                                 <Image style={Styles.profileImageStyle}
-                                    source={{ uri: this.state.profilePic }}></Image>
+                                    source={this.state.profilePic != '' ? { uri: this.state.profilePic } : Images.ProfileIconPlaceholder}></Image>
                                 :
                                 <Image source={{ uri: this.state.profileImage.uri }} style={Styles.profileImageStyle} />
                             }

@@ -110,14 +110,13 @@ class Profile extends React.Component {
     UNSAFE_componentWillReceiveProps(nextProps) {
         this.setState({ loading: false })
         if (nextProps.data.employeeBasicDetailsSuccess) {
-            console.log('kkkkkkkkkkkkkkk')
-            // const basicData = nextProps.data.employeeBasicDetailsdata.Data
-            // console.log('basicData-->', basicData)
-            // this.setState({
-            //     Position: basicData.Position,
-            //     Experience: basicData.Experience,
-            //     UserGUID: basicData.UserGUID
-            // })
+            const basicData = nextProps.data.employeeBasicDetailsdata.Data
+            console.log('basicData-->', basicData)
+            this.setState({
+                Position: basicData.Position,
+                Experience: basicData.Experience,
+                UserGUID: basicData.UserGUID
+            })
         }
         if (nextProps.data.employeePersonalDetailsSuccess) {
             const data = nextProps.data.employeePersonalDetailsdata.Data
@@ -139,11 +138,10 @@ class Profile extends React.Component {
                 emergencyName: data.EmergencyContactName,
                 emergencyNumber: data.EmergencyContactNumber,
                 userData: data
-            })
+            });
         }
     }
     updateInfo() {
-        console.log('update')
         this.setState({ loading: true })
         this.props.getEmployeePersonalDetails({
             UserStoreGuid: userStoreGuid,
@@ -153,9 +151,6 @@ class Profile extends React.Component {
         })
     }
     render() {
-        console.log('Profile-->',this.state.Profile);
-        console.log('coverPhoto-->',this.state.coverPhoto);
-
         return (
             <View style={{ flex: 1 }} >
                 {/* <View style={{ flex: 1 }} {...this._panResponder.panHandlers}> */}
@@ -173,7 +168,8 @@ class Profile extends React.Component {
                                     onPress={() => {
                                         this.props.navigation.goBack();
                                     }}
-                                    style={MasterCssEmployee.iconContainerStyle}>
+                                    style={MasterCssEmployee.iconContainerStyle}
+                                >
                                     <Image style={[Styles.imgStyle, MasterCssEmployee.iconStyle]} source={Images.EmpBackIcon}></Image>
                                 </TouchableOpacity>
                                 <View style={MasterCssEmployee.centerStyle}>
@@ -208,7 +204,7 @@ class Profile extends React.Component {
                         </View>
                     </ImageBackground >
 
-                    {this.renderPageContent()}
+                    {!this.state.loading && this.renderPageContent()}
 
                     {/* ====>>>>>>>>>>>   Resign Modal Container   <<<<<<<<<<========== */}
                     <ResignModal
@@ -241,6 +237,7 @@ class Profile extends React.Component {
 
     //   ====>>>>>>>>>>>    User Details Content   <<<<<<<<<<========== 
     renderPageContent() {
+        console.log('addd-->', this.state.address1)
         return (
             <ScrollView style={{ paddingTop: Matrics.CountScale(10), backgroundColor: Colors.WHITE }}>
                 {/* <View style={Styles.inputBox}>
