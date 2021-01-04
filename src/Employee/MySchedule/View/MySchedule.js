@@ -329,7 +329,6 @@ class MySchedule extends React.Component {
                             <Text style={[Styles.dateTextStyle, { color: index == 0 && this.currentDate == item.ScheduleDate ? 'white' : 'black' }]}>{Global.getDateFromDate(item.ScheduleDate)}</Text>
                         </View>
                     </View>
-
                     <View style={Styles.shopNameContainer} >
                         {
                             item.InTime === '00:00:00' && item.OutTime === '00:00:00'
@@ -348,8 +347,6 @@ class MySchedule extends React.Component {
                                     }
                                 </View>
                         }
-                        
-                        
                     </View>
 
                     {/* {item.InTime == '00:00:00' && item.OutTime == '00:00:00' ?
@@ -444,7 +441,7 @@ class MySchedule extends React.Component {
                             this.props.navigation.navigate('CreateRequest')
                         }}
                     >
-                        <Image style={[MasterCssEmployee.iconStyle, { height: 20, width: 20, }]} source={Images.MyScheduleHeaderRight}></Image>
+                        <Image style={[MasterCssEmployee.iconStyle, { height: 20, width: 20,}]} source={Images.MyScheduleHeaderRight}></Image>
 
                     </TouchableOpacity>
                 </View>
@@ -544,7 +541,7 @@ const Styles = {
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center',
-        flexDirection: 'column'
+        flexDirection: 'column',
     },
     dayTextStyle: {
         color: 'grey',
@@ -556,7 +553,8 @@ const Styles = {
         flex: 1,
         paddingBottom: Matrics.CountScale(20),
         paddingTop: Matrics.CountScale(20),
-        flexDirection: 'column'
+        flexDirection: 'column',
+        justifyContent: 'center'
     },
     shopNameTextStyle: {
         color: 'grey',
@@ -593,7 +591,6 @@ const Styles = {
         fontFamily: Fonts.NunitoSansRegular,
         color: Colors.BLACK,
         fontSize: Matrics.CountScale(17),
-
     },
     errMsgStyle: {
         fontFamily: Fonts.NunitoSansRegular,

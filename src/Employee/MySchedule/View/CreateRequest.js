@@ -10,7 +10,8 @@ import {
     PanResponder,
     StyleSheet,
     Text,
-    Modal
+    Modal,
+    Dimensions
 } from 'react-native'
 import { connect } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -24,7 +25,7 @@ import { createEmployeeTimeOff, getLeaveTypeListRequest } from '@Redux/Actions/M
 import Global from '../../../GlobalFunction'
 import { LoadWheel } from "@Components";
 
-
+const deviceWidth = Dimensions.get('window').width;
 /* ====>>>>>>>>>>> Class Declaration <<<<<<<<<<==========> */
 class CreateRequest extends React.Component {
 
@@ -299,15 +300,15 @@ class CreateRequest extends React.Component {
                 {/* ====>>>>>>>>>>> Reason textbox <<<<<<<<<<==========> */}
                 <View style={Styles.rowStyle} ref={view => { this.myComponent = view; }}>
                     <View style={{ width: '100%', flexDirection: 'row' }}>
-                        <Text style={Styles.labelText}>Reason:</Text>
+                        <Text style={[Styles.labelText,{ flex: 1}]}>Reason:</Text>
                         <Dropdown
-                            containerStyle={{ flex: 1, alignSelf: 'stretch',}}
+                            containerStyle={{alignSelf: 'flex-end',width: deviceWidth/ 2 }}
                             labelContainerStyle={{ flex: 1, width: '100%', marginBottom: -20 }}
                             data={this.state.leaveRequstType}
                             value={'Select Reason'}
                             onChangeText={(value, index, data) => this.onSelectReason(value, index, data)}
                             valueExtractor={({ ReasonName }) => ReasonName}
-                            inputContainerStyle={{ borderBottomColor: 'transparent', alignSelf: 'stretch', padding: 0, margin: 0 }}
+                            inputContainerStyle={{ borderBottomColor: 'transparent',alignSelf: 'center', width: deviceWidth/2 }}
                             itemTextStyle={{ textAlign: 'left' }}
                             overlayStyle={{ top: this.state.topSpace, borderWidth: 0}}
                             dropdownOffset={{ top: 0, left: 0 }}
@@ -315,7 +316,7 @@ class CreateRequest extends React.Component {
                             itemCount={8}
                             rippleCentered={true}
                             error={this.state.resonError}
-                            selectedTextStyle={{ textAlign: 'center'}}
+                            selectedTextStyle={{ textAlign: 'right'}}
                         />
                     </View>
                     {/* <View style={{ flex: 1, alignItems: 'flex-end' }}>

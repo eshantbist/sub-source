@@ -96,7 +96,9 @@ const styles = StyleSheet.create({
     titleText: {
         alignSelf: 'center',
         fontSize: 15,
-        fontFamily: Fonts.NeNunitoSansRegular
+        fontFamily: Fonts.NeNunitoSansRegular,
+        paddingHorizontal: Matrics.CountScale(10),
+        textAlign: 'center',
     },
     buttonText: {
         color: Colors.APPCOLOR,

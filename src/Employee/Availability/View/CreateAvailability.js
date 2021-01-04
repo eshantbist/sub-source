@@ -105,9 +105,9 @@ class CreateAvailability extends React.Component {
                 this.setState({ loading: false })
                 this.props.navigation.state.params.getEmpAvailability()
                 this.props.navigation.goBack()
-
             }
             else {
+                console.log('kkkkkkkkkkkkkkkk')
                 this.setState({ msg: response.Message, msgModal: true })
             }
         }
@@ -196,7 +196,6 @@ class CreateAvailability extends React.Component {
                                                         }
                                                     }
                                                 }
-                                                console.log('final')
                                                 console.log(resData)
                                                 console.log(deleteData)
                                                 this.props.saveUpdateEmployeeAvailability({ UpdateShift: resData, DeleteShift: deleteData })
@@ -688,8 +687,8 @@ class CreateAvailability extends React.Component {
 
     /* =======>>>>>>  Time display Class  <<<<<<======== */
     renderTime() {
-        console.log('shiftTime-->', JSON.stringify(this.state.shiftTime));
-        console.log('isAddShift-->', this.state.isAddShift);
+        // console.log('shiftTime-->', JSON.stringify(this.state.shiftTime));
+        // console.log('isAddShift-->', this.state.isAddShift);
         // console.log('isAddShift-->f->', !this.state.isAddShift);
         return (
             <View>
