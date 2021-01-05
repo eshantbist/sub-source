@@ -186,7 +186,7 @@ class WeeklySchedule extends React.Component {
         selectedDayIndex: 0,
         loading: true,
         daysData: [],
-        dayIndex: 0,
+        dayIndex: 1,
         weatherListData: [],
         employeeData: [],
         employeeRerurnData: [],
@@ -300,7 +300,7 @@ class WeeklySchedule extends React.Component {
 
             }
         });
-            console.log('will mount-->', this.state.selectedStoreId, '--isload--',this.state.isLoad )
+            // console.log('will mount-->', this.state.selectedStoreId, '--isload--',this.state.isLoad )
             // if(this.state.isLoad) {
             //     this.headerfilterFlag = false;
             //     this.timeOffReasonsFlag = false;
@@ -347,7 +347,6 @@ class WeeklySchedule extends React.Component {
     async UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.headerFiltervalues.getHeaderFilterValuesSuccess && this.state.loading && !this.headerfilterFlag && !this.state.getFilterData) {
             this.headerfilterFlag = true;
-            console.log('filter success')
             // if (this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
             if (this.taxListFlag && this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
                 this.setState({ loading: false })
@@ -380,7 +379,6 @@ class WeeklySchedule extends React.Component {
                 } else {
                     index = data.Report.store_list.length > 0 && data.Report.store_list.findIndex(s => s.StoreID === data.Report.store_list[0].StoreID);
                 }
-                console.log('kkindex-->', index)
                 await this.setState({
                     userRole: data.Report.role_list,
                     Stores: data.Report.store_list,
@@ -395,7 +393,6 @@ class WeeklySchedule extends React.Component {
                     lastFilterselectedIndex: index,
                 });
                 if(this.state.getFilterData) {
-                    console.log('will mount call')
                     this.UNSAFE_componentWillMount();
                 }
             }
@@ -418,21 +415,27 @@ class WeeklySchedule extends React.Component {
                 this.setState({ loading: false, refreshing: false })
 
             let data = nextProps.response.data;
-            console.log('info-->', data);
+            const extraDate = {
+                DayID: 0,
+                DayDate: '',
+            }
             if (data.Status == 1) {
-                data.Average.push({DayDate: 'Total'});
+                if(data.Average.length == 7){
+                    data.Average.push({DayDate: 'Total'});
+                    data.Average.unshift(extraDate);
+                }
                 await this.setState({ 
                     daysData: data.Average,
                     timeoffEndDate: moment(data.Average[0].DayDate).format('MM-DD-YYYY'), 
-                    timeoffStartDate: moment(data.Average[0].DayDate).format('MM-DD-YYYY') 
+                    timeoffStartDate: moment(data.Average[0].DayDate).format('MM-DD-YYYY'),
+                    // selectedDate: data.Average[1].DayDate,
                 });
                 if(this.state.selectedDate != 'Total') {
-                    this.setState({ selectedDate: data.Average[0].DayDate });
+                    this.setState({ selectedDate: data.Average[1].DayDate });
                 }
                 if(this.state.daysData.length > 0 ) {
                     this.calculateTotalDaysData();
                 }
-                // console.log('DaysData', data.Average)
             }
 
         }
@@ -456,7 +459,7 @@ class WeeklySchedule extends React.Component {
 
             let data = nextProps.response.data
             if (data.Status == 1) {
-                console.log('getWeeklyScheduleEmployeeSuccess-->',data.Data._shiftsList )
+                // console.log('getWeeklyScheduleEmployeeSuccess-->',data.Data._shiftsList )
                 await this.setState({ employeeData: data.Data._shiftsList })
                 if (this.state.employeeData.length > 0 && this.state.employeeRerurnData.length > 0) {
                     this.setEmpData()
@@ -470,7 +473,7 @@ class WeeklySchedule extends React.Component {
 
             let data = nextProps.response.data
             if (data.Status == 1) {
-                console.log('getWeeklyScheduleEmployeeReturnSuccess-->',data.Data )
+                // console.log('getWeeklyScheduleEmployeeReturnSuccess-->',data.Data )
                 await this.setState({ employeeRerurnData: data.Data })
                 if (this.state.employeeRerurnData.length > 0) {
                     this.setEmpData()
@@ -536,13 +539,11 @@ class WeeklySchedule extends React.Component {
             let data = nextProps.response.data;
             if (data.Status == 1) {
                 await this.setState({ ScheduleHoursArr: data.Data });
-                console.log('ScheduleHoursArr-->', this.state.ScheduleHoursArr);
                 if(this.state.ScheduleHoursArr.length > 0 ) {
                     this.calculateTotalHoursSchedule();
                 }
             }
         } else if (nextProps.response.GetLinkedEmployeeDetailsSuccess) {
-            console.log('linkdetails-->', nextProps.response.data)
             let data = nextProps.response.data;
             if (data.Status == 1) {
                 this.setState({ LinkedDetailsArr: data.Basic });
@@ -578,7 +579,6 @@ class WeeklySchedule extends React.Component {
         }
         else if (nextProps.response.ChangeEmployeeStatusSuccess) {
             let data = nextProps.response.data;
-            // console.log('change status-->', data);
             if (data.Status == 1) {
                 this.setState({ addToScheduleStatusId: '', addToScheduleUserStoreID: '', confirmationModal: false, loading: true });
                 this.idleEmployeeReportFlag = false;
@@ -632,7 +632,6 @@ class WeeklySchedule extends React.Component {
             }
         } else if(nextProps.response.deleteEmployeeTimeoffDaywiseSuccess) {
             let data = nextProps.response.data;
-            console.log('timeoff success-->', data)
             if (data.Status == 1) {
                 this.scheduleEmployeeFlag = false;
                 this.scheduleEmployeeReturnFlag = false;
@@ -662,7 +661,6 @@ class WeeklySchedule extends React.Component {
     }
 
     componentWillUnmount() {
-        console.log('unmount weekly')
         this.focusListener.remove();
     }
 
@@ -679,7 +677,7 @@ class WeeklySchedule extends React.Component {
         let TotalGrossPayroll = 0;
         let TotalNetPayroll = 0;
         this.state.daysData.forEach( child => {
-            if(child.DayDate !== 'Total') {
+            if(child.DayDate !== 'Total' && child.DayDate != '') {
                 TotalAVGSales6Weeks = TotalAVGSales6Weeks + child.AVGSales6Weeks;
                 TotalAVGUnitsWeeks = TotalAVGUnitsWeeks + child.AVGUnitsWeeks;
                 TotalLabourGoals = TotalLabourGoals + child.AVGUnitsWeeks != 0 && child.ProductivityGoal != 0 ? Number((child.AVGUnitsWeeks / child.ProductivityGoal).toFixed(2)) : 0;
@@ -728,8 +726,6 @@ class WeeklySchedule extends React.Component {
             });
             TotalofEmployeeScheduleData.push({'Timing': data.Timing, "EmployeesCount": (EmployeesCount / 7).toFixed(2) });
         });
-       
-        console.log('TotalofEmployeeScheduleData-->', TotalofEmployeeScheduleData);
         this.setState({ TotalofEmployeeScheduleData })
     }
     setEmpData() {
@@ -805,8 +801,8 @@ class WeeklySchedule extends React.Component {
     }
 
     setSharedEmpData() {
-        console.log('this.state.sharedEmployee-->',this.state.sharedEmployee)
-        console.log('this.state.sharedEmployeeSchedule-->',this.state.sharedEmployeeSchedule)
+        // console.log('this.state.sharedEmployee-->',this.state.sharedEmployee)
+        // console.log('this.state.sharedEmployeeSchedule-->',this.state.sharedEmployeeSchedule)
         let finalSharedEmployeeData = [];
         let TotalfinalSharedEmployeeData = [];
         _.forEach(this.state.sharedEmployee, (res) => {
@@ -830,8 +826,6 @@ class WeeklySchedule extends React.Component {
             let merged = { ...sharedEmpList, ...sharedEmpShift };
             finalSharedEmployeeData.push(merged)
         });
-        
-        console.log('sharedEmployeefinal-->', finalSharedEmployeeData)
 
         finalSharedEmployeeData.forEach(child => {
             let TotalSharedEmpShiftHours = 0;
@@ -946,8 +940,6 @@ class WeeklySchedule extends React.Component {
         else if (this.state.timeFlag == 'OutTime') {
             var date1 = new Date('01/01/2011 '+ moment(val, "h:mm A").format('h:mm A')); 
             var date2 = new Date('01/01/2011 '+ moment(this.state.shiftinTime, "h:mm A").format('h:mm A'));
-            // console.log('date1-->', date1)
-            // console.log('date2-->', date2)
             if(date2 >= date1){
                 this.setState({ outTimeError: 'Out Time ShouldBe GraterThan To InTime', shiftoutTime: '' })
             } else {
@@ -959,9 +951,6 @@ class WeeklySchedule extends React.Component {
     };
 
     _renderItem({ item, index }) {
-        // if(self.state.weatherListData.length > 0 )
-            // console.log('weatherListData-->',self.state.weatherListData);
-
         return (
             <TouchableOpacity onPress={() => { 
                 self.setState({ dayIndex: index, selectedDate: item.DayDate }) 
@@ -971,7 +960,7 @@ class WeeklySchedule extends React.Component {
             }}>
                 <View style={[{ backgroundColor: self.state.dayIndex == index ? Colors.SKYBLUE : null, width: Matrics.screenWidth / 2 - Matrics.CountScale(10), alignItems: 'center', paddingVertical: item.DayDate === 'Total' ? Matrics.CountScale(43) : Matrics.CountScale(10), borderColor: Colors.BORDERCOLOR, borderRightWidth: self.state.daysData.length - 1 != index ? 1 : 0 }]}>
                     {
-                        item.DayDate != 'Total' ?
+                        item.DayDate != 'Total' && item.DayDate != '' ?
                             <Text style={[Styles.fontStyle, self.state.dayIndex == index ? Styles.selectedDayfontStyle : null]}>
                                 {moment(item.DayDate).format('MMM DD, ddd')}
                                 {/* {moment(item.DayDate).format('MMM DD, YYYY ddd')} */}
@@ -1003,7 +992,6 @@ class WeeklySchedule extends React.Component {
     }
 
     renderUserRoleItem = ({ item, index }) => {
-        // console.log('renderUserRoleItem--> EmployeeStatus-->',item.EmployeeStatus );
         const fullnameArr = item.FullName != undefined && item.FullName != '' && item.FullName.split(' ');
         let ContactNumber = '';
         if(item.ContactNumber != undefined && item.ContactNumber != ''){
@@ -1025,16 +1013,12 @@ class WeeklySchedule extends React.Component {
                 IsLinked={item.IsLinked}
                 onLinkPress={() => this.onLinkClick(item.UserStoreGUID, fullnameArr.length > 0 ? fullnameArr[0] : '', fullnameArr.length > 0 ? fullnameArr[2] : '')}
                 onPress={async (data) => {
-                    console.log('timedata-->', data);
-                    // 
-                    
                     if (data !== undefined) {
                         if(data.DailyScheduleID === 0) {
                             await this.getTimeoff(item.UserStoreGUID, data.TimeOffCombineID).then(data => {
-                                console.log('getTimeOff-->timeOffData-->',data);
+                                // console.log('getTimeOff-->timeOffData-->',data);
                                 Timeoffdata = [];
                                 if(data.Status == 1) {
-                                    console.log('timedatalen-->', data.Basic.Data.length);
                                     if( data.Basic.Data.length > 1) {
                                         Timeoffdata = data.Basic.Data[0];
                                         startDtae = data.Basic.Data[data.Basic.Data.length - 1];
@@ -1054,7 +1038,6 @@ class WeeklySchedule extends React.Component {
                                    
                                 }
                                 this.setState({ Timeoffdata, selectedReasonId: Timeoffdata.ReasonID, selectedReasonName: Timeoffdata.ReasonName, timeoffNotes: Timeoffdata.ReasonDetail });
-                                // console.log('Timeoffdata-->', Timeoffdata);
                             });
                             this.setState({ timingModal: true, selectedVal: 'time-off', disableEditDeleteShiftButton: false, resonError: '' });
                         } else {
@@ -1106,10 +1089,6 @@ class WeeklySchedule extends React.Component {
                     //     viewPosition: height
                     // })
                     if(this.state.selectedJumpEmpName == item.FullName){
-                        console.log('index-->', index, height, this.state.selectedEmpIndex); 
-                        console.log('upperSectionHeight-->', this.state.upperSectionHeight); 
-                        console.log('headContainerHeight-->', this.state.headContainerHeight); 
-                        console.log('y-->', (this.state.selectedEmpIndex*height)+this.state.upperSectionHeight); 
                         this.scrollview.scrollTo({
                             // y: index == 0 ? (this.state.selectedEmpIndex*2)*(height) : (this.state.selectedEmpIndex*2)*(index*height), 
                             y: (this.state.selectedEmpIndex*height)+this.state.upperSectionHeight+this.state.headContainerHeight, 
@@ -1561,10 +1540,10 @@ class WeeklySchedule extends React.Component {
     render() {
         // console.log('empRoleData-->', this.state.empRoleData);
         // console.log('selectedDate-->', this.state.selectedDate);
-        console.log('Stores-->', this.state.Stores);
+        // console.log('Stores-->', this.state.Stores);
         // console.log('dayIndex-->', this.state.dayIndex);
         // if(this.state.selectedDate == 'Total')
-        //     console.log('TotalofEmployeeScheduleData-->', this.state.TotalofEmployeeScheduleData);
+        //     console.log('TotalAVGSales6Weeks-->', this.state.TotalAVGSales6Weeks);
 
 
         // console.log('TotalScheduleHours-->',this.state.TotalScheduleHours);
@@ -1649,9 +1628,11 @@ class WeeklySchedule extends React.Component {
                                 inactiveSlideScale={1}
                                 inactiveSlideOpacity={1}
                                 extraData={this.state}
-                                onSnapToItem={(index) => {this.setState({ dayIndex: index, selectedDate: this.state.daysData[index].DayDate })}}
+                                onSnapToItem={(index) => {
+                                    this.setState({ dayIndex: index+1, selectedDate: this.state.daysData[index+1].DayDate })
+                                }}
                                 // scrollEnabled={this.state.dayIndex == 6 || this.state.dayIndex == 7 ? false : true}
-                                scrollEnabled={ (this.state.dayIndex == 6 || this.state.dayIndex == 7) && this.state.prevIndex == 5 ? true : (this.state.dayIndex == 6 || this.state.dayIndex == 7) ? false  : true}
+                                scrollEnabled={ (this.state.dayIndex == 8) && this.state.prevIndex == 6 ? true : (this.state.dayIndex == 8) ? false  : true}
                             />
 
                             <View style={{ alignItems: 'center', marginHorizontal: Matrics.CountScale(5) }}>

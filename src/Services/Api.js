@@ -73,7 +73,6 @@ module.exports = {
 
     //==================== Dashboard Profile API ===================//
     getEmployeeBasicDetails(params) {
-        console.log('ggggggggg')
         return apiRequest(params, `${ENVIRONMENT}/GetEmployeeBasicDetails/?`, { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + global.user.access_token })
     },
     getEmployeePersonalcDetails(params) {

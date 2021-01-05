@@ -8,9 +8,7 @@ import moment from "moment";
 
 {/*  =============>>>>>>>>> Assets <<<<<<<<<<============= */ }
 import { Colors, Fonts, Matrics, Images, MasterCssEmployee } from '@Assets'
-import {
-    offerOpenedShiftRequest,
-} from '@Redux/Actions/StoreScheduleAction';
+import { offerOpenedShiftRequest } from '@Redux/Actions/StoreScheduleAction';
 import { LoadWheel, CustomModal } from "@Components";
 import Global from '../../../GlobalFunction'
 
