@@ -957,7 +957,9 @@ class WeeklySchedule extends React.Component {
                 if(index >= 6){
                     self.setState({ prevIndex: index-1 });
                 }
-            }}>
+            }}
+            disabled={index == 0 ? true : false}
+            >
                 <View style={[{ backgroundColor: self.state.dayIndex == index ? Colors.SKYBLUE : null, width: Matrics.screenWidth / 2 - Matrics.CountScale(10), alignItems: 'center', paddingVertical: item.DayDate === 'Total' ? Matrics.CountScale(43) : Matrics.CountScale(10), borderColor: Colors.BORDERCOLOR, borderRightWidth: self.state.daysData.length - 1 != index ? 1 : 0 }]}>
                     {
                         item.DayDate != 'Total' && item.DayDate != '' ?

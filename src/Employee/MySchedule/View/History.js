@@ -45,7 +45,7 @@ class History extends React.Component {
         if (nextProps.mySchedule.getMyScheduleHistorySuccess) {
             this.setState({ loading: false, loadmore: false })
             let response = nextProps.mySchedule.data
-            console.log(response)
+            console.log('history-->',response.Data.Messages)
             if (response.Status == 1) {
                 this.setState({ historyTotal: response.Data.TotalRecords, historyData: [...this.state.historyData, ...response.Data.Messages] })
                 console.log(response.Data)
@@ -82,7 +82,7 @@ class History extends React.Component {
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row', paddingTop: Matrics.CountScale(5) }}>
                     <View style={{ flex: 0.2 }}>
-                        <Image source={{ uri: item.ProfilePicture }} style={Styles.iconsStyle} />
+                        <Image source={item.ProfilePicture != '' ? { uri: item.ProfilePicture } : Images.ProfileIconPlaceholder} style={Styles.iconsStyle} />
                     </View>
                     <View style={{ flex: 1 }}>
                         {/* <Text style={Styles.msgText}>
@@ -138,6 +138,7 @@ class History extends React.Component {
                     renderItem={this.renderMyscheduleHistory}
                     onEndReachedThreshold={0.5}
                     onEndReached={() => this.state.historyData.length > 0 && this.state.historyData.length != this.state.historyTotal && !this.state.loadmore ? this.loadMoreHistory() : null}
+                    keyExtractor={(item, index) => index.toString()}
                 />
                 {this.state.loadmore ?
                     <LoadMore />
@@ -322,7 +323,7 @@ const Styles = {
     },
     iconsStyle: {
         width: Matrics.CountScale(40),
-        height: Matrics.CountScale(40)
+        height: Matrics.CountScale(40),
     },
     errMsgStyle: {
         fontFamily: Fonts.NunitoSansRegular,
