@@ -252,6 +252,7 @@ class WeeklySchedule extends React.Component {
         selectedStoreIndex: -1,
         lastFilterselectedIndex: -1,
         resetFilter: false,
+        userHeaderHeight: 0,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -1084,6 +1085,11 @@ class WeeklySchedule extends React.Component {
                 bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null} 
                 onLayout={(height) => { 
                     // console.log('height-->', height); 
+                    // console.log('selectedEmpIndex-->', this.state.selectedEmpIndex); 
+                    // console.log('upperSectionHeight-->', this.state.upperSectionHeight); 
+                    // console.log('headContainerHeight-->', this.state.headContainerHeight); 
+                    // console.log('userHeaderHeight-->', this.state.userHeaderHeight); 
+                    // console.log('y-->', (this.state.selectedEmpIndex*height)+this.state.upperSectionHeight+this.state.headContainerHeight); 
                     // console.log('item-->', this.state.selectedJumpEmpName == item.FullName ? item : {}); 
                     // this.flatList.scrollToItem({
                     //     animated: false,
@@ -1093,7 +1099,9 @@ class WeeklySchedule extends React.Component {
                     if(this.state.selectedJumpEmpName == item.FullName){
                         this.scrollview.scrollTo({
                             // y: index == 0 ? (this.state.selectedEmpIndex*2)*(height) : (this.state.selectedEmpIndex*2)*(index*height), 
-                            y: (this.state.selectedEmpIndex*height)+this.state.upperSectionHeight+this.state.headContainerHeight, 
+                            y: this.state.selectedEmpIndex == 1 
+                            ?  this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
+                            : (this.state.selectedEmpIndex*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight, 
                             animated: true
                         });
                     }
@@ -1244,6 +1252,7 @@ class WeeklySchedule extends React.Component {
                         this.state.empRoleData[index].expand = !this.state.empRoleData[index].expand
                         this.setState({ empRoleData: this.state.empRoleData })
                     }}
+                    onLayout={(e) => {this.setState({ userHeaderHeight: e.nativeEvent.layout.height }) }}
                 >
                     <View style={Styles.headingStyle}>
                         <Text style={{ color: 'white' }}>{item.RoleName.toUpperCase()}</Text>
@@ -1549,7 +1558,6 @@ class WeeklySchedule extends React.Component {
 
 
         // console.log('TotalScheduleHours-->',this.state.TotalScheduleHours);
-
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ backgroundColor: Colors.WHITE, paddingTop: Platform.OS == 'ios' ? (Matrics.screenHeight == 812 ? 30 : 20) : 0, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>

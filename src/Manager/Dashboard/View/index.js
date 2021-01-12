@@ -966,10 +966,10 @@ class Dashboard extends React.Component {
                                 <Image source={Images.Excellent} />
                             </View>
                             <View style={{ flexDirection: 'row', paddingVertical: Matrics.CountScale(10) }}>
-                                <View style={{ flex: 1 }}>
+                                <View style={{ flex: 1}}>
                                     <View style={Styles.serviceRowStyle}>
                                         <Image source={Images.NPSScore} />
-                                        <Text style={[Styles.salesBuildingText, { marginLeft: Matrics.CountScale(15) }]}>
+                                        <Text style={[Styles.salesBuildingText, { marginLeft: Matrics.CountScale(15)}]}>
                                             {
                                                 this.state.NPSDisplay === 'QTD'
                                                     ? this.state.customerServices && this.state.customerServices.NPSQuarterScore
@@ -979,7 +979,7 @@ class Dashboard extends React.Component {
                                             }
                                         </Text>
                                     </View>
-                                    <Text style={[Styles.labelText, { textAlign: 'left' }]}>OSAT Score</Text>
+                                    <Text style={[Styles.labelText, { textAlign: 'center' }]}>OSAT Score</Text>
                                 </View>
 
                                 <View style={{ flex: 1 }}>
@@ -995,7 +995,7 @@ class Dashboard extends React.Component {
                                             }
                                         </Text>
                                     </View>
-                                    <Text style={[Styles.labelText, { textAlign: 'left' }]}>OSAT Count</Text>
+                                    <Text style={[Styles.labelText, { textAlign: 'center' }]}>OSAT Count</Text>
                                 </View>
                             </View>
                         </View>
@@ -1272,6 +1272,7 @@ const Styles = {
         flexDirection: 'row',
         alignItems: 'center',
         padding: Matrics.CountScale(5),
+        alignSelf: 'center'
     },
     borderStyle: {
         alignItems: 'center', borderColor: Colors.BORDERCOLOR, borderBottomWidth: 2, marginVertical: Matrics.CountScale(10), borderTopWidth: 2, paddingVertical: Matrics.CountScale(25)
