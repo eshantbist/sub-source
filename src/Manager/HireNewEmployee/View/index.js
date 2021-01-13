@@ -60,6 +60,7 @@ class HireNewEmployee extends React.Component {
         isEverifyAutomatedEnabled: false,
         PositionType: '',
         attachFile: '',
+        minorData: [],
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -279,6 +280,11 @@ class HireNewEmployee extends React.Component {
                     '',
                     'Please note that this employee is a Minor. Therefore, employee is required to have a work permit. To continue the process and enter work permit information, please click Ok.',
                     [
+                        {
+                            text: "Cancel",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel"
+                        },
                         {text: 'OK', onPress: () => this.props.navigation.navigate('Minor', { callbackData: this.callbackFunction}),},
                     ],
                     { tintColor: 'green' }
@@ -708,8 +714,8 @@ class HireNewEmployee extends React.Component {
         
         return (
             <View style={Styles.cardContainer}>
-                <TouchableOpacity style={{ padding: Matrics.CountScale(15), borderBottomColor: Colors.LIGHTGREY, borderBottomWidth: 1, marginHorizontal: Matrics.CountScale(10) }} onPress={() => this.showDateTimePicker()}>
-                    <Text style={{ color: Colors.APPCOLOR, fontSize: Matrics.CountScale(18) }}>{this.state.dateOfBirth == '' ? 'Select Date' : this.state.dateOfBirth}</Text>
+                <TouchableOpacity style={{ padding: Matrics.CountScale(10), marginHorizontal: Matrics.CountScale(10) }} onPress={() => this.showDateTimePicker()}>
+                    <Text style={{ color: Colors.APPCOLOR, fontSize: Matrics.CountScale(18), marginTop: Matrics.CountScale(10)}}>{this.state.dateOfBirth == '' ? 'Select Date' : this.state.dateOfBirth}</Text>
                 </TouchableOpacity>
                 <Text style={Styles.errorText}>{this.state.errorDob}</Text>
                 <DateTimePicker
@@ -887,7 +893,8 @@ const Styles = StyleSheet.create({
     wageTextStyle: {
         fontFamily: Fonts.NunitoSansRegular,
         fontSize: Matrics.CountScale(18),
-        width: '50%'
+        width: '50%',
+        color:  Colors.DARK_GREY,
     },
     attachIconStyle: {
         height: 20,

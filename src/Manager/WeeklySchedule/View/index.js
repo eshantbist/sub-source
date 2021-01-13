@@ -1523,7 +1523,7 @@ class WeeklySchedule extends React.Component {
                     
                     <View>
                         <Text style={Styles.nameStyle}>{item.FullName}</Text>
-                        <Text style={Styles.shopTextStyle}>Shop #{this.state.ShopName}</Text>
+                        {/* <Text style={Styles.shopTextStyle}>Shop #{this.state.ShopName}</Text> */}
                     </View>
                 </View>
                 {
@@ -2348,7 +2348,7 @@ class WeeklySchedule extends React.Component {
                                         marginLeft: Matrics.CountScale(20), 
                                         tintColor: 'white' }} />
                                 </TouchableOpacity>
-                                <Text style={[Styles.titleFontStyle, { marginLeft: Matrics.CountScale(10), fontSize: Matrics.CountScale(15), color: 'white', paddingVertical: Matrics.CountScale(15) }]}>EMPLOYEES</Text>
+                                <Text style={[Styles.titleFontStyle, { marginLeft: Matrics.CountScale(10), fontSize: Matrics.CountScale(15), color: 'white', paddingVertical: Matrics.CountScale(15) }]}>Jump To Employee</Text>
                             </View>
                         
                         <View style={{ flex: 1, paddingVertical: Matrics.CountScale(5) }}>
@@ -2362,7 +2362,7 @@ class WeeklySchedule extends React.Component {
                                 ListEmptyComponent={() => (
                                     <View>
                                         <Text style={{ textAlign: 'center',fontFamily: Fonts.NunitoSansRegular, fontSize: Matrics.CountScale(20) }}>
-                                            No Data Found Please Try Again!!!
+                                            There are currently no active employees to Jump To!
                                         </Text>
                                     </View>
                                 )}
