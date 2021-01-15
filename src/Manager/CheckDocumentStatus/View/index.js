@@ -90,13 +90,16 @@ class CheckDoucmentStatus extends React.Component {
         this.focusListener = this.props.navigation.addListener('willFocus', async () => {
             this.filterValFlag = false;
             this.docStatusFlage = false;
-            // console.log('global.selectedStore-->', parseInt(global.selectedStore,10))
-            await this.setState({ 
-                selectedStores: parseInt(global.selectedStore,10), 
-                lastFilterselectedStores: parseInt(global.selectedStore,10), 
-                loading: true 
-            });
-            
+            console.log('global.selectedStore-->', parseInt(global.selectedStore,10))
+            console.log('lastFilterselectedStores-->', this.state.lastFilterselectedStores)
+            // if(this.state.lastFilterselectedStores == -1){
+                // console.log('in if')
+                await this.setState({ 
+                    selectedStores: parseInt(global.selectedStore,10), 
+                    lastFilterselectedStores: parseInt(global.selectedStore,10), 
+                    loading: true 
+                });
+            // }
             console.log(this.props, "=====>>>>>> Props IN Check Document Status <<<<<=====")
             console.log('selectedStores-->', this.state.selectedStores)
             this.props.getHeaderFilterValues({

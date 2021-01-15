@@ -318,9 +318,9 @@ export default class Minor extends React.Component {
         if(this.state.startDate === ''){
           this.setState({ startDateError: 'Please Select The Start Date' });
         } else if (this.state.endDate === ''){
-          this.setState({ endDateError: 'Please  Select The End Date' });
+          this.setState({ endDateError: 'Please Select The End Date' });
         } else if(this.state.endDate  <= this.state.startDate){
-          this.setState({ endDateError: 'End Date should be greater than Start Date' });
+          this.setState({ endDateError: 'End Date Should Be Greater Than To Start Date' });
         } else if(this.state.InTime === ''){
           this.setState({ InTimeError: 'please select InTime' });
         } else if(this.state.OutTime === ''){

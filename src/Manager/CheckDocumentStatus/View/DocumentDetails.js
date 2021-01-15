@@ -185,6 +185,7 @@ class DocumentDetails extends React.Component {
     //----------->>>Render Method-------------->>>
 
     render() {
+        console.log('kk-->', this.state.Employeedata)
         return (
             <View style={Styles.pageContainer}>
                 {/* ----------->>> Header Start-------------->>> */}
@@ -212,23 +213,23 @@ class DocumentDetails extends React.Component {
     }
     renderHireEmployee() {
         return (
-            <TouchableOpacity style={Styles.hireEmployeeCard}>
+            <View style={Styles.hireEmployeeCard}>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                     <View style={Styles.userImg}>
                         <Image style={Styles.userIconStyle} source={Images.UserIcon}></Image>
                     </View>
 
                     <View style={Styles.employeeStyle}>
-                        <Text style={Styles.employeeTextStyle}>{
+                        <Text style={[Styles.employeeTextStyle, { color: this.state.Employeedata.DisplayStatusName == 'Hiring Packet in process' ? Colors.DARKRED : Colors.APPCOLOR }]}>{
                             this.state.Employeedata ? this.state.Employeedata.DisplayStatusName.toLocaleUpperCase() : null}
                         </Text>
                     </View>
 
-                    <View style={Styles.infoImg}>
+                    <TouchableOpacity style={Styles.infoImg}>
                         <Image style={Styles.infoIconStyle} source={Images.InfoIcon}></Image>
-                    </View>
+                    </TouchableOpacity>
                 </View>
-            </TouchableOpacity>
+            </View>
             // <TouchableOpacity style={Styles.hireEmployeeCard}
             //     onPress={() => {
             //         this.setState({
