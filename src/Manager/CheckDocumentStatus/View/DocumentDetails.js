@@ -220,7 +220,7 @@ class DocumentDetails extends React.Component {
                     </View>
 
                     <View style={Styles.employeeStyle}>
-                        <Text style={[Styles.employeeTextStyle, { color: this.state.Employeedata.DisplayStatusName == 'Hiring Packet in process' ? Colors.DARKRED : Colors.APPCOLOR }]}>{
+                        <Text style={[Styles.employeeTextStyle, { color: this.state.Employeedata.DisplayStatusName == 'Hiring Packet in process' ? Colors.RED : Colors.APPCOLOR }]}>{
                             this.state.Employeedata ? this.state.Employeedata.DisplayStatusName.toLocaleUpperCase() : null}
                         </Text>
                     </View>
@@ -299,7 +299,7 @@ class DocumentDetails extends React.Component {
                         <Image style={{ width: 6, alignSelf: 'center', height: 6, marginBottom: Matrics.CountScale(5), marginRight: Matrics.CountScale(10) }} source={Images.RedDotIcon}></Image>
                     </View>
                     <View>
-                        <Text style={{ color: Colors.DARKRED }}>Send To HR Rep</Text>
+                        <Text style={{ color: Colors.RED }}>Send To HR Rep</Text>
                     </View>
                 </View>
             </View>
@@ -319,7 +319,7 @@ class DocumentDetails extends React.Component {
                     ?   recipientArr[0].data.map((child, index) => {
                             return (
                                 <View style={{ borderBottomWidth: 1, borderBottomColor: Colors.LIGHTGREY, padding: Matrics.CountScale(10)}}>
-                                    <Text style={{ color: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.DARKRED, marginBottom: Matrics.CountScale(5) }}>
+                                    <Text style={{ color: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED, marginBottom: Matrics.CountScale(5) }}>
                                         {
                                             child.StatusName == 'completed'
                                             ? `Completed by ${child.RoleName}`
@@ -646,7 +646,7 @@ const Styles = StyleSheet.create({
     hiringTextStyle: {
         fontFamily: Fonts.NunitoSansSemiBold,
         fontSize: Matrics.CountScale(15),
-        color: Colors.DARKRED
+        color: Colors.RED
     },
     statusLineCard: {
         margin: Matrics.CountScale(13),

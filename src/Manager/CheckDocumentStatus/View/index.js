@@ -140,7 +140,7 @@ class CheckDoucmentStatus extends React.Component {
             if (data.Status == 1) {
                 const roleSelect = {
                     RoleID: 0,
-                    RoleName: 'shops'
+                    RoleName: 'Shops'
                 }
                 const storeselect = {
                     StoreID: -1,
@@ -803,7 +803,7 @@ class CheckDoucmentStatus extends React.Component {
                                     </View>
                                 }
                                 
-                                <Text style={Styles.pickerLabelStyle}>Stores</Text>
+                                <Text style={Styles.pickerLabelStyle}>Shops</Text>
                                 {/* <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedStores}
@@ -839,7 +839,7 @@ class CheckDoucmentStatus extends React.Component {
                                         resetValue={false}
                                         textInputProps={
                                             {
-                                                placeholder: "Select Store",
+                                                placeholder: "Select Shop",
                                                 underlineColorAndroid: "transparent",
                                                 style: {
                                                     padding: 12,

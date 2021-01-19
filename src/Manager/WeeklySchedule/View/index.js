@@ -1,5 +1,5 @@
 // ======>>>>> Libraries <<<<<=========
-import React from 'react';
+import React, { useState } from 'react';
 import {
     View, Text, Image, ScrollView, TouchableOpacity, StyleSheet, Modal, FlatList, Platform,
     Dimensions, TextInput, Alert, RefreshControl
@@ -62,7 +62,7 @@ export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,Cont
     // console.log('selectedJumpEmpName-->', selectedJumpEmpName)
     return (
         <View style={[Styles.rowContainer, { backgroundColor: bgColor, borderBottomColor: Colors.BORDERCOLOR, borderBottomWidth: 2 }]}
-            onLayout={(e) => {selectedJumpEmpName != '' ? onLayout(e.nativeEvent.layout.height) : onLayout(0) }}
+            onLayout={(e) => {selectedJumpEmpName != '' ? onLayout(e.nativeEvent.layout.height) : onLayout(0); }}
             key={selectedJumpEmpName}
         >
             <View style={Styles.rowTitleStyle}>
@@ -87,7 +87,9 @@ export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,Cont
                 }
                 </View>
             </View>
-            <View style={{ flex: 1, alignItems: 'center',paddingVertical: shiftData.length == 0 ? Matrics.CountScale(20) : 0 }}>
+            <View style={{ flex: 1,height: Matrics.CountScale(80), alignItems: 'center',paddingVertical: shiftData.length == 0 ? Matrics.CountScale(20) : 0,}}
+
+            >
                 {
                     selectedDate !== 'Total'
                     ? shiftData.length > 0
@@ -134,8 +136,8 @@ export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,Cont
                             )
                         })
                         :
-                        <TouchableOpacity onPress={() => onPress()}>
-                            <Text style={[Styles.fontStyle, { textAlign: 'center', fontSize: Matrics.CountScale(14), }]}>                                      </Text>
+                        <TouchableOpacity onPress={() => onPress()} style={{ width: '100%',height: Matrics.CountScale(85),}}>
+                            <Text style={[Styles.fontStyle, { textAlign: 'center', fontSize: Matrics.CountScale(14), }]}></Text>
                             {/* <Text style={[Styles.fontStyle, { textAlign: 'center', fontSize: Matrics.CountScale(14) }]}>No shift data available</Text> */}
                         </TouchableOpacity>
                     : 
@@ -356,7 +358,7 @@ class WeeklySchedule extends React.Component {
             if (data.Status === 1) {
                 const roleSelect = {
                     RoleID: 0,
-                    RoleName: 'shops'
+                    RoleName: 'Shops'
                 }
                 if(data.Report.user_list.length > 0){
                     const userSelect = {
@@ -2098,8 +2100,8 @@ class WeeklySchedule extends React.Component {
                                 // console.log('save'); 
                                 // console.log('save', this.state.weekendDate); 
                                 // console.log('save', this.state.selectedRoleId); 
-                                // console.log('save', this.state.selectedStoreId); 
-                                const index = this.state.Stores.length > 0 && this.state.Stores.findIndex(s => s.StoreID === this.state.selectedStores);
+                                console.log('save', this.state.selectedStoreId); 
+                                const index = this.state.Stores.length > 0 && this.state.Stores.findIndex(s => s.StoreID === this.state.selectedStoreId);
                                 this.taxListFlag = false;
                                 this.infoFlag = false;
                                 this.detailsListFlag = false;
@@ -2204,7 +2206,7 @@ class WeeklySchedule extends React.Component {
                                         </Picker>
                                     </View>
                                 }
-                                <Text style={Styles.pickerLabelStyle}>Stores</Text>
+                                <Text style={Styles.pickerLabelStyle}>Shops</Text>
                                 {/* <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedStoreId}
@@ -2219,7 +2221,8 @@ class WeeklySchedule extends React.Component {
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
                                             const index = this.state.Stores.findIndex(s => s.StoreID === item.StoreID);
-                                            this.setState({ selectedStores: item.StoreID, selectedStoreName: item.DisplayStoreNumber, selectedStoreIndex: index });
+                                            console.log('storeId-->', item.StoreID)
+                                            this.setState({ selectedStoreId: item.StoreID, selectedStoreName: item.DisplayStoreNumber, selectedStoreIndex: index });
                                         }}
                                         containerStyle={{ padding: 5, marginBottom: Matrics.CountScale(10) }}
                                         onRemoveItem={(item, index) => {
@@ -2240,7 +2243,7 @@ class WeeklySchedule extends React.Component {
                                         resetValue={false}
                                         textInputProps={
                                             {
-                                                placeholder: "Select Store",
+                                                placeholder: "Select Shop",
                                                 underlineColorAndroid: "transparent",
                                                 style: {
                                                     padding: 12,

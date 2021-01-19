@@ -621,8 +621,8 @@ class HireNewEmployee extends React.Component {
                         }}
                         containerWidth={(Dimensions.get('window').width-50)}
                         data={this.state.storeWithSettingArr}
-                        label="Store # *"
-                        value={'Select Store'}
+                        label="Shops # *"
+                        value={'Select Shop'}
                         onChangeText={(value, index, data) => this.onSelectStore(value, index, data)}
                         valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber}
                         inputContainerStyle={{ borderBottomColor: 'transparent',padding: 0, margin: 0 }}

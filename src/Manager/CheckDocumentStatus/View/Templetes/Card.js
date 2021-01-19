@@ -63,7 +63,7 @@ class Card extends React.Component {
                                 <Text style={Styles.nameTextStyle}>
                                     {this.props.item.FirstName} {this.props.item.LastName}
                                 </Text>
-                                <Text style={[Styles.sendStatusText, this.props.item.StatusName == 'completed' ? { color: Colors.APPCOLOR } : { color: Colors.DARKRED }]}>
+                                <Text style={[Styles.sendStatusText, this.props.item.StatusName == 'completed' ? { color: Colors.APPCOLOR } : { color: Colors.RED }]}>
                                     {this.props.item.DisplayStatusName ? `Send To ${this.props.item.DisplayStatusName}` : null}
                                 </Text>
                             </View>

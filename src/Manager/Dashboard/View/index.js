@@ -208,7 +208,7 @@ class Dashboard extends React.Component {
                 }
                 const roleSelect = {
                     RoleID: 0,
-                    RoleName: 'shops'
+                    RoleName: 'Shops'
                 }
                 if (data.Report.user_list.length > 0) {
                     const userSelect = {
@@ -732,7 +732,7 @@ class Dashboard extends React.Component {
                                         </Picker>
                                     </View>
                                 }
-                                <Text style={Styles.pickerLabelStyle}>Stores</Text>
+                                <Text style={Styles.pickerLabelStyle}>Shops</Text>
                                 {/* <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedStores}
@@ -774,7 +774,7 @@ class Dashboard extends React.Component {
                                         resetValue={false}
                                         textInputProps={
                                             {
-                                                placeholder: "Select Store",
+                                                placeholder: "Select Shop",
                                                 underlineColorAndroid: "transparent",
                                                 style: {
                                                     padding: 12,
