@@ -13,8 +13,14 @@ import { Colors, Fonts, Matrics, Images, MasterCss } from '@Assets'
 class Card extends React.Component {
     state = {
     }
+
+    callbackFunction = Data => {
+        console.log('callbackData-->', Data);
+    }
+
     // ==========>>>>> Render Method  <<<<<<<===========
     render() {
+        console.log('kk-->',this.props.selectedStores)
         var swipeoutBtns = [
             {
                 backgroundColor: 'transparent',
@@ -55,7 +61,9 @@ class Card extends React.Component {
                         key: 'CheckDocumentStatus',
                     });
                     this.props.navigation.dispatch(setParamsAction)
-                    this.props.navigation.navigate('DocumentDetails', { data: this.props.item, recipientsListArr: this.props.recipientsListArr, HiringData: this.props.HiringData, isEditable: this.props.item.StatusName == 'completed' ? false : true });
+                    this.props.navigation.navigate('DocumentDetails', {
+                    data: this.props.item, recipientsListArr: this.props.recipientsListArr, HiringData: this.props.HiringData, isEditable: this.props.item.StatusName == 'completed' ? false : true,
+                    selectedStores: this.props.selectedStores, callbackData: this.callbackFunction });
                 }}>
                     <View style={Styles.cardContainer}>
                         <View style={Styles.cardPart1}>

@@ -84,7 +84,6 @@ class CheckDoucmentStatus extends React.Component {
     };
 
     //------------>>>LifeCycle Methods------------->>>
-
     async UNSAFE_componentWillMount() {
         self = this;
         this.focusListener = this.props.navigation.addListener('willFocus', async () => {
@@ -942,7 +941,7 @@ class CheckDoucmentStatus extends React.Component {
             PageSize: perPageRecord,
         }
         return (
-            <TouchableOpacity key={index} onPress={() => console.log(this.props)}>
+            <TouchableOpacity key={index} onPress={() => console.log('kkkkkk-->',this.props)}>
                 <Card
                     item={item}
                     recipientsListArr={this.state.recipientsListArr}
@@ -957,6 +956,7 @@ class CheckDoucmentStatus extends React.Component {
                         });
                     }}
                     onResendPress={() => {  }}
+                    selectedStores={this.state.selectedStores}
                 >
                 </Card>
             </TouchableOpacity>

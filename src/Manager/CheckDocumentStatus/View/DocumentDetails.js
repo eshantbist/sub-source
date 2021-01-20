@@ -26,7 +26,10 @@ class DocumentDetails extends React.Component {
         //     headerStyle: styles.headerStyle,
         headerTintColor: Colors.APPCOLOR,
         headerLeft:
-            <TouchableOpacity onPress={() => { navigation.goBack() }} >
+            <TouchableOpacity onPress={() => { 
+                navigation.goBack();
+                // navigation.state.params.callbackData({ -1 });
+            }} >
                 <Image source={Images.BackIcon} style={MasterCss.headerIconStyle} />
             </TouchableOpacity>,
         headerRight: <View />
@@ -40,21 +43,24 @@ class DocumentDetails extends React.Component {
         oldRoleName: '',
         isEmailEditable: false,
         loading: false,
+        showEmailList: false,
+        selectedStores: '',
     };
 
     //------------>>>LifeCycle Methods------------->>>
 
     UNSAFE_componentWillMount() {
-        console.log(this.props.navigation.getParam('data'));
         Employeedata = this.props.navigation.getParam('data');
         recipientsList = this.props.navigation.getParam('recipientsListArr');
         isEditable = this.props.navigation.getParam('isEditable');
         HiringData = this.props.navigation.getParam('HiringData');
-        console.log('HiringData-->',HiringData)
+        const selectedStores = this.props.navigation.getParam('selectedStores');
+        // console.log('HiringData-->',HiringData)
+        // console.log('selectedStores-->',selectedStores)
         // console.log('recipientsList-->', recipientsList)
         this.setRecipeentslist(recipientsList);
         
-        this.setState({ Employeedata, isEditable, HiringData });
+        this.setState({ Employeedata, isEditable, HiringData, selectedStores });
     }
 
 
@@ -185,7 +191,6 @@ class DocumentDetails extends React.Component {
     //----------->>>Render Method-------------->>>
 
     render() {
-        console.log('kk-->', this.state.Employeedata)
         return (
             <View style={Styles.pageContainer}>
                 {/* ----------->>> Header Start-------------->>> */}
@@ -202,7 +207,7 @@ class DocumentDetails extends React.Component {
                 <ScrollView>
                     {this.renderHireEmployee()}
                     {this.renderStatusLine()}
-                    {this.renderHirePacketStatus()}
+                    {/* {this.renderHirePacketStatus()} */}
                     {this.renderHireStatus()}
                     {this.EVerifyStatus()}
                     {this.backgroundCheckStatus()}
@@ -275,10 +280,14 @@ class DocumentDetails extends React.Component {
     renderStatusLine() {
         let CDate = '';
         let Time = '';
+        let recipientArr = [];
         if(this.state.Employeedata) {
             const DateArr = this.state.Employeedata.CreatedOn.split('T');
             CDate = moment(DateArr[0]).format('MM-DD-YYYY');
             Time = moment(DateArr[1], "h:mm A").format('hh:mm a');
+        }
+        if(this.state.recipientsData.length > 0){
+            recipientArr = this.state.recipientsData.filter(R => R.DocusignEnvelopeID == this.state.Employeedata.DocusignEnvelopeID);
         }
         return (
             <View style={Styles.statusLineCard}>
@@ -301,6 +310,70 @@ class DocumentDetails extends React.Component {
                     <View>
                         <Text style={{ color: Colors.RED }}>Send To HR Rep</Text>
                     </View>
+                </View>
+
+                <View style={[Styles.hireStatusContainer, { margin: Matrics.CountScale(0),}]}>
+                    <Text onPress={() => this.setState({ showEmailList: !this.state.showEmailList})}
+                    style={[Styles.headerTextStyle, { textAlign: 'center', borderBottomColor: Colors.APPCOLOR, borderBottomWidth: 1 }]}>Hire Packet Status</Text>
+                    {
+                        recipientArr.length > 0 && this.state.showEmailList 
+                        ?   recipientArr[0].data.map((child, index) => {
+                                return (
+                                    <View style={{ borderBottomWidth: 1, borderBottomColor: Colors.LIGHTGREY, padding: Matrics.CountScale(10)}}>
+                                        <Text style={{ color: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED, marginBottom: Matrics.CountScale(5) }}>
+                                            {
+                                                child.StatusName == 'completed'
+                                                ? `Completed by ${child.RoleName}`
+                                                : child.StatusName == 'sent'  
+                                                    ? `Sent to ${child.RoleName}`
+                                                    : `${child.RoleName} waiting`
+                                            }
+                                        </Text>
+                                        <View style={{ flexDirection: 'row'}}>
+                                            <Text style={Styles.headerTextStyle}>Email:</Text>
+                                            {
+                                                this.state.isEmailEditable && this.state.selectedIndex == index
+                                                ? 
+                                                    <View style={{ flexDirection: 'row', marginLeft: Matrics.CountScale(5)}}>
+                                                        <TextInput 
+                                                            onChangeText={(value) => { this.setState({ newEmail: value })}}
+                                                            value={this.state.newEmail}
+                                                            editable={this.state.isEmailEditable}
+                                                            style={{
+                                                                    borderRadius: Matrics.CountScale(10),
+                                                                    borderColor: 'black',
+                                                                    borderWidth: 1,
+                                                                    padding: Matrics.CountScale(8),
+                                                                    width: Matrics.CountScale(200),
+                                                                }}
+                                                        />
+                                                        <MIcon name="done" onPress={() => this.onDoneClick( recipientArr[0].data)} style={{ marginLeft: Matrics.CountScale(5)}} color={Colors.PARROT} size={20} />
+                                                        <MIcon name="close" onPress={() => {this.setState({isEmailEditable: false}) }} style={{ marginLeft: Matrics.CountScale(5)}} size={20} />
+                                                    </View>
+                                                : 
+                                                    <View style={{ flexDirection: 'row', marginLeft: Matrics.CountScale(5)}}>
+                                                        <Text style={{ alignSelf: 'center' }}>{child.RoleEmail}</Text>
+                                                        {
+                                                            this.state.isEditable &&
+                                                            <Icon name='pencil-alt' onPress={() => {
+                                                                this.setState({
+                                                                    isEmailEditable: true,
+                                                                    selectedIndex: index,
+                                                                    newEmail: child.RoleEmail,
+                                                                    oldRoleEmail: child.RoleEmail,
+                                                                    oldRoleName: child.RoleName
+                                                                }) 
+                                                            }} style={{ marginLeft: Matrics.CountScale(15)}} color="#03AAEE" size={20} />
+                                                        }
+                                                    </View>
+                                            }
+                                        </View>
+                                    </View>
+                                )
+                            })
+                        : null
+                    }
+                
                 </View>
             </View>
         )
