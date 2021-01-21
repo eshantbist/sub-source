@@ -89,16 +89,14 @@ class CheckDoucmentStatus extends React.Component {
         this.focusListener = this.props.navigation.addListener('willFocus', async () => {
             this.filterValFlag = false;
             this.docStatusFlage = false;
-            console.log('global.selectedStore-->', parseInt(global.selectedStore,10))
-            console.log('lastFilterselectedStores-->', this.state.lastFilterselectedStores)
-            // if(this.state.lastFilterselectedStores == -1){
-                // console.log('in if')
-                await this.setState({ 
-                    selectedStores: parseInt(global.selectedStore,10), 
-                    lastFilterselectedStores: parseInt(global.selectedStore,10), 
-                    loading: true 
-                });
-            // }
+            // console.log('global.selectedStore-->', parseInt(global.selectedStore,10))
+            // console.log('global.checkDocumentStoreId-->', parseInt(global.checkDocumentStoreId,10))
+            // console.log('lastFilterselectedStores-->', this.state.lastFilterselectedStores)
+            await this.setState({ 
+                selectedStores: global.checkDocumentStoreId == undefined ? parseInt(global.selectedStore,10) : parseInt(global.checkDocumentStoreId,10) , 
+                lastFilterselectedStores: global.checkDocumentStoreId == undefined ?  parseInt(global.selectedStore,10) : parseInt(global.checkDocumentStoreId,10), 
+                loading: true 
+            });
             console.log(this.props, "=====>>>>>> Props IN Check Document Status <<<<<=====")
             console.log('selectedStores-->', this.state.selectedStores)
             this.props.getHeaderFilterValues({
@@ -817,6 +815,7 @@ class CheckDoucmentStatus extends React.Component {
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
                                             const index = this.state.storeList.findIndex(s => s.StoreID === item.StoreID);
+                                            global.checkDocumentStoreId = item.StoreID;
                                             this.setState({ selectedStores: item.StoreID, selectedStoreName: item.DisplayStoreNumber, selectedStoreIndex: index });
                                         }}
                                         containerStyle={{ padding: 5, marginBottom: Matrics.CountScale(10) }}
@@ -941,7 +940,7 @@ class CheckDoucmentStatus extends React.Component {
             PageSize: perPageRecord,
         }
         return (
-            <TouchableOpacity key={index} onPress={() => console.log('kkkkkk-->',this.props)}>
+            <TouchableOpacity key={index} onPress={() => {}}>
                 <Card
                     item={item}
                     recipientsListArr={this.state.recipientsListArr}
@@ -956,7 +955,6 @@ class CheckDoucmentStatus extends React.Component {
                         });
                     }}
                     onResendPress={() => {  }}
-                    selectedStores={this.state.selectedStores}
                 >
                 </Card>
             </TouchableOpacity>

@@ -28,12 +28,10 @@ class DocumentDetails extends React.Component {
         headerLeft:
             <TouchableOpacity onPress={() => { 
                 navigation.goBack();
-                // navigation.state.params.callbackData({ -1 });
             }} >
                 <Image source={Images.BackIcon} style={MasterCss.headerIconStyle} />
             </TouchableOpacity>,
         headerRight: <View />
-
     })
     //--------->>>State Initilization----------->>>
     state = {
@@ -44,25 +42,19 @@ class DocumentDetails extends React.Component {
         isEmailEditable: false,
         loading: false,
         showEmailList: false,
-        selectedStores: '',
     };
 
     //------------>>>LifeCycle Methods------------->>>
 
     UNSAFE_componentWillMount() {
-        Employeedata = this.props.navigation.getParam('data');
-        recipientsList = this.props.navigation.getParam('recipientsListArr');
-        isEditable = this.props.navigation.getParam('isEditable');
-        HiringData = this.props.navigation.getParam('HiringData');
-        const selectedStores = this.props.navigation.getParam('selectedStores');
-        // console.log('HiringData-->',HiringData)
-        // console.log('selectedStores-->',selectedStores)
-        // console.log('recipientsList-->', recipientsList)
+        const Employeedata = this.props.navigation.getParam('data');
+        const recipientsList = this.props.navigation.getParam('recipientsListArr');
+        const isEditable = this.props.navigation.getParam('isEditable');
+        const HiringData = this.props.navigation.getParam('HiringData');
         this.setRecipeentslist(recipientsList);
         
-        this.setState({ Employeedata, isEditable, HiringData, selectedStores });
+        this.setState({ Employeedata, isEditable, HiringData });
     }
-
 
     componentWillUnmount() { }
 
@@ -71,7 +63,6 @@ class DocumentDetails extends React.Component {
             // this.setState({ loading: false });
             let data = nextProps.response.CheckDocumentStatus.data;
             if(data.Status == 1) {
-                console.log('success');
                 this.setState({ isEmailEditable: false });
                 console.log('HiringData-->',this.state.HiringData)
                 this.props.getCheckDocumentStatusHiringReturnRequest(this.state.HiringData);
@@ -319,7 +310,7 @@ class DocumentDetails extends React.Component {
                         recipientArr.length > 0 && this.state.showEmailList 
                         ?   recipientArr[0].data.map((child, index) => {
                                 return (
-                                    <View style={{ borderBottomWidth: 1, borderBottomColor: Colors.LIGHTGREY, padding: Matrics.CountScale(10)}}>
+                                    <View key={index} style={{ borderBottomWidth: 1, borderBottomColor: Colors.LIGHTGREY, padding: Matrics.CountScale(10)}}>
                                         <Text style={{ color: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED, marginBottom: Matrics.CountScale(5) }}>
                                             {
                                                 child.StatusName == 'completed'
@@ -391,7 +382,7 @@ class DocumentDetails extends React.Component {
                     recipientArr.length > 0
                     ?   recipientArr[0].data.map((child, index) => {
                             return (
-                                <View style={{ borderBottomWidth: 1, borderBottomColor: Colors.LIGHTGREY, padding: Matrics.CountScale(10)}}>
+                                <View key={index} style={{ borderBottomWidth: 1, borderBottomColor: Colors.LIGHTGREY, padding: Matrics.CountScale(10)}}>
                                     <Text style={{ color: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED, marginBottom: Matrics.CountScale(5) }}>
                                         {
                                             child.StatusName == 'completed'

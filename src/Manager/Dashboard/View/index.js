@@ -752,6 +752,7 @@ class Dashboard extends React.Component {
                                             const index = this.state.Stores.findIndex(s => s.StoreID === item.StoreID);
                                             this.setState({ selectedStores: item.StoreID, selectedStoreIndex: index });
                                             global.selectedStore = item.StoreID;
+                                            global.checkDocumentStoreId = undefined;
                                         }}
                                         containerStyle={{ padding: 5 }}
                                         onRemoveItem={(item, index) => {
