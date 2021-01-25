@@ -56,7 +56,7 @@ export const TextRow = ({ labelText, contentText, bgColor }) => {
 }
 
 
-export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,ContactNumber, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress, onLayout, selectedJumpEmpName}) => {
+export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,ContactNumber,RoleCode, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress, onLayout, selectedJumpEmpName}) => {
     // if( selectedDate == 'Total')
     //     console.log('TotalfinalRoleEmployeeData-->',TotalfinalRoleEmployeeData.length)
     // console.log('selectedJumpEmpName-->', selectedJumpEmpName)
@@ -66,7 +66,13 @@ export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,Cont
             key={selectedJumpEmpName}
         >
             <View style={Styles.rowTitleStyle}>
-                <Text style={Styles.mainContainerLabel}>{labelText}</Text>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={Styles.mainContainerLabel}>{labelText}</Text>
+                    {
+                        RoleCode != undefined && RoleCode != '' &&
+                        <Text style={{fontFamily: Fonts.NunitoSansRegular}}> ({RoleCode})</Text>
+                    }
+                </View>
                 <Text style={Styles.mainContainerLabel}>{employeeStatus}</Text>
                 {
                     employeeStatus == 'Active' && ContactNumber != '' &&
@@ -1010,6 +1016,7 @@ class WeeklySchedule extends React.Component {
                 labelText={item.FullName}
                 employeeStatus={item.EmployeeStatus}
                 ContactNumber={ContactNumber}
+                RoleCode={item.RoleCode}
                 shiftData={item.ShiftData}
                 experience={Global.getYearMonthDiff(item.DoH)}
                 selectedDate={this.state.selectedDate}

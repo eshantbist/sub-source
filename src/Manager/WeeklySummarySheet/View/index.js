@@ -516,8 +516,8 @@ class WeeklySummarySheet extends React.Component {
      }
 
     setWeekDatesData() {
-        console.log('weekDayStatusArr-->',this.state.weekDayStatusArr)
-        console.log('weekDatesList-->',this.state.weekDatesList)
+        // console.log('weekDayStatusArr-->',this.state.weekDayStatusArr)
+        // console.log('weekDatesList-->',this.state.weekDatesList)
         let FinalWeekDatesDataArr = [];
         if(this.state.weekDayStatusArr.length > 0 && this.state.weekDatesList.length > 0) {
             this.state.weekDatesList.forEach((parent) => {
@@ -542,13 +542,14 @@ class WeeklySummarySheet extends React.Component {
 
 
         
-        FinalWeekDatesDataArr.push({WeekDate: 'Total', isClosed: true });
+        FinalWeekDatesDataArr.push({WeekDate: 'Total', isClosed: false });
         console.log('FinalWeekDatesDataArr-->', FinalWeekDatesDataArr);
         
         this.setState({ 
             FinalWeekDatesDataArr,
             selectedDayId: FinalWeekDatesDataArr[0].DayID,
             selectedDate: FinalWeekDatesDataArr[0].WeekDate,
+            selectedDayIsOpen: !FinalWeekDatesDataArr[0].isClosed,
         });
     }
 
@@ -1128,8 +1129,8 @@ class WeeklySummarySheet extends React.Component {
                         ?
                             item.data.map(res => {
                                 let resData = this.state.hoursBasicListArr.filter(p => p.UserStoreID == res.UserStoreID && p.DayDate == this.state.selectedDate);
-                                console.log('resData-->', resData);
-                                console.log('fullname-->', res);
+                                // console.log('resData-->', resData);
+                                // console.log('fullname-->', res);
                                 return(
                                     resData.length > 0
                                     // ? resData[0].TimeOffCombineID != 0 
@@ -1227,7 +1228,6 @@ class WeeklySummarySheet extends React.Component {
                                     onRgDisable={true}
                                     onBwDisable={true}
                                 />
-                                {console.log('ProductivityColorCode-->',TotalUnitArr.length > 0 ? TotalUnitArr[0].ProductivityColorCode && TotalUnitArr[0].ProductivityColorCode : 'kk')}
                                 <TextRow labelText={'Total Unit'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].TotalUnit ? TotalUnitArr[0].TotalUnit != 0 ? TotalUnitArr[0].TotalUnit.toFixed(2) : null : null : null} />
                                 <TextRow labelText={'Productivity'} contentbgColor={TotalUnitArr.length > 0 ? TotalUnitArr[0].ProductivityColorCode ? TotalUnitArr[0].ProductivityColorCode != 'red' ? TotalUnitArr[0].ProductivityColorCode : null : null : null}
                                          contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].Productivity ? TotalUnitArr[0].Productivity != 0 ? TotalUnitArr[0].Productivity.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
@@ -1336,6 +1336,7 @@ class WeeklySummarySheet extends React.Component {
     render() {
         // console.log('render');
         // console.log('absenceReason-->', this.state.absenceReason);
+        // console.log('FinalWeekDatesDataArr-->', this.state.FinalWeekDatesDataArr);
         // console.log('this.state.dayIndex-->', this.state.dayIndex);
         // console.log('this.state.prevIndex-->', this.state.prevIndex);
         // console.log('empRoleWiseData-->',this.state.empRoleWiseData);
