@@ -261,6 +261,7 @@ class WeeklySchedule extends React.Component {
         lastFilterselectedIndex: -1,
         resetFilter: false,
         userHeaderHeight: 0,
+        defaultWeekendDate: ''
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -297,9 +298,16 @@ class WeeklySchedule extends React.Component {
                 }
             }
             const YearID = WeekEndingDate !== '' ? WeekEndingDate.split('/')[2] : '';
-            
+            let currentWeekEndDate = '';
+            if(moment(currentDate).format('dddd') === 'Tuesday'){
+                currentWeekEndDate = currentDate;
+            } else if(moment(currentDate).format('dddd') === 'Monday'){
+                currentWeekEndDate = moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+            } else {
+                currentWeekEndDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+            }
 
-            await this.setState({ weekendDate: WeekEndingDate,currentWeekEndDate: WeekEndingDate, YearID, lastFilterweekendDate: WeekEndingDate  })
+            await this.setState({ weekendDate: WeekEndingDate,currentWeekEndDate, YearID, lastFilterweekendDate: WeekEndingDate,defaultWeekendDate: WeekEndingDate  })
             if(this.state.isLoad) {
                 this.headerfilterFlag = false;
                 this.timeOffReasonsFlag = false;
@@ -454,7 +462,13 @@ class WeeklySchedule extends React.Component {
                 this.setState({ loading: false, refreshing: false })
 
             let data = nextProps.response.data
-
+            const extraDate = {
+                WeatherDate: '',
+            }
+            if(data.List.length == 7){
+                data.List.push({WeatherDate: 'Total'});
+                data.List.unshift(extraDate);
+            }
             if (data.Status == 1) {
                 this.setState({ weatherListData: data.List })
             }
@@ -960,14 +974,18 @@ class WeeklySchedule extends React.Component {
     };
 
     _renderItem({ item, index }) {
+        const weatherData = self.state.weatherListData.filter( W => W.WeatherDate == item.DayDate);
+        // console.log('weatherData-->',weatherData)
         return (
-            <TouchableOpacity onPress={() => { 
-                self.setState({ dayIndex: index, selectedDate: item.DayDate }) 
-                if(index >= 6){
-                    self.setState({ prevIndex: index-1 });
-                }
-            }}
-            disabled={index == 0 ? true : false}
+            <TouchableOpacity 
+                onPress={() => { 
+                    self.setState({ dayIndex: index, selectedDate: item.DayDate }) 
+                    if(index >= 6){
+                        self.setState({ prevIndex: index-1 });
+                    }
+                }}
+                disabled={index == 0 ? true : false}
+                key={index}
             >
                 <View style={[{ backgroundColor: self.state.dayIndex == index ? Colors.SKYBLUE : null, width: Matrics.screenWidth / 2 - Matrics.CountScale(10), alignItems: 'center', paddingVertical: item.DayDate === 'Total' ? Matrics.CountScale(43) : Matrics.CountScale(10), borderColor: Colors.BORDERCOLOR, borderRightWidth: self.state.daysData.length - 1 != index ? 1 : 0 }]}>
                     {
@@ -981,8 +999,9 @@ class WeeklySchedule extends React.Component {
                     }
                    
                     {
-                        item.DayDate != 'Total' ?
-                        self.state.weatherListData[index] !== void 0
+                        item.DayDate != 'Total' && item.DayDate != '' && weatherData.length > 0 ?
+                        // self.state.weatherListData[index] !== void 0
+                        weatherData[0] !== void 0
                             ?   <Image source={self.state.dayIndex == index ? Images.CloudIcon2 : Images.CloudIcon1} style={{ marginVertical: Matrics.CountScale(10) }} />
                             : <View style={{ paddingVertical: Platform.OS == 'ios' ? Matrics.CountScale(28) : Matrics.CountScale(35) }}/>
                         : null
@@ -990,9 +1009,9 @@ class WeeklySchedule extends React.Component {
                     
                     <Text style={[Styles.SmallFontStyle, self.state.dayIndex == index ? Styles.selectedDayfontStyle : null]}>
                         {
-                            self.state.weatherListData.length > 0 && item.DayDate != 'Total' ? 
-                                self.state.weatherListData[index] !== void 0
-                                ? `${self.state.weatherListData[index].High}, ${self.state.weatherListData[index].WeatherTypeName}` 
+                            weatherData.length > 0 && item.DayDate != 'Total' && item.DayDate != ''? 
+                                weatherData[0] !== void 0
+                                ? `${weatherData[0].High}, ${weatherData[0].WeatherTypeName}` 
                                 : null
                             : null
                         }
@@ -1316,7 +1335,7 @@ class WeeklySchedule extends React.Component {
             selectedRoleId : 0,
             selectedStoreId : this.state.Stores.length > 0 ? this.state.Stores[0].StoreID : -1,
             selectedStoreName : this.state.Stores.length > 0 ? this.state.Stores[0].DisplayStoreNumber : -1,
-            weekendDate : this.state.currentWeekEndDate,
+            weekendDate : this.state.defaultWeekendDate,
             selectedUsers: 0,
             selectedStoreIndex: -1,
             resetFilter: true
@@ -1558,6 +1577,8 @@ class WeeklySchedule extends React.Component {
     //----------->>>Render Method-------------->>>
 
     render() {
+        // console.log('daysData-->', this.state.daysData);
+        // console.log('weatherListData-->', this.state.weatherListData);
         // console.log('empRoleData-->', this.state.empRoleData);
         // console.log('selectedDate-->', this.state.selectedDate);
         // console.log('Stores-->', this.state.Stores);
@@ -2173,6 +2194,7 @@ class WeeklySchedule extends React.Component {
                                                 textStyle: {color: Colors.WHITE}, 
                                                 containerStyle: [],
                                             }]}
+                                            maxDate={this.state.currentWeekEndDate}
                                         />
                                         : null
                                 }

@@ -188,6 +188,7 @@ class WeeklySummarySheet extends React.Component {
         selectedStoreIndex: -1,
         lastFilterselectedIndex: -1,
         resetFilter: false,
+        defaultWeekendDate: '',
     };
 
     lastTap = null;
@@ -225,8 +226,16 @@ class WeeklySummarySheet extends React.Component {
                 WeekEndingDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
             }
         }
+        let currentWeekEndDate = '';
+        if(moment(currentDate).format('dddd') === 'Tuesday'){
+            currentWeekEndDate = currentDate;
+        } else if(moment(currentDate).format('dddd') === 'Monday'){
+            currentWeekEndDate = moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+        } else {
+            currentWeekEndDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
+        }
         
-        await this.setState({ WeekEndingDate, lastFilterweekendDate: WeekEndingDate, currentWeekEndDate: WeekEndingDate, });
+        await this.setState({ WeekEndingDate, lastFilterweekendDate: WeekEndingDate, currentWeekEndDate, defaultWeekendDate: WeekEndingDate });
         if(this.state.isLoad) {
             this.headerfilterFlag = false;
             this.timeOffReasonsFlag = false;
@@ -550,7 +559,11 @@ class WeeklySummarySheet extends React.Component {
             selectedDayId: FinalWeekDatesDataArr[0].DayID,
             selectedDate: FinalWeekDatesDataArr[0].WeekDate,
             selectedDayIsOpen: !FinalWeekDatesDataArr[0].isClosed,
+            dayIndex: 0,
         });
+        if(this._carousel != undefined){
+            this._carousel.snapToItem(0);
+        }
     }
 
     async setEmpData() {
@@ -997,7 +1010,7 @@ class WeeklySummarySheet extends React.Component {
             selectedRoleId : 0,
             selectedStoreId : this.state.StoresList.length > 0 ? this.state.StoresList[0].StoreID : -1,
             selectedStoreName : this.state.StoresList.length > 0 ? this.state.StoresList[0].DisplayStoreNumber : -1,
-            WeekEndingDate : this.state.currentWeekEndDate,
+            WeekEndingDate : this.state.defaultWeekendDate,
             selectedUsers: 0,
             selectedStoreIndex: -1,
             resetFilter: true
@@ -1336,10 +1349,10 @@ class WeeklySummarySheet extends React.Component {
     render() {
         // console.log('render');
         // console.log('absenceReason-->', this.state.absenceReason);
-        // console.log('FinalWeekDatesDataArr-->', this.state.FinalWeekDatesDataArr);
+        // console.log('selectedDate-->', this.state.selectedDate);
         // console.log('this.state.dayIndex-->', this.state.dayIndex);
-        // console.log('this.state.prevIndex-->', this.state.prevIndex);
-        // console.log('empRoleWiseData-->',this.state.empRoleWiseData);
+        // console.log('this.state.selectedDayId-->', this.state.selectedDayId);
+        // console.log('selectedDayIsOpen-->',this.state.selectedDayIsOpen);
         // console.log('empRoleWiseData-->',this.state.empRoleWiseData.length);
         // console.log('hoursBasicListArr-->',this.state.hoursBasicListArr.length);
         // console.log('bottomHoursBasicListArr-->',this.state.bottomHoursBasicListArr.length);
