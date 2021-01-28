@@ -285,7 +285,7 @@ class HireNewEmployee extends React.Component {
                             onPress: () => console.log("Cancel Pressed"),
                             style: "cancel"
                         },
-                        {text: 'OK', onPress: () => this.props.navigation.navigate('Minor', { callbackData: this.callbackFunction}),},
+                        {text: 'OK', onPress: () => {console.log('minorData123-->', this.state.minorData); this.props.navigation.navigate('Minor', { callbackData: this.callbackFunction, minorData: this.state.minorData})},},
                     ],
                     { tintColor: 'green' }
                 );
@@ -376,7 +376,7 @@ class HireNewEmployee extends React.Component {
                 '',
                 'Please note that this employee is a Minor. Therefore, employee is required to have a work permit. To continue the process and enter work permit information, please click NEXT, or click cancel if employee needs to apply for a work permit.',
                 [
-                    {text: 'OK', onPress: () => this.props.navigation.navigate('Minor', { callbackData: this.callbackFunction}),},
+                    {text: 'OK', onPress: () => { console.log('minorData123-->', this.state.minorData); this.props.navigation.navigate('Minor', { callbackData: this.callbackFunction, minorData: this.state.minorData})},},
                 ],
                 { tintColor: 'green' }
             );

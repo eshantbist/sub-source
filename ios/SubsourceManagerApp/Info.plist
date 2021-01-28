@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -37,8 +37,24 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>The app does not collect or use apple music. Adding this to appease upload warning.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>The app does not collect or use bluetooth. Adding this to appease upload warning.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>The app does not collect or use calendars. Adding this to appease upload warning.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>The app does not collect or use the user's location. Adding this to appease upload warning.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>The app does not collect or use the user's location. Adding this to appease upload warning.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>The app does not collect or use motion detection. Adding this to appease upload warning.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Subsource would like to save photos to your photo gallery</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app requires access to the photo library, To set user profile.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>The app does not collect or use speech recognition. Adding this to appease upload warning.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>NunitoSans-Black.ttf</string>

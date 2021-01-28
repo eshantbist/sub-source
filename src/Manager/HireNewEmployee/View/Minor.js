@@ -82,6 +82,80 @@ export default class Minor extends React.Component {
           </TouchableOpacity>
       )
     });
+    const minorData = this.props.navigation.getParam('minorData');
+    console.log('minor screen minorData-->',minorData)
+    console.log('minorData-->',typeof minorData)
+    console.log('len-->',Object.keys(minorData).length)
+    if(Object.keys(minorData).length > 0){
+      this.setState({
+        HSGchecked: minorData.MinorData.IsGraduate,
+        permitFile: minorData.MinorData.PermitFile,
+        PermitFilePath: minorData.MinorData.PermitFilePath,
+        issueDate: minorData.MinorData.PermitDate != 'Invalid date' ? moment(minorData.MinorData.PermitDate).format('MM/DD/YYYY') : '',
+        expirationDate: minorData.MinorData.ExpirationDate != 'Invalid date' ? moment(minorData.MinorData.ExpirationDate).format('MM/DD/YYYY') : '',
+        offSessionChecked: minorData.MinorData.IsOffSession,
+        startDate: minorData.MinorData.StartDate != 'Invalid date' ?  moment(minorData.MinorData.StartDate).format('MM/DD/YYYY') : '',
+        endDate: minorData.MinorData.EndDate != 'Invalid date' ?  moment(minorData.MinorData.EndDate).format('MM/DD/YYYY') : '',
+        InTime: minorData.MinorData.InTime,
+        OutTime: minorData.MinorData.OutTime,
+      });
+      if(minorData.MinorData._weekList.length > 0){
+        console.log('in if')
+        minorData.MinorData._weekList.forEach(element => {
+          console.log('element-->', element);
+          if(element.WeekDayName == 'Wednesday'){
+            this.setState({
+              anyHoursCheckedWe: element.PlaceHolderInTime == '12:00' ? true : false,
+              workingHoursWe1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              workingHoursWe2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              hoursWe: element.HoursAllowed,
+            })
+          } else if(element.WeekDayName == 'Thursday'){
+            this.setState({
+              anyHoursCheckedTh: element.PlaceHolderInTime == '12:00' ? true : false,
+              workingHoursTh1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              workingHoursTh2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              hoursTh: element.HoursAllowed,
+            })
+          } else if(element.WeekDayName == 'Friday'){
+            this.setState({
+              anyHoursCheckedFr: element.PlaceHolderInTime == '12:00' ? true : false,
+              workingHoursFr1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              workingHoursFr2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              hoursFr: element.HoursAllowed,
+            })
+          } else if(element.WeekDayName == 'Saturday'){
+            this.setState({
+              anyHoursCheckedSa: element.PlaceHolderInTime == '12:00' ? true : false,
+              workingHoursSa1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              workingHoursSa2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              hoursSa: element.HoursAllowed,
+            })
+          } else if(element.WeekDayName == 'Sunday'){
+            this.setState({
+              anyHoursCheckedSu: element.PlaceHolderInTime == '12:00' ? true : false,
+              workingHoursSu1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              workingHoursSu2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              hoursSu: element.HoursAllowed,
+            })
+          } else if(element.WeekDayName == 'Monday'){
+            this.setState({
+              anyHoursCheckedMo: element.PlaceHolderInTime == '12:00' ? true : false,
+              workingHoursMo1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              workingHoursMo2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              hoursMo: element.HoursAllowed,
+            })
+          } else if(element.WeekDayName == 'Tuesday'){
+            this.setState({
+              anyHoursCheckedTu: element.PlaceHolderInTime == '12:00' ? true : false,
+              workingHoursTu1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              workingHoursTu2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              hoursTu: element.HoursAllowed,
+            })
+          }
+        });
+      }
+    }
   }
 
   _showDateTimePicker = (val) => this.setState({ isDateTimePickerVisible: true, dateFlag: val });
@@ -506,7 +580,6 @@ export default class Minor extends React.Component {
   }
 
   render() {
-    console.log('HSGchecked-->',this.state.HSGchecked)
     return (
       <View style={Styles.pageContainer}>
         <ScrollView>
