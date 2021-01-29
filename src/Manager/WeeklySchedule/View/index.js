@@ -465,7 +465,7 @@ class WeeklySchedule extends React.Component {
             const extraDate = {
                 WeatherDate: '',
             }
-            if(data.List.length == 7){
+            if(data.List != null && data.List.length == 7){
                 data.List.push({WeatherDate: 'Total'});
                 data.List.unshift(extraDate);
             }
@@ -975,7 +975,6 @@ class WeeklySchedule extends React.Component {
 
     _renderItem({ item, index }) {
         const weatherData = self.state.weatherListData.filter( W => W.WeatherDate == item.DayDate);
-        // console.log('weatherData-->',weatherData)
         return (
             <TouchableOpacity 
                 onPress={() => { 
@@ -983,6 +982,11 @@ class WeeklySchedule extends React.Component {
                     if(index >= 6){
                         self.setState({ prevIndex: index-1 });
                     }
+                    // console.log('index-->',index)
+                    // if(index == 7 && this._carousel != undefined){
+                    //     console.log('in if')
+                    //     this._carousel.snapToItem(6);
+                    // }
                 }}
                 disabled={index == 0 ? true : false}
                 key={index}
@@ -999,7 +1003,7 @@ class WeeklySchedule extends React.Component {
                     }
                    
                     {
-                        item.DayDate != 'Total' && item.DayDate != '' && weatherData.length > 0 ?
+                        item.DayDate != 'Total' && item.DayDate != ''  ?
                         // self.state.weatherListData[index] !== void 0
                         weatherData[0] !== void 0
                             ?   <Image source={self.state.dayIndex == index ? Images.CloudIcon2 : Images.CloudIcon1} style={{ marginVertical: Matrics.CountScale(10) }} />
@@ -1009,7 +1013,7 @@ class WeeklySchedule extends React.Component {
                     
                     <Text style={[Styles.SmallFontStyle, self.state.dayIndex == index ? Styles.selectedDayfontStyle : null]}>
                         {
-                            weatherData.length > 0 && item.DayDate != 'Total' && item.DayDate != ''? 
+                            item.DayDate != 'Total' && item.DayDate != ''? 
                                 weatherData[0] !== void 0
                                 ? `${weatherData[0].High}, ${weatherData[0].WeatherTypeName}` 
                                 : null
