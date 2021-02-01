@@ -973,6 +973,7 @@ class WeeklySchedule extends React.Component {
         // this._hideTimePicker();
     };
 
+
     _renderItem({ item, index }) {
         const weatherData = self.state.weatherListData.filter( W => W.WeatherDate == item.DayDate);
         return (
@@ -982,11 +983,11 @@ class WeeklySchedule extends React.Component {
                     if(index >= 6){
                         self.setState({ prevIndex: index-1 });
                     }
-                    // console.log('index-->',index)
-                    // if(index == 7 && this._carousel != undefined){
-                    //     console.log('in if')
-                    //     this._carousel.snapToItem(6);
-                    // }
+                    console.log('kk-->', self._carousel)
+                    if(index == 7 && self._carousel != undefined){
+                        console.log('in if')
+                        self._carousel.snapToItem(6);
+                    }
                 }}
                 disabled={index == 0 ? true : false}
                 key={index}
@@ -1673,6 +1674,7 @@ class WeeklySchedule extends React.Component {
                                 inactiveSlideOpacity={1}
                                 extraData={this.state}
                                 onSnapToItem={(index) => {
+                                    console.log('snap to carousel-->',this._carousel)
                                     this.setState({ dayIndex: index+1, selectedDate: this.state.daysData[index+1].DayDate })
                                 }}
                                 // scrollEnabled={this.state.dayIndex == 6 || this.state.dayIndex == 7 ? false : true}
