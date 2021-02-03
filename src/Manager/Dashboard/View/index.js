@@ -19,6 +19,9 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import CalendarPicker from '../../../CustomComponent/react-native-calendar-picker';
 import SearchableDropdown from '../../../CustomComponent/react-native-searchable-dropdown';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Dropdown } from 'react-native-material-dropdown';
+import AsyncStorage from '@react-native-community/async-storage';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 const { width } = Dimensions.get('window');
 
@@ -125,6 +128,10 @@ class Dashboard extends React.Component {
         lastFilterselectedUserId: 0,
         selectedStoreIndex: -1,
         lastFilterselectedIndex: -1,
+        showDrodown: false,
+        Dropdata: [{
+            value: 'Logout',
+        }]
     }
     // ======>>>>>>> Life Cycle Methods  <<<<<<<========
     async UNSAFE_componentWillMount() {
@@ -543,6 +550,15 @@ class Dashboard extends React.Component {
         }, 10);
     }
 
+    Logout(){
+        AsyncStorage.clear();
+        // this.props.navigation.navigate('Login')
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Login' })],
+        });
+        this.props.navigation.dispatch(resetAction)
+    }
     // ==========>>>>> Render Method  <<<<<<<===========
     render() {
         return (
@@ -558,11 +574,32 @@ class Dashboard extends React.Component {
                         this.setState({ filterModal: true, isDateTimePickerVisible: false })
                     }}
                     onLeftPress={(val) => {
-                        this.props.navigation.navigate('Profile');
+                        this.setState({ showDrodown: true });
+                        // this.props.navigation.navigate('Profile');
                     }}
                 // rightImageStyle={{ height: 15, width: 25, top: -7 }}
                 // leftImageStyle={{ height: 15, width: 25 }}
                 />
+
+                {   
+                    this.state.showDrodown && 
+                    // <Modal>
+                    //     <View>
+
+                    //     </View>
+                    // </Modal>
+                    <Dropdown
+                        label='Profile'
+                        data={this.state.Dropdata}
+                        containerStyle={{ alignSelf: 'flex-start' }}
+                        onChangeText={(value, index, data) => this.Logout() }
+                        itemTextStyle={{ textAlign: 'left' }}
+                        overlayStyle={{ top: Platform.OS == 'ios' ? 30 : 0, borderWidth: 0,left: -10 }}
+                        dropdownOffset={{ top: 0, left: 0 }}
+                        selectedTextStyle={{ textAlign: 'left'}}
+                        inputContainerStyle={{ alignSelf: 'stretch', padding: 0, margin: 0 }}
+                    />
+                }
 
                 {/* ==========>>>>> Page Container  <<<<<<<=========== */}
 

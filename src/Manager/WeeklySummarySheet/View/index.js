@@ -64,6 +64,7 @@ export const TextColumn = ({ name,ProfilePicture,ISProfilePicture, selectedDayIs
                             width: Matrics.CountScale(25),
                             alignSelf: 'center',
                             marginLeft: Matrics.CountScale(5),
+                            borderRadius: Matrics.CountScale(25/2),
                         }}
                     />  
                 }
@@ -116,6 +117,11 @@ class WeeklySummarySheet extends React.Component {
     static navigationOptions = ({ navigation }) => ({
         header: null,
     })
+
+    constructor(props){
+        super(props);
+        this.viewabilityConfig = {viewAreaCoveragePercentThreshold: 50}
+    }
 
     //--------->>>State Initilization----------->>>
     state = {
@@ -190,7 +196,7 @@ class WeeklySummarySheet extends React.Component {
         resetFilter: false,
         defaultWeekendDate: '',
     };
-
+    
     lastTap = null;
     lastPress = '';
 
@@ -1343,6 +1349,10 @@ class WeeklySummarySheet extends React.Component {
         )
     }
 
+    handleViewableItemsChanged = async (info) => {
+        console.log('info-->', info)
+    }
+
 
     //----------->>>Render Method-------------->>>
 
@@ -1397,6 +1407,18 @@ class WeeklySummarySheet extends React.Component {
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
+                {/* <FlatList 
+                    data={this.state.FinalWeekDatesDataArr}
+                    renderItem={this._renderItem.bind(this)}
+                    extraData={this.state}
+                    pagingEnabled
+                    horizontal={true}
+                    removeClippedSubviews={true}
+                    onViewableItemsChanged={this.handleViewableItemsChanged}
+                    viewabilityConfig={this.viewabilityConfig}
+                    showsHorizontalScrollIndicator={false}
+                    style={{ width: Matrics.screenWidth / 2 }}
+                /> */}
                   <Carousel
                       ref={(c) => { this._carousel = c; }}
                       data={this.state.FinalWeekDatesDataArr}
@@ -1418,6 +1440,11 @@ class WeeklySummarySheet extends React.Component {
                     scrollEnabled={ (this.state.dayIndex == 6 || this.state.dayIndex == 7) && this.state.prevIndex == 5 ? true : (this.state.dayIndex == 6 || this.state.dayIndex == 7) ? false  : true}
                     // onBeforeSnapToItem = {(slideIndex) => console.log('before-->', slideIndex)}
                     // scrollEnabled={(this.state.dayIndex == 6 || this.state.dayIndex == 7) && this.state.dayIndex != 5 ? false : true}
+                    // onScroll={(e) => console.log('scroll-->',e)}
+                    // onScroll={({nativeEvent:{contentOffset:{x, y}}}) => {
+                    //     console.log("offset : x=", x, "y=", y);
+                    //     global.Yordinate = y;
+                    //   }}
                   />
                   
                 </View>

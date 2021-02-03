@@ -1674,7 +1674,6 @@ class WeeklySchedule extends React.Component {
                                 inactiveSlideOpacity={1}
                                 extraData={this.state}
                                 onSnapToItem={(index) => {
-                                    console.log('snap to carousel-->',this._carousel)
                                     this.setState({ dayIndex: index+1, selectedDate: this.state.daysData[index+1].DayDate })
                                 }}
                                 // scrollEnabled={this.state.dayIndex == 6 || this.state.dayIndex == 7 ? false : true}

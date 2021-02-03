@@ -53,33 +53,41 @@ import StoreSchedule from '../Employee/StoreSchedule/View/StoreSchedule';
 const ManagerTabBarConfig = createBottomTabNavigator(
     {
         CheckDoucmentStatus: {
-            screen: StackNavigator({
-                CheckDoucmentStatus,
-            })
+            screen: CheckDoucmentStatus,
+            // screen: StackNavigator({
+            //     CheckDoucmentStatus,
+            // })
         },
         HireNewEmpployee: {
-            screen: StackNavigator({
-                HireNewEmployee,
-            })
+            screen: HireNewEmployee,
+            // screen: StackNavigator({
+            //     HireNewEmployee,
+            // })
         },
         Dashboard: {
-            screen: StackNavigator({
-                Dashboard,
-            }, {
-                    navigationOptions: {
-                        header: null,
-                    }
-                })
+            screen: Dashboard,
+            navigationOptions: {
+                header: null,
+            }
+            // screen: StackNavigator({
+            //     Dashboard,
+            // }, {
+            //         navigationOptions: {
+            //             header: null,
+            //         }
+            //     })
         },
         WeeklySchedule: {
-            screen: StackNavigator({
-                WeeklySchedule,
-            })
+            screen: WeeklySchedule,
+            // screen: StackNavigator({
+            //     WeeklySchedule,
+            // })
         },
         WeeklySummarySheet: {
-            screen: StackNavigator({
-                WeeklySummarySheet,
-            })
+            screen: WeeklySummarySheet,
+            // screen: StackNavigator({
+            //     WeeklySummarySheet,
+            // })
         },
     },
     {
