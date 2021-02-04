@@ -18,11 +18,12 @@ import { TextInputView, Button, LoadWheel } from "@Components";
 class HireNewEmployee extends React.Component {
     
     static navigationOptions = ({ navigation }) => ({
-        headerTitle: 'Hire New Employee',
-        headerTitleStyle: MasterCss.headerTitleStyle,
-        headerRight: navigation.state.params && navigation.state.params.headerRight,
-        headerLeft:
-            <View />
+        // headerTitle: 'Hire New Employee',
+        // headerTitleStyle: MasterCss.headerTitleStyle,
+        // headerRight: navigation.state.params && navigation.state.params.headerRight,
+        // headerLeft:
+        //     <View />
+        header: null,
     })
 
     //--------->>>State Initilization----------->>>
@@ -74,13 +75,13 @@ class HireNewEmployee extends React.Component {
      }
 
     componentDidMount() {
-        this.props.navigation.setParams({
-                headerRight: (
-                    <TouchableOpacity onPress={() => { this.onClickOfSend() }} >
-                        <Text style={MasterCss.headerRightTextStyle}>Send</Text>
-                    </TouchableOpacity>
-                )
-        });
+        // this.props.navigation.setParams({
+        //         headerRight: (
+        //             <TouchableOpacity onPress={() => { this.onClickOfSend() }} >
+        //                 <Text style={MasterCss.headerRightTextStyle}>Send</Text>
+        //             </TouchableOpacity>
+        //         )
+        // });
         setTimeout(() => {
             this.myComponent.measure((fx, fy, width, height, px, py) => {
                 this.topSpace = py - 20
@@ -523,6 +524,17 @@ class HireNewEmployee extends React.Component {
     render() {
         return (
             <View style={{ flex: 1 }}>
+                <View style={{ backgroundColor: Colors.WHITE, paddingTop: Platform.OS == 'ios' ? (Matrics.screenHeight == 812 ? 30 : 20) : 0, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
+                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }} />
+                    <View>
+                        <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, fontFamily: Fonts.NunitoSansRegular }}>Hire New Employee</Text>
+                    </View>
+                    <TouchableOpacity 
+                        style={{ flexDirection: 'row', justifyContent: 'flex-end', flex: 1, marginRight: Matrics.CountScale(10) }}
+                        onPress={() => { this.onClickOfSend() }} >
+                        <Text style={MasterCss.headerRightTextStyle}>Send</Text>
+                    </TouchableOpacity>
+                </View>
                 <ScrollView onScrollEndDrag={() => setTimeout(() => {
                     this.myComponent.measure((fx, fy, width, height, px, py) => {
                         this.setState({ topSpace: py - 20, topStoreSpace: py - 90 })
@@ -714,7 +726,7 @@ class HireNewEmployee extends React.Component {
         
         return (
             <View style={Styles.cardContainer}>
-                <TouchableOpacity style={{ padding: Matrics.CountScale(10), marginHorizontal: Matrics.CountScale(10) }} onPress={() => this.showDateTimePicker()}>
+                <TouchableOpacity style={{  marginHorizontal: Matrics.CountScale(10) }} onPress={() => this.showDateTimePicker()}>
                     <Text style={{ color: Colors.APPCOLOR, fontSize: Matrics.CountScale(18), marginTop: Matrics.CountScale(10)}}>{this.state.dateOfBirth == '' ? 'Select Date' : this.state.dateOfBirth}</Text>
                 </TouchableOpacity>
                 <Text style={Styles.errorText}>{this.state.errorDob}</Text>

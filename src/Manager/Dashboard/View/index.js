@@ -703,7 +703,7 @@ class Dashboard extends React.Component {
                         <View style={{ flex: 1, padding: Matrics.CountScale(10) }}>
                             {/* <ScrollView showsVerticalScrollIndicator={false}> */}
                             <KeyboardAwareScrollView extraScrollHeight={100} keyboardShouldPersistTaps={'handled'} contentContainerStyle={{ flex: 1 }} enableOnAndroid={true}>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <View>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker()}>
                                         <Text>{this.state.WeekEndingDate ? this.state.WeekEndingDate : 'Select Date'}</Text>

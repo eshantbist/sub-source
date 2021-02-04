@@ -1852,7 +1852,7 @@ class WeeklySummarySheet extends React.Component {
                                 keyboardShouldPersistTaps={'handled'}
                                 enableOnAndroid={true}
                             >
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <View>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker('weekending')}>
                                         <Text>{this.state.WeekEndingDate ? this.state.WeekEndingDate : 'Select Date'}</Text>

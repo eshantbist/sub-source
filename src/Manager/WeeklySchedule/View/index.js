@@ -983,11 +983,12 @@ class WeeklySchedule extends React.Component {
                     if(index >= 6){
                         self.setState({ prevIndex: index-1 });
                     }
-                    console.log('kk-->', self._carousel)
-                    if(index == 7 && self._carousel != undefined){
-                        console.log('in if')
-                        self._carousel.snapToItem(6);
+                    if(self._carousel != undefined){
+                        self._carousel.snapToPrev({animated: true, fireCallback: true});
                     }
+                    // if(index == 7 && self._carousel != undefined){
+                    //     self._carousel.snapToItem(6);
+                    // }
                 }}
                 disabled={index == 0 ? true : false}
                 key={index}
@@ -2176,7 +2177,8 @@ class WeeklySchedule extends React.Component {
                                 keyboardShouldPersistTaps={'handled'}
                                 enableOnAndroid={true}
                             >
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}> */}
+                                <View>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker('weekending')}>
                                         <Text>{this.state.weekendDate ? this.state.weekendDate : 'Select Date'}</Text>
