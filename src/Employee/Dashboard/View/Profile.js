@@ -34,7 +34,8 @@ class Profile extends React.Component {
         Profile: '',
         UserGUID: '',
         userData: {},
-        discardModal: false
+        discardModal: false,
+        isvisible: false,
     }
     componentDidMount() {
         // BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
@@ -108,10 +109,8 @@ class Profile extends React.Component {
         this.setState({ modalVisible: visible });
     }
     UNSAFE_componentWillReceiveProps(nextProps) {
-        this.setState({ loading: false })
         if (nextProps.data.employeeBasicDetailsSuccess) {
             const basicData = nextProps.data.employeeBasicDetailsdata.Data
-            console.log('basicData-->', basicData)
             this.setState({
                 Position: basicData.Position,
                 Experience: basicData.Experience,
@@ -120,7 +119,6 @@ class Profile extends React.Component {
         }
         if (nextProps.data.employeePersonalDetailsSuccess) {
             const data = nextProps.data.employeePersonalDetailsdata.Data
-            console.log('userData-->', data);
             this.setState({
                 university: 'University of ' + data.State,
                 address1: data.Address1,
@@ -140,6 +138,9 @@ class Profile extends React.Component {
                 userData: data
             });
         }
+        setTimeout(() => {
+            this.setState({ loading: false })
+        },1000)
     }
     updateInfo() {
         this.setState({ loading: true })
@@ -237,7 +238,6 @@ class Profile extends React.Component {
 
     //   ====>>>>>>>>>>>    User Details Content   <<<<<<<<<<========== 
     renderPageContent() {
-        console.log('addd-->', this.state.address1)
         return (
             <ScrollView style={{ paddingTop: Matrics.CountScale(10), backgroundColor: Colors.WHITE }}>
                 {/* <View style={Styles.inputBox}>

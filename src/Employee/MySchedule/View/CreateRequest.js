@@ -302,7 +302,8 @@ class CreateRequest extends React.Component {
                     <View style={{ width: '100%', flexDirection: 'row' }}>
                         <Text style={[Styles.labelText,{ flex: 1}]}>Reason:</Text>
                         <Dropdown
-                            containerStyle={{alignSelf: 'flex-end',width: deviceWidth/ 2 }}
+                            containerStyle={{alignSelf: 'flex-end',width: deviceWidth/ 2, }}
+                            // containerWidth={(Dimensions.get('window').width/ 2)}
                             labelContainerStyle={{ flex: 1, width: '100%', marginBottom: -20 }}
                             data={this.state.leaveRequstType}
                             value={'Select Reason'}
@@ -316,6 +317,9 @@ class CreateRequest extends React.Component {
                             itemCount={8}
                             rippleCentered={true}
                             error={this.state.resonError}
+                            labelFontSize={18}
+                            rippleColor='white'
+                            animationDuration= {300}
                             selectedTextStyle={{ textAlign: 'right'}}
                         />
                     </View>

@@ -209,10 +209,6 @@ class EditProfileEmployee extends React.Component {
         else {
             userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
             this.setState({ loading: true })
-            console.log('img-->',this.state.profileImage);
-            // console.log('img-->',JSON.stringify(this.state.profileImage));
-            console.log('img-->',this.state.profileImage.data);
-            console.log('img-->u->', userStoreGuid);
             //this.props.updateEmployeePersonalDetails({  })
             this.props.updateEmployeePersonalDetails({
                 // imageParams: Object.keys(this.state.profileImage).length == 0 ? {} : { UserStoreGuid: userStoreGuid, Image: this.state.profileImage.data, ImageTypeID: 1 },
@@ -239,8 +235,6 @@ class EditProfileEmployee extends React.Component {
     }
 
     render() {
-        console.log(this.props, "Edit");
-
         return (
             <View style={Styles.pageBody}>
                 {/* <StatusBar barStyle="dark-content"></StatusBar> */}

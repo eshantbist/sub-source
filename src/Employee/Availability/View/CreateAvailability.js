@@ -5,6 +5,7 @@ import {
     Text, TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 /* =======>>>>>> Assets <<<<<<<======= */
 import Global from '../../../GlobalFunction';
@@ -40,51 +41,60 @@ class CreateAvailability extends React.Component {
         selectedTime: '',
         isAddShift: true,
         selectedItemIndex: -1,
-
+        isTimePickerVisible: false,
+        InTime: '',
+        OutTime: '',
 
     }
 
     setTime(InTimeVal, OutTimeVal) {
+        console.log('setTime-->',InTimeVal,'---',OutTimeVal)
         let InTime = Global.getTime24to12(InTimeVal)
-        InTime = InTime.length < 7 ? `0${InTime}` : InTime
+        console.log('inTime-->', InTime)
+        // InTime = InTime.length < 7 ? `0${InTime}` : InTime
+        // console.log('inTime-->', InTime)
 
         // this.setState({ InHours: InTime.substring(0, 2) })
         // this.setState({ InMin: InTime.substring(3, 5) })
         // this.setState({ InStatus: InTime.substring(5, 7) })
 
-        this.setState({ InHours: '12' })
-        this.setState({ InMin: '00' })
-        this.setState({ InStatus: 'am' })
+        // this.setState({ InHours: '12' })
+        // this.setState({ InMin: '00' })
+        // this.setState({ InStatus: 'am' })
 
         let OutTime = Global.getTime24to12(OutTimeVal)
-        OutTime = OutTime.length < 7 ? `0${OutTime}` : OutTime
-
+        console.log('OutTime-->', OutTime)
+         
+        this.setState({
+            InTime,
+            OutTime: '11:59pm'
+        })
+         
+        // OutTime = OutTime.length < 7 ? `0${OutTime}` : OutTime
         // this.setState({ OutHours: OutTime.substring(0, 2) })
         // this.setState({ OutMin: OutTime.substring(3, 5) })
         // this.setState({ OutStatus: OutTime.substring(5, 7) })
 
-        this.setState({ OutHours: '11' })
-        this.setState({ OutMin: '59' })
-        this.setState({ OutStatus: 'pm' })
+        // this.setState({ OutHours: '11' })
+        // this.setState({ OutMin: '59' })
+        // this.setState({ OutStatus: 'pm' })
 
         // if(InTime != "00:00:00" && OutTime != "00:00:00" && !InTime.startsWith("00:00") && !OutTime.startsWith("23:59"))
         // {
         //     this.setState({selectedTime: InTime.substring(0, 2) + ':' + InTime.substring(3, 5) + InTime.substring(5, 7) + '-' +  OutTime.substring(0, 2) + ':' + OutTime.substring(3, 5) + OutTime.substring(5, 7)});
         // }
 
-        setTimeout(() => { console.log(this.state) }, 3000)
+        // setTimeout(() => { console.log('kkk',this.state) }, 3000)
     }
 
     UNSAFE_componentWillMount() {
         //console.log(this.props.navigation.getParam('DayData')[Object.keys(data)[0]][0])
-        let tmp = JSON.parse(JSON.stringify((this.props.navigation.state.params.DayData)))
-        console.log(tmp)
-        let data = tmp[Object.keys(tmp)[0]][0]
-        let time = tmp[Object.keys(tmp)[0]]
-        this.setTime(data.InTime, data.OutTime)
-        let temp = JSON.stringify(time)
-        let inidata = JSON.parse(temp)
-        console.log('shiftTime-->1->' + JSON.stringify(time));
+        let tmp = JSON.parse(JSON.stringify((this.props.navigation.state.params.DayData)));
+        let data = tmp[Object.keys(tmp)[0]][0];
+        let time = tmp[Object.keys(tmp)[0]];
+        this.setTime(data.InTime, data.OutTime);
+        let temp = JSON.stringify(time);
+        let inidata = JSON.parse(temp);
         this.setState({ DayData: data, shiftTime: time, initialData: inidata, notAvailable: data.InTime == "00:00:00" && data.OutTime == "00:00:00" ? true : false, allDay: data.InTime.startsWith("00:00") && data.OutTime.startsWith("23:59") ? true : false });
         if(data.InTime != "00:00:00" && data.OutTime != "00:00:00"  && !data.InTime.startsWith("00:00") && !data.OutTime.startsWith("23:59"))
         {
@@ -107,7 +117,6 @@ class CreateAvailability extends React.Component {
                 this.props.navigation.goBack()
             }
             else {
-                console.log('kkkkkkkkkkkkkkkk')
                 this.setState({ msg: response.Message, msgModal: true })
             }
         }
@@ -130,11 +139,26 @@ class CreateAvailability extends React.Component {
         }
     }
 
+    _showTimePicker(val) {
+        this.setState({ isTimePickerVisible: true, timeFlag: val });
+    }
+    _hideTimePicker = () => this.setState({ isTimePickerVisible: false });
+
+    _handleTimePicked = (time) => {
+        this._hideTimePicker();
+        console.log('time:-->', time, '--', this.state.timeFlag)
+        let val = moment(time).format('hh:mma')
+        console.log('val-->', val)
+        if(this.state.timeFlag == 'InTime'){
+            this.setState({ InTime: val });
+        } else if(this.state.timeFlag == 'OutTime'){
+            this.setState({ OutTime: val });
+        }
+    };
+
     render() {
-        
         return (
             <View style={Styles.pageBody}>
-
                 {/* =======>>>>>> Header Start <<<<<<<=======  */}
                 <View style={MasterCssEmployee.headerContainer}>
                     <TouchableOpacity
@@ -159,19 +183,8 @@ class CreateAvailability extends React.Component {
                                             // console.log(this.state.initialData)
                                             // console.log(this.state.shiftTime)
                                             this.setState({ loading: true })
-
                                             let resData = []
                                             let deleteData = []
-
-                                            // if(this.state.notAvailable)
-                                            // {
-
-                                            // }else{
-
-                                            // }
-
-
-
                                             if (!this.state.notAvailable) {
                                                 if (this.state.initialData.length > this.state.shiftTime.length) {
                                                     for (i = 0; i < this.state.initialData.length; i++) {
@@ -196,8 +209,6 @@ class CreateAvailability extends React.Component {
                                                         }
                                                     }
                                                 }
-                                                console.log(resData)
-                                                console.log(deleteData)
                                                 this.props.saveUpdateEmployeeAvailability({ UpdateShift: resData, DeleteShift: deleteData })
                                             }
                                             else {
@@ -205,41 +216,9 @@ class CreateAvailability extends React.Component {
                                                 for (i = 0; i < this.state.initialData.length; i++) {
                                                     deleteData.push(this.state.initialData[i].EmployeeAvailabilityID)
                                                 }
-                                                console.log(deleteData)
+                                                console.log('deleteData-->',deleteData)
                                                 this.props.deleteEmployeeAvailability({ DeleteShift: deleteData })
                                             }
-
-                                            //     if (this.state.OutStatus == 'pm') {
-                                            //         var OutTime = (parseInt(this.state.OutHours) + (this.state.OutHours == 12 ? 0 : 12)) + ':' + this.state.OutMin
-                                            //     }
-                                            //     else {
-                                            //         var OutTime = (this.state.OutHours == 12 ? '00' : this.state.OutHours) + ':' + this.state.OutMin
-
-                                            //     }
-                                            //     if (this.state.InStatus == 'pm') {
-                                            //         var InTime = (parseInt(this.state.InHours) + (this.state.InHours == 12 ? 0 : 12)) + ':' + this.state.InMin
-                                            //     }
-                                            //     else {
-                                            //         var InTime = (this.state.InHours == 12 ? '00' : this.state.InHours) + ':' + this.state.InMin
-                                            //     }
-                                            //     console.log(InTime, OutTime)
-
-                                            //     this.setState({ loading: true })
-                                            //     if (this.state.toggled) {
-                                            //         console.log(InTime, 'change...')
-                                            //         console.log(OutTime, 'changeout...')
-                                            // this.props.saveUpdateEmployeeAvailability({
-                                            //     DayID: this.state.DayData.DayID,
-                                            //     EmployeeAvailabilityID: this.state.DayData.EmployeeAvailabilityID,
-                                            //     NameOfDay: this.state.DayData.NameOfDay,
-                                            //     InTime: InTime,
-                                            //     OutTime: OutTime
-                                            // })
-                                            //     }
-                                            //     else {
-                                            //         this.props.deleteEmployeeAvailability({ EmployeeAvailabilityID: this.state.DayData.EmployeeAvailabilityID })
-                                            //     }
-
                                         }
                                     },
                                 ],
@@ -263,42 +242,24 @@ class CreateAvailability extends React.Component {
 
     updateValue() {
         if (this.state.allDay) {
-            // alert('if')
             this.state.shiftTime[0].InTime = '00:00'
             this.state.shiftTime[0].OutTime = '23:59'
             this.state.shiftTime.splice(1)
-            // console.log(this.state.shiftTime, 'allday...true')
-            // let tmp =  []
-            // tmp.push()
-            // this.state.shiftTime[0].InTime = 
         }
         else {
-            // let val = this.state.Active == 'from' ? 
-            //     moment(this.state.InHours + ":" + this.state.InMin + this.state.InStatus, ["h:mm A"]).format("HH:mm") :
-            //     moment(this.state.OutHours + ":" + this.state.OutMin + this.state.OutStatus, ["h:mm A"]).format("HH:mm")
-
-            // this.state.Active == 'from' && this.state.isAddShift === false ? 
-            //     (this.state.shiftTime[this.state.selectedItemIndex].InTime = val) : 
-            //     (this.state.shiftTime[this.state.selectedItemIndex].OutTime = val)
-
-            let valIn = moment(this.state.InHours + ":" + this.state.InMin + this.state.InStatus, ["h:mm A"]).format("HH:mm");
-            let valOut = moment(this.state.OutHours + ":" + this.state.OutMin + this.state.OutStatus, ["h:mm A"]).format("HH:mm");
+            // let valIn = moment(this.state.InHours + ":" + this.state.InMin + this.state.InStatus, ["h:mm A"]).format("HH:mm");
+            // let valOut = moment(this.state.OutHours + ":" + this.state.OutMin + this.state.OutStatus, ["h:mm A"]).format("HH:mm");
 
             if(this.state.isAddShift === false ) {
-                this.state.shiftTime[this.state.selectedItemIndex].InTime = valIn
-                this.state.shiftTime[this.state.selectedItemIndex].OutTime = valOut
+                this.state.shiftTime[this.state.selectedItemIndex].InTime = this.state.InTime
+                this.state.shiftTime[this.state.selectedItemIndex].OutTime = this.state.OutTime
             }
-            
-            // console.log(val)
-            // this.state.Active == 'from' ? (this.state.shiftTime[this.state.timeIndex].InTime = val) : (this.state.shiftTime[this.state.timeIndex].OutTime = val)
-            
             this.setState({ shiftTime: this.state.shiftTime })
             if (!(this.state.shiftTime[0].InTime.startsWith('00:00') && this.state.shiftTime[0].OutTime.startsWith('23:59')) && this.state.allDay == true)
                 this.setState({ allDay: false })
             else if (this.state.shiftTime[0].InTime.startsWith('00:00') && this.state.shiftTime[0].OutTime.startsWith('23:59') && this.state.allDay == false)
                 this.setState({ allDay: true })
         }
-
         console.log('shiftTime-->update-->' + this.state.shiftTime)
     }
 
@@ -321,17 +282,10 @@ class CreateAvailability extends React.Component {
                                 <Switch
                                     value={this.state.notAvailable}
                                     onValueChange={async(val) => {
-                                        console.log('kk-->',this.state)
                                         if (this.state.notAvailable == true && this.state.InHours == '12' && this.state.InMin == '00' && this.state.InStatus == 'am' && this.state.OutHours == '11' && this.state.OutMin == '59' && this.state.OutStatus == 'pm') {
-                                            console.log('1345454')
                                             this.state.shiftTime[0].OutTime = '23:59:59';
                                             this.setTime('00:00:00', '23:59:59')
                                         }
-                                        // if (!this.state.notAvailable) {
-                                        //     this.setState({ allDay: false })
-                                        // }
-                                        // else if (this.state.shiftTime[0].InTime.startsWith('00:00') && this.state.shiftTime[0].OutTime.startsWith('23:59'))
-                                            // this.setState({ allDay: true })
                                         await this.setState({ notAvailable: !this.state.notAvailable })
                                         if (this.state.notAvailable) {
                                             this.setState({ allDay: false })
@@ -377,40 +331,35 @@ class CreateAvailability extends React.Component {
                 {
                     !this.state.notAvailable && !this.state.allDay ?
                         <View style={{ marginTop: Matrics.CountScale(40) }}>
-                            <View style={Platform.OS === 'ios' ? Styles.timeContainer : [Styles.timeContainer, { borderBottomColor: '#ccc', 
-        borderBottomWidth: 1}]}>
+                            <View style={Platform.OS === 'ios' ? Styles.timeContainer 
+                            : [Styles.timeContainer, { borderBottomColor: '#ccc', borderBottomWidth: 1}]}>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        this.setState({ Active: 'from' })
+                                        this.setState({ Active: 'from' });
+                                        this._showTimePicker('InTime');
                                     }}
                                     style={this.state.Active == 'from' ? Styles.activeDatePicker : Styles.inActiveDatePicker}>
                                     <Text style={this.state.Active == 'from' ? Styles.activeDatePickerText : Styles.inActiveDatePickerText}>
-                                        {/* {this.state.DayData.InTime.substring(0,5)} */}
-                                        {this.state.InHours + ':' + this.state.InMin + this.state.InStatus}
-
+                                        {/* {this.state.InHours + ':' + this.state.InMin + this.state.InStatus} */}
+                                        {this.state.InTime}
                                     </Text>
                                 </TouchableOpacity>
-
                                 <View style={{ flex: 1, height: Matrics.CountScale(40) }}></View>
-
                                 <TouchableOpacity
                                     onPress={() => {
-                                        this.setState({ Active: 'to' })
+                                        this.setState({ Active: 'to' });
+                                        this._showTimePicker('OutTime');
                                     }}
                                     style={this.state.Active == 'to' ? Styles.activeDatePicker : Styles.inActiveDatePicker}>
                                     <Text style={this.state.Active == 'to' ? Styles.activeDatePickerText : Styles.inActiveDatePickerText}>
-                                        {/* {this.state.DayData.OutTime.substring(0,5)} */}
-                                        {this.state.OutHours + ':' + this.state.OutMin + this.state.OutStatus}
-
+                                        {/* {this.state.OutHours + ':' + this.state.OutMin + this.state.OutStatus} */}
+                                        {this.state.OutTime}
                                     </Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={Styles.pickerContainer}>
-                                <View style={Styles.picker}>
-
-                                    {/*  =============>>>>>>>>> Hours  <<<<<<<<<<=============*/}
+                                {/* <View style={Styles.picker}>
                                     <View style={{ flex: 1 }}>
-
                                         <Picker
                                             // mode={'dropdown'}
                                             selectedValue={this.selectHours()}
@@ -441,19 +390,13 @@ class CreateAvailability extends React.Component {
                                             <Picker.Item label="12" value="12" />
                                         </Picker>
                                     </View>
-
-
                                     {Platform.OS == 'ios' && <Picker
-
                                         style={{ height: Matrics.CountScale(50), width: Matrics.CountScale(60) }}
 
                                     >
                                         <Picker.Item label=":" value=":" />
                                     </Picker>}
-
-                                    {/*  =============>>>>>>>>> minutes  <<<<<<<<<<============= */}
                                     <View style={{ flex: 1, flexDirection: 'row' }}>
-
                                         <Picker
                                             selectedValue={this.selectMin()}
                                             style={{ height: Matrics.CountScale(50), flex: 1 }}
@@ -482,8 +425,6 @@ class CreateAvailability extends React.Component {
                                             <Picker.Item label="55" value="55" />
                                             <Picker.Item label="59" value="59" />
                                         </Picker>
-
-                                        {/* =============>>>>>>>>> Am / Pm  <<<<<<<<<<============= */}
                                         <Picker
                                             selectedValue={this.selectStatus()}
                                             style={{ height: Matrics.CountScale(50), flex: 1 }}
@@ -500,10 +441,22 @@ class CreateAvailability extends React.Component {
                                             <Picker.Item label="pm" value="pm" />
                                         </Picker>
                                     </View>
-                                </View>
+                                </View> */}
+                                <DateTimePicker
+                                    isVisible={this.state.isTimePickerVisible}
+                                    onConfirm={this._handleTimePicked}
+                                    onCancel={this._hideTimePicker}
+                                    mode={'time'}
+                                    date={this.state.timeFlag === 'InTime'
+                                        ? this.state.shiftinTime
+                                            ? moment(`2000/10/1 ${moment(this.state.shiftinTime, "h:mm A").format('hh:mm A')}`).toDate()
+                                            : new Date()
+                                        : this.state.shiftoutTime
+                                            ? moment(`2000/10/1 ${moment(this.state.shiftoutTime, "h:mm A").format('hh:mm A')}`).toDate()
+                                            : new Date()
+                                    }
+                                />
                             </View>
-
-
                         </View> : null
                 }
                 {/* ====================>>>>>>>>>> Other Content <<<<<<<<<<<<====================== */}
@@ -577,7 +530,8 @@ class CreateAvailability extends React.Component {
                     <View style={[Styles.timeTextContainer, { flexDirection: 'row'  }]}>
                         <Text style={[Styles.timeTextStyle, { color: Colors.APPCOLOR  }]}>
                             {/* {this.state.selectedTime} */}
-                            {this.state.InHours + ':' + this.state.InMin + this.state.InStatus +'-'+ this.state.OutHours + ':' + this.state.OutMin + this.state.OutStatus}
+                            {/* {this.state.InHours + ':' + this.state.InMin + this.state.InStatus +'-'+ this.state.OutHours + ':' + this.state.OutMin + this.state.OutStatus} */}
+                            {this.state.InTime +'-'+ this.state.OutTime}
                         </Text>
                         <TouchableOpacity onPress={() => {this.updateValue()}}>
                             <Image 
@@ -638,7 +592,7 @@ class CreateAvailability extends React.Component {
         }
     }
     selectHours() {
-        console.log(this.state.InHours.toString(), this.state.OutHours);
+        // console.log(this.state.InHours.toString(), this.state.OutHours);
 
         if (this.state.Active == 'from') {
             return this.state.InHours
@@ -657,25 +611,34 @@ class CreateAvailability extends React.Component {
     }
 
     addShift() {
-        let InTime = '00:00:00'
-        let OutTime = '23:59:59'
-        if(this.state.InHours != '12' || this.state.InMin != '00' || this.state.InStatus != 'am' || this.state.OutHours != '11' || this.state.OutMin != '59' || this.state.OutStatus != 'pm'){
-            InTime = this.state.InHours + ':' + this.state.InMin;
-            OutTime = this.state.OutHours + ':' + this.state.OutMin;   
-        }
+        // let InTime = '00:00:00'
+        // let OutTime = '23:59:59'
+        // if(this.state.InHours != '12' || this.state.InMin != '00' || this.state.InStatus != 'am' || this.state.OutHours != '11' || this.state.OutMin != '59' || this.state.OutStatus != 'pm'){
+        //     InTime = this.state.InHours + ':' + this.state.InMin;
+        //     OutTime = this.state.OutHours + ':' + this.state.OutMin;   
+        // }
         // let InTime = this.state.InHours + ':' + this.state.InMin;
         // let OutTime = this.state.OutHours + ':' + this.state.OutMin;
-        this.state.shiftTime.push({ DayID: this.state.shiftTime[0].DayID, EmployeeAvailabilityID: 0, NameOfDay: this.state.shiftTime[0].NameOfDay, InTime: InTime, OutTime: OutTime })
-        this.setTime(InTime, OutTime)
-        console.log('shiftTime-->add-->' + this.state.shiftTime);
+        this.state.shiftTime.push({ 
+            DayID: this.state.shiftTime[0].DayID, 
+            EmployeeAvailabilityID: 0, 
+            NameOfDay: this.state.shiftTime[0].NameOfDay, 
+            InTime: this.state.InTime, 
+            OutTime: this.state.OutTime 
+        })
+        // this.setTime(this.state.InTime, this.state.OutTime)
         this.setState({ shiftTime: this.state.shiftTime, timeIndex: this.state.timeIndex + 1, Active: 'from' })
+        setTimeout(() => {
+            this.setState({
+                InTime: '12:00am',
+                OutTime: '11:59pm',
+            })
+        }, 500);
     }
 
     deleteShift(removeIndex) {
-        console.log('deleteshiftshiftTime-->' + this.state.shiftTime.length);
         if(this.state.shiftTime.length > 1){
             this.state.shiftTime.splice(removeIndex, 1);
-            console.log('deleteshiftshiftTime-->' + JSON.stringify(this.state.shiftTime));
             this.setTime(this.state.shiftTime[0].InTime, this.state.shiftTime[0].OutTime)
             this.setState({ shiftTime: this.state.shiftTime, timeIndex: this.state.timeIndex - 1 })
             //this.setState({ shiftTime: _.remove(this.state.shiftTime, function(res) { return res.id != item.id; }) });
@@ -736,7 +699,7 @@ class CreateAvailability extends React.Component {
                                 <View style={Styles.timeTextContainer}>
                                     {/* <Text style={[Styles.timeTextStyle, { color: index == this.state.timeIndex ? 'white' : Colors.APPCOLOR }]}> */}
                                     <Text style={[Styles.timeTextStyle, { color: index == this.state.selectedItemIndex && !this.state.isAddShift ? 'white' : Colors.APPCOLOR }]}>
-                                        {Global.getTime24to12(item.InTime)} - {Global.getTime24to12(item.OutTime)}
+                                        {Global.getTime24to12(item.InTime)} - {Global.getTime24to12(item.OutTime) == '12:00am' ? '11:59pm' : Global.getTime24to12(item.OutTime)}
                                     </Text>
                                 </View>
                                 <TouchableOpacity onPress={() => { this.deleteShift(index) }} style={Styles.imageContainer}>
