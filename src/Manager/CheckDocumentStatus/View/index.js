@@ -92,6 +92,17 @@ class CheckDoucmentStatus extends React.Component {
             // console.log('global.selectedStore-->', parseInt(global.selectedStore,10))
             // console.log('global.checkDocumentStoreId-->', parseInt(global.checkDocumentStoreId,10))
             // console.log('lastFilterselectedStores-->', this.state.lastFilterselectedStores)
+            
+            console.log('TileId-->', this.state.selected);
+            let TileID = 0;
+            if (this.state.selected === 'Completed') {
+                TileID = 1;
+            } else if (this.state.selected === 'ActionRequired') {
+                TileID = 2;
+            } else if (this.state.selected === 'InProgress') {
+                TileID = 3;
+            }   
+            console.log('TileId-kk->', TileID);
             await this.setState({ 
                 selectedStores: global.checkDocumentStoreId == undefined ? parseInt(global.selectedStore,10) : parseInt(global.checkDocumentStoreId,10) , 
                 lastFilterselectedStores: global.checkDocumentStoreId == undefined ?  parseInt(global.selectedStore,10) : parseInt(global.checkDocumentStoreId,10), 
@@ -112,7 +123,7 @@ class CheckDoucmentStatus extends React.Component {
                 StoreId: this.state.selectedStores,
                 BusinessTypeId: 1,
                 NoOfDays: this.state.selectedNOD,
-                TileID: 2,
+                TileID: TileID,
                 StatusType: this.state.selectedStatus,
                 PageNumber: 1,
                 PageSize: perPageRecord,
@@ -422,6 +433,7 @@ class CheckDoucmentStatus extends React.Component {
     //----------->>>Render Method-------------->>>
 
     render() {
+        console.log('this.state.empListArr-->',this.state.empListArr)
         const { selected } = this.state,
             EmployeeData = [
                 [
@@ -946,6 +958,7 @@ class CheckDoucmentStatus extends React.Component {
                     recipientsListArr={this.state.recipientsListArr}
                     HiringData={HiringData}
                     navigation={this.props.navigation}
+                    selected={this.state.selected}
                     onVoidPress={(data) => {
                         this.props.getCheckDocumentStatusEnvelopVoidRequest({
                             DocusignEnvelopeID: data.DocusignEnvelopeID,

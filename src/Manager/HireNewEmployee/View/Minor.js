@@ -380,7 +380,7 @@ export default class Minor extends React.Component {
     if(this.state.HSGchecked === false) {
       // console.log('if');
       if( this.state.issueDate === '') {
-        this.setState({ issueDateError: 'Please Select The IssueDate' });
+        this.setState({ issueDateError: 'Please Select The Issue Date' });
       } else if (this.state.expirationDate === ''){
         this.setState({ expirationDateError: 'Please Select The Expiration Date'});
       }

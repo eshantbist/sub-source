@@ -27,13 +27,13 @@ class DashboardHeader extends React.Component {
     // ==========>>>>> Render Method  <<<<<<<===========
     render() {
         return (
-            <View style={[MasterCss.headerContainer,{ paddingBottom: Matrics.CountScale(10)}]}>
+            <View style={MasterCss.headerContainer}>
 
                 {/* {this.props.leftText ?
                     <TouchableOpacity style={MasterCss.headerTextContainerStyle} onPress={this.props.onLeftPress}>
                         <Text style={MasterCss.headerLeftTextStyle} >{this.props.leftText}</Text>
                     </TouchableOpacity> : <View style={MasterCss.headerTextContainerStyle} />} */}
-                <TouchableOpacity  style={[{ height: Matrics.CountScale(45) }]} onPress={this.props.onLeftPress} >
+                <TouchableOpacity  style={[{ flex: 1,height: Matrics.CountScale(45) }]} onPress={this.props.onLeftPress} >
                     {/* <Image 
                         source={Images.ProfileIconPlaceholder}
                         style={{ 
@@ -45,12 +45,12 @@ class DashboardHeader extends React.Component {
                     /> */}
                     <Icon name="user-circle-o" size={30} color='#7C8786' style={{ marginLeft: Matrics.CountScale(30), marginTop: Matrics.CountScale(5)}} />
                 </TouchableOpacity>
-                <View style={MasterCss.centerStyle}>
-                    <Text style={MasterCss.centerTextStyle}>{this.props.centerText}</Text>
+                <View>
+                    <Text style={[MasterCss.centerTextStyle, { textAlign: 'center'}]}>{this.props.centerText}</Text>
                 </View>
 
 
-                <View style={MasterCss.headerTextIconStyle}>
+                <View style={[MasterCss.headerTextIconStyle,{ flex: 1 }]}>
                     <TouchableOpacity onPress={this.props.onRightPress} >
                         <Image style={MasterCss.basicIconStyle} source={this.props.rightImage}></Image>
                     </TouchableOpacity>
