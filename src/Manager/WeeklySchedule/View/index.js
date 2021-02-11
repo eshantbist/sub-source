@@ -72,8 +72,16 @@ export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,Cont
                         RoleCode != undefined && RoleCode != '' &&
                         <Text style={{fontFamily: Fonts.NunitoSansRegular}}> ({RoleCode})</Text>
                     }
+                    {
+                        (employeeStatus == 'Resigned' || employeeStatus == 'Terminate') &&
+                        <Text style={{fontFamily: Fonts.NunitoSansRegular}}> ({employeeStatus == 'Resigned' ? 'R' : 'T'})</Text>
+                    }
                 </View>
-                <Text style={Styles.mainContainerLabel}>{employeeStatus}</Text>
+                {
+                    employeeStatus == 'Active'
+                    ? null
+                    : <Text style={Styles.mainContainerLabel}>{employeeStatus}</Text>
+                }
                 {
                     employeeStatus == 'Active' && ContactNumber != '' &&
                     <Text style={Styles.mainContainerLabel}>{ContactNumber}</Text>
@@ -1254,7 +1262,7 @@ class WeeklySchedule extends React.Component {
             <View style={Styles.linkContainer}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={Styles.linkLeftText}>Date:</Text>
-                    <Text style={Styles.linkRightText}>{moment(item.CreatedDate).format('MM/DD/YYYY')}</Text>
+                    <Text style={Styles.linkRightText}>{moment(item.CreatedDate).format('MM.DD.YYYY')}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={Styles.linkLeftText}>From Shop:</Text>
@@ -1270,7 +1278,7 @@ class WeeklySchedule extends React.Component {
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={Styles.linkLeftText}>Transaction Details:</Text>
-                    <Text style={Styles.linkRightText}>By {item.CreatedByName} On {moment(item.TransactionDate).format('MM/DD/YYYY')}</Text>
+                    <Text style={Styles.linkRightText}>By {item.CreatedByName} On {moment(item.TransactionDate).format('MM.DD.YYYY')}</Text>
                 </View>
             </View>
         )
@@ -1619,7 +1627,7 @@ class WeeklySchedule extends React.Component {
                         /> */}
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{this.state.selectedStoreName}</Text>
                         {/* <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${this.state.weekendDate}`}</Text> */}
-                        <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${moment(this.state.weekendDate).format('MM/DD/YY')}`}</Text>
+                        <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${moment(this.state.weekendDate).format('MM.DD.YYYY')}`}</Text>
                     </View>
 
                     <TouchableOpacity
@@ -1935,7 +1943,7 @@ class WeeklySchedule extends React.Component {
                                                 {/* <TouchableOpacity onPress={() => this._showDateTimePicker('endingDate')} style={Styles.rowViewStyle}>
                                                     <Text>{this.state.endingDate == '' ? 'Select Date' : this.state.endingDate}</Text>
                                                 </TouchableOpacity> */}
-                                                <Text style={{ fontFamily: Fonts.NunitoSansRegular }}>{moment(this.state.selectedDate).format('MM/DD/YYYY')}</Text>
+                                                <Text style={{ fontFamily: Fonts.NunitoSansRegular }}>{moment(this.state.selectedDate).format('MM.DD.YYYY')}</Text>
                                                 <Text style={Styles.errorText}>{this.state.endingDateError}</Text>
                                             </View>
                                         </View>
@@ -1988,14 +1996,14 @@ class WeeklySchedule extends React.Component {
                                             <View style={{ marginVertical: Matrics.CountScale(15) }}>
                                                 <Text style={Styles.labelTextStyle}>Start Date</Text>
                                                 <TouchableOpacity onPress={() => this._showDateTimePicker('startDate')} style={Styles.rowViewStyle}>
-                                                    <Text>{this.state.timeoffStartDate}</Text>
+                                                    <Text>{moment(this.state.timeoffStartDate).format('MM.DD.YYYY')}</Text>
                                                 </TouchableOpacity>
                                             </View>
                                             <Text style={Styles.errorText}>{this.state.startDateError}</Text>
                                             <View style={{ marginVertical: Matrics.CountScale(15) }}>
                                                 <Text style={Styles.labelTextStyle}>End Date</Text>
                                                 <TouchableOpacity onPress={() => this._showDateTimePicker('endDate')} style={Styles.rowViewStyle}>
-                                                    <Text>{this.state.timeoffEndDate}</Text>
+                                                    <Text>{moment(this.state.timeoffEndDate).format('MM.DD.YYYY')}</Text>
                                                 </TouchableOpacity>
                                             </View>
                                             <Text style={Styles.errorText}>{this.state.endDateError}</Text>
@@ -2181,7 +2189,7 @@ class WeeklySchedule extends React.Component {
                                 <View>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker('weekending')}>
-                                        <Text>{this.state.weekendDate ? this.state.weekendDate : 'Select Date'}</Text>
+                                        <Text>{this.state.weekendDate ? moment(this.state.weekendDate).format('MM.DD.YYYY') : 'Select Date'}</Text>
                                     </TouchableOpacity>
                                 </View>
                                 {

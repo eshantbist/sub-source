@@ -606,11 +606,11 @@ export default class Minor extends React.Component {
             :
               <View>
                 <TouchableOpacity onPress={() => this._showDateTimePicker('issueDate')} style={Styles.cardContainer}>
-                  <Text style={Styles.cardText}>{this.state.issueDate == '' ? 'Issue Date' : this.state.issueDate}</Text>
+                  <Text style={Styles.cardText}>{this.state.issueDate == '' ? 'Issue Date' : moment(this.state.issueDate).format('MM.DD.YYYY')}</Text>
                 </TouchableOpacity>
                 <Text style={Styles.errorText}>{this.state.issueDateError}</Text>
                 <TouchableOpacity onPress={() => this._showDateTimePicker('expirationDate')} style={Styles.cardContainer}>
-                  <Text style={Styles.cardText}>{this.state.expirationDate == '' ? 'Expiration Date' : this.state.expirationDate}</Text>
+                  <Text style={Styles.cardText}>{this.state.expirationDate == '' ? 'Expiration Date' : moment(this.state.expirationDate).format('MM.DD.YYYY')}</Text>
                 </TouchableOpacity>
                 <Text style={Styles.errorText}>{this.state.expirationDateError}</Text>
               </View>
@@ -651,7 +651,7 @@ export default class Minor extends React.Component {
                           onPress={() => this._showDateTimePicker('Form')} 
                           style={[Styles.cardContainer, { width: Matrics.CountScale(160) }]}
                         >
-                          <Text style={Styles.cardText}>{this.state.startDate == '' ? 'Form' : this.state.startDate}</Text>
+                          <Text style={Styles.cardText}>{this.state.startDate == '' ? 'Form' : moment(this.state.startDate).format('MM.DD.YYYY')}</Text>
                         </TouchableOpacity>
                         <Text style={Styles.errorText}>{this.state.startDateError}</Text>
                       </View>
@@ -660,7 +660,7 @@ export default class Minor extends React.Component {
                           onPress={() => this._showDateTimePicker('To')} 
                           style={[Styles.cardContainer, { width: Matrics.CountScale(160), marginLeft: Matrics.CountScale(9) }]}
                         >
-                          <Text style={Styles.cardText}>{this.state.endDate == '' ? 'To' : this.state.endDate}</Text>
+                          <Text style={Styles.cardText}>{this.state.endDate == '' ? 'To' : moment(this.state.endDate).format('MM.DD.YYYY')}</Text>
                         </TouchableOpacity>
                         <Text style={[Styles.errorText, { marginLeft: Matrics.CountScale(9)}]}>{this.state.endDateError}</Text>
                       </View>

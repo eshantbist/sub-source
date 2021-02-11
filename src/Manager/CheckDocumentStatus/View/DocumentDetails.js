@@ -83,11 +83,7 @@ class DocumentDetails extends React.Component {
             if (data.Status == 1) {
                 const empListData = data.Report._list;
                 const recipientsListArr = data.Report._recipientsList;
-                console.log('after old DocusignEnvelopeID-->', this.state.Employeedata.DocusignEnvelopeID);
-                console.log('after empList-->', empListData)
-                console.log('after reciplist-->', recipientsListArr)
                 empData = empListData.filter(E => E.DocusignEnvelopeID == this.state.Employeedata.DocusignEnvelopeID);
-                console.log('after Employeedata-->', Employeedata)
                 if(empData.length > 0){
                     this.setState({ Employeedata: empData[0] })
                 }
@@ -156,21 +152,14 @@ class DocumentDetails extends React.Component {
                 recipientsData.push({ 'DocusignEnvelopeID': res.DocusignEnvelopeID, 'data': tmproledata })
             }
         });
-        console.log('recipientsData-->', recipientsData)
         this.setState({ recipientsData });
     }
 
     onDoneClick(recipientsArr) {
         this.setState({ loading: true });
-        console.log('envolopid-->', this.state.Employeedata.EnvelopeID);
-        console.log('envolopid-->', recipientsArr);
-        console.log('oldRoleEmail-->', this.state.oldRoleEmail);
-        console.log('oldRoleName-->', this.state.oldRoleName);
-        console.log('newEmail-->', this.state.newEmail);
         const newRecipientsArr = recipientsArr.map(obj =>
             obj.RoleEmail === this.state.oldRoleEmail && obj.RoleName === this.state.oldRoleName ? { ...obj, NewRoleEmail: this.state.newEmail } : obj.NewRoleEmail == null ? { ...obj, NewRoleEmail: "" } : obj
         );
-        console.log('newRecipientsArr-->', newRecipientsArr);
         this.props.CheckDocumentStatusEnvelopRecipientsEmailUpdate({
             EnvelopeID: this.state.Employeedata.EnvelopeID,
             jsonData: newRecipientsArr,
@@ -274,7 +263,7 @@ class DocumentDetails extends React.Component {
         let recipientArr = [];
         if(this.state.Employeedata) {
             const DateArr = this.state.Employeedata.CreatedOn.split('T');
-            CDate = moment(DateArr[0]).format('MM-DD-YYYY');
+            CDate = moment(DateArr[0]).format('MM.DD.YYYY');
             Time = moment(DateArr[1], "h:mm A").format('hh:mm a');
         }
         if(this.state.recipientsData.length > 0){
@@ -444,7 +433,6 @@ class DocumentDetails extends React.Component {
     renderHireStatus() {
         let pdf = this.state.Employeedata ? this.state.Employeedata.HiringFilePath ? true : false : false;
         const htmlContent = this.state.Employeedata ? this.state.Employeedata.LogValue : null;
-
         const tags = _.without(IGNORED_TAGS, 
             'table', 'caption', 'col', 'colgroup', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr'
         )

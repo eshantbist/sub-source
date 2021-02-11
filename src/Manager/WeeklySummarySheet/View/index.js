@@ -205,7 +205,7 @@ class WeeklySummarySheet extends React.Component {
     async UNSAFE_componentWillMount() {
       self = this;
       this.focusListener = this.props.navigation.addListener('didFocus', async () => {
-        console.log('will summary global.selectedStore-->', parseInt(global.selectedStore,10))
+        // console.log('will summary global.selectedStore-->', parseInt(global.selectedStore,10))
         await this.setState({ 
             selectedStoreId: parseInt(global.selectedStore,10), 
             lastFilterselectedStoreId: parseInt(global.selectedStore,10), 
@@ -1395,7 +1395,7 @@ class WeeklySummarySheet extends React.Component {
                         /> */}
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{this.state.selectedStoreName}</Text>
                         {/* <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${this.state.WeekEndingDate}`}</Text> */}
-                        <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${moment(this.state.WeekEndingDate).format('MM/DD/YY')}`}</Text>
+                        <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${moment(this.state.WeekEndingDate).format('MM.DD.YYYY')}`}</Text>
                     </View>
 
                     <TouchableOpacity 
@@ -1855,7 +1855,7 @@ class WeeklySummarySheet extends React.Component {
                                 <View>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker('weekending')}>
-                                        <Text>{this.state.WeekEndingDate ? this.state.WeekEndingDate : 'Select Date'}</Text>
+                                        <Text>{this.state.WeekEndingDate ? moment(this.state.WeekEndingDate).format('MM.DD.YYYY') : 'Select Date'}</Text>
                                     </TouchableOpacity>
                                 </View>
                                 {

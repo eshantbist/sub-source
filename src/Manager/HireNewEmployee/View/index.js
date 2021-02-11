@@ -240,8 +240,6 @@ class HireNewEmployee extends React.Component {
     }
 
     async onSelectStore(value, index, data) {
-        console.log('onSelectStore-->', data,'----', index)
-        console.log('selectedStore-->', data[index].DisplayStoreNumber)
         await this.setState({ selectedStore: data[index].DisplayStoreNumber, selectedStoreName: data[index].StoreNumber, selectedStoreId: data[index].StoreID, errorStore: '', 
             // posId: `${data[index].DisplayStoreNumber}-` 
         });
@@ -780,7 +778,6 @@ class HireNewEmployee extends React.Component {
     }
 
     employeePosition() {
-        console.log('dropdownpostion-->', this.state.dropdownpostion)
         return (
             <Dropdown
                 containerStyle={

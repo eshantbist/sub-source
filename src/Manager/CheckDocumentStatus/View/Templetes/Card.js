@@ -44,7 +44,7 @@ class Card extends React.Component {
             }
         ]
         const DateArr = this.props.item.CreatedOn.split('T');
-        const CDate = moment(DateArr[0]).format('MM-DD-YYYY');
+        const CDate = moment(DateArr[0]).format('MM.DD.YYYY');
         const Time = moment(DateArr[1], "h:mm A").format('hh:mm a');
         return (
             <Swipeout autoClose={true} buttonWidth={Matrics.CountScale(250)} right={swipeoutBtns} disabled={this.state.changeClass} backgroundColor={'transparent'}>

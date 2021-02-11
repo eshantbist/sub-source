@@ -567,7 +567,7 @@ class Dashboard extends React.Component {
                 {/* ==========>>>>> Header For Dashboard  <<<<<<<=========== */}
                 <DashboardHeader
                     // centerText={`W/E ${this.state.WeekEndingDate}`}
-                    centerText={`W/E ${moment(this.state.WeekEndingDate).format('MM/DD/YY')}`}
+                    centerText={`W/E ${moment(this.state.WeekEndingDate).format('MM.DD.YYYY')}`}
                     // leftText={'Profile'}
                     rightImage={Images.FilterIcon}
                     onRightPress={(val) => {
@@ -706,7 +706,7 @@ class Dashboard extends React.Component {
                                 <View>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker()}>
-                                        <Text>{this.state.WeekEndingDate ? this.state.WeekEndingDate : 'Select Date'}</Text>
+                                        <Text>{this.state.WeekEndingDate ? moment(this.state.WeekEndingDate).format('MM.DD.YYYY') : 'Select Date'}</Text>
                                     </TouchableOpacity>
                                 </View>
                                 {
@@ -1102,7 +1102,7 @@ class Dashboard extends React.Component {
                                                     return (
                                                         <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
                                                             <View style={Styles.bottomBorderStyle}>
-                                                                <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YY, hh:mm a')}</Text></Text>
+                                                                <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM.DD.YYYY, hh:mm a')}</Text></Text>
 
                                                             </View>
                                                             <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
@@ -1119,7 +1119,7 @@ class Dashboard extends React.Component {
                                                         return (
                                                             <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
                                                                 <View style={Styles.bottomBorderStyle}>
-                                                                    <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YY, hh:mm a')}</Text></Text>
+                                                                    <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM.DD.YYYY, hh:mm a')}</Text></Text>
 
                                                                 </View>
                                                                 <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
@@ -1134,7 +1134,7 @@ class Dashboard extends React.Component {
                                                         return (
                                                             <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
                                                                 <View style={Styles.bottomBorderStyle}>
-                                                                    <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM/DD/YY, hh:mm a')}</Text></Text>
+                                                                    <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM.DD.YYYY, hh:mm a')}</Text></Text>
 
                                                                 </View>
                                                                 <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
