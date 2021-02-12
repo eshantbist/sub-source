@@ -15,6 +15,7 @@ class Card extends React.Component {
     }
     // ==========>>>>> Render Method  <<<<<<<===========
     render() {
+        const sentToDocusignRoleNameArr = this.props.recipientsListArr.filter(R => R.DocusignEnvelopeID == this.props.item.DocusignEnvelopeID );
         var swipeoutBtns = [
             {
                 backgroundColor: 'transparent',
@@ -70,6 +71,7 @@ class Card extends React.Component {
                                     // this.props.item.StatusName == 'completed' ? { color: Colors.APPCOLOR } : { color: Colors.RED }
                                 ]}>
                                     {this.props.item.DisplayStatusName ? `Send To ${this.props.item.DisplayStatusName}` : null}
+                                    {/* {sentToDocusignRoleNameArr.length > 0 ? `Send To ${sentToDocusignRoleNameArr[0].DocusignRoleName}` : null} */}
                                 </Text>
                             </View>
                             <View style={{ alignSelf: 'flex-start', alignItems: 'flex-end', flex: 0.5 }}>
@@ -80,7 +82,7 @@ class Card extends React.Component {
                         </View>
 
                         <View style={Styles.cardPart2}>
-                            <Text style={Styles.sentByStatusTextStyle}>{this.props.item.SentBy ? `SentBy ${this.props.item.SentBy}`: null} {CDate}@{Time}</Text>
+                            <Text style={Styles.sentByStatusTextStyle}>{this.props.item.SentBy ? `SentBy ${this.props.item.SentBy}`: null} {CDate}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>

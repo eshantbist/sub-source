@@ -272,7 +272,9 @@ class DocumentDetails extends React.Component {
         return (
             <View style={Styles.statusLineCard}>
                 <Text style={Styles.shopNameTextStyle}>{this.state.Employeedata ? `Shop #${this.state.Employeedata.DisplayStoreNumber}`: null}</Text>
-                <Text style={Styles.sentByStatusTextStyle}>{this.state.Employeedata ? `SentBy ${this.state.Employeedata.SentBy}`: null} {CDate}@{Time.toLocaleUpperCase()}</Text>
+                <View style={{ borderBottomWidth: 1, borderBottomColor: Colors.LIGHTGREY}}>
+                    <Text style={Styles.sentByStatusTextStyle}>{this.state.Employeedata ? `Sent by ${this.state.Employeedata.SentBy}`: null} {CDate}@{Time.toLocaleUpperCase()}</Text>
+                </View>
                 <View style={{ flexDirection: 'row',marginTop: Matrics.CountScale(10) }}>
                     <View style={{ justifyContent: 'center' }}>
                         <Image style={{ width: 6, alignSelf: 'center', height: 6, marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(10), marginBottom: Matrics.CountScale(2) }} source={Images.GreenDotIcon}></Image>
@@ -288,7 +290,7 @@ class DocumentDetails extends React.Component {
                         <Image style={{ width: 6, alignSelf: 'center', height: 6, marginBottom: Matrics.CountScale(5), marginRight: Matrics.CountScale(10) }} source={Images.RedDotIcon}></Image>
                     </View>
                     <View>
-                        <Text style={{ color: Colors.RED }}>Send To HR Rep</Text>
+                        <Text style={{ color: Colors.RED }}>Sent to HR Rep</Text>
                     </View>
                 </View>
 
@@ -300,7 +302,10 @@ class DocumentDetails extends React.Component {
                         ?   recipientArr[0].data.map((child, index) => {
                                 return (
                                     <View key={index} style={{ borderBottomWidth: 1, borderBottomColor: Colors.LIGHTGREY, padding: Matrics.CountScale(10)}}>
-                                        <Text style={{ color: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED, marginBottom: Matrics.CountScale(5) }}>
+                                        <Text style={{ 
+                                            color: child.StatusName == 'completed' ? Colors.APPCOLOR : child.StatusName == 'sent' ? Colors.RED : null, 
+                                            marginBottom: Matrics.CountScale(5) 
+                                        }}>
                                             {
                                                 child.StatusName == 'completed'
                                                 ? `Completed by ${child.RoleName}`
@@ -713,7 +718,8 @@ const Styles = StyleSheet.create({
     sentByStatusTextStyle: {
         fontFamily: Fonts.NunitoSansRegular,
         fontSize: Matrics.CountScale(13),
-        color: Colors.GREY
+        color: Colors.GREY,
+        paddingBottom: 5,
     },
     hireStatusContainer: {
         margin: Matrics.CountScale(13),
