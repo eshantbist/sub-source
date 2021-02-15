@@ -1,6 +1,6 @@
 // ======>>>>> Libraries <<<<<=========
 import React from 'react';
-import { View, Image, ScrollView, Text, TouchableOpacity, Alert, StyleSheet, TextInput } from 'react-native';
+import { View, Image, ScrollView, Text, TouchableOpacity, Alert, StyleSheet, TextInput, Modal } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
@@ -42,6 +42,8 @@ class DocumentDetails extends React.Component {
         isEmailEditable: false,
         loading: false,
         showEmailList: false,
+        hireStatuShow: false,
+        showEmployeeInfo: false,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -52,6 +54,9 @@ class DocumentDetails extends React.Component {
         const isEditable = this.props.navigation.getParam('isEditable');
         const HiringData = this.props.navigation.getParam('HiringData');
         this.setRecipeentslist(recipientsList);
+
+        console.log('Employeedata-->',Employeedata)
+        console.log('recipientsList-->',recipientsList)
         
         this.setState({ Employeedata, isEditable, HiringData });
     }
@@ -192,6 +197,63 @@ class DocumentDetails extends React.Component {
                     {this.EVerifyStatus()}
                     {this.backgroundCheckStatus()}
                 </ScrollView>
+                <Modal 
+                    visible={this.state.showEmployeeInfo}
+                    transparent={true}
+                >
+                    <View style={Styles.modalContainer}>
+                        <View style={Styles.InnerContainer}>
+                            <View style={Styles.modalHeader}>
+                                <Text style={Styles.titleFontStyle}>Emplyee Basic Information</Text>
+                                <TouchableOpacity style={{ alignSelf: 'flex-end' }} onPress={() => this.setState({ showEmployeeInfo: false })}>
+                                    <Image source={Images.Close} style={{ margin: Matrics.CountScale(15) }} />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={Styles.infoContainer}>
+                                <Text style={Styles.TitleText}>First Name: </Text>
+                                <Text style={Styles.DataText}>{this.state.Employeedata.FirstName}</Text>
+                            </View>
+                            <View style={Styles.infoContainer}>
+                                <Text style={Styles.TitleText}>Middle Name: </Text>
+                                <Text style={Styles.DataText}>{this.state.Employeedata.MiddleName}</Text>
+                            </View>
+                            <View style={Styles.infoContainer}>
+                                <Text style={Styles.TitleText}>Last Name: </Text>
+                                <Text style={Styles.DataText}>{this.state.Employeedata.LastName}</Text>
+                            </View>
+                            <View style={Styles.infoContainer}>
+                                <Text style={Styles.TitleText}>Address: </Text>
+                                <View>
+                                <Text style={Styles.DataText}>{this.state.Employeedata.AddressLine1}</Text>
+                                {
+                                    this.state.Employeedata.AddressLine2 != '' &&
+                                    <Text style={Styles.DataText}>{this.state.Employeedata.AddressLine2}</Text>
+                                }
+                                </View>
+                            </View>
+                            <View style={Styles.infoContainer}>
+                                <Text style={Styles.TitleText}>City: </Text>
+                                <Text style={Styles.DataText}>{this.state.Employeedata.City}</Text>
+                            </View>
+                            <View style={Styles.infoContainer}>
+                                <Text style={Styles.TitleText}>State: </Text>
+                                <Text style={Styles.DataText}>{this.state.Employeedata.StateName}</Text>
+                            </View>
+                            <View style={Styles.infoContainer}>
+                                <Text style={Styles.TitleText}>Country: </Text>
+                                <Text style={Styles.DataText}>{this.state.Employeedata.CountyName}</Text>
+                            </View>
+                            <View style={Styles.infoContainer}>
+                                <Text style={Styles.TitleText}>Position: </Text>
+                                <Text style={Styles.DataText}>{this.state.Employeedata.Position}</Text>
+                            </View>
+                            <View style={Styles.infoContainer}>
+                                <Text style={Styles.TitleText}>Employee Status: </Text>
+                                <Text style={Styles.DataText}>{this.state.Employeedata.EmployeeStatus}</Text>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
                 <LoadWheel visible={this.state.loading} />
             </View >
         );
@@ -210,7 +272,7 @@ class DocumentDetails extends React.Component {
                         </Text>
                     </View>
 
-                    <TouchableOpacity style={Styles.infoImg}>
+                    <TouchableOpacity style={Styles.infoImg} onPress={() => this.setState({ showEmployeeInfo: true })}>
                         <Image style={Styles.infoIconStyle} source={Images.InfoIcon}></Image>
                     </TouchableOpacity>
                 </View>
@@ -339,7 +401,7 @@ class DocumentDetails extends React.Component {
                                                     <View style={{ flexDirection: 'row', marginLeft: Matrics.CountScale(5)}}>
                                                         <Text style={{ alignSelf: 'center' }}>{child.RoleEmail}</Text>
                                                         {
-                                                            this.state.isEditable &&
+                                                            this.state.isEditable && this.state.Employeedata.StatusName != 'voided' && this.state.Employeedata.StatusName != 'completed' &&
                                                             <Icon name='pencil-alt' onPress={() => {
                                                                 this.setState({
                                                                     isEmailEditable: true,
@@ -490,19 +552,22 @@ class DocumentDetails extends React.Component {
                         {this.renderStatusIndicatorIcon(false)}
                     </View>
                     <View style={Styles.hireStatusHeaderCardPart2}>
-                        <View style={Styles.headerTextContainer}>
+                        <TouchableOpacity style={Styles.headerTextContainer} onPress={() => this.setState({ hireStatuShow: !this.state.hireStatuShow })}>
                             <Text style={Styles.headerTextStyle}>Hire Status</Text>
                             <Text style={Styles.headerSubTextStyle}>{this.state.Employeedata ? this.state.Employeedata.DisplayStatusName : null}</Text>
-                        </View>
+                        </TouchableOpacity>
                         <View style={Styles.pdfContainer}>
 
                             {this.renderPDFimg(pdf)}
                         </View>
                     </View>
                 </View>
-                <View style={{ flex: 1, marginTop: Matrics.CountScale(5) }}>
-                    <HTML html={htmlContent} ignoredTags={tags} renderers={renderers} />
-                </View>
+                {
+                    this.state.hireStatuShow &&
+                    <View style={{ flex: 1, marginTop: Matrics.CountScale(5) }}>
+                        <HTML html={htmlContent} ignoredTags={tags} renderers={renderers} />
+                    </View>
+                }
                 {/* <View style={Styles.hireStatusCardHeader}>
                     <View style={Styles.hireStatusHeaderCardPart1}>
                     </View>
@@ -757,6 +822,44 @@ const Styles = StyleSheet.create({
         borderBottomColor: Colors.LIGHTGREY,
         borderBottomWidth: 1,
         flex: 1, flexDirection: 'row'
+    },
+    TitleText: {
+        fontFamily: Fonts.NunitoSansRegular,
+        fontSize: Matrics.CountScale(16),
+        color: Colors.GREY,
+        fontWeight: 'bold'
+    },
+    DataText: {
+        fontFamily: Fonts.NunitoSansRegular,
+        fontSize: Matrics.CountScale(16),
+        color: Colors.GREY
+    },
+    infoContainer: {
+        flexDirection: 'row',
+        padding: Matrics.CountScale(10),
+        borderBottomColor: Colors.LIGHTGREY,
+        borderBottomWidth: 1,
+    },
+    modalContainer: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.4)',
+        justifyContent: 'center',
+    },
+    InnerContainer: {
+        backgroundColor: Colors.WHITE,
+        marginHorizontal: Matrics.CountScale(20),
+    },
+    modalHeader: {
+        backgroundColor: Colors.APPCOLOR,
+        flexDirection: 'row'
+    },
+    titleFontStyle:{
+        fontSize: Matrics.CountScale(15),
+        color: 'white',
+        paddingVertical: Matrics.CountScale(15),
+        flex: 1,
+        marginLeft: Matrics.CountScale(10),
+        fontWeight: 'bold',
     }
 });
 

@@ -938,7 +938,6 @@ class CheckDoucmentStatus extends React.Component {
     }
 
     _renderItem = ({ item, index }) => {
-        // console.log('item-->', item);
         // console.log('recipientsListArr-->', this.state.recipientsListArr);
         const HiringData = {
             RoleId: this.state.selectedRoleId,
