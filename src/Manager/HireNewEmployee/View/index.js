@@ -575,7 +575,7 @@ class HireNewEmployee extends React.Component {
 
     employeeDetails() {
         return (
-            <View style={[Styles.cardContainer, { paddingTop: Matrics.CountScale(20) }]}>
+            <View style={[Styles.cardContainer]}>
                 <TextInputView
                     label="First Name *"
                     fontSize={18}
@@ -617,7 +617,7 @@ class HireNewEmployee extends React.Component {
                     error={this.state.errorEmail}
                 />
                 {/* <View style={{ flexDirection: 'row' }}> */}
-                    {console.log('selectedStore-->', this.state.selectedStore)}
+                    {/* {console.log('selectedStore-->', this.state.selectedStore)} */}
                     <Dropdown
                         containerStyle={{
                             // alignSelf: 'flex-start',
@@ -724,8 +724,17 @@ class HireNewEmployee extends React.Component {
         
         return (
             <View style={Styles.cardContainer}>
-                <TouchableOpacity style={{  marginHorizontal: Matrics.CountScale(10) }} onPress={() => this.showDateTimePicker()}>
-                    <Text style={{ color: Colors.APPCOLOR, fontSize: Matrics.CountScale(18), marginTop: Matrics.CountScale(10)}}>{this.state.dateOfBirth == '' ? 'Select Date' : this.state.dateOfBirth}</Text>
+                <TouchableOpacity style={{  marginHorizontal: Matrics.CountScale(10), flexDirection: "row" }} onPress={() => this.showDateTimePicker()}>
+                    <Text style={{ color: Colors.APPCOLOR, flex:1, fontSize: Matrics.CountScale(18), marginTop: Matrics.CountScale(10)}}>{this.state.dateOfBirth == '' ? 'Select Date' : this.state.dateOfBirth}</Text>
+                    <Image 
+                        source={Images.StoreActiveIcon} 
+                        style={{ 
+                            height: Matrics.CountScale(20),
+                            width: Matrics.CountScale(20),
+                            alignSelf: 'flex-end',
+                            marginRight: Matrics.CountScale(10),
+                        }}
+                    />
                 </TouchableOpacity>
                 <Text style={Styles.errorText}>{this.state.errorDob}</Text>
                 <DateTimePicker
@@ -749,7 +758,11 @@ class HireNewEmployee extends React.Component {
                         <Image source={Images.AttachIcon} style={Styles.attachIconStyle}></Image>
                         <Text style={Styles.attachTextStyle}>Attach file</Text>
                     </TouchableOpacity>
-                    <Text style={{ flexWrap: 'wrap', flex: 1, textAlign: 'right', alignSelf: 'flex-end', padding: Matrics.CountScale(20), marginRight: Matrics.CountScale(10)}}>{this.state.attachFile ? this.state.attachFile : null}</Text>
+                    <Text style={{ flexWrap: 'wrap', flex: 1, textAlign: 'right', alignSelf: 'flex-end', padding: Matrics.CountScale(10), marginRight: Matrics.CountScale(10)}}
+                        numberOfLines={1}
+                    >
+                        {this.state.attachFile ? this.state.attachFile : null}
+                    </Text>
                 </View>
             </View>
         )
@@ -882,14 +895,16 @@ const Styles = StyleSheet.create({
         borderRadius: 3,
     },
     Inputcommon: {
-        marginHorizontal: Matrics.CountScale(10)
+        marginHorizontal: Matrics.CountScale(10),
+        marginBottom: 0,
+        margin: 0,
     },
     Input: {
         margin: Matrics.CountScale(10),
     },
     documentContainer: {
         flex: 1,
-        padding: Matrics.CountScale(20),
+        padding: Matrics.CountScale(10),
         flexDirection: 'row',
     },
     labelTextStyle: {

@@ -617,7 +617,7 @@ export default class Minor extends React.Component {
           }
             <View style={[Styles.cardContainer, { flexDirection: 'row' }]}>
               <Text style={[Styles.cardText,{ flex: 1 }]}>Select Permit File</Text>
-              <Text style={Styles.rowLabelText} onPress={() => { this.onSelectFile() }}>{this.state.permitFile ? this.state.permitFile : `Choose file`}</Text>
+              <Text style={Styles.rowLabelText} numberOfLines={2} onPress={() => { this.onSelectFile() }}>{this.state.permitFile ? this.state.permitFile : `Choose file`}</Text>
             </View>
             <Text style={Styles.errorText}>{this.state.permitFileError}</Text>
             
@@ -1110,7 +1110,7 @@ const Styles = StyleSheet.create({
     fontFamily: Fonts.NunitoSansRegular, 
   },
   inputStyle: {
-    backgroundColor: '#e7e7e7',
+    // backgroundColor: '#e7e7e7',
     // width: Matrics.CountScale(30),
     borderColor: '#b8b8b8',
     borderWidth: 1,
@@ -1118,7 +1118,7 @@ const Styles = StyleSheet.create({
     height: Matrics.CountScale(40),
   },
   inputWorkStyle: {
-    backgroundColor: '#e7e7e7',
+    // backgroundColor: '#e7e7e7',
     borderColor: '#b8b8b8',
     borderWidth: 1,
     width: Matrics.CountScale(65),

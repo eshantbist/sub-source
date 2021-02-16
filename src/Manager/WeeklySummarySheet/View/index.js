@@ -1146,7 +1146,7 @@ class WeeklySummarySheet extends React.Component {
                     ?
                         item.data.length > 0
                         ?
-                            item.data.map(res => {
+                            item.data.map((res, index) => {
                                 let resData = this.state.hoursBasicListArr.filter(p => p.UserStoreID == res.UserStoreID && p.DayDate == this.state.selectedDate);
                                 // console.log('resData-->', resData);
                                 // console.log('fullname-->', res);
@@ -1160,6 +1160,7 @@ class WeeklySummarySheet extends React.Component {
                                                 ProfilePicture={res.ProfilePicture} 
                                                 ISProfilePicture={true} 
                                                 nullRecord={true} 
+                                                bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null} 
                                                 onAbsencePress={async () => {
                                                 await this.setState({ 
                                                     absenceReasonModal: true, 
@@ -1192,6 +1193,7 @@ class WeeklySummarySheet extends React.Component {
                                                 selectedDayIsOpen={this.state.selectedDayIsOpen}
                                                 ProfilePicture={res.ProfilePicture}
                                                 ISProfilePicture={true} 
+                                                bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null} 
                                                 RG={resData[0].RG != undefined ? resData[0].RG != 0 ? resData[0].RG.toFixed(2) : null : null} 
                                                 OT={resData[0].OT != undefined ? resData[0].OT != 0 ? resData[0].OT.toFixed(2): null : null} 
                                                 DT={resData[0].DT != undefined ? resData[0].DT != 0 ? resData[0].DT.toFixed(2) : null : null} 
@@ -1246,6 +1248,7 @@ class WeeklySummarySheet extends React.Component {
                                     BW={resTotalHours.length > 0 ? resTotalHours[0].BW != undefined ? resTotalHours[0].BW != 0 ? resTotalHours[0].BW.toFixed(2) : null : null : null} 
                                     onRgDisable={true}
                                     onBwDisable={true}
+                                    bgColor={Colors.ROWBGCOLOR}
                                 />
                                 <TextRow labelText={'Total Unit'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].TotalUnit ? TotalUnitArr[0].TotalUnit != 0 ? TotalUnitArr[0].TotalUnit.toFixed(2) : null : null : null} />
                                 <TextRow labelText={'Productivity'} contentbgColor={TotalUnitArr.length > 0 ? TotalUnitArr[0].ProductivityColorCode ? TotalUnitArr[0].ProductivityColorCode != 'red' ? TotalUnitArr[0].ProductivityColorCode : null : null : null}
@@ -1303,6 +1306,7 @@ class WeeklySummarySheet extends React.Component {
                                         BW={TotalBW != 0 ? parseFloat(TotalBW).toFixed(2) : null} 
                                         onRgDisable={true}
                                         onBwDisable={true}
+                                        bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null} 
                                     />
                                 );
                             })  
