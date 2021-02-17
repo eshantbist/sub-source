@@ -1001,7 +1001,15 @@ class WeeklySchedule extends React.Component {
                 disabled={index == 0 ? true : false}
                 key={index}
             >
-                <View style={[{ backgroundColor: self.state.dayIndex == index ? Colors.SKYBLUE : null, width: Matrics.screenWidth / 2 - Matrics.CountScale(10), alignItems: 'center', paddingVertical: item.DayDate === 'Total' ? Matrics.CountScale(43) : Matrics.CountScale(10), borderColor: Colors.BORDERCOLOR, borderRightWidth: self.state.daysData.length - 1 != index ? 1 : 0 }]}>
+                <View style={[{
+                backgroundColor: self.state.dayIndex == index ? Colors.SKYBLUE : null, 
+                width: Matrics.screenWidth / 2 - Matrics.CountScale(10), 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                height: Matrics.CountScale(120),
+                // paddingVertical: item.DayDate === 'Total' ? Matrics.CountScale(43) : Matrics.CountScale(10), 
+                borderColor: Colors.BORDERCOLOR, 
+                borderRightWidth: self.state.daysData.length - 1 != index ? 1 : 0 }]}>
                     {
                         item.DayDate != 'Total' && item.DayDate != '' ?
                             <Text style={[Styles.fontStyle, self.state.dayIndex == index ? Styles.selectedDayfontStyle : null]}>
@@ -1591,7 +1599,7 @@ class WeeklySchedule extends React.Component {
     //----------->>>Render Method-------------->>>
 
     render() {
-        // console.log('daysData-->', this.state.daysData);
+        console.log('daysData-->', this.state.daysData);
         // console.log('weatherListData-->', this.state.weatherListData);
         // console.log('empRoleData-->', this.state.empRoleData);
         // console.log('selectedDate-->', this.state.selectedDate);
@@ -2209,7 +2217,7 @@ class WeeklySchedule extends React.Component {
                                                 textStyle: {color: Colors.WHITE}, 
                                                 containerStyle: [],
                                             }]}
-                                            maxDate={this.state.currentWeekEndDate}
+                                            // maxDate={this.state.currentWeekEndDate}
                                         />
                                         : null
                                 }
@@ -2636,7 +2644,9 @@ const Styles = StyleSheet.create({
         fontFamily: Fonts.NunitoSansRegular,
     },
     selectedDayfontStyle: {
-        color: 'white', fontWeight: 'bold'
+        color: 'white', 
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
     linkContainer: {
         borderRadius: Matrics.CountScale(10),

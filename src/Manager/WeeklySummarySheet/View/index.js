@@ -1880,7 +1880,7 @@ class WeeklySummarySheet extends React.Component {
                                             textStyle: {color: Colors.WHITE}, 
                                             containerStyle: [],
                                         }]}
-                                        maxDate={this.state.currentWeekEndDate}
+                                        // maxDate={this.state.currentWeekEndDate}
                                     />
                                     : null
                                 }

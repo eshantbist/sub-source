@@ -70,7 +70,7 @@ class Card extends React.Component {
                                     this.props.item.DisplayStatusName == 'Hiring Packet in process' ? { color: Colors.RED } : { color: Colors.APPCOLOR }
                                     // this.props.item.StatusName == 'completed' ? { color: Colors.APPCOLOR } : { color: Colors.RED }
                                 ]}>
-                                    {this.props.item.DisplayStatusName ? `Send To ${this.props.item.DisplayStatusName}` : null}
+                                    {this.props.item.DisplayStatusName ? `Send to ${this.props.item.DisplayStatusName}` : null}
                                     {/* {sentToDocusignRoleNameArr.length > 0 ? `Send To ${sentToDocusignRoleNameArr[0].DocusignRoleName}` : null} */}
                                 </Text>
                             </View>
@@ -82,7 +82,7 @@ class Card extends React.Component {
                         </View>
 
                         <View style={Styles.cardPart2}>
-                            <Text style={Styles.sentByStatusTextStyle}>{this.props.item.SentBy ? `SentBy ${this.props.item.SentBy}`: null} {CDate}</Text>
+                            <Text style={Styles.sentByStatusTextStyle}>{this.props.item.SentBy ? `Sent by ${this.props.item.SentBy}`: null} {CDate}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
