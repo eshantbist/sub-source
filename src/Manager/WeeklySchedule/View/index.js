@@ -992,6 +992,9 @@ class WeeklySchedule extends React.Component {
                         self.setState({ prevIndex: index-1 });
                     }
                     if(self._carousel != undefined){
+                        if(index == 1){
+                            self._carousel.snapToNext({animated: true, fireCallback: true});
+                        }
                         self._carousel.snapToPrev({animated: true, fireCallback: true});
                     }
                     // if(index == 7 && self._carousel != undefined){

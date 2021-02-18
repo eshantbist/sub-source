@@ -145,7 +145,7 @@ class WeeklySummarySheet extends React.Component {
         basicListArr: [],
         bottomTotalBasicListArr: [],
         puchDetailArr: [],
-        dayIndex: 0,
+        dayIndex: 1,
         selectedDayId: -1,
         selectedDate: '',
         nullRecord: false,
@@ -558,14 +558,20 @@ class WeeklySummarySheet extends React.Component {
 
         
         FinalWeekDatesDataArr.push({WeekDate: 'Total', isClosed: false });
+        const extraDate = {
+            DayID: 0,
+            WeekDate: '',
+            isClosed: false
+        }
+        FinalWeekDatesDataArr.unshift(extraDate);
         console.log('FinalWeekDatesDataArr-->', FinalWeekDatesDataArr);
         
         this.setState({ 
             FinalWeekDatesDataArr,
-            selectedDayId: FinalWeekDatesDataArr[0].DayID,
-            selectedDate: FinalWeekDatesDataArr[0].WeekDate,
-            selectedDayIsOpen: !FinalWeekDatesDataArr[0].isClosed,
-            dayIndex: 0,
+            selectedDayId: FinalWeekDatesDataArr[1].DayID,
+            selectedDate: FinalWeekDatesDataArr[1].WeekDate,
+            selectedDayIsOpen: !FinalWeekDatesDataArr[1].isClosed,
+            dayIndex: 1,
         });
         if(this._carousel != undefined){
             this._carousel.snapToItem(0);
@@ -804,20 +810,27 @@ class WeeklySummarySheet extends React.Component {
         // console.log('is closed-->', !item.isClosed, '---', item.WeekDate)
       return(
         <TouchableOpacity style={{ flexDirection: 'row', }} 
-        onPress={() => { 
-            self.setState({ dayIndex: index, selectedDate: item.WeekDate, selectedDayId: item.DayID, selectedDayIsOpen: !item.isClosed, }) 
-            if(index >= 6){
-                self.setState({ prevIndex: index-1 });
-            }
-        }}>
+            onPress={() => { 
+                self.setState({ dayIndex: index, selectedDate: item.WeekDate, selectedDayId: item.DayID, selectedDayIsOpen: !item.isClosed, }) 
+                if(index >= 6){
+                    self.setState({ prevIndex: index-1 });
+                }
+                if(self._carousel != undefined){
+                    if(index == 1){
+                        self._carousel.snapToNext({animated: true, fireCallback: true});
+                    }
+                    self._carousel.snapToPrev({animated: true, fireCallback: true});
+                }
+            }}
+            disabled={index == 0 ? true : false}
+        >
           <View style={{ flex: 1, alignItems: 'center', backgroundColor: self.state.dayIndex == index ? Colors.SKYBLUE : null,
         //   paddingVertical: Matrics.CountScale(20)
         //    paddingVertical: item.WeekDate === 'Total' ? Matrics.CountScale(43) : Matrics.CountScale(10) 
             height: Matrics.CountScale(110)
            }}>
             {
-                item.WeekDate === "Total"
-                ?
+                item.WeekDate == "Total" || item.WeekDate == '' ?
                     <View style={{ flex: 1, justifyContent: 'center'}}>
                         <Text style={[Styles.fontStyle, {color: self.state.dayIndex == index ? 'white' : null, fontWeight: 'bold' }]}>{item.WeekDate}</Text>
                     </View>
@@ -1061,6 +1074,7 @@ class WeeklySummarySheet extends React.Component {
 
     renderUserRole = ({item, index})  => {
         // console.log('item-->', item);
+        console.log('basiclist-->',this.state.bottomHoursBasicListArr)
         
         let resTotalHours = this.state.bottomHoursBasicListArr.filter(t => t.Header == 'Total Hours' && t.DayID == this.state.selectedDayId && t.DayDate == this.state.selectedDate);
         
@@ -1142,7 +1156,7 @@ class WeeklySummarySheet extends React.Component {
                 }
                 
                 {
-                    this.state.selectedDate !== 'Total'
+                    this.state.selectedDate != 'Total'
                     ?
                         item.data.length > 0
                         ?
@@ -1435,13 +1449,19 @@ class WeeklySummarySheet extends React.Component {
                       extraData={this.state}
                       onSnapToItem={(index) => { 
                         //   console.log('index-->',index); console.log('prev-->',index);
-                        this.setState({ dayIndex: index, selectedDate: this.state.FinalWeekDatesDataArr[index].WeekDate, selectedDayId: this.state.FinalWeekDatesDataArr[index].DayID, selectedDayIsOpen: !this.state.FinalWeekDatesDataArr[index].isClosed, })
+                        this.setState({ 
+                            dayIndex: index+1, 
+                            selectedDate: this.state.FinalWeekDatesDataArr[index+1].WeekDate, 
+                            selectedDayId: this.state.FinalWeekDatesDataArr[index+1].DayID, 
+                            selectedDayIsOpen: !this.state.FinalWeekDatesDataArr[index+1].isClosed, 
+                        });
                         // if(this.state.prevIndex == 5){
                         //     console.log('kkkk')
                         //     this._carousel.snapToPrev({animated: true, fireCallback: true});
                         // }
                     }}
-                    scrollEnabled={ (this.state.dayIndex == 6 || this.state.dayIndex == 7) && this.state.prevIndex == 5 ? true : (this.state.dayIndex == 6 || this.state.dayIndex == 7) ? false  : true}
+                    // scrollEnabled={ (this.state.dayIndex == 6 || this.state.dayIndex == 7) && this.state.prevIndex == 5 ? true : (this.state.dayIndex == 6 || this.state.dayIndex == 7) ? false  : true}
+                    scrollEnabled={ (this.state.dayIndex == 8) && this.state.prevIndex == 6 ? true : (this.state.dayIndex == 8) ? false  : true}
                     // onBeforeSnapToItem = {(slideIndex) => console.log('before-->', slideIndex)}
                     // scrollEnabled={(this.state.dayIndex == 6 || this.state.dayIndex == 7) && this.state.dayIndex != 5 ? false : true}
                     // onScroll={(e) => console.log('scroll-->',e)}
