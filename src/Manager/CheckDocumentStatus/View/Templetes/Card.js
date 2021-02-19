@@ -67,10 +67,11 @@ class Card extends React.Component {
                                     {this.props.item.FirstName} {this.props.item.LastName}
                                 </Text>
                                 <Text style={[Styles.sendStatusText, 
-                                    this.props.item.DisplayStatusName == 'Hiring Packet in process' ? { color: Colors.RED } : { color: Colors.APPCOLOR }
+                                    // this.props.item.DisplayStatusName == 'Hiring Packet in process' ? { color: Colors.RED } : { color: Colors.APPCOLOR }
                                     // this.props.item.StatusName == 'completed' ? { color: Colors.APPCOLOR } : { color: Colors.RED }
                                 ]}>
-                                    {this.props.item.DisplayStatusName ? `Send to ${this.props.item.DisplayStatusName}` : null}
+                                    {this.props.item.DisplayStatusName ? this.props.item.EmployeeStatus : null}
+                                    {/* {this.props.item.DisplayStatusName ? `Send to ${this.props.item.DisplayStatusName}` : null} */}
                                     {/* {sentToDocusignRoleNameArr.length > 0 ? `Send To ${sentToDocusignRoleNameArr[0].DocusignRoleName}` : null} */}
                                 </Text>
                             </View>

@@ -362,10 +362,13 @@ class DocumentDetails extends React.Component {
                     {
                         recipientArr.length > 0 && this.state.showEmailList 
                         ?   recipientArr[0].data.map((child, index) => {
+                                const DateArr = child.Updated.split('T');
+                                const CDate = moment(DateArr[0]).format('MM.DD.YYYY');
+                                const Time = moment(DateArr[1], "h:mm A").format('hh:mm a');
                                 return (
                                     <View key={index} style={{ borderBottomWidth: 1, borderBottomColor: Colors.LIGHTGREY, padding: Matrics.CountScale(10)}}>
                                         <Text style={{ 
-                                            color: child.StatusName == 'completed' ? Colors.APPCOLOR : child.StatusName == 'sent' ? Colors.RED : null, 
+                                            color: child.StatusName == 'completed' ? Colors.APPCOLOR : child.StatusName != 'created' ? Colors.RED : null, 
                                             marginBottom: Matrics.CountScale(5) 
                                         }}>
                                             {
@@ -373,7 +376,9 @@ class DocumentDetails extends React.Component {
                                                 ? `Completed by ${child.RoleName}`
                                                 : child.StatusName == 'sent'  
                                                     ? `Sent to ${child.RoleName}`
-                                                    : `${child.RoleName} waiting`
+                                                    : child.StatusName == 'created'  
+                                                    ?`${child.RoleName} waiting`
+                                                    : `${child.RoleName} - Invalid Email`
                                             }
                                         </Text>
                                         <View style={{ flexDirection: 'row'}}>
@@ -414,6 +419,22 @@ class DocumentDetails extends React.Component {
                                                         }
                                                     </View>
                                             }
+                                        </View>
+                                        <View style={{ flexDirection: 'row'}}>
+                                            <Text style={Styles.headerTextStyle}>On: </Text>
+                                            <Text style={{ fontFamily: Fonts.NunitoSansRegular, alignSelf: 'center', fontSize: Matrics.CountScale(14) }}>
+                                                {
+                                                    (child.StatusName == 'completed' ||
+                                                    child.StatusName == 'declined' ||
+                                                    child.StatusName == 'voided')
+                                                    ? `${CDate}@${Time.toLocaleUpperCase()}`
+                                                    : (child.StatusName != 'completed' ||
+                                                      child.StatusName != 'declined' ||
+                                                      child.StatusName != 'voided')
+                                                        ? 'Pending'
+                                                        : null
+                                                }
+                                            </Text>
                                         </View>
                                     </View>
                                 )
