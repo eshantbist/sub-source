@@ -7470,6 +7470,11 @@ react-native-modal-datetime-picker@^8.7.1:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-modal-filter-picker@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal-filter-picker/-/react-native-modal-filter-picker-2.0.0.tgz#43614990d3026a3b8b8bea803131836b7d3b3cfc"
+  integrity sha512-QioTeGSL53A0q4mJsaahJaXIdxbvTIXdyIn9WEfwRoTldhZtp6L/8ZmxLMiRKvt2qUCA4BIus9eMfSaqGkm5WQ==
+
 react-native-ratings@^7.2.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-7.2.0.tgz#8523e98868470855ec1d2feb112e466e17a1fd9f"

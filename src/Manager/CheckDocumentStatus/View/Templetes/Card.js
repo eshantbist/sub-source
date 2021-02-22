@@ -70,7 +70,16 @@ class Card extends React.Component {
                                     // this.props.item.DisplayStatusName == 'Hiring Packet in process' ? { color: Colors.RED } : { color: Colors.APPCOLOR }
                                     // this.props.item.StatusName == 'completed' ? { color: Colors.APPCOLOR } : { color: Colors.RED }
                                 ]}>
-                                    {this.props.item.DisplayStatusName ? this.props.item.EmployeeStatus : null}
+                                    {
+                                        (!(this.props.item.StatusID==6561 || this.props.item.StatusID==6573)) && (!(this.props.item.StatusName == 'declined' || this.props.item.StatusName == 'voided' ||(this.props.item.BGCStatusID==6 || this.props.item.BGCStatusID==10 || this.props.item.EverifyStatusID == 13)))
+                                        ? 'Hiring in Process'
+                                        : (this.props.item.StatusName == 'declined' || this.props.item.StatusName == 'voided' || this.props.item.BGCStatusID==6 || this.props.item.BGCStatusID==10 || this.props.item.EverifyStatusID == 13)
+                                        ? 'Hiring Process Terminated'
+                                        : (this.props.item.StatusID==6561 || this.props.item.StatusID==6573) && (!(this.props.item.StatusName == 'declined' || this.props.item.StatusName == 'voided' || this.props.item.BGCStatusID==6 || this.props.item.BGCStatusID==10 || this.props.item.EverifyStatusID == 13))
+                                        ? 'Employee Created'
+                                        : null 
+                                    }
+                                    {/* {this.props.item.DisplayStatusName ? this.props.item.EmployeeStatus : null} */}
                                     {/* {this.props.item.DisplayStatusName ? `Send to ${this.props.item.DisplayStatusName}` : null} */}
                                     {/* {sentToDocusignRoleNameArr.length > 0 ? `Send To ${sentToDocusignRoleNameArr[0].DocusignRoleName}` : null} */}
                                 </Text>

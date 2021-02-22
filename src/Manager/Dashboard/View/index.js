@@ -6,6 +6,7 @@ import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
 import moment from 'moment'
 import { Picker } from '@react-native-community/picker';
+import ModalFilterPicker from 'react-native-modal-filter-picker';
 
 {/* ====>>>>>>>>>>>    Assets   <<<<<<<<<<========== */ }
 import { Colors, Fonts, Matrics, Images } from '@Assets';
@@ -94,6 +95,7 @@ class Dashboard extends React.Component {
         selectedRoleId: 0,
         selectedUsers: 0,
         selectedStores: -1,
+        SelectedStoreName: '',
         isDateTimePickerVisible: false,
         selectedNOD: '',
         selectedStatus: '',
@@ -123,6 +125,7 @@ class Dashboard extends React.Component {
         currentWeekEndDate: '',
         lastFilterselectedRoleId: 0,
         lastFilterselectedStores: -1,
+        lastFilterSelectedStoreName: '',
         refreshing: false,
         selectedRoleName: '',
         lastFilterselectedUserId: 0,
@@ -131,7 +134,8 @@ class Dashboard extends React.Component {
         showDrodown: false,
         Dropdata: [{
             value: 'Logout',
-        }]
+        }],
+        showShop: false,
     }
     // ======>>>>>>> Life Cycle Methods  <<<<<<<========
     async UNSAFE_componentWillMount() {
@@ -231,15 +235,21 @@ class Dashboard extends React.Component {
                     var i;
                     for (i = 0; i < data.Report.store_list.length; i++) {
                         data.Report.store_list[i].name = data.Report.store_list[i]['DisplayStoreNumber'];
+                        data.Report.store_list[i].label = data.Report.store_list[i]['DisplayStoreNumber'];
+                        data.Report.store_list[i].key = data.Report.store_list[i]['StoreID'];
                         delete data.Report.store_list[i].key1;
                     }
                 }
-                // console.log('NewStores-->', data.Report.store_list);
+                console.log('NewStores-->', data.Report.store_list);
                 // data.Report.user_list.unshift(userSelect);
                 // console.log("StoreList", data.Report.store_list);
                 // console.log("RoleList",  data.Report.role_list);
                 // console.log("UserList-->",  data.Report.user_list);
-                await this.setState({ userRole: data.Report.role_list, Users: data.Report.user_list, Stores: data.Report.store_list })
+                await this.setState({
+                    userRole: data.Report.role_list,
+                    Users: data.Report.user_list,
+                    Stores: data.Report.store_list,
+                })
             }
             // console.log(data)
         }
@@ -543,7 +553,8 @@ class Dashboard extends React.Component {
             WeekEndingDate: this.state.currentWeekEndDate,
             selectedUsers: 0,
             selectedStoreIndex: -1,
-            resetFilter: true
+            resetFilter: true,
+            SelectedStoreName: '',
         })
         setTimeout(() => {
             this.setState({ resetFilter: false })
@@ -672,6 +683,7 @@ class Dashboard extends React.Component {
                                     WeekEndingDate: this.state.lastFilterWeekEndingDate,
                                     selectedRoleId: this.state.lastFilterselectedRoleId,
                                     selectedStores: this.state.lastFilterselectedStores,
+                                    SelectedStoreName: this.state.lastFilterSelectedStoreName,
                                     selectedUsers: this.state.lastFilterselectedUserId,
                                     Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
                                     selectedStoreIndex: this.state.lastFilterselectedIndex
@@ -694,6 +706,7 @@ class Dashboard extends React.Component {
                                     lastFilterWeekEndingDate: this.state.WeekEndingDate,
                                     lastFilterselectedRoleId: this.state.selectedRoleId,
                                     lastFilterselectedStores: this.state.selectedStores,
+                                    lastFilterSelectedStoreName: this.state.SelectedStoreName,
                                     lastFilterselectedUserId: this.state.selectedUsers,
                                     lastFilterselectedIndex: index,
 
@@ -770,6 +783,9 @@ class Dashboard extends React.Component {
                                     </View>
                                 }
                                 <Text style={Styles.pickerLabelStyle}>Shops</Text>
+                                <Text style={Styles.pickerLabelStyle} onPress={()=> this.setState({ showShop: true })}>
+                                    { this.state.SelectedStoreName ? this.state.SelectedStoreName : 'Select Shops' }
+                                </Text>
                                 {/* <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedStores}
@@ -781,7 +797,23 @@ class Dashboard extends React.Component {
                                 >
                                     {this.getStores()}
                                 </Picker> */}
-                                {!this.state.resetFilter ?
+                                <ModalFilterPicker
+                                    visible={this.state.showShop}
+                                    onSelect={(item) => {
+                                        console.log('picked-->', item);
+                                        this.setState({ selectedStores: item.StoreID, showShop: false, SelectedStoreName: item.DisplayStoreNumber });
+                                        global.selectedStore = item.StoreID;
+                                        global.checkDocumentStoreId = undefined;
+                                    }}
+                                    onCancel={() => this.setState({ showShop: false })}
+                                    options={this.state.Stores}
+                                    placeholderText="Search shop"
+                                    placeholderTextColor={Colors.GREY}
+                                    listContainerStyle={Styles.filterModalContainer}
+                                    optionTextStyle={Styles.optionTextStyle}
+                                    overlayStyle={{ flex: 1, backgroundColor: Colors.WHITE }}
+                                />
+                                {/* {!this.state.resetFilter ?
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
                                             // const items = this.state.selectedItems;
@@ -829,7 +861,8 @@ class Dashboard extends React.Component {
                                             }
                                         }
                                     />
-                                    : null}
+                                    : null} */}
+
                                 {/* <Text style={Styles.pickerLabelStyle}>No. Of Days</Text>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
@@ -1360,6 +1393,15 @@ const Styles = {
         fontFamily: Fonts.NunitoSansRegular,
         fontSize: 14,
         marginLeft: Matrics.CountScale(15)
+    },
+    filterModalContainer: {
+        flex: 1,
+        backgroundColor: Colors.WHITE,
+        // width: '100%',
+
+    },
+    optionTextStyle: {
+        width: '100%',
     },
 }
 // export default Dashboard
