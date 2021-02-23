@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import SearchableDropdown from '../../../CustomComponent/react-native-searchable-dropdown';
 import _ from 'lodash';
 import moment from 'moment';
+import ModalFilterPicker from 'react-native-modal-filter-picker';
 import {
   getWeatherDetailsListRequest,
   CreateEmployeeTimeOff,
@@ -195,6 +196,7 @@ class WeeklySummarySheet extends React.Component {
         lastFilterselectedIndex: -1,
         resetFilter: false,
         defaultWeekendDate: '',
+        showShop: false,
     };
     
     lastTap = null;
@@ -321,6 +323,8 @@ class WeeklySummarySheet extends React.Component {
                 var i;
                 for (i = 0; i < data.Report.store_list.length; i++) {
                     data.Report.store_list[i].name = data.Report.store_list[i]['DisplayStoreNumber'];
+                    data.Report.store_list[i].label = data.Report.store_list[i]['DisplayStoreNumber'];
+                    data.Report.store_list[i].key = data.Report.store_list[i]['StoreID'];
                     delete data.Report.store_list[i].key1;
                 }
             }
@@ -1942,6 +1946,9 @@ class WeeklySummarySheet extends React.Component {
                                     </View>
                                 }
                                 <Text style={Styles.pickerLabelStyle}>Shops</Text>
+                                <Text style={Styles.pickerLabelStyle} onPress={()=> this.setState({ showShop: true })}>
+                                    { this.state.selectedStoreName != '' ? this.state.selectedStoreName : 'Select Shops' }
+                                </Text>
                                 {/* <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedStoreId}
@@ -1952,7 +1959,21 @@ class WeeklySummarySheet extends React.Component {
                                 >
                                     {this.getStores()}
                                 </Picker> */}
-                                {!this.state.resetFilter ?
+                                <ModalFilterPicker
+                                    visible={this.state.showShop}
+                                    onSelect={(item) => {
+                                        console.log('picked-->', item);
+                                        this.setState({ selectedStoreId: item.StoreID, showShop: false, selectedStoreName: item.DisplayStoreNumber });
+                                    }}
+                                    onCancel={() => this.setState({ showShop: false })}
+                                    options={this.state.StoresList}
+                                    placeholderText="Search shop"
+                                    placeholderTextColor={Colors.GREY}
+                                    listContainerStyle={Styles.filterModalContainer}
+                                    optionTextStyle={Styles.optionTextStyle}
+                                    overlayStyle={{ flex: 1, backgroundColor: Colors.WHITE }}
+                                />
+                                {/* {!this.state.resetFilter ?
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
                                             const index = this.state.StoresList.findIndex(s => s.StoreID === item.StoreID);
@@ -1994,7 +2015,7 @@ class WeeklySummarySheet extends React.Component {
                                             }
                                         }
                                     />
-                                    : null}
+                                    : null} */}
                                 <TouchableOpacity onPress={() => this.resetFilterClick()} style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 10, margin: 40 }}>
                                     <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
                                     <Text style={{ color: 'red' }}>Reset Filter</Text>

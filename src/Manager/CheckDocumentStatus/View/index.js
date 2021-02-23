@@ -12,6 +12,7 @@ import _ from 'lodash';
 import {Picker} from '@react-native-community/picker';
 import SearchableDropdown from '../../../CustomComponent/react-native-searchable-dropdown';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import ModalFilterPicker from 'react-native-modal-filter-picker';
 
 // ======>>>>> Assets <<<<<=========
 import { Colors, Fonts, Matrics, Images, MasterCss } from '@Assets'
@@ -81,6 +82,7 @@ class CheckDoucmentStatus extends React.Component {
         selectedStoreIndex: -1,
         lastFilterselectedIndex: -1,
         resetFilter: false,
+        showShop: false,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -169,6 +171,8 @@ class CheckDoucmentStatus extends React.Component {
                     var i;
                     for (i = 0; i < data.Report.store_list.length; i++) {
                         data.Report.store_list[i].name = data.Report.store_list[i]['DisplayStoreNumber'];
+                        data.Report.store_list[i].label = data.Report.store_list[i]['DisplayStoreNumber'];
+                        data.Report.store_list[i].key = data.Report.store_list[i]['StoreID'];
                         delete data.Report.store_list[i].key1;
                     }
                 }
@@ -813,6 +817,9 @@ class CheckDoucmentStatus extends React.Component {
                                 }
                                 
                                 <Text style={Styles.pickerLabelStyle}>Shops</Text>
+                                <Text style={[Styles.pickerLabelStyle, { marginBottom: Matrics.CountScale(10)}]} onPress={()=> this.setState({ showShop: true })}>
+                                    { this.state.selectedStoreName != '' ? this.state.selectedStoreName : 'Select Shops' }
+                                </Text>
                                 {/* <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedStores}
@@ -823,7 +830,21 @@ class CheckDoucmentStatus extends React.Component {
                                 >
                                     {this.getStores()}
                                 </Picker> */}
-                                {!this.state.resetFilter ?
+                                <ModalFilterPicker
+                                    visible={this.state.showShop}
+                                    onSelect={(item) => {
+                                        console.log('picked-->', item);
+                                        this.setState({ selectedStores: item.StoreID, showShop: false, selectedStoreName: item.DisplayStoreNumber });
+                                    }}
+                                    onCancel={() => this.setState({ showShop: false })}
+                                    options={this.state.storeList}
+                                    placeholderText="Search shop"
+                                    placeholderTextColor={Colors.GREY}
+                                    listContainerStyle={Styles.filterModalContainer}
+                                    optionTextStyle={Styles.optionTextStyle}
+                                    overlayStyle={{ flex: 1, backgroundColor: Colors.WHITE }}
+                                />
+                                {/* {!this.state.resetFilter ?
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
                                             const index = this.state.storeList.findIndex(s => s.StoreID === item.StoreID);
@@ -866,7 +887,7 @@ class CheckDoucmentStatus extends React.Component {
                                             }
                                         }
                                     />
-                                    : null}
+                                    : null} */}
                                 <Text style={Styles.pickerLabelStyle}>No. Of Days</Text>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}

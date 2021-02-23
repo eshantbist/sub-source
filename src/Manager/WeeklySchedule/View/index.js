@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import SearchableDropdown from '../../../CustomComponent/react-native-searchable-dropdown';
+import ModalFilterPicker from 'react-native-modal-filter-picker';
 
 // ======>>>>> Assets <<<<<=========
 import { Colors, Fonts, Images, Matrics, MasterCss } from '@Assets'
@@ -269,7 +270,8 @@ class WeeklySchedule extends React.Component {
         lastFilterselectedIndex: -1,
         resetFilter: false,
         userHeaderHeight: 0,
-        defaultWeekendDate: ''
+        defaultWeekendDate: '',
+        showShop: false,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -390,10 +392,13 @@ class WeeklySchedule extends React.Component {
                     data.Report.user_list.unshift(userSelect);
                 }
                 data.Report.role_list.unshift(roleSelect);
+                console.log('store-->', data.Report.store_list);
                 if (data.Report.store_list.length > 0) {
                     var i;
                     for (i = 0; i < data.Report.store_list.length; i++) {
                         data.Report.store_list[i].name = data.Report.store_list[i]['DisplayStoreNumber'];
+                        data.Report.store_list[i].label = data.Report.store_list[i]['DisplayStoreNumber'];
+                        data.Report.store_list[i].key = data.Report.store_list[i]['StoreID'];
                         delete data.Report.store_list[i].key1;
                     }
                 }
@@ -1602,10 +1607,11 @@ class WeeklySchedule extends React.Component {
     //----------->>>Render Method-------------->>>
 
     render() {
-        console.log('daysData-->', this.state.daysData);
+        // console.log('daysData-->', this.state.daysData);
         // console.log('weatherListData-->', this.state.weatherListData);
         // console.log('empRoleData-->', this.state.empRoleData);
         // console.log('selectedDate-->', this.state.selectedDate);
+        console.log('selectedStoreName-->', this.state.selectedStoreName);
         // console.log('Stores-->', this.state.Stores);
         // console.log('dayIndex-->', this.state.dayIndex);
         // if(this.state.selectedDate == 'Total')
@@ -2262,6 +2268,9 @@ class WeeklySchedule extends React.Component {
                                     </View>
                                 }
                                 <Text style={Styles.pickerLabelStyle}>Shops</Text>
+                                <Text style={Styles.pickerLabelStyle} onPress={()=> this.setState({ showShop: true })}>
+                                    { this.state.selectedStoreName != '' ? this.state.selectedStoreName : 'Select Shops' }
+                                </Text>
                                 {/* <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedStoreId}
@@ -2272,7 +2281,21 @@ class WeeklySchedule extends React.Component {
                                 >
                                     {this.getStores()}
                                 </Picker> */}
-                                {!this.state.resetFilter ?
+                                <ModalFilterPicker
+                                    visible={this.state.showShop}
+                                    onSelect={(item) => {
+                                        console.log('picked-->', item);
+                                        this.setState({ selectedStoreId: item.StoreID, showShop: false, selectedStoreName: item.DisplayStoreNumber });
+                                    }}
+                                    onCancel={() => this.setState({ showShop: false })}
+                                    options={this.state.Stores}
+                                    placeholderText="Search shop"
+                                    placeholderTextColor={Colors.GREY}
+                                    listContainerStyle={Styles.filterModalContainer}
+                                    optionTextStyle={Styles.optionTextStyle}
+                                    overlayStyle={{ flex: 1, backgroundColor: Colors.WHITE }}
+                                />
+                                {/* {!this.state.resetFilter ?
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
                                             const index = this.state.Stores.findIndex(s => s.StoreID === item.StoreID);
@@ -2315,7 +2338,7 @@ class WeeklySchedule extends React.Component {
                                             }
                                         }
                                     />
-                                    : null}
+                                    : null} */}
                                 <TouchableOpacity onPress={() => this.resetFilterClick()} style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 10, margin: 40 }}>
                                     <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
                                     <Text style={{ color: 'red' }}>Reset Filter</Text>

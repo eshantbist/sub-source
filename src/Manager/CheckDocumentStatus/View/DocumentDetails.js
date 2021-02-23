@@ -343,7 +343,7 @@ class DocumentDetails extends React.Component {
                         <Image style={{ width: 2, alignSelf: 'center', height: 10, marginRight: Matrics.CountScale(10) }} source={Images.LineIcon}></Image>
                     </View>
                     <View>
-                        <Text style={{ color: Colors.APPCOLOR }}>Completed By Employee</Text>
+                        <Text style={{ color: Colors.APPCOLOR }}>Completed by employee</Text>
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', }}>

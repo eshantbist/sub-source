@@ -240,7 +240,7 @@ class Dashboard extends React.Component {
                         delete data.Report.store_list[i].key1;
                     }
                 }
-                console.log('NewStores-->', data.Report.store_list);
+                // console.log('NewStores-->', data.Report.store_list);
                 // data.Report.user_list.unshift(userSelect);
                 // console.log("StoreList", data.Report.store_list);
                 // console.log("RoleList",  data.Report.role_list);
