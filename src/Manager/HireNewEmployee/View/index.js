@@ -348,27 +348,27 @@ class HireNewEmployee extends React.Component {
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
 
         if (this.state.position === ''){
-            this.setState({ errorPosition: 'Please Select The Position' });
+            this.setState({ errorPosition: 'Please select the position' });
         } 
         else if( this.state.firstName === '') {
-            this.setState({ errorFirstName: 'Please Enter The FirstName' });
+            this.setState({ errorFirstName: 'Please enter the firstName' });
         } else if (this.state.lastName === ''){
-            this.setState({ errorLastName: 'Please Enter The LastName' });
+            this.setState({ errorLastName: 'Please enter the lastName' });
         } else if (this.state.email === ''){
-            this.setState({ errorEmail: 'Please Enter The Email' });
+            this.setState({ errorEmail: 'Please enter the email' });
         } else if (reg.test(this.state.email) === false){
-            this.setState({ errorEmail: 'Please Enter Valid Email' });
+            this.setState({ errorEmail: 'Please enter valid email' });
         } else if (this.state.selectedStore === '' || this.state.selectedStore === 'Selecte Shop'){
-            this.setState({ errorStore: 'Please Select The Store' });
+            this.setState({ errorStore: 'Please select the store' });
         } else if (this.state.posId === ''){
-            this.setState({ errorPosId: 'Please Enter The PosId' });
+            this.setState({ errorPosId: 'Please enter the posid' });
         } else if (this.state.posId === `${this.state.StoreID}-`){
-            this.setState({ errorPosId: 'Please Enter The PosId' });
+            this.setState({ errorPosId: 'Please enter the posid' });
         }
         else if (this.state.wageRate === ''){
-            this.setState({ errorwageRate: 'Please Enter The WageRate' });
+            this.setState({ errorwageRate: 'Please enter ehe wageRate' });
         } else if (this.state.dateOfBirth === ''){
-            this.setState({ errorDob: 'Please Select DateOfBirth' });
+            this.setState({ errorDob: 'Please select dateofbirth' });
         } else if(this.state.age < this.state.minorAge && this.state.minorData.length == 0) {
             this.setState({ isMinor: true });
             Alert.alert(
@@ -382,7 +382,7 @@ class HireNewEmployee extends React.Component {
         }
         else if(this.state.wageType === 'Hourly/Salary') {
             if (this.state.selectedWages === '' || this.state.selectedWages === 'Select WageType'){
-                this.setState({ errorWageType: 'Please Select The WageType' });
+                this.setState({ errorWageType: 'Please select the wageType' });
             } else {
                 this.EmployeeExistenceCheck();
             }

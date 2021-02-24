@@ -158,7 +158,7 @@ class Publish extends React.Component {
                 '_employeeList': empListArr
             });
         } else {
-            this.setState({ messageError: 'Please Enter The Message' });
+            this.setState({ messageError: 'Please enter the message' });
         }
     }
 

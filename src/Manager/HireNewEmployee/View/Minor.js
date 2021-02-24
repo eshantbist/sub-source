@@ -173,7 +173,7 @@ export default class Minor extends React.Component {
       this.setState({ startDate: moment(date).format('MM/DD/YYYY'), startDateError: '' });
     }  else if(this.state.dateFlag === 'To') {
       if(moment(date).format('MM/DD/YYYY') <= this.state.StartDate) {
-        this.setState({ endDateError: 'End date should be greater than Start date' });
+        this.setState({ endDateError: 'End date should be greater than start date' });
       } else {
         this.setState({ endDate: moment(date).format('MM/DD/YYYY'), endDateError: '' });
       }
@@ -380,33 +380,33 @@ export default class Minor extends React.Component {
     if(this.state.HSGchecked === false) {
       // console.log('if');
       if( this.state.issueDate === '') {
-        this.setState({ issueDateError: 'Please Select The Issue Date' });
+        this.setState({ issueDateError: 'Please select the issue date' });
       } else if (this.state.expirationDate === ''){
-        this.setState({ expirationDateError: 'Please Select The Expiration Date'});
+        this.setState({ expirationDateError: 'Please select the expiration date'});
       }
       else if(IssueDate >= ExpiryDate){
-        this.setState({ expirationDateError: 'Expiration Date should be greater than two Issue Date'});
+        this.setState({ expirationDateError: 'Expiration date should be greater than two issue Date'});
       }
       else if(this.state.offSessionChecked === true) {
         console.log('else if')
         if(this.state.startDate === ''){
-          this.setState({ startDateError: 'Please Select The Start Date' });
+          this.setState({ startDateError: 'Please select the start date' });
         } else if (this.state.endDate === ''){
-          this.setState({ endDateError: 'Please Select The End Date' });
+          this.setState({ endDateError: 'Please select the end date' });
         } else if(this.state.endDate  <= this.state.startDate){
-          this.setState({ endDateError: 'End Date Should Be Greater Than To Start Date' });
+          this.setState({ endDateError: 'End date should be greater than to start date' });
         } else if(this.state.InTime === ''){
           this.setState({ InTimeError: 'please select InTime' });
         } else if(this.state.OutTime === ''){
           this.setState({ OutTimeError: 'please select OutTime' });
         } else if(reg.test(this.state.InTime) === false){
-          alert('Invalid InTime! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+          alert('Invalid InTime! Time should be in HH:MMam/pm format. There should not be space in between MM(minutes) and AM/PM');
           // this.setState({ InTimeError: 'Invalid InTime!\n Time should be in HH:MMam/pm\n Format. There should not\n be space in between \nMM(minutes) and AM/PM' });
         } else if(reg.test(this.state.OutTime)=== false) {
-          alert('Invalid OutTime! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+          alert('Invalid OutTime! Time should be in HH:MMam/pm format. There should not be space in between MM(minutes) and AM/PM');
           // this.setState({ OutTimeError: 'Invalid OutTime!\n Time should be in HH:MMam/pm\n Format. There should not\n be space in between \nMM(minutes) and AM/PM' });
         } else if(date2 >= date1){
-          this.setState({ OutTimeError: 'Out Time ShouldBe GraterThan To InTime' });
+          this.setState({ OutTimeError: 'OutTime shouldbe graterthan to InTime' });
         } 
         else if(
           (!this.state.anyHoursCheckedWe) &&
@@ -617,7 +617,9 @@ export default class Minor extends React.Component {
           }
             <View style={[Styles.cardContainer, { flexDirection: 'row' }]}>
               <Text style={[Styles.cardText,{ flex: 1 }]}>Select Permit File</Text>
-              <Text style={Styles.rowLabelText} numberOfLines={2} onPress={() => { this.onSelectFile() }}>{this.state.permitFile ? this.state.permitFile : `Choose file`}</Text>
+              <Text style={Styles.rowLabelText} numberOfLines={1} onPress={() => { this.onSelectFile() }}>
+                {this.state.permitFile ? this.state.permitFile : `Choose file`}
+              </Text>
             </View>
             <Text style={Styles.errorText}>{this.state.permitFileError}</Text>
             
@@ -773,7 +775,9 @@ export default class Minor extends React.Component {
         , 
         <TextInput 
           autoCorrect={false}
-          style={Styles.inputStyle}
+          style={[Styles.inputStyle,{
+            backgroundColor: this.state.anyHoursCheckedWe ? '#e7e7e7' : '#ffffff'
+          }]}
           // placeholder={'Type here'}
           onChangeText={(text) => this.setState({hoursWe: text})}
           value={this.state.hoursWe}
@@ -783,7 +787,9 @@ export default class Minor extends React.Component {
         <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
           <TextInput 
             autoCorrect={false}
-            style={Styles.inputWorkStyle}
+            style={[Styles.inputWorkStyle,{
+              backgroundColor: this.state.anyHoursCheckedWe ? '#e7e7e7' : '#ffffff'
+            }]}
             placeholder={this.state.anyHoursCheckedWe ? '12:00' :'HH:MM'}
             onChangeText={(text) => this.setState({workingHoursWe1: text})}
             value={this.state.workingHoursWe1}
@@ -791,7 +797,9 @@ export default class Minor extends React.Component {
           />
           <TextInput 
             autoCorrect={false}
-            style={Styles.inputWorkStyle}
+            style={[Styles.inputWorkStyle,{
+              backgroundColor: this.state.anyHoursCheckedWe ? '#e7e7e7' : '#ffffff'
+            }]}
             placeholder={this.state.anyHoursCheckedWe ? '11:59' :'HH:MM'}
             onChangeText={(text) => this.setState({workingHoursWe2: text})}
             value={this.state.workingHoursWe2}
@@ -809,7 +817,9 @@ export default class Minor extends React.Component {
       , 
       <TextInput 
         autoCorrect={false}
-        style={Styles.inputStyle}
+        style={[Styles.inputStyle,{
+          backgroundColor: this.state.anyHoursCheckedTh ? '#e7e7e7' : '#ffffff'
+        }]}
         // placeholder={'Type here'}
         onChangeText={(text) => this.setState({hoursTh: text})}
         value={this.state.hoursTh}
@@ -819,7 +829,9 @@ export default class Minor extends React.Component {
       <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
         <TextInput 
           autoCorrect={false}
-          style={Styles.inputWorkStyle}
+          style={[Styles.inputWorkStyle,{
+            backgroundColor: this.state.anyHoursCheckedTh ? '#e7e7e7' : '#ffffff'
+          }]}
           placeholder={this.state.anyHoursCheckedTh ? '12:00' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursTh1: text})}
           value={this.state.workingHoursTh1}
@@ -827,7 +839,9 @@ export default class Minor extends React.Component {
         />
         <TextInput 
           autoCorrect={false}
-          style={Styles.inputWorkStyle}
+          style={[Styles.inputWorkStyle,{
+            backgroundColor: this.state.anyHoursCheckedTh ? '#e7e7e7' : '#ffffff'
+          }]}
           placeholder={this.state.anyHoursCheckedTh ? '11:59':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursTh2: text})}
           value={this.state.workingHoursTh2}
@@ -844,7 +858,9 @@ export default class Minor extends React.Component {
       , 
       <TextInput 
         autoCorrect={false}
-        style={Styles.inputStyle}
+        style={[Styles.inputStyle,{
+          backgroundColor: this.state.anyHoursCheckedFr ? '#e7e7e7' : '#ffffff'
+        }]}
         // placeholder={'Type here'}
         onChangeText={(text) => this.setState({hoursFr: text})}
         value={this.state.hoursFr}
@@ -854,7 +870,9 @@ export default class Minor extends React.Component {
       <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
         <TextInput 
           autoCorrect={false}
-          style={Styles.inputWorkStyle}
+          style={[Styles.inputWorkStyle,{
+            backgroundColor: this.state.anyHoursCheckedFr ? '#e7e7e7' : '#ffffff'
+          }]}
           placeholder={this.state.anyHoursCheckedFr ? '12:00' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursFr1: text})}
           value={this.state.workingHoursFr1}
@@ -862,7 +880,9 @@ export default class Minor extends React.Component {
         />
         <TextInput 
           autoCorrect={false}
-          style={Styles.inputWorkStyle}
+          style={[Styles.inputWorkStyle,{
+            backgroundColor: this.state.anyHoursCheckedFr ? '#e7e7e7' : '#ffffff'
+          }]}
           placeholder={this.state.anyHoursCheckedFr ? '11:59':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursFr2: text})}
           value={this.state.workingHoursFr2}
@@ -879,7 +899,9 @@ export default class Minor extends React.Component {
       , 
       <TextInput 
         autoCorrect={false}
-        style={Styles.inputStyle}
+        style={[Styles.inputStyle,{
+          backgroundColor: this.state.anyHoursCheckedSa ? '#e7e7e7' : '#ffffff'
+        }]}
         // placeholder={'Type here'}
         onChangeText={(text) => this.setState({hoursSa: text})}
         value={this.state.hoursSa}
@@ -889,7 +911,9 @@ export default class Minor extends React.Component {
       <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
         <TextInput 
           autoCorrect={false}
-          style={Styles.inputWorkStyle}
+          style={[Styles.inputWorkStyle,{
+            backgroundColor: this.state.anyHoursCheckedSa ? '#e7e7e7' : '#ffffff'
+          }]}
           placeholder={this.state.anyHoursCheckedSa ? '12:00' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursSa1: text})}
           value={this.state.workingHoursSa1}
@@ -897,7 +921,9 @@ export default class Minor extends React.Component {
         />
         <TextInput 
           autoCorrect={false}
-          style={Styles.inputWorkStyle}
+          style={[Styles.inputWorkStyle,{
+            backgroundColor: this.state.anyHoursCheckedSa ? '#e7e7e7' : '#ffffff'
+          }]}
           placeholder={this.state.anyHoursCheckedSa ? '11:59':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursSa2: text})}
           value={this.state.workingHoursSa2}
@@ -914,7 +940,9 @@ export default class Minor extends React.Component {
       , 
       <TextInput 
         autoCorrect={false}
-        style={Styles.inputStyle}
+        style={[Styles.inputStyle,{
+          backgroundColor: this.state.anyHoursCheckedSu ? '#e7e7e7' : '#ffffff'
+        }]}
         // placeholder={'Type here'}
         onChangeText={(text) => this.setState({hoursSu: text})}
         value={this.state.hoursSu}
@@ -925,7 +953,9 @@ export default class Minor extends React.Component {
       <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
         <TextInput 
           autoCorrect={false}
-          style={Styles.inputWorkStyle}
+          style={[Styles.inputWorkStyle,{
+            backgroundColor: this.state.anyHoursCheckedSu ? '#e7e7e7' : '#ffffff'
+          }]}
           placeholder={this.state.anyHoursCheckedSu ? '12:00' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursSu1: text})}
           value={this.state.workingHoursSu1}
@@ -934,7 +964,9 @@ export default class Minor extends React.Component {
         />
         <TextInput 
           autoCorrect={false}
-          style={Styles.inputWorkStyle}
+          style={[Styles.inputWorkStyle,{
+            backgroundColor: this.state.anyHoursCheckedSu ? '#e7e7e7' : '#ffffff'
+          }]}
           placeholder={this.state.anyHoursCheckedSu ? '11:59':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursSu2: text})}
           value={this.state.workingHoursSu2}
@@ -951,7 +983,9 @@ export default class Minor extends React.Component {
       , 
       <TextInput 
         autoCorrect={false}
-        style={Styles.inputStyle}
+        style={[Styles.inputStyle,{
+          backgroundColor: this.state.anyHoursCheckedMo ? '#e7e7e7' : '#ffffff'
+        }]}
         // placeholder={'Type here'}
         onChangeText={(text) => this.setState({hoursMo: text})}
         value={this.state.hoursMo}
@@ -961,7 +995,9 @@ export default class Minor extends React.Component {
       <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
         <TextInput 
           autoCorrect={false}
-          style={Styles.inputWorkStyle}
+          style={[Styles.inputWorkStyle,{
+            backgroundColor: this.state.anyHoursCheckedMo ? '#e7e7e7' : '#ffffff'
+          }]}
           placeholder={this.state.anyHoursCheckedMo ? '12:00' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursMo1: text})}
           value={this.state.workingHoursMo1}
@@ -969,7 +1005,9 @@ export default class Minor extends React.Component {
         />
         <TextInput 
           autoCorrect={false}
-          style={Styles.inputWorkStyle}
+          style={[Styles.inputWorkStyle,{
+            backgroundColor: this.state.anyHoursCheckedMo ? '#e7e7e7' : '#ffffff'
+          }]}
           placeholder={this.state.anyHoursCheckedMo ? '11:59':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursMo2: text})}
           value={this.state.workingHoursMo2}
@@ -986,7 +1024,9 @@ export default class Minor extends React.Component {
       , 
       <TextInput 
         autoCorrect={false}
-        style={Styles.inputStyle}
+        style={[Styles.inputStyle,{
+          backgroundColor: this.state.anyHoursCheckedTu ? '#e7e7e7' : '#ffffff'
+        }]}
         // placeholder={'Type here'}
         onChangeText={(text) => this.setState({hoursTu: text})}
         value={this.state.hoursTu}
@@ -996,7 +1036,9 @@ export default class Minor extends React.Component {
       <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
         <TextInput 
           autoCorrect={false}
-          style={Styles.inputWorkStyle}
+          style={[Styles.inputWorkStyle,{
+            backgroundColor: this.state.anyHoursCheckedTu ? '#e7e7e7' : '#ffffff'
+          }]}
           placeholder={this.state.anyHoursCheckedTu ? '12:00' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursTu1: text})}
           value={this.state.workingHoursTu1}
@@ -1004,7 +1046,9 @@ export default class Minor extends React.Component {
         />
         <TextInput 
           autoCorrect={false}
-          style={Styles.inputWorkStyle}
+          style={[Styles.inputWorkStyle,{
+            backgroundColor: this.state.anyHoursCheckedTu ? '#e7e7e7' : '#ffffff'
+          }]}
           placeholder={this.state.anyHoursCheckedTu ? '11:59':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursTu2: text})}
           value={this.state.workingHoursTu2}

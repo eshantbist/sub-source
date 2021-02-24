@@ -209,7 +209,16 @@ class DocumentDetails extends React.Component {
                                     <Image source={Images.Close} style={{ margin: Matrics.CountScale(15) }} />
                                 </TouchableOpacity>
                             </View>
+                            {/* {console.log('Employeedata-->',this.state.Employeedata)} */}
                             <View style={Styles.infoContainer}>
+                                <Text style={Styles.TitleText}>Employee Name: </Text>
+                                <Text style={Styles.DataText}>{this.state.Employeedata.FirstName} {this.state.Employeedata.LastName}</Text>
+                            </View>
+                            <View style={Styles.infoContainer}>
+                                <Text style={Styles.TitleText}>POS ID: </Text>
+                                <Text style={Styles.DataText}>{this.state.Employeedata.EmployeeNumber}</Text>
+                            </View>
+                            {/* <View style={Styles.infoContainer}>
                                 <Text style={Styles.TitleText}>First Name: </Text>
                                 <Text style={Styles.DataText}>{this.state.Employeedata.FirstName}</Text>
                             </View>
@@ -242,15 +251,23 @@ class DocumentDetails extends React.Component {
                             <View style={Styles.infoContainer}>
                                 <Text style={Styles.TitleText}>Country: </Text>
                                 <Text style={Styles.DataText}>{this.state.Employeedata.CountyName}</Text>
-                            </View>
+                            </View> */}
                             <View style={Styles.infoContainer}>
                                 <Text style={Styles.TitleText}>Position: </Text>
                                 <Text style={Styles.DataText}>{this.state.Employeedata.Position}</Text>
                             </View>
                             <View style={Styles.infoContainer}>
+                                <Text style={Styles.TitleText}>Wage Type: </Text>
+                                <Text style={Styles.DataText}>{this.state.Employeedata.WageTypeName}</Text>
+                            </View>
+                            <View style={Styles.infoContainer}>
+                                <Text style={Styles.TitleText}>Wage Rate: </Text>
+                                <Text style={Styles.DataText}>{this.state.Employeedata.WageRate}</Text>
+                            </View>
+                            {/* <View style={Styles.infoContainer}>
                                 <Text style={Styles.TitleText}>Employee Status: </Text>
                                 <Text style={Styles.DataText}>{this.state.Employeedata.EmployeeStatus}</Text>
-                            </View>
+                            </View> */}
                         </View>
                     </View>
                 </Modal>
@@ -335,7 +352,7 @@ class DocumentDetails extends React.Component {
             <View style={Styles.statusLineCard}>
                 <Text style={Styles.shopNameTextStyle}>{this.state.Employeedata ? `Shop #${this.state.Employeedata.DisplayStoreNumber}`: null}</Text>
                 <View style={{ borderBottomWidth: 1, borderBottomColor: Colors.LIGHTGREY}}>
-                    <Text style={Styles.sentByStatusTextStyle}>{this.state.Employeedata ? `Sent by ${this.state.Employeedata.SentBy}`: null} {CDate}@{Time.toLocaleUpperCase()}</Text>
+                    <Text style={Styles.sentByStatusTextStyle}>{this.state.Employeedata ? `Sent by ${this.state.Employeedata.SentBy}`: null} {CDate}</Text>
                 </View>
                 <View style={{ flexDirection: 'row',marginTop: Matrics.CountScale(10) }}>
                     <View style={{ justifyContent: 'center' }}>
@@ -406,7 +423,7 @@ class DocumentDetails extends React.Component {
                                                     <View style={{ flexDirection: 'row', marginLeft: Matrics.CountScale(5)}}>
                                                         <Text style={{ alignSelf: 'center' }}>{child.RoleEmail}</Text>
                                                         {
-                                                            this.state.isEditable && this.state.Employeedata.StatusName != 'voided' && this.state.Employeedata.StatusName != 'completed' &&
+                                                            this.state.isEditable && this.state.Employeedata.StatusName != 'voided' && child.StatusName != 'completed' &&
                                                             <Icon name='pencil-alt' onPress={() => {
                                                                 this.setState({
                                                                     isEmailEditable: true,

@@ -671,7 +671,7 @@ class WeeklySummarySheet extends React.Component {
             this.setState({ timeoffStartDate: moment(date).format('MM/DD/YYYY'), startDateError: '' });
         } else {
             if(moment(date).format('MM/DD/YYYY') <= this.state.timeoffStartDate) {
-                this.setState({ endDateError: 'End date should be greater than Start date' });
+                this.setState({ endDateError: 'End date should be greater than start date' });
             } else {
                 this.setState({ timeoffEndDate: moment(date).format('MM/DD/YYYY'), endDateError: '' });
             }
@@ -972,7 +972,7 @@ class WeeklySummarySheet extends React.Component {
             console.log('punchData-->', punchData);
             this.props.UpdateEmployeePunchDetailRequest(punchData);
         } else {
-            this.setState({adjustReasonError: 'Please Enter The Adjust Reason'});
+            this.setState({adjustReasonError: 'Please enter the adjust reason'});
         }
     }
 
@@ -985,9 +985,9 @@ class WeeklySummarySheet extends React.Component {
         //     this.setState({ endDateError: 'End date should be greater than Start date' });
         // } else 
         if(this.state.selectedReasonId === ''){
-            this.setState({ resonError: 'Please Select The Reson' });
+            this.setState({ resonError: 'Please select the reson' });
         } else if (this.state.timeoffNotes === ''){
-            this.setState({ resonDetailError: 'Please Enter The Reason Detail' });
+            this.setState({ resonDetailError: 'Please enter the reason detail' });
         } else if(this.state.UserStoreGUID === ''){
             this.setState({ resonDetailError: 'Something wrong please try again!' });
         } else {
@@ -1291,10 +1291,10 @@ class WeeklySummarySheet extends React.Component {
                                 <TextRow labelText={'Food Invoices'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].FoodInvoices !== undefined ? TotalUnitArr[0].FoodInvoices != 0 ? TotalUnitArr[0].FoodInvoices.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
                                 <TextRow labelText={'Food/Coke Invoice Credits'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].FoodInvoiceCredit !== undefined ? TotalUnitArr[0].FoodInvoiceCredit != 0 ? TotalUnitArr[0].FoodInvoiceCredit.toFixed(2) : null : null : null} />
                                 <TextRow labelText={'Coke'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].Coke !== undefined ? TotalUnitArr[0].Coke != 0 ? TotalUnitArr[0].Coke.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
-                                <TextRow labelText={'Food Cost (%)'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].FoodCostPercentage !== undefined ? TotalUnitArr[0].FoodCostPercentage != 0 ? TotalUnitArr[0].FoodCostPercentage.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
+                                <TextRow labelText={'Food Cost (%)'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].FoodCostPercentage !== undefined ? TotalUnitArr[0].FoodCostPercentage != 0 ? TotalUnitArr[0].FoodCostPercentage.toFixed(2) : null : null : null}  />
                                 <TextRow labelText={'Coke Cost (%)'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].CokePercentage !== undefined ? TotalUnitArr[0].CokePercentage != 0 ? TotalUnitArr[0].CokePercentage.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
                                 
-                                <TextRow labelText={'Total COGS & Labor(%)'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].TotalCOGPercentage ? TotalUnitArr[0].TotalCOGPercentage != 0 ? TotalUnitArr[0].TotalCOGPercentage.toFixed(2) : null : null : null} bgColor={Colors.ROWBGCOLOR} />
+                                <TextRow labelText={'Total COGS & Labor(%)'} contentText={TotalUnitArr.length > 0 ? TotalUnitArr[0].TotalCOGPercentage ? TotalUnitArr[0].TotalCOGPercentage != 0 ? TotalUnitArr[0].TotalCOGPercentage.toFixed(2) : null : null : null}  />
                             </View>
                     :item.data.length > 0  // Total Column logic
                         ? 

@@ -68,11 +68,13 @@ export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,Cont
         >
             <View style={Styles.rowTitleStyle}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={Styles.mainContainerLabel}>{labelText}</Text>
-                    {
-                        RoleCode != undefined && RoleCode != '' &&
-                        <Text style={{fontFamily: Fonts.NunitoSansRegular}}> ({RoleCode})</Text>
-                    }
+                    <Text style={[Styles.mainContainerLabel,{}]}>
+                        {
+                            RoleCode != undefined && RoleCode != '' 
+                            ? `${labelText} (${RoleCode})`
+                            : labelText
+                        }
+                    </Text>
                     {
                         (employeeStatus == 'Resigned' || employeeStatus == 'Terminate') &&
                         <Text style={{fontFamily: Fonts.NunitoSansRegular}}> ({employeeStatus == 'Resigned' ? 'R' : 'T'})</Text>
@@ -935,7 +937,7 @@ class WeeklySchedule extends React.Component {
             this.setState({ timeoffStartDate: moment(date).format('MM/DD/YYYY'), startDateError: '' });
         } else {
             if (moment(date).format('MM/DD/YYYY') < this.state.timeoffStartDate) {
-                this.setState({ endDateError: 'End date should be greater than Start date' });
+                this.setState({ endDateError: 'End date should be greater than start date' });
             } else {
                 this.setState({ timeoffEndDate: moment(date).format('MM/DD/YYYY'), endDateError: '' });
             }
@@ -968,7 +970,7 @@ class WeeklySchedule extends React.Component {
             var date1 = new Date('01/01/2011 '+ moment(this.state.shiftoutTime, "h:mm A").format('h:mm A')); 
             var date2 = new Date('01/01/2011 '+ moment(val, "h:mm A").format('h:mm A'));
             if(date2 >= date1){
-                this.setState({ outTimeError: 'Out Time ShouldBe GraterThan To InTime', shiftoutTime: '' })
+                this.setState({ outTimeError: 'Out Time shouldbe graterthan to InTime', shiftoutTime: '' })
             } else {
                 this.setState({ outTimeError: '' })
             }
@@ -977,7 +979,7 @@ class WeeklySchedule extends React.Component {
             var date1 = new Date('01/01/2011 '+ moment(val, "h:mm A").format('h:mm A')); 
             var date2 = new Date('01/01/2011 '+ moment(this.state.shiftinTime, "h:mm A").format('h:mm A'));
             if(date2 >= date1){
-                this.setState({ outTimeError: 'Out Time ShouldBe GraterThan To InTime', shiftoutTime: '' })
+                this.setState({ outTimeError: 'Out Time shouldbe graterthan to InTime', shiftoutTime: '' })
             } else {
                 this.setState({ shiftoutTime: val, outTimeError: '' })
             }
@@ -1390,9 +1392,9 @@ class WeeklySchedule extends React.Component {
         }
 
         if (this.state.shiftinTime === '') {
-            this.setState({ InTimeError: 'Please Select Form Time' });
+            this.setState({ InTimeError: 'Please select form Time' });
         } else if (this.state.shiftoutTime === '') {
-            this.setState({ outTimeError: 'Please Select To Time' });
+            this.setState({ outTimeError: 'Please select to Time' });
         } else if (this.state.UserStoreID === '' &&
             repeatType === '' &&
             this.state.UserStoreGUID === ''
@@ -1490,13 +1492,13 @@ class WeeklySchedule extends React.Component {
 
     onCreateTimeOff() {
         if (this.state.timeoffStartDate === '') {
-            this.setState({ startDateError: 'Please Select The StartDate' });
+            this.setState({ startDateError: 'Please select the startdate' });
         } else if (this.state.timeoffEndDate === '') {
-            this.setState({ endDateError: 'Please Select The EndDate' });
+            this.setState({ endDateError: 'Please select the enddate' });
         } else if (this.state.timeoffEndDate < this.state.timeoffStartDate) {
-            this.setState({ endDateError: 'End date should be greater than Start date' });
+            this.setState({ endDateError: 'End date should be greater than start date' });
         } else if (this.state.selectedReasonId === '') {
-            this.setState({ resonError: 'Please Select The Reson' });
+            this.setState({ resonError: 'Please select the reson' });
         }
         // else if (this.state.timeoffNotes === ''){
         //     this.setState({ resonDetailError: 'Please Enter The Reason Detail' });
