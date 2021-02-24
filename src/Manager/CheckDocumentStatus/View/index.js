@@ -52,7 +52,7 @@ class CheckDoucmentStatus extends React.Component {
         selected: "ActionRequired",
         filterModal: false,
         selectedRoleId: 0,
-        selectedNOD: -1,
+        selectedNOD: '30',
         selectedStatus: 'All Status',
         userRoleList: [],
         userList: [],
@@ -70,7 +70,7 @@ class CheckDoucmentStatus extends React.Component {
         empListArr1: [],
         lastFilterselectedRoleId: 0,
         lastFilterselectedStores: -1,
-        lastFilterselectedNOD: -1,
+        lastFilterselectedNOD: '30',
         lastFilterselectedStatus: 'All Status',
         recipientsListArr: [],
         selctedTileID: 0,
@@ -891,11 +891,11 @@ class CheckDoucmentStatus extends React.Component {
                                 <Text style={Styles.pickerLabelStyle}>No. Of Days</Text>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
-                                    selectedValue={this.state.selectedNOD == -1 ? 'All' : this.state.selectedNOD}
+                                    selectedValue={this.state.selectedNOD == '0' ? 'All' : this.state.selectedNOD}
                                     onValueChange={value => {
                                         console.log('value-->', value)
                                         console.log('value-->',typeof value)
-                                         this.setState({ selectedNOD: value == 'All' ? -1 : value })
+                                         this.setState({ selectedNOD: value == 'All' ? '0' : value })
                                     }}
                                 >
                                     {this.getNOD()}
