@@ -49,8 +49,12 @@ export const OperationOverViewContainer = ({ labelText, imgSrc, onPress, textVal
             disabled={labelText === 'Employees Needed' ? false : true}
             onPress={() => onPress()}
         >
-            <Image source={imgSrc} style={{ margin: Matrics.CountScale(7) }} />
+            {
+                imgSrc != '' &&
+                <Image source={imgSrc} style={{ margin: Matrics.CountScale(7) }} />
 
+            }
+           
             <View style={{ marginLeft: Matrics.CountScale(5), flex: 1 }}>
                 {children ? children :
                     <Text style={[Styles.labelValueStyle, fontStyle]}>{textValue}</Text>}
@@ -148,6 +152,7 @@ class Dashboard extends React.Component {
 
         // const currentDate = moment().format("MM/DD/YYYY");
         let WeekEndingDate = moment().format("MM/DD/YYYY");
+        console.log('WeekEndingDate-->', WeekEndingDate)
         // if(moment(currentDate).format('dddd') === 'Tuesday'){
         //     WeekEndingDate = currentDate;
         // } else if(moment(currentDate).format('dddd') === 'Monday'){
@@ -162,21 +167,58 @@ class Dashboard extends React.Component {
 
 
         // this.setState({ WeekEndingDate: '11/20/2018'});
-        await this.setState({ WeekEndingDate, currentWeekEndDate: WeekEndingDate, lastFilterWeekEndingDate: WeekEndingDate });
-        global.selectedStore = this.state.selectedStores;
-        global.WeekendDate = WeekEndingDate;
-        // console.log('WeekEndingDate-->', this.state.WeekEndingDate) ;
-        // console.log('WeekEndingDate-->', this.state.selectedRoleId) ;
-        // console.log('WeekEndingDate-->', this.state.selectedStores) ;
-        // this.props.getUserRoleRequest({ UserTypeID: '9253' })
+        // await this.setState({ 
+        //     WeekEndingDate,
+        //     currentWeekEndDate: WeekEndingDate,
+        //     lastFilterWeekEndingDate: WeekEndingDate 
+        // });
+        // global.selectedStore = this.state.selectedStores;
+        // global.WeekendDate = WeekEndingDate;
         this.props.getHeaderFilterValuesRequest({ StoreId: -1, RoleId: 0, FilterId: -1, BusinessTypeId: 1 });
-        this.props.getDashBoardDataRequest({
-            RoleId: this.state.selectedRoleId,//this.state.selectedRoleId, 0
-            StoreId: this.state.selectedStores,//this.state.StoreID, -1
-            FilterId: -1,
-            BusinessTypeId: 1,
-            WeekEnding: this.state.WeekEndingDate // this.state.weekEnding
-        })
+        // this.props.getDashBoardDataRequest({
+        //     RoleId: this.state.selectedRoleId,
+        //     StoreId: this.state.selectedStores,
+        //     FilterId: -1,
+        //     BusinessTypeId: 1,
+        //     WeekEnding: this.state.WeekEndingDate 
+        // })
+        this.focusListener = this.props.navigation.addListener('didFocus', async () => {
+            console.log('dashboard selectedStores-->', parseInt(global.selectedStore,10))
+            console.log('dashboard weekenddate-->',global.WeekendDate)
+            if(global.WeekendDate != undefined && global.WeekendDate != ''){
+                WeekEndingDate = global.WeekendDate;
+            }
+            console.log('focus WeekEndingDate-->', WeekEndingDate)
+            console.log('focus this.state.Stores-->', this.state.Stores)
+            let index = -1;
+            if(parseInt(global.selectedStore,10) != -1){
+                index = this.state.Stores.length > 0 && this.state.Stores.findIndex(s => s.StoreID === parseInt(global.selectedStore,10));
+            }
+            console.log('index-->',index)
+            await this.setState({ 
+                WeekEndingDate,
+                currentWeekEndDate: WeekEndingDate,
+                lastFilterWeekEndingDate: WeekEndingDate,
+                selectedStores: global.selectedStore != undefined ? parseInt(global.selectedStore,10) : -1, 
+                lastFilterselectedStores: global.selectedStore != undefined ? parseInt(global.selectedStore,10) : -1, 
+                loading: true,
+                selectedStoreIndex: index,
+            });
+            global.selectedStore = this.state.selectedStores;
+            global.WeekendDate = WeekEndingDate;
+            
+            //  else {
+            //     index = data.Report.store_list.length > 0 && data.Report.store_list.findIndex(s => s.StoreID === data.Report.store_list[0].StoreID);
+            // }
+            this.props.getDashBoardDataRequest({
+                RoleId: this.state.selectedRoleId,
+                StoreId: this.state.selectedStores,
+                FilterId: -1,
+                BusinessTypeId: 1,
+                WeekEnding: this.state.WeekEndingDate,
+            })
+        });
+
         // this.props.getFinancialReportRequest({
         //     RoleId: this.state.selectedRoleId,
         //     FilterId: -1, StoreId: global.loginResponse.StoreID, RangeId: 1,
@@ -358,6 +400,10 @@ class Dashboard extends React.Component {
             this.setState({ loading: false, msg: Global.error_msg, msgModal: true })
         }
 
+    }
+
+    componentWillUnmount() {
+        this.focusListener.remove();
     }
 
     filterCustomerComments() {
@@ -572,6 +618,7 @@ class Dashboard extends React.Component {
     }
     // ==========>>>>> Render Method  <<<<<<<===========
     render() {
+        console.log('selectedStoreIndex-->', this.state.selectedStoreIndex);
         return (
             <View style={{ flex: 1, backgroundColor: Colors.BODYBACKGROUND }}>
 
@@ -585,7 +632,7 @@ class Dashboard extends React.Component {
                         this.setState({ filterModal: true, isDateTimePickerVisible: false })
                     }}
                     onLeftPress={(val) => {
-                        this.setState({ showDrodown: true });
+                        this.setState({ showDrodown: !this.state.showDrodown });
                         // this.props.navigation.navigate('Profile');
                     }}
                 // rightImageStyle={{ height: 15, width: 25, top: -7 }}
@@ -594,22 +641,24 @@ class Dashboard extends React.Component {
 
                 {   
                     this.state.showDrodown && 
-                    // <Modal>
-                    //     <View>
-
-                    //     </View>
+                    // <Modal 
+                    
+                    // >
+                        <View style={Styles.logoutContainer}>
+                            <Text onPress={() => this.Logout()} style={Styles.logoutText}>Logout</Text>
+                        </View>
                     // </Modal>
-                    <Dropdown
-                        label='Profile'
-                        data={this.state.Dropdata}
-                        containerStyle={{ alignSelf: 'flex-start' }}
-                        onChangeText={(value, index, data) => this.Logout() }
-                        itemTextStyle={{ textAlign: 'left' }}
-                        overlayStyle={{ top: Platform.OS == 'ios' ? 30 : 0, borderWidth: 0,left: -10 }}
-                        dropdownOffset={{ top: 0, left: 0 }}
-                        selectedTextStyle={{ textAlign: 'left'}}
-                        inputContainerStyle={{ alignSelf: 'stretch', padding: 0, margin: 0 }}
-                    />
+                    // <Dropdown
+                    //     label='Profile'
+                    //     data={this.state.Dropdata}
+                    //     containerStyle={{ alignSelf: 'flex-start' }}
+                    //     onChangeText={(value, index, data) => this.Logout() }
+                    //     itemTextStyle={{ textAlign: 'left' }}
+                    //     overlayStyle={{ top: Platform.OS == 'ios' ? 30 : 0, borderWidth: 0,left: -10 }}
+                    //     dropdownOffset={{ top: 0, left: 0 }}
+                    //     selectedTextStyle={{ textAlign: 'left'}}
+                    //     inputContainerStyle={{ alignSelf: 'stretch', padding: 0, margin: 0 }}
+                    // />
                 }
 
                 {/* ==========>>>>> Page Container  <<<<<<<=========== */}
@@ -671,6 +720,9 @@ class Dashboard extends React.Component {
                 />
                 <Modal
                     visible={this.state.filterModal}
+                    onRequestClose={() => {
+                       this.setState({ filterModal:false });
+                    }}
                 // transparent={'true'}
                 >
                     <View style={{ flex: 1 }}>
@@ -714,8 +766,13 @@ class Dashboard extends React.Component {
                             }}
                         />
                         <View style={{ flex: 1, padding: Matrics.CountScale(10) }}>
-                            {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-                            <KeyboardAwareScrollView extraScrollHeight={100} keyboardShouldPersistTaps={'handled'} contentContainerStyle={{ flex: 1 }} enableOnAndroid={true}>
+                            <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={'handled'} >
+                            <KeyboardAwareScrollView 
+                                extraScrollHeight={100}
+                                keyboardShouldPersistTaps={'handled'} 
+                                contentContainerStyle={{ flex: 1 }} 
+                                enableOnAndroid={true}
+                            >
                                 <View>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker()}>
@@ -782,42 +839,15 @@ class Dashboard extends React.Component {
                                         </Picker>
                                     </View>
                                 }
-                                <Text style={Styles.pickerLabelStyle}>Shops</Text>
-                                <Text style={Styles.pickerLabelStyle} onPress={()=> this.setState({ showShop: true })}>
-                                    { this.state.SelectedStoreName ? this.state.SelectedStoreName : 'Select Shops' }
-                                </Text>
-                                {/* <Picker
-                                    itemStyle={Styles.pickerItemStyle}
-                                    selectedValue={this.state.selectedStores}
-                                    onValueChange={value => {
-                                        console.log('value-->', value);
-                                        this.setState({ selectedStores: value });
-                                        global.selectedStore = value;
-                                    }}
-                                >
-                                    {this.getStores()}
-                                </Picker> */}
-                                <ModalFilterPicker
-                                    visible={this.state.showShop}
-                                    onSelect={(item) => {
-                                        console.log('picked-->', item);
-                                        this.setState({ selectedStores: item.StoreID, showShop: false, SelectedStoreName: item.DisplayStoreNumber });
-                                        global.selectedStore = item.StoreID;
-                                        global.checkDocumentStoreId = undefined;
-                                    }}
-                                    onCancel={() => this.setState({ showShop: false })}
-                                    options={this.state.Stores}
-                                    placeholderText="Search shop"
-                                    placeholderTextColor={Colors.GREY}
-                                    listContainerStyle={Styles.filterModalContainer}
-                                    optionTextStyle={Styles.optionTextStyle}
-                                    overlayStyle={{ flex: 1, backgroundColor: Colors.WHITE }}
-                                />
-                                {/* {!this.state.resetFilter ?
+                                <View style={{ borderTopWidth:1,  borderTopColor: Colors.BORDERCOLOR, paddingVertical: Matrics.CountScale(15) }}>
+                                    <Text style={Styles.pickerLabelStyle}>Shops</Text>
+                                </View>
+                                {!this.state.resetFilter ?
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
                                             // const items = this.state.selectedItems;
                                             // items.push(item)
+                                            console.log('onItemSelect-->', item);
                                             const index = this.state.Stores.findIndex(s => s.StoreID === item.StoreID);
                                             this.setState({ selectedStores: item.StoreID, selectedStoreIndex: index });
                                             global.selectedStore = item.StoreID;
@@ -861,7 +891,7 @@ class Dashboard extends React.Component {
                                             }
                                         }
                                     />
-                                    : null} */}
+                                    : null}
 
                                 {/* <Text style={Styles.pickerLabelStyle}>No. Of Days</Text>
                                 <Picker
@@ -887,8 +917,8 @@ class Dashboard extends React.Component {
                                     <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
                                     <Text style={{ color: 'red' }}>Reset Filter</Text>
                                 </TouchableOpacity>
-                                {/* </ScrollView> */}
                             </KeyboardAwareScrollView>
+                            </ScrollView>
                         </View>
                         {/* <DateTimePicker
                             isVisible={this.state.isDateTimePickerVisible}
@@ -1133,7 +1163,7 @@ class Dashboard extends React.Component {
                                             ? this.state.customerCommentsQTD.length > 0 && this.state.customerServices && this.state.customerServices.QuarterMonthCount !== 0
                                                 ? this.state.customerCommentsQTD.map((res, index) => {
                                                     return (
-                                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
+                                                        <TouchableOpacity key={index} onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
                                                             <View style={Styles.bottomBorderStyle}>
                                                                 <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM.DD.YYYY, hh:mm a')}</Text></Text>
 
@@ -1150,7 +1180,7 @@ class Dashboard extends React.Component {
                                                 this.state.customerCommentsYTD.length > 0
                                                     ? this.state.customerCommentsYTD.map((res, index) => {
                                                         return (
-                                                            <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
+                                                            <TouchableOpacity key={index} onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
                                                                 <View style={Styles.bottomBorderStyle}>
                                                                     <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM.DD.YYYY, hh:mm a')}</Text></Text>
 
@@ -1165,7 +1195,7 @@ class Dashboard extends React.Component {
                                                 : this.state.customerCommentsMonth.length > 0
                                                     ? this.state.customerCommentsMonth.map((res, index) => {
                                                         return (
-                                                            <TouchableOpacity onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
+                                                            <TouchableOpacity key={index} onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
                                                                 <View style={Styles.bottomBorderStyle}>
                                                                     <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM.DD.YYYY, hh:mm a')}</Text></Text>
 
@@ -1403,6 +1433,16 @@ const Styles = {
     optionTextStyle: {
         width: '100%',
     },
+    logoutContainer: {
+        backgroundColor: Colors.WHITE,
+        paddingVertical: Matrics.CountScale(5),
+        width: Matrics.CountScale(100),
+    },
+    logoutText: {
+        fontFamily: Fonts.NunitoSansRegular,
+        fontSize: 14,
+        textAlign: 'center' ,
+    }
 }
 // export default Dashboard
 //Props Connection

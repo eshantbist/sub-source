@@ -682,7 +682,11 @@ class CheckDoucmentStatus extends React.Component {
 
                     }
                 </View>
-                <Modal visible={this.state.filterModal}>
+                <Modal visible={this.state.filterModal}
+                    onRequestClose={() => {
+                        this.setState({ filterModal:false });
+                     }}
+                >
                     <View style={{ flex: 1 }}>
                         <Header centerText='Filter'
                             rightText='Save'
@@ -699,6 +703,7 @@ class CheckDoucmentStatus extends React.Component {
                                     Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
                                     selectedStoreIndex: this.state.lastFilterselectedIndex
                                 })
+                                global.selectedStore = this.state.lastFilterselectedStores;
                             }}
                             onRightPress={() => {
                                 const index = this.state.storeList.length > 0 && this.state.storeList.findIndex(s => s.StoreID === this.state.selectedStores);
@@ -815,41 +820,16 @@ class CheckDoucmentStatus extends React.Component {
                                         </Picker>
                                     </View>
                                 }
-                                
-                                <Text style={Styles.pickerLabelStyle}>Shops</Text>
-                                <Text style={[Styles.pickerLabelStyle, { marginBottom: Matrics.CountScale(10)}]} onPress={()=> this.setState({ showShop: true })}>
-                                    { this.state.selectedStoreName != '' ? this.state.selectedStoreName : 'Select Shops' }
-                                </Text>
-                                {/* <Picker
-                                    itemStyle={Styles.pickerItemStyle}
-                                    selectedValue={this.state.selectedStores}
-                                    onValueChange={value => { 
-                                        const selectedStoreNameArr =  this.state.storeList.filter(s => s.StoreID == value);
-                                        this.setState({ selectedStores: value, selectedStoreName: selectedStoreNameArr[0].DisplayStoreNumber })
-                                    }}
-                                >
-                                    {this.getStores()}
-                                </Picker> */}
-                                <ModalFilterPicker
-                                    visible={this.state.showShop}
-                                    onSelect={(item) => {
-                                        console.log('picked-->', item);
-                                        this.setState({ selectedStores: item.StoreID, showShop: false, selectedStoreName: item.DisplayStoreNumber });
-                                    }}
-                                    onCancel={() => this.setState({ showShop: false })}
-                                    options={this.state.storeList}
-                                    placeholderText="Search shop"
-                                    placeholderTextColor={Colors.GREY}
-                                    listContainerStyle={Styles.filterModalContainer}
-                                    optionTextStyle={Styles.optionTextStyle}
-                                    overlayStyle={{ flex: 1, backgroundColor: Colors.WHITE }}
-                                />
-                                {/* {!this.state.resetFilter ?
+                                <View style={{ borderTopWidth:1,  borderTopColor: Colors.BORDERCOLOR, paddingVertical: Matrics.CountScale(15) }}>
+                                    <Text style={Styles.pickerLabelStyle}>Shops</Text>
+                                </View>
+                                {!this.state.resetFilter ?
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
                                             const index = this.state.storeList.findIndex(s => s.StoreID === item.StoreID);
                                             global.checkDocumentStoreId = item.StoreID;
                                             this.setState({ selectedStores: item.StoreID, selectedStoreName: item.DisplayStoreNumber, selectedStoreIndex: index });
+                                            global.selectedStore = item.StoreID;
                                         }}
                                         containerStyle={{ padding: 5, marginBottom: Matrics.CountScale(10) }}
                                         onRemoveItem={(item, index) => {
@@ -887,20 +867,24 @@ class CheckDoucmentStatus extends React.Component {
                                             }
                                         }
                                     />
-                                    : null} */}
-                                <Text style={Styles.pickerLabelStyle}>No. Of Days</Text>
+                                    : null}
+                                <View style={{ borderBottomWidth:1,  borderBottomColor: Colors.BORDERCOLOR, paddingVertical: Matrics.CountScale(15) }}>
+                                    <Text style={Styles.pickerLabelStyle}>No. Of Days</Text>
+                                </View>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedNOD == '0' ? 'All' : this.state.selectedNOD}
                                     onValueChange={value => {
-                                        console.log('value-->', value)
-                                        console.log('value-->',typeof value)
+                                        // console.log('value-->', value)
+                                        // console.log('value-->',typeof value)
                                          this.setState({ selectedNOD: value == 'All' ? '0' : value })
                                     }}
                                 >
                                     {this.getNOD()}
                                 </Picker>
+                                <View style={Styles.labelBorderStyle}>
                                 <Text style={Styles.pickerLabelStyle}>Status</Text>
+                                </View>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedStatus}
@@ -1033,6 +1017,12 @@ const Styles = StyleSheet.create({
         fontFamily: Fonts.NunitoSansRegular,
         fontSize: 14,
         marginLeft: Matrics.CountScale(15)
+    },
+    labelBorderStyle: {
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: Colors.BORDERCOLOR,
+        paddingVertical: Matrics.CountScale(15),
     },
 });
 

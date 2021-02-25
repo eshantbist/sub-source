@@ -683,6 +683,7 @@ class WeeklySummarySheet extends React.Component {
             } else {
                 this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: 'Please Select Valid Weekend Date'})
             }
+            global.WeekendDate = moment(date).format('MM/DD/YYYY');
         }
     };
 
@@ -1832,6 +1833,9 @@ class WeeklySummarySheet extends React.Component {
                 </Modal>
                 <Modal
                     visible={this.state.filterModal}
+                    onRequestClose={() => {
+                        this.setState({ filterModal:false });
+                     }}
                 >
                     <View style={{ flex: 1 }}>
                         <Header centerText='Filter'
@@ -1848,6 +1852,7 @@ class WeeklySummarySheet extends React.Component {
                                     Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
                                     selectedStoreIndex: this.state.lastFilterselectedIndex
                                 });
+                                global.selectedStore = this.state.lastFilterselectedStoreId;
                             }}
                             onRightPress={() => {
                                 const index = this.state.StoresList.length > 0 && this.state.StoresList.findIndex(s => s.StoreID === this.state.selectedStores);
@@ -1945,39 +1950,15 @@ class WeeklySummarySheet extends React.Component {
                                         </Picker>
                                     </View>
                                 }
-                                <Text style={Styles.pickerLabelStyle}>Shops</Text>
-                                <Text style={Styles.pickerLabelStyle} onPress={()=> this.setState({ showShop: true })}>
-                                    { this.state.selectedStoreName != '' ? this.state.selectedStoreName : 'Select Shops' }
-                                </Text>
-                                {/* <Picker
-                                    itemStyle={Styles.pickerItemStyle}
-                                    selectedValue={this.state.selectedStoreId}
-                                    onValueChange={value => {
-                                        const selectedStoreNameArr =  this.state.StoresList.filter(s => s.StoreID == value);
-                                        this.setState({ selectedStoreId: value, selectedStoreName: selectedStoreNameArr[0].DisplayStoreNumber })
-                                    }}
-                                >
-                                    {this.getStores()}
-                                </Picker> */}
-                                <ModalFilterPicker
-                                    visible={this.state.showShop}
-                                    onSelect={(item) => {
-                                        console.log('picked-->', item);
-                                        this.setState({ selectedStoreId: item.StoreID, showShop: false, selectedStoreName: item.DisplayStoreNumber });
-                                    }}
-                                    onCancel={() => this.setState({ showShop: false })}
-                                    options={this.state.StoresList}
-                                    placeholderText="Search shop"
-                                    placeholderTextColor={Colors.GREY}
-                                    listContainerStyle={Styles.filterModalContainer}
-                                    optionTextStyle={Styles.optionTextStyle}
-                                    overlayStyle={{ flex: 1, backgroundColor: Colors.WHITE }}
-                                />
-                                {/* {!this.state.resetFilter ?
+                                <View style={{ borderTopWidth:1,  borderTopColor: Colors.BORDERCOLOR, paddingVertical: Matrics.CountScale(15) }}>
+                                    <Text style={Styles.pickerLabelStyle}>Shops</Text>
+                                </View>
+                                {!this.state.resetFilter ?
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
                                             const index = this.state.StoresList.findIndex(s => s.StoreID === item.StoreID);
                                             this.setState({ selectedStoreId: item.StoreID, selectedStoreName: item.DisplayStoreNumber, selectedStoreIndex: index });
+                                            global.selectedStore = item.StoreID;
                                         }}
                                         containerStyle={{ padding: 5, marginBottom: Matrics.CountScale(10) }}
                                         onRemoveItem={(item, index) => {
@@ -2015,7 +1996,7 @@ class WeeklySummarySheet extends React.Component {
                                             }
                                         }
                                     />
-                                    : null} */}
+                                    : null}
                                 <TouchableOpacity onPress={() => this.resetFilterClick()} style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 10, margin: 40 }}>
                                     <Image source={Images.Close} style={{ tintColor: 'red', marginHorizontal: 10 }} />
                                     <Text style={{ color: 'red' }}>Reset Filter</Text>
@@ -2146,6 +2127,12 @@ const Styles = StyleSheet.create({
         borderWidth: 1,
         padding: Matrics.CountScale(10),
         alignItems: 'center'
+    },
+    labelBorderStyle: {
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: Colors.BORDERCOLOR,
+        paddingVertical: Matrics.CountScale(15),
     },
 });
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Image, ScrollView, Text, TouchableOpacity, Alert, StyleSheet, TextInput, Modal } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import _ from 'lodash';
+import _, { keys } from 'lodash';
 import HTML from 'react-native-render-html';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import { LoadWheel } from "@Components";
@@ -41,7 +41,6 @@ class DocumentDetails extends React.Component {
         oldRoleName: '',
         isEmailEditable: false,
         loading: false,
-        showEmailList: false,
         hireStatuShow: false,
         showEmployeeInfo: false,
         emailHeight: 10,
@@ -56,10 +55,10 @@ class DocumentDetails extends React.Component {
         const HiringData = this.props.navigation.getParam('HiringData');
         this.setRecipeentslist(recipientsList);
 
-        console.log('Employeedata-->',Employeedata)
-        console.log('recipientsList-->',recipientsList)
+        // console.log('Employeedata-->',Employeedata)
+        // console.log('recipientsList-->',recipientsList)
         
-        this.setState({ Employeedata, isEditable, HiringData, isVisible: [] });
+        this.setState({ Employeedata, isEditable, HiringData, isVisible: false });
     }
 
     componentWillUnmount() { }
@@ -70,7 +69,7 @@ class DocumentDetails extends React.Component {
             let data = nextProps.response.CheckDocumentStatus.data;
             if(data.Status == 1) {
                 this.setState({ isEmailEditable: false });
-                console.log('HiringData-->',this.state.HiringData)
+                // console.log('HiringData-->',this.state.HiringData)
                 this.props.getCheckDocumentStatusHiringReturnRequest(this.state.HiringData);
             } else {
                 Alert.alert(
@@ -281,7 +280,9 @@ class DocumentDetails extends React.Component {
             <View style={Styles.hireEmployeeCard}>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                     <View style={Styles.userImg}>
-                        <Image style={Styles.userIconStyle} source={Images.UserIcon}></Image>
+                        <Image style={[Styles.userIconStyle,{
+                            tintColor: this.state.Employeedata.DisplayStatusName == 'Hiring Packet in process' ? Colors.RED : Colors.APPCOLOR,
+                        }]} source={Images.UserIcon}></Image>
                     </View>
 
                     <View style={Styles.employeeStyle}>
@@ -291,50 +292,12 @@ class DocumentDetails extends React.Component {
                     </View>
 
                     <TouchableOpacity style={Styles.infoImg} onPress={() => this.setState({ showEmployeeInfo: true })}>
-                        <Image style={Styles.infoIconStyle} source={Images.InfoIcon}></Image>
+                        <Image style={[Styles.infoIconStyle,{
+                            tintColor: this.state.Employeedata.DisplayStatusName == 'Hiring Packet in process' ? Colors.RED : Colors.APPCOLOR,
+                        }]} source={Images.InfoIcon}></Image>
                     </TouchableOpacity>
                 </View>
             </View>
-            // <TouchableOpacity style={Styles.hireEmployeeCard}
-            //     onPress={() => {
-            //         this.setState({
-            //             processing: !this.state.processing
-            //         })
-            //     }}
-            // >
-            //     {!this.state.processing &&
-
-            //         < View style={{ flex: 1, flexDirection: 'row' }}>
-            //             <View style={Styles.userImg}>
-            //                 <Image style={Styles.userIconStyle} source={Images.UserIcon}></Image>
-            //             </View>
-
-            //             <View style={Styles.employeeStyle}>
-            //                 <Text style={Styles.employeeTextStyle}>EMPLOYEE CREATED</Text>
-            //             </View>
-
-            //             <View style={Styles.infoImg}>
-            //                 <Image style={Styles.infoIconStyle} source={Images.InfoIcon}></Image>
-            //             </View>
-            //         </View>
-            //     }
-            //     {this.state.processing &&
-
-            //         < View style={{ flex: 1, flexDirection: 'row' }}>
-            //             <View style={Styles.userImg}>
-            //                 <Image style={Styles.infoIconStyle} source={Images.LoadingIcon}></Image>
-            //             </View>
-
-            //             <View style={Styles.employeeStyle}>
-            //                 <Text style={Styles.hiringTextStyle}>HIRING IN PROGRESS</Text>
-            //             </View>
-
-            //             <View style={Styles.infoImg}>
-            //                 <Image style={Styles.infoIconStyle} source={Images.InfoIcon}></Image>
-            //             </View>
-            //         </View>
-            //     }
-            // </TouchableOpacity>
         )
     }
     renderStatusLine() {
@@ -355,29 +318,10 @@ class DocumentDetails extends React.Component {
                 <View style={{ borderBottomWidth: 1, borderBottomColor: Colors.LIGHTGREY}}>
                     <Text style={Styles.sentByStatusTextStyle}>{this.state.Employeedata ? `Sent by ${this.state.Employeedata.SentBy}`: null} {CDate}</Text>
                 </View>
-                {/* <View style={{ flexDirection: 'row',marginTop: Matrics.CountScale(10) }}>
-                    <View style={{ justifyContent: 'center' }}>
-                        <Image style={{ width: 6, alignSelf: 'center', height: 6, marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(10), marginBottom: Matrics.CountScale(2) }} source={Images.GreenDotIcon}></Image>
-                        <Image style={{ width: 2, alignSelf: 'center', height: 10, marginRight: Matrics.CountScale(10) }} source={Images.LineIcon}></Image>
-                    </View>
-                    <View>
-                        <Text style={{ color: Colors.APPCOLOR }}>Completed by employee</Text>
-                    </View>
-                </View>
-                <View style={{ flexDirection: 'row', }}>
-                    <View style={{ justifyContent: 'center' }}>
-                        <Image style={{ width: 2, alignSelf: 'center', height: 10, marginRight: Matrics.CountScale(10), marginBottom: Matrics.CountScale(2) }} source={Images.LineIcon}></Image>
-                        <Image style={{ width: 6, alignSelf: 'center', height: 6, marginBottom: Matrics.CountScale(5), marginRight: Matrics.CountScale(10) }} source={Images.RedDotIcon}></Image>
-                    </View>
-                    <View>
-                        <Text style={{ color: Colors.RED }}>Sent to HR Rep</Text>
-                    </View>
-                </View> */}
-
                 <View style={[Styles.hireStatusContainer, { margin: Matrics.CountScale(0),}]}>
-                    {/* <Text onPress={() => this.setState({ showEmailList: !this.state.showEmailList})}
-                    style={[Styles.headerTextStyle, { textAlign: 'center', borderBottomColor: Colors.APPCOLOR, borderBottomWidth: 1 }]}>
-                        Hire Packet Status</Text> */}
+                    <Text 
+                    style={[Styles.headerTextStyle, { textAlign: 'center', marginBottom: Matrics.CountScale(10) }]}>
+                        Hire Packet Status</Text>
                     {
                         recipientArr.length > 0 
                         ?   recipientArr[0].data.map((child, index) => {
@@ -385,53 +329,60 @@ class DocumentDetails extends React.Component {
                                 const CDate = moment(DateArr[0]).format('MM.DD.YYYY');
                                 const Time = moment(DateArr[1], "h:mm A").format('hh:mm a');
                                 return (
-                                    <View key={index} style={{ padding: Matrics.CountScale(10)}} onLayout={(e) => this.setState({ emailHeight: e.nativeEvent.layout.height})}>
-                                        <View style={{ flexDirection: 'row',  }}>
-                                        <View style={{ justifyContent: 'center' }}>
+                                    <View key={index}
+                                        style={{ 
+                                            flexDirection: 'row',
+                                            // marginTop: Matrics.CountScale(5),
+                                            // backgroundColor: 'pink',
+                                        }}
+                                    >
+                                        <View 
+                                             style={{
+                                            }}
+                                        >
                                             <Image 
                                                 style={{ 
-                                                    width: 6,
+                                                    width: 8,
                                                     alignSelf: 'center',
-                                                    height: 6,
-                                                    marginTop: Matrics.CountScale(5),
+                                                    height: 8,
+                                                    marginTop: index == 0 ? Matrics.CountScale(5) : 0,
                                                     marginRight: Matrics.CountScale(10),
-                                                    marginBottom: Matrics.CountScale(2),
-                                                    tintColor: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED ,
+                                                    // marginBottom: Matrics.CountScale(5),
+                                                    tintColor: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED,
                                                 }} 
                                                 source={Images.GreenDotIcon}
                                             />
-                                            {/* <Image 
-                                                style={{ 
-                                                    width: 2,
-                                                    alignSelf: 'center',
-                                                    // height: this.state.emailHeight,
-                                                    marginRight: Matrics.CountScale(10),
-                                                    tintColor: child.StatusName == 'completed' ? Colors.APPCOLOR : child.StatusName != 'created' ? Colors.RED : 'black',
-                                                }} 
-                                                source={Images.LineIcon}
-                                            /> */}
+                                            { recipientArr[0].data.length-1 != index &&
+                                                <Image 
+                                                    style={{ 
+                                                        width: 2,
+                                                        alignSelf: 'center',
+                                                        height: 
+                                                        // this.state.isVisible[index] 
+                                                        this.state.isVisible 
+                                                        ?  Matrics.CountScale(65)
+                                                        :  Matrics.CountScale(15),
+                                                        marginRight: Matrics.CountScale(10),
+                                                        tintColor: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED,
+                                                    }} 
+                                                    source={Images.LineIcon}
+                                                />
+                                            }
                                         </View>
-                                            {/* <Image 
-                                                style={{ 
-                                                    width: 6, 
-                                                    alignSelf: 'center',
-                                                    height: 6, 
-                                                    marginBottom: Matrics.CountScale(5),
-                                                    marginRight: Matrics.CountScale(10),
-                                                    tintColor: child.StatusName == 'completed' ? Colors.APPCOLOR : child.StatusName != 'created' ? Colors.RED : 'black',
-                                                    
-                                                }} 
-                                                source={Images.RedDotIcon} 
-                                            /> */}
+                                        <View 
+                                            style={{
+                                            }}
+                                        >
                                             <Text 
                                                 style={{ 
                                                     color: child.StatusName == 'completed' ? Colors.APPCOLOR : child.StatusName != 'created' ? Colors.RED : null, 
                                                     marginBottom: Matrics.CountScale(5),
                                                 }}
                                                 onPress={() => {
-                                                    let Arr = this.state.isVisible;
-                                                    Arr[index] = !this.state.isVisible[index];
-                                                    this.setState({ isVisible: Arr });
+                                                    // let Arr = this.state.isVisible;
+                                                    // Arr[index] = !this.state.isVisible[index];
+                                                    // this.setState({ isVisible: Arr });
+                                                    this.setState({ isVisible: !this.state.isVisible });
                                                 }}
                                             >
                                                 {
@@ -444,83 +395,67 @@ class DocumentDetails extends React.Component {
                                                         : `${child.RoleName} - Invalid Email`
                                                 }
                                             </Text>
-                                        </View>
-                                        {/* <View style={{ borderColor: Colors.APPCOLOR,
-                                                    borderWidth: 2, width: 3, height: 10 }} /> */}
-                                        <View style={{ flexDirection: 'row'}}>
-                                        <Image 
-                                            style={{ 
-                                                width: 2,
-                                                // alignSelf: 'flex-start',
-                                                // height: this.state.emailHeight,
-                                                marginRight: Matrics.CountScale(10),
-                                                marginLeft: Matrics.CountScale(1),
-                                                tintColor: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED ,
-                                            }} 
-                                            source={Images.LineIcon}
-                                        />
-                                        {
-                                            this.state.isVisible[index] &&
-                                            <View style={{ marginLeft: Matrics.CountScale(15) }}>
-                                                <View style={{ flexDirection: 'row'}}>
-                                                    <Text style={Styles.headerTextStyle}>Email:</Text>
-                                                    {
-                                                        this.state.isEmailEditable && this.state.selectedIndex == index
-                                                        ? 
-                                                            <View style={{ flexDirection: 'row', marginLeft: Matrics.CountScale(5)}}>
-                                                                <TextInput 
-                                                                    onChangeText={(value) => { this.setState({ newEmail: value })}}
-                                                                    value={this.state.newEmail}
-                                                                    editable={this.state.isEmailEditable}
-                                                                    style={{
-                                                                            borderRadius: Matrics.CountScale(10),
-                                                                            borderColor: 'black',
-                                                                            borderWidth: 1,
-                                                                            padding: Matrics.CountScale(8),
-                                                                            width: Matrics.CountScale(200),
-                                                                        }}
-                                                                />
-                                                                <MIcon name="done" onPress={() => this.onDoneClick( recipientArr[0].data)} style={{ marginLeft: Matrics.CountScale(5)}} color={Colors.PARROT} size={20} />
-                                                                <MIcon name="close" onPress={() => {this.setState({isEmailEditable: false}) }} style={{ marginLeft: Matrics.CountScale(5)}} size={20} />
-                                                            </View>
-                                                        : 
-                                                            <View style={{ flexDirection: 'row', marginLeft: Matrics.CountScale(5)}}>
-                                                                <Text style={{ alignSelf: 'center' }}>{child.RoleEmail}</Text>
-                                                                {
-                                                                    this.state.isEditable && this.state.Employeedata.StatusName != 'voided' && child.StatusName != 'completed' &&
-                                                                    <Icon name='pencil-alt' onPress={() => {
-                                                                        this.setState({
-                                                                            isEmailEditable: true,
-                                                                            selectedIndex: index,
-                                                                            newEmail: child.RoleEmail,
-                                                                            oldRoleEmail: child.RoleEmail,
-                                                                            oldRoleName: child.RoleName
-                                                                        }) 
-                                                                    }} style={{ marginLeft: Matrics.CountScale(15)}} color="#03AAEE" size={20} />
-                                                                }
-                                                            </View>
-                                                    }
-                                                </View>
-                                                <View style={{ flexDirection: 'row'}}>
-                                                    <Text style={Styles.headerTextStyle}>On: </Text>
-                                                    <Text style={{ fontFamily: Fonts.NunitoSansRegular, alignSelf: 'center', fontSize: Matrics.CountScale(14) }}>
+                                            {
+                                                this.state.isVisible &&
+                                                <View style={{ marginLeft: Matrics.CountScale(15) }}>
+                                                    <View style={{ flexDirection: 'row'}}>
+                                                        <Text style={Styles.headerTextStyle}>Email:</Text>
                                                         {
-                                                            (child.StatusName == 'completed' ||
-                                                            child.StatusName == 'declined' ||
-                                                            child.StatusName == 'voided')
-                                                            ? `${CDate}@${Time.toLocaleUpperCase()}`
-                                                            : (child.StatusName != 'completed' ||
-                                                            child.StatusName != 'declined' ||
-                                                            child.StatusName != 'voided')
-                                                                ? 'Pending'
-                                                                : null
+                                                            this.state.isEmailEditable && this.state.selectedIndex == index
+                                                            ? 
+                                                                <View style={{ flexDirection: 'row', marginLeft: Matrics.CountScale(5)}}>
+                                                                    <TextInput 
+                                                                        onChangeText={(value) => { this.setState({ newEmail: value })}}
+                                                                        value={this.state.newEmail}
+                                                                        editable={this.state.isEmailEditable}
+                                                                        style={{
+                                                                                borderRadius: Matrics.CountScale(10),
+                                                                                borderColor: 'black',
+                                                                                borderWidth: 1,
+                                                                                padding: Matrics.CountScale(8),
+                                                                                width: Matrics.CountScale(200),
+                                                                            }}
+                                                                    />
+                                                                    <MIcon name="done" onPress={() => this.onDoneClick( recipientArr[0].data)} style={{ marginLeft: Matrics.CountScale(5)}} color={Colors.PARROT} size={20} />
+                                                                    <MIcon name="close" onPress={() => {this.setState({isEmailEditable: false}) }} style={{ marginLeft: Matrics.CountScale(5)}} size={20} />
+                                                                </View>
+                                                            : 
+                                                                <View style={{ flexDirection: 'row', marginLeft: Matrics.CountScale(5)}}>
+                                                                    <Text style={{ alignSelf: 'center' }}>{child.RoleEmail}</Text>
+                                                                    {
+                                                                        this.state.isEditable && this.state.Employeedata.StatusName != 'voided' && child.StatusName != 'completed' &&
+                                                                        <Icon name='pencil-alt' onPress={() => {
+                                                                            this.setState({
+                                                                                isEmailEditable: true,
+                                                                                selectedIndex: index,
+                                                                                newEmail: child.RoleEmail,
+                                                                                oldRoleEmail: child.RoleEmail,
+                                                                                oldRoleName: child.RoleName
+                                                                            }) 
+                                                                        }} style={{ marginLeft: Matrics.CountScale(15)}} color="#03AAEE" size={20} />
+                                                                    }
+                                                                </View>
                                                         }
-                                                    </Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row'}}>
+                                                        <Text style={Styles.headerTextStyle}>On: </Text>
+                                                        <Text style={{ fontFamily: Fonts.NunitoSansRegular, alignSelf: 'center', fontSize: Matrics.CountScale(14) }}>
+                                                            {
+                                                                (child.StatusName == 'completed' ||
+                                                                child.StatusName == 'declined' ||
+                                                                child.StatusName == 'voided')
+                                                                ? `${CDate}@${Time.toLocaleUpperCase()}`
+                                                                : (child.StatusName != 'completed' ||
+                                                                child.StatusName != 'declined' ||
+                                                                child.StatusName != 'voided')
+                                                                    ? 'Pending'
+                                                                    : null
+                                                            }
+                                                        </Text>
+                                                    </View>
                                                 </View>
-                                            </View>
-                                        } 
-                                        </View> 
-                                        <View style={{ borderBottomWidth: 1, borderBottomColor: Colors.LIGHTGREY, marginLeft: Matrics.CountScale(15) }} /> 
+                                            } 
+                                        </View>
                                     </View>
                                 )
                             })
@@ -537,11 +472,11 @@ class DocumentDetails extends React.Component {
             recipientArr = this.state.recipientsData.filter(R => R.DocusignEnvelopeID == this.state.Employeedata.DocusignEnvelopeID);
         }
         console.log('recipientArr-->', recipientArr);
-        recipientArr.forEach((data) => {
-            isVisible.push('false');
-        });
-        await this.setState({ isVisible });
-        console.log('isvisible-->', this.state.isVisible)
+        // recipientArr.forEach((data) => {
+        //     isVisible.push('false');
+        // });
+        // await this.setState({ isVisible });
+        // console.log('isvisible-->', this.state.isVisible)
         return (
             <View style={Styles.hireStatusContainer}>
                 <Text style={[Styles.headerTextStyle, { textAlign: 'center', borderBottomColor: Colors.APPCOLOR, borderBottomWidth: 1 }]}>Hire Packet Status</Text>
