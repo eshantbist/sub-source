@@ -39,7 +39,6 @@ const Styles = {
     backgroundColor: Colors.WHITE
   },
   ImageStyle: {
-    // backgroundColor:'red',
     height: Matrics.CountScale(30),
     width: Matrics.CountScale(65),
     marginBottom: Matrics.CountScale(25),

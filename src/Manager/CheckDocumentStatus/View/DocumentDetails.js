@@ -23,7 +23,6 @@ class DocumentDetails extends React.Component {
     static navigationOptions = ({ navigation }) => ({
         headerTitle: navigation.state.params.data.FirstName + ' ' + navigation.state.params.data.LastName,
         headerTitleStyle: MasterCss.headerTitleStyle,
-        //     headerStyle: styles.headerStyle,
         headerTintColor: Colors.APPCOLOR,
         headerLeft:
             <TouchableOpacity onPress={() => { 
@@ -54,9 +53,6 @@ class DocumentDetails extends React.Component {
         const isEditable = this.props.navigation.getParam('isEditable');
         const HiringData = this.props.navigation.getParam('HiringData');
         this.setRecipeentslist(recipientsList);
-
-        // console.log('Employeedata-->',Employeedata)
-        // console.log('recipientsList-->',recipientsList)
         
         this.setState({ Employeedata, isEditable, HiringData, isVisible: false });
     }
@@ -65,11 +61,9 @@ class DocumentDetails extends React.Component {
 
     async UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.response.CheckDocumentStatus.CheckDocumentStatusEnvelopRecipientsEmailUpdateSuccess) {
-            // this.setState({ loading: false });
             let data = nextProps.response.CheckDocumentStatus.data;
             if(data.Status == 1) {
                 this.setState({ isEmailEditable: false });
-                // console.log('HiringData-->',this.state.HiringData)
                 this.props.getCheckDocumentStatusHiringReturnRequest(this.state.HiringData);
             } else {
                 Alert.alert(
@@ -81,7 +75,6 @@ class DocumentDetails extends React.Component {
                     {cancelable: false},
                 );
             }
-            // console.log('data-->', data);
         } else if(nextProps.response.CheckDocumentStatus.GetCheckDocumentStatusHiringReturnSucess && this.state.loading) {
             this.setState({ loading: false });
             let data = nextProps.response.CheckDocumentStatus.data;
@@ -96,7 +89,6 @@ class DocumentDetails extends React.Component {
             }
         } else if(nextProps.response.CheckDocumentStatus.UpdateBGCEverifyStatusSuccess) {
             let data = nextProps.response.CheckDocumentStatus.data;
-            // console.log('update manual data-->', data);
             if(data.Status == 1) {
                 this.props.getCheckDocumentStatusHiringReturnRequest(this.state.HiringData);
             } else {
@@ -111,7 +103,6 @@ class DocumentDetails extends React.Component {
             }
         } else if(nextProps.response.CheckDocumentStatus.ProcessBGCEverifySuccess) {
             let data = nextProps.response.CheckDocumentStatus.data;
-            // console.log('processbgceverifydata-->', data);
             if(data.Status == 1) {
                 this.props.getCheckDocumentStatusHiringReturnRequest(this.state.HiringData);
             } else {
@@ -178,17 +169,6 @@ class DocumentDetails extends React.Component {
     render() {
         return (
             <View style={Styles.pageContainer}>
-                {/* ----------->>> Header Start-------------->>> */}
-                {/* <Header
-                    centerText={data.name}
-                    leftImage={Images.BackIcon}
-                    onLeftPress={(val) => {
-                        this.props.navigation.goBack();
-                        console.log(this.props);
-                    }}
-                    leftImageStyle={{ top: -7, height: 20, width: 10 }}
-                /> */}
-                {/* ----------->>> Header End -------------->>> */}
                 <ScrollView>
                     {this.renderHireEmployee()}
                     {this.renderStatusLine()}
@@ -209,7 +189,6 @@ class DocumentDetails extends React.Component {
                                     <Image source={Images.Close} style={{ margin: Matrics.CountScale(15) }} />
                                 </TouchableOpacity>
                             </View>
-                            {/* {console.log('Employeedata-->',this.state.Employeedata)} */}
                             <View style={Styles.infoContainer}>
                                 <Text style={Styles.TitleText}>Employee Name: </Text>
                                 <Text style={Styles.DataText}>{this.state.Employeedata.FirstName} {this.state.Employeedata.LastName}</Text>
@@ -332,8 +311,6 @@ class DocumentDetails extends React.Component {
                                     <View key={index}
                                         style={{ 
                                             flexDirection: 'row',
-                                            // marginTop: Matrics.CountScale(5),
-                                            // backgroundColor: 'pink',
                                         }}
                                     >
                                         <View 
@@ -347,7 +324,6 @@ class DocumentDetails extends React.Component {
                                                     height: 8,
                                                     marginTop: index == 0 ? Matrics.CountScale(5) : 0,
                                                     marginRight: Matrics.CountScale(10),
-                                                    // marginBottom: Matrics.CountScale(5),
                                                     tintColor: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED,
                                                 }} 
                                                 source={Images.GreenDotIcon}
@@ -471,12 +447,6 @@ class DocumentDetails extends React.Component {
         if(this.state.recipientsData.length > 0){
             recipientArr = this.state.recipientsData.filter(R => R.DocusignEnvelopeID == this.state.Employeedata.DocusignEnvelopeID);
         }
-        console.log('recipientArr-->', recipientArr);
-        // recipientArr.forEach((data) => {
-        //     isVisible.push('false');
-        // });
-        // await this.setState({ isVisible });
-        // console.log('isvisible-->', this.state.isVisible)
         return (
             <View style={Styles.hireStatusContainer}>
                 <Text style={[Styles.headerTextStyle, { textAlign: 'center', borderBottomColor: Colors.APPCOLOR, borderBottomWidth: 1 }]}>Hire Packet Status</Text>
@@ -614,22 +584,6 @@ class DocumentDetails extends React.Component {
                         <HTML html={htmlContent} ignoredTags={tags} renderers={renderers} />
                     </View>
                 }
-                {/* <View style={Styles.hireStatusCardHeader}>
-                    <View style={Styles.hireStatusHeaderCardPart1}>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <Text style={{ paddingTop: Matrics.CountScale(10), fontFamily: Fonts.NunitoSansRegular, fontSize: 13, color: Colors.GREY }}>06.22.2017 6:28 PM</Text>
-                        <Text style={{ paddingTop: Matrics.CountScale(10), fontFamily: Fonts.NunitoSansRegular, fontWeight: "300", fontSize: 16 }}>Role Email has been changed from..</Text>
-                    </View>
-                </View>
-                <View style={Styles.hireStatusCardHeader}>
-                    <View style={Styles.hireStatusHeaderCardPart1}>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <Text style={{ paddingTop: Matrics.CountScale(10), fontFamily: Fonts.NunitoSansRegular, fontSize: 13, color: Colors.GREY }}>06.22.2017 6:28 PM</Text>
-                        <Text style={{ paddingTop: Matrics.CountScale(10), fontFamily: Fonts.NunitoSansRegular, fontSize: 16, fontWeight: "300", }}>Hiring Envelop has been sent success...</Text>
-                    </View>
-                </View> */}
             </View>
         );
     }
@@ -648,7 +602,6 @@ class DocumentDetails extends React.Component {
             return <Image style={{ width: 25, height: 32 }} source={Images.GreyPDFIcon}></Image>
     }
     EVerifyStatus() {
-        // console.log('Employeedata-->', this.state.Employeedata)
         let EVerify = this.state.Employeedata ? this.state.Employeedata.EverifyFilePath ? true : false : false;
         return (
             <View style={Styles.hireStatusContainer}>
@@ -781,11 +734,9 @@ const Styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: 'red',
         height: 30, flex: 0.2
     },
     employeeStyle: {
-        // backgroundColor: 'green',
         alignSelf: 'center',
         alignItems: 'flex-start',
         justifyContent: 'center',
@@ -793,7 +744,6 @@ const Styles = StyleSheet.create({
     },
     infoImg: {
         justifyContent: 'center',
-        // backgroundColor: 'red',
         alignSelf: 'center',
         alignItems: 'center',
         height: 30, flex: 0.2,
@@ -864,7 +814,6 @@ const Styles = StyleSheet.create({
         flex: 0.1
     },
     hireStatusHeaderCardPart2: {
-        // paddingBottom: Matrics.CountScale(15),
         borderBottomColor: Colors.LIGHTGREY,
         borderBottomWidth: 1,
         flex: 1, flexDirection: 'row'
@@ -915,6 +864,5 @@ const mapStateToProps = (state) => {
     };
 }
 
-// export default DocumentDetails;
 export default connect(mapStateToProps, { CheckDocumentStatusEnvelopRecipientsEmailUpdate, getCheckDocumentStatusHiringReturnRequest, UpdateBGCEverifyStatusRequest, ProcessBGCEverifyRequest, UpdatePhotoMatchingDataRequest })(DocumentDetails);
 

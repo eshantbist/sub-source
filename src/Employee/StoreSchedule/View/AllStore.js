@@ -24,32 +24,35 @@ class AllStore extends React.Component {
         storeScheduleData: [],
         loading: true,
         selectedDate: '',
-        viewHeight: 0,
         storelist: [],
         selectedShopId: 0,
+        selectedShopName: '',
         allStoreData: [],
-        refreshing: false
+        refreshing: false,
+        storeLoader:  true,
     }
     UNSAFE_componentWillMount() {
         self = this;
         console.log(this.props, "receive");
         this.UserStoreGuid = JSON.parse(global.user.LoginObject).Login.UserStoreGuid
-        // let sdate = new Date();
-        // let startDate = Global.getDateValue(sdate)
-        let startDate = '11-21-2018'
+        let startDate = moment(new Date()).format("MM/DD/YYYY");
+        // let startDate = '02/09/2021';
+        // console.log('startDate-->', startDate)
         this.setState({ selectedDate: startDate })
-        //alert(startDate)
-        this.props.getStoreSchedule({ StartDate: startDate })
+        this.props.getStoreSchedule({ StartDate: startDate, IsMobile: 1 });
+        this.props.getAllStoreRequest();
     }
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.storeSchedule.getStoreScheduleSuccess) {
-            this.setState({ loading: false, refreshing: false })
+        if (nextProps.storeSchedule.getStoreScheduleSuccess && (this.state.loading || this.state.refreshing)) {
             let response = nextProps.storeSchedule.data
             console.log("store....4", response)
-
-            if (response.Status == 1) {
-                this.setState({ storeScheduleData: response.Data, allStoreData: response.Data, loading: true })
-
+            if (response.Status == 1 && (this.state.loading || this.state.refreshing)) {
+                this.setState({ 
+                    storeScheduleData: response.Data, 
+                    allStoreData: response.Data, 
+                    loading: false, 
+                    refreshing: false  
+                });
 
                 // let dataArr = response.Data
                 // let resultArr = []
@@ -67,15 +70,11 @@ class AllStore extends React.Component {
                 //         resultArr.push({ 'title': monthName, 'data': tmpdata })
                 //     }
                 // }
-
                 let offerRequest = []
                 response.Data.forEach(res => {
                     if (res.UserStoreGuid != this.UserStoreGuid) {
-                        console.log(res)
+                        // console.log(res)
                         _.forEach(res.EmployeeAllShifts, (allShifts) => {
-                            // let offers = _.filter(allShifts.EmployeeShifts, (data) => {
-                            //     return data.RequestTypeID == 1;
-                            // })
                             _.forEach(allShifts.EmployeeShifts, (data) => {
                                 if (data.RequestTypeID != 0) {
                                     let monthName = Global.getMonthValue(allShifts.ScheduleDate)
@@ -90,12 +89,10 @@ class AllStore extends React.Component {
                                     }
                                 }
                             })
-                            //offerRequest = offerRequest.concat(offers)
                         });
                     }
                 })
-                this.offers = offerRequest
-
+                this.offers = offerRequest;
                 // let offerRequest = []
                 // response.Data.forEach(res => {
                 //     if (res.UserStoreGuid == this.UserStoreGuid) {
@@ -109,54 +106,30 @@ class AllStore extends React.Component {
                 //     }
                 // })
                 // this.offers = offerRequest
-                console.log('offerRequest',offerRequest)
-                this.props.getAllStoreRequest()
+                // console.log('offerRequest',offerRequest)
             }
             else {
-                setTimeout(() => { alert(response.Message) }, Global.alert_timeout)
-
+                // setTimeout(() => { alert(response.Message) }, Global.alert_timeout)
+                this.setState({ storeScheduleData: [], loading: false, refreshing: false })
             }
         }
-        if (nextProps.storeSchedule.getAllStoreSuccess) {
-            this.setState({ loading: false })
+        if (nextProps.storeSchedule.getAllStoreSuccess && this.state.storeLoader ) {
+            this.setState({ storeLoader: false })
             let response = nextProps.storeSchedule.data
             console.log('response store-->',response)
             if (response.Status == 1) {
                 let numArr = []
-                // let Data = [
-                //     {
-                //         "StoreID": 3,
-                //         "DisplayStoreNumber": "27117",
-                //         "UserStoreID": 29003,
-                //         "UserStoreGuid": "E8051AB5-496E-46A3-89DC-465F45620B50"
-                //     },
-                //     {
-                //         "StoreID": 6,
-                //         "DisplayStoreNumber": "1945",
-                //         "UserStoreID": 19823,
-                //         "UserStoreGuid": "7EFF44C5-58D9-49A5-9387-F55E0D0D22F7"
-                //     },
-                //     {
-                //         "StoreID": 9,
-                //         "DisplayStoreNumber": "3061",
-                //         "UserStoreID": 11501,
-                //         "UserStoreGuid": "615D5857-29B8-442B-A7B9-68B92EDCD3F4"
-                //     },
-                // ]
-
-                response.Data.forEach(element => {
-                    numArr.push({
-                        StoreID: element.StoreID,
-                        DisplayStoreNumber: Number(element.DisplayStoreNumber),
-                        UserStoreID: element.UserStoreID,
-                        UserStoreGuid: element.UserStoreGuid
-                    })
-                });
-
-                let storelist = _.sortBy(numArr, ['DisplayStoreNumber'])
-
-                this.setState({ storelist: [{ DisplayStoreNumber: 'All Shops' }, ...storelist] })
-                //setTimeout(() => { console.log(this.state.storelist) }, 1000)
+                // response.Data.forEach(element => {
+                //     numArr.push({
+                //         StoreID: element.StoreID,
+                //         DisplayStoreNumber: Number(element.DisplayStoreNumber),
+                //         UserStoreID: element.UserStoreID,
+                //         UserStoreGuid: element.UserStoreGuid
+                //     })
+                // });
+                // let storelist = _.sortBy(numArr, ['DisplayStoreNumber']);
+                // this.setState({ storelist: [{ DisplayStoreNumber: 'All Shops' }, ...storelist] })
+                this.setState({ storelist: response.Data, selectedShopId: response.Data[0].UserStoreID, selectedShopName: response.Data[0].DisplayStoreNumber });
             }
             else {
                 setTimeout(() => { alert(response.Message) }, Global.alert_timeout)
@@ -175,22 +148,15 @@ class AllStore extends React.Component {
     }
 
     renderStoreSchedule = ({ item, index }) => {
-        // let data = []
-        // _.forEach(item.EmployeeAllShifts, function (res) {
-        //     if (Global.getDateValue(res.ScheduleDate) == self.state.selectedDate)
-        //         data = res.EmployeeShifts //[0]
-        // });
-        // console.log(data)
-        console.log(this.offers, item)
-        console.log(self.state.selectedDate)
-
         let data = {}
-        _.forEach(item.EmployeeAllShifts, function (res) {
-            if (Global.getDateValue(res.ScheduleDate) == self.state.selectedDate)
-                data = res.EmployeeShifts[0]
-        });
-
-        //console.log(item.EmployeeAllShifts)
+        // console.log('item-->', item);
+        if(item.EmployeeAllShifts.length > 0){
+            item.EmployeeAllShifts.forEach((res) => {
+                if (Global.getDateValue(res.ScheduleDate) ==  moment(self.state.selectedDate).format('MM-DD-YYYY')){
+                    data = res.EmployeeShifts[0]
+                }
+            })
+        }
         var swipeoutBtns = [
             {
                 backgroundColor: 'transparent',
@@ -220,7 +186,7 @@ class AllStore extends React.Component {
             }
         ]
         // { console.log(this.UserStoreGuid) }
-
+        // console.log('kk-->', data)
         // return (data.length > 0 &&
         return (!_.isEmpty(data) &&
             <View >
@@ -231,7 +197,8 @@ class AllStore extends React.Component {
                     }}
                     scroll={event => this._allowScroll(event)}
                     autoClose={true} buttonWidth={Matrics.CountScale(250)}
-                    right={swipeoutBtns} disabled={this.state.changeClass}
+                    right={swipeoutBtns} 
+                    disabled={this.state.changeClass}
                     backgroundColor={'transparent'}>
                     <TouchableOpacity onPress={() => { this.props.navigation.navigate('StoreSchedule', { offers: this.offers, userInfo: item, userShiftInfo: data }); }}
                         disabled={item.UserStoreGuid != this.UserStoreGuid}
@@ -273,12 +240,12 @@ class AllStore extends React.Component {
     }
 
     async onShopChanged(value, index, data) {
-        console.log(value, index, data)
+        // console.log(value, index, data)
         if (index == 0) {
             this.setState({ storeScheduleData: this.state.allStoreData })
         }
         else {
-            await this.setState({ selectedShopId: data[index].UserStoreID })
+            await this.setState({ selectedShopId: data[index].UserStoreID, selectedShopName: data[index].DisplayStoreNumber })
             this.setState({
                 storeScheduleData: _.filter(this.state.allStoreData, (res) => {
                     return res.UserStoreID == this.state.selectedShopId;
@@ -302,10 +269,11 @@ class AllStore extends React.Component {
 
     pullToRefresh = async () => {
         await this.setState({ refreshing: true })
-        this.props.getStoreSchedule({ StartDate: this.state.selectedDate })
+        this.props.getStoreSchedule({ StartDate: this.state.selectedDate, IsMobile: 1 })
     }
 
     render() {
+        console.log('this.state.storeScheduleData-->',this.state.storeScheduleData)
         return (
             <View style={Styles.pageBody}>
 
@@ -335,14 +303,15 @@ class AllStore extends React.Component {
                     </View>
                     <View style={MasterCssEmployee.rightStyle} />
                 </View>
-                <View  style={{  alignItems: 'center',  backgroundColor: 'white',}}>
+                <View  style={{  alignItems: 'center'}}>
                     <Dropdown
                         containerStyle={{ width: Matrics.CountScale(150), bottom: 25 }}
                         data={this.state.storelist}
-                        value={'All Shops'}
+                        value={this.state.selectedShopName}
                         onChangeText={(value, index, data) => this.onShopChanged(value, index, data)}
                         //onChangeText={(value, index, data) => this.setState({ selectedShopId: data[index].StoreNumber })}
-                        valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber == 'All Shops' ? DisplayStoreNumber : `Shop ${DisplayStoreNumber}`}
+                        // valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber == 'All Shops' ? DisplayStoreNumber : `Shop ${DisplayStoreNumber}`}
+                        valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber == 'All Shops' ? DisplayStoreNumber : `${DisplayStoreNumber}`}
                         inputContainerStyle={{ borderBottomColor: 'transparent', }}
                         overlayStyle={{ borderWidth: 2 }}
                         dropdownOffset={{ top: 32, left: 0 }}
@@ -351,24 +320,11 @@ class AllStore extends React.Component {
                         itemCount={8}
                         rippleCentered={true}
                         selectedTextStyle={{ textAlign: 'center'}}
-                    // onChangeText={(val) => {
-                    //     console.log(val, "selected");
-                    // }}
                     />
                 </View>
-
                 {this.renderCalender()}
-
-                {(this.state.viewHeight == 0 && !this.state.loading) &&
-                    <View>
-                        <Text style={Styles.errMsgStyle}>No data found!</Text>
-                    </View>}
                 <View style={{ flex: 1 }}>
-                    <View onLayout={(event) => {
-                        var { x, y, width, height } = event.nativeEvent.layout;
-                        this.setState({ viewHeight: height })
-                        console.log(height)
-                    }}>
+                    <View style={{ flex: 1 }}>
                         <FlatList
                             data={this.state.storeScheduleData}
                             renderItem={this.renderStoreSchedule}
@@ -376,6 +332,12 @@ class AllStore extends React.Component {
                             scrollEnabled={this.state.scrollEnabled}
                             onRefresh={this.pullToRefresh}
                             refreshing={this.state.refreshing}
+                            contentContainerStyle={{ flexGrow: 1 }}
+                            ListEmptyComponent={() => !this.state.loading &&
+                                <View style={{ flex: 1, justifyContent: 'center' }}>
+                                    <Text style={Styles.errMsgStyle}>No data found!</Text>
+                                </View>
+                            }
                         />
                     </View>
                 </View>
@@ -391,13 +353,13 @@ class AllStore extends React.Component {
             end: moment().add(3, 'days')  // total 4 days enabled
         }];
         let datesBlacklist = [moment().add(1, 'days')]; // 1 day disabled
-
+        // console.log('kk-->', this.state.selectedDate)
         return (
-            <View >
+            <View style={{ top : -20 }}>
                 <CalendarStrip
                     calendarAnimation={{ type: 'sequence', duration: 100 }}
-                    startingDate={moment('11/21/2018')}
-                    selectedDate={moment('11/21/2018')}
+                    startingDate={moment(this.state.selectedDate)}
+                    selectedDate={moment(this.state.selectedDate)}
                     daySelectionAnimation={{
                         type: 'border',
                         duration: 500,
@@ -419,13 +381,20 @@ class AllStore extends React.Component {
                     highlightDateNameStyle={{
                         color: Colors.APPCOLOR
                     }}
-                    onWeekChanged={(data) => { this.setState({ selectedDate: Global.getDateValue(data._d) }) }}
+                    onWeekChanged={(data) => { 
+                        console.log('onWeekChanged-->',data); 
+                        console.log('sle-->',moment(Global.getDateValue(data._d)).format('MM/DD/YYYY')); 
+                        this.setState({ selectedDate: moment(Global.getDateValue(data._d)).format('MM/DD/YYYY'), loading: true });
+                        this.props.getStoreSchedule({ StartDate:  moment(Global.getDateValue(data._d)).format('MM/DD/YYYY'), IsMobile: 1 })
+                    }}
                     onDateSelected={(data) => {
-                        this.setState({ selectedDate: Global.getDateValue(data._d) })
+                        console.log('onDateSelected-->', data);
+                        this.setState({ selectedDate: Global.getDateValue(data._d), loading: true });
+                        this.props.getStoreSchedule({ StartDate:  moment(Global.getDateValue(data._d)).format('MM/DD/YYYY'), IsMobile: 1 });
                         //console.log()
                         // console.log(data._d)
                     }}
-
+                    scrollable={true}
                     iconContainer={{ flex: 0.1 }}
                 />
             </View>

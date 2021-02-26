@@ -5,21 +5,16 @@ import {
     Image, Modal, Platform, Dimensions, RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import CalendarPicker from '../../../CustomComponent/react-native-calendar-picker';
-import moment from 'moment';
 import _ from 'lodash';
 import {Picker} from '@react-native-community/picker';
 import SearchableDropdown from '../../../CustomComponent/react-native-searchable-dropdown';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import ModalFilterPicker from 'react-native-modal-filter-picker';
 
 // ======>>>>> Assets <<<<<=========
 import { Colors, Fonts, Matrics, Images, MasterCss } from '@Assets'
 import { TextInputView, Button, LoadWheel } from "@Components";
 import Header from '../../../Components/Common/Header';
 import Card from './Templetes/Card';
-import { Dropdown } from 'react-native-material-dropdown';
 import CheckDocumentStatusHeader from './Templetes/Header';
 import { getHeaderFilterValues, getCheckDocumentStatusHiringReturnRequest, getCheckDocumentStatusEnvelopVoidRequest } from '../../../Redux/Actions/DocumentStatusActions';
 
@@ -38,13 +33,6 @@ class CheckDoucmentStatus extends React.Component {
 
     static navigationOptions = ({ navigation }) => ({
         header: null,
-        // headerTitle: <CheckDocumentStatusHeader />,
-        // headerTitleStyle: MasterCss.headerTitleStyle,
-        // headerLeft: <View />,
-        // headerRight:
-        //     <TouchableOpacity onPress={() => { self.setState({ filterModal: true }) }} >
-        //         <Image source={Images.FilterIcon} style={MasterCss.basicIconStyle} />
-        //     </TouchableOpacity>
     })
 
     //--------->>>State Initilization----------->>>
@@ -61,11 +49,9 @@ class CheckDoucmentStatus extends React.Component {
         selectedUsers: '',
         selectedIndex: 0,
         selectedStores: -1,
-        // weekendDate: '',
         TitlesArr: [],
         empListArr: [],
         TotalEmployeeCount: 0,
-        // weekEndDateError: '',
         numberOfPage: 0,
         empListArr1: [],
         lastFilterselectedRoleId: 0,
@@ -78,7 +64,6 @@ class CheckDoucmentStatus extends React.Component {
         refreshing: false,
         selectedRoleName: '',
         lastFilterselectedUserId: 0,
-        // isDateTimePickerVisible: false,
         selectedStoreIndex: -1,
         lastFilterselectedIndex: -1,
         resetFilter: false,
@@ -91,11 +76,6 @@ class CheckDoucmentStatus extends React.Component {
         this.focusListener = this.props.navigation.addListener('willFocus', async () => {
             this.filterValFlag = false;
             this.docStatusFlage = false;
-            // console.log('global.selectedStore-->', parseInt(global.selectedStore,10))
-            // console.log('global.checkDocumentStoreId-->', parseInt(global.checkDocumentStoreId,10))
-            // console.log('lastFilterselectedStores-->', this.state.lastFilterselectedStores)
-            
-            console.log('TileId-->', this.state.selected);
             let TileID = 0;
             if (this.state.selected === 'Completed') {
                 TileID = 1;
@@ -104,14 +84,12 @@ class CheckDoucmentStatus extends React.Component {
             } else if (this.state.selected === 'InProgress') {
                 TileID = 3;
             }   
-            console.log('TileId-kk->', TileID);
             await this.setState({ 
                 selectedStores: global.checkDocumentStoreId == undefined ? parseInt(global.selectedStore,10) : parseInt(global.checkDocumentStoreId,10) , 
                 lastFilterselectedStores: global.checkDocumentStoreId == undefined ?  parseInt(global.selectedStore,10) : parseInt(global.checkDocumentStoreId,10), 
                 loading: true 
             });
             console.log(this.props, "=====>>>>>> Props IN Check Document Status <<<<<=====")
-            console.log('selectedStores-->', this.state.selectedStores)
             this.props.getHeaderFilterValues({
                 RoleId: global.loginResponse.RoleID,
                 FilterId: -1,
@@ -146,7 +124,6 @@ class CheckDoucmentStatus extends React.Component {
                 this.setState({ loading: false });
 
             let data = nextProps.response.CheckDocumentStatus.data;
-            // console.log(data)
             if (data.Status == 1) {
                 const roleSelect = {
                     RoleID: 0,
@@ -163,10 +140,7 @@ class CheckDoucmentStatus extends React.Component {
                     }
                     data.Report.user_list.unshift(userSelect);
                 }
-                // data.Report.store_list.unshift(storeselect);
                 data.Report.role_list.unshift(roleSelect);
-                // console.log('filter success store-->', data.Report.store_list);
-                // console.log('filter success role-->', data.Report.role_list);
                 if (data.Report.store_list.length > 0) {
                     var i;
                     for (i = 0; i < data.Report.store_list.length; i++) {
@@ -181,8 +155,6 @@ class CheckDoucmentStatus extends React.Component {
                     userRoleList: data.Report.role_list,
                     userList: data.Report.user_list,
                     storeList: data.Report.store_list,
-                    // selectedStoreId: data.Report.store_list[0].StoreID,
-                    // selectedStoreName: data.Report.store_list[0].DisplayStoreNumber
                     selectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber  : 'Select Shop',
                     lastFilterselectedselectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber  : 'Select Store',
                 });
@@ -201,16 +173,10 @@ class CheckDoucmentStatus extends React.Component {
                 this.setState({ loading: false, refreshing: false });
 
             let data = nextProps.response.CheckDocumentStatus.data;
-
-            console.log('data-->emp-->', data);
-            // console.log('data-->emp-->', data.Report._list);
-            // console.log('data-->emp-->',typeof data.Report._list);
-            // console.log('data-->emp-->', [data.Report._list]);
             if (data.Status == 1) {
                 empListData[this.state.selectedIndex] = data.Report._list;
                 await this.setState({
                     TitlesArr: data.Report._tilesObj,
-                    // empListArr: [data.Report._list], 
                     empListArr: empListData,
                     TotalEmployeeCount: data.Report.PagingStats.TotalCount,
                     recipientsListArr : data.Report._recipientsList
@@ -226,7 +192,6 @@ class CheckDoucmentStatus extends React.Component {
             }
         } else if (nextProps.response.CheckDocumentStatus.GetCheckDocumentStatusEnvelopVoidSuccess) {
             let data = nextProps.response.CheckDocumentStatus.data;
-            // console.log('data-->', data);
             if (data.Status == 1) {
                 this.props.getCheckDocumentStatusHiringReturnRequest({
                     RoleId: this.state.selectedRoleId,
@@ -250,10 +215,6 @@ class CheckDoucmentStatus extends React.Component {
 
     getNumberOfPage() {
         let Totalpage = this.state.TotalEmployeeCount / perPageRecord;
-        // let Totalflag = Number.isInteger(Totalflag);
-        // console.log('TotalEmployeeCount-->', this.state.TotalEmployeeCount);
-        // console.log('perPageRecord-->', perPageRecord);
-        // console.log('Totalpage--1>', Totalpage);
         if (Number.isInteger(Totalpage)) {
             Totalpage
         } else {
@@ -262,27 +223,8 @@ class CheckDoucmentStatus extends React.Component {
                 ? Totalpage = Math.round(Totalpage)
                 : Totalpage = parseInt(temp[0]) + 1;
         }
-        console.log('Totalpage--2>', Totalpage);
         this.setState({ Totalpage });
     }
-
-    // _showDateTimePicker = (val) => this.setState({ isDateTimePickerVisible: true });
-
-    // _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
-
-    // _handleDatePicked = (date) => {
-    //     // console.log('date-->', date);
-    //     if (moment(date).format('dddd') === 'Tuesday') {
-    //         this.setState({ weekendDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: '' })
-    //     } else {
-    //         this.setState({ weekendDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: 'Please Select Valid Weekend Date' })
-    //     }
-    //     this._hideDateTimePicker();
-    // };
-
-    // async onSelectStore(value, index, data) {
-    //     await this.setState({ selectedStoreId: data[index].StoreID, selectedStoreName: value });
-    // }
 
     getRole() {
         let data = []
@@ -399,8 +341,7 @@ class CheckDoucmentStatus extends React.Component {
             TileID = 2;
         } else if (this.state.selected === 'InProgress') {
             TileID = 3;
-        }
-        // console.log('TileID-->', TileID);   
+        }  
         if (apiCall === -1) {
             this.setState({ loading: true, selctedPageNumber: Index + 1 });
             pageNumArr.push(Index + 1);
@@ -437,7 +378,6 @@ class CheckDoucmentStatus extends React.Component {
     //----------->>>Render Method-------------->>>
 
     render() {
-        console.log('this.state.empListArr-->',this.state.empListArr)
         const { selected } = this.state,
             EmployeeData = [
                 [
@@ -575,23 +515,6 @@ class CheckDoucmentStatus extends React.Component {
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }} />
                     <View>
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, fontFamily: Fonts.NunitoSansRegular }}>Hire Packets</Text>
-                        {/* <Dropdown
-                            containerStyle={{ justifyContent: 'center' }}
-                            pickerStyle={{ top: Matrics.headerHeight }}
-                            data={this.state.storeList}
-                            value={this.state.selectedStoreName}
-                            onChangeText={(value, index, data) => this.onSelectStore(value, index, data)}
-                            valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber}
-                            inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                            overlayStyle={{ borderWidth: 2 }}
-                            dropdownOffset={{ left: 0 }}
-                            // dropdownPosition={5}
-                            fontSize={17}
-                            itemCount={8}
-                            rippleColor='white'
-                            rippleCentered={true}
-                            selectedTextStyle={{ textAlign: 'center'}}
-                        /> */}
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{this.state.selectedStoreName}</Text>
                     </View>
 
@@ -637,16 +560,6 @@ class CheckDoucmentStatus extends React.Component {
                     {
                         this.state.empListArr.length > 0
                             ?
-                            // this.state.empListArr.map((res, index) => {
-                            //     return(
-                            //         <View style={{ flex: 1 }}>
-                            //             <FlatList 
-                            //                 data={res}
-                            //                 renderItem={this._renderItem}
-                            //             />
-                            //         </View>
-                            //     )
-                            // })
                             <View style={{ flex: 1 }}>
                                 <FlatList
                                     extraData={this.state}
@@ -748,40 +661,9 @@ class CheckDoucmentStatus extends React.Component {
                                 keyboardShouldPersistTaps={'handled'}
                                 enableOnAndroid={true}
                             >
-                                {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
-                                    <TouchableOpacity onPress={() => this._showDateTimePicker()}>
-                                        <Text>{this.state.weekendDate ? this.state.weekendDate : 'Select Date'}</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                {
-                                    this.state.isDateTimePickerVisible
-                                    ?
-                                    <CalendarPicker
-                                        onDateChange={this._handleDatePicked}
-                                        enableWeek="Tue"
-                                        selectedDayColor="#139a46"
-                                        previousTitle="<"
-                                        nextTitle=">"
-                                    />
-                                    : null
-                                }
-                                <Text style={[Styles.errorText, { textAlign: 'right' }]}>{this.state.weekEndDateError}</Text> */}
                                 <Text style={Styles.pickerLabelStyle}>Role</Text>
                                 <Picker
-                                    // mode={'dropdown'}
-                                    // selectedValue={this.selectHours()}
                                     itemStyle={Styles.pickerItemStyle}
-                                    // onValueChange={async (itemValue, itemIndex) => {
-                                    //     if (this.state.Active == 'from') {
-                                    //         await this.setState({ InHours: itemValue })
-                                    //         this.updateValue()
-                                    //     }
-                                    //     else {
-                                    //         await this.setState({ OutHours: itemValue })
-                                    //         this.updateValue()
-                                    //     }
-                                    // }}
                                     selectedValue={this.state.selectedRoleId}
                                     onValueChange={value => {
                                         const roleNameArr = this.state.userRoleList.filter(R => R.RoleID == value);
@@ -901,12 +783,6 @@ class CheckDoucmentStatus extends React.Component {
                                 </TouchableOpacity>
                             </KeyboardAwareScrollView>
                         </View>
-                        {/* <DateTimePicker
-                            isVisible={this.state.isDateTimePickerVisible}
-                            onConfirm={this._handleDatePicked}
-                            onCancel={this._hideDateTimePicker}
-                            date={this.state.weekendDate ? new Date(this.state.weekendDate) : new Date()}
-                        /> */}
                         <LoadWheel visible={this.state.loading} />
                     </View>
                 </Modal>
@@ -943,7 +819,6 @@ class CheckDoucmentStatus extends React.Component {
     }
 
     _renderItem = ({ item, index }) => {
-        // console.log('recipientsListArr-->', this.state.recipientsListArr);
         const HiringData = {
             RoleId: this.state.selectedRoleId,
             FilterId: -1,
@@ -984,7 +859,6 @@ class CheckDoucmentStatus extends React.Component {
 const Styles = StyleSheet.create({
     pageContainer: {
         flex: 1,
-        // justifyContent: "center",
         backgroundColor: Colors.BODYBACKGROUND
     },
     labelTextStyle: {

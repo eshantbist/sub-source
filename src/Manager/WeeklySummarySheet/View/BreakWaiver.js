@@ -22,8 +22,7 @@ class BreakWaiver extends React.Component {
         const date = navigation.getParam('date');
         const previousDay = moment(date, 'YYYY/MM/DD').subtract(1, 'days')
         this.state = {empName, date, PosId, previousDay, DailyDetailID,DayID, Weekstartdate, loading: true, };
-        
-        // alert(moment(previousDay).format('dddd'));
+
     }
     static navigationOptions = ({ navigation }) => ({
         headerTitle: 'Break Waiver',
@@ -55,7 +54,6 @@ class BreakWaiver extends React.Component {
     async UNSAFE_componentWillReceiveProps(nextProps) {
         if(nextProps.resSummarySheet.getFetchBreakWaiversDetailSuccess && this.state.loading) {
             let data = nextProps.resSummarySheet.data;
-            console.log('breakdata-->', data);
             this.setState({ loading: false });
         }
     }
@@ -73,7 +71,6 @@ class BreakWaiver extends React.Component {
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
     _handleDatePicked = (date) => {
-        // console.log('A date has been picked: ', moment(date).format('MMM DD, ddd'));
         this._hideDateTimePicker();
         this.setState({ warningDate: moment(date).format('MMM DD, ddd') })
     };
@@ -84,7 +81,6 @@ class BreakWaiver extends React.Component {
     _hideTimePicker = () => this.setState({ isTimePickerVisible: false });
 
     _handleTimePicked = (time) => {
-        // console.log('A date has been picked: ', time);
         let val = moment(time).format('HH:mm')
         this._hideTimePicker();
         if (this.state.timeFlag == 'InFrom') {
@@ -99,7 +95,6 @@ class BreakWaiver extends React.Component {
         else if (this.state.timeFlag == 'OutTo') {
             this.setState({ shiftOutTimeTo: val })
         }
-        // this.setState({ shiftInTimeFrom: moment(time).format('hh:mm') })
         
     };
 
@@ -194,11 +189,9 @@ const Styles = {
     },
     basicFontStyle: {
         fontFamily: Fonts.NunitoSansRegular,
-        // fontWeight: 'normal'
     },
     titleFontStyle: {
         fontFamily: Fonts.NunitoSansSemiBold,
-        // fontWeight: 'bold'
     },
     containerStyle: {
         backgroundColor: 'white',

@@ -61,15 +61,12 @@ class Login extends React.Component {
                 AsyncStorage.setItem('login', 'true');
 
                 let res = JSON.parse(data.LoginObject);
-                console.log('res-->', res);
                 AsyncStorage.setItem('AuthToken', data.access_token)
                
                 
                 global.user = data;
                 global.loginResponse = JSON.parse(data.LoginObject).Login //userDetails.LoginObject.Login
 
-                // console.log('loginobject-->', global.loginResponse.UserName);
-                // console.log('loginobject-->', isNaN(global.loginResponse.UserName));
                 if(global.loginResponse.UserGUID === null && isNaN(global.loginResponse.UserName)){
                     console.log('manager')
                     AsyncStorage.setItem('subsourceModule', 'Manager')
@@ -82,23 +79,6 @@ class Login extends React.Component {
                     AsyncStorage.setItem('UserStoreGuid', res.Login.UserStoreGuid)
                     this.navigateToScreen('EmpTabBar')
                 }
-                // this.navigateToScreen('TabBar')
-
-
-                // if (UserDetails) {
-                //     global.user = JSON.parse(UserDetails);
-                //     userDetails = JSON.parse(UserDetails);
-                //     global.loginResponse = JSON.parse(userDetails.LoginObject).Login
-                //     expireDate = Object.keys(global.user)[5]
-                //     date = new Date
-                //     // date = new Date('Wed Oct 17 2018 21:49:00 GMT+0530 (India Standard Time)')
-                //     exDate = new Date(global.user[expireDate])
-                //     // exDate = new Date('Wed Oct 18 2018 21:49:00 GMT+0530 (India Standard Time)')
-                //     if (date.getTime() > exDate.getTime()) {
-                //         AsyncStorage.removeItem('login');
-                //         this.navigateToScreen('Login')
-                //     }
-
             }
             else {
                 this.setState({ loading: false, modalVisible: true })
@@ -129,7 +109,6 @@ class Login extends React.Component {
 
 
     onLoginSubmit() {
-        // this.props.navigation.navigate('Dashboard')
         if (this.state.username != '' && this.state.password != '') {
             this.props.loginRequest({ grant_type: 'password', username: this.state.username.trim(), password: this.state.password.trim(), module: 'admin' })
             this.setState({ loading: true })
@@ -252,9 +231,7 @@ const Styles = StyleSheet.create({
     },
     loginBox1: {
         flex: 1,
-
         backgroundColor: 'white',
-        // justifyContent: 'center',
     },
     logoImage: {
         alignSelf: 'center',
@@ -274,13 +251,11 @@ const Styles = StyleSheet.create({
     },
     resetView: {
         top: Matrics.CountScale(20),
-        // backgroundColor: 'red'
     },
     resetText: {
         alignSelf: 'center',
         color: Colors.APPTEXTCOLOR,
         fontFamily: Fonts.NunitoSansRegular,
-        // fontWeight: '200',
         fontSize: Matrics.CountScale(17),
         justifyContent: 'center'
     }
@@ -288,12 +263,9 @@ const Styles = StyleSheet.create({
 
 //Props Connection
 const mapStateToProps = (state) => {
-    console.log(state, "sstates");
-
     return {
         auth: state.Auth,
     };
-}
-//Redux Connection  
+} 
 export default connect(mapStateToProps, { loginRequest })(Login);
 

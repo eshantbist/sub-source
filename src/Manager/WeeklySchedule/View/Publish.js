@@ -2,9 +2,7 @@
 import React from 'react';
 import { View, Text, Image, TextInput, FlatList, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import moment from "moment";
 import _ from 'lodash';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { NotifyEmployeeSchedulesOnPublishRequest } from '@Redux/Actions/WeeklyScheduleActions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LoadWheel } from "@Components";
@@ -31,11 +29,9 @@ class Publish extends React.Component {
     })
 
     state = {
-        // recipientsData: [{ name: 'abc@gmail.com' }, { name: 'xyz@gmail.com' }, { name: 'pqr@gmail.com' }],
         recipientsData: [],
         message: '',
         emailId: '',
-        // isAdded: false,
         emailError: '',
         messageError: '',
         loading: false,
@@ -46,14 +42,10 @@ class Publish extends React.Component {
     }
 
     UNSAFE_componentWillMount() {
-        // self = this
-        // const employeeData = this.props.navigation.getParam('empData');
         if (this.props.navigation.state.params) {
-            // console.log('employeeData', this.props.navigation.state.params)
             if(this.props.navigation.state.params.empData != undefined){
                 const Recipients = JSON.parse(this.props.navigation.state.params.empData);
                 this.setState({ 
-                    // recipientsData: JSON.parse(this.props.navigation.state.params.empData),
                     WeekEndingDate: this.props.navigation.state.params.WeekEndingDate,
                     selectedStoreId: this.props.navigation.state.params.selectedStoreId,
                     selectedStoreName: this.props.navigation.state.params.selectedStoreName,
@@ -69,8 +61,6 @@ class Publish extends React.Component {
                     });
                     this.setState({recipientsData, ReceipientsChecked});
                 }
-                // console.log('recipientsData-->', recipientsData)
-                // console.log('ReceipientsChecked-->', ReceipientsChecked)
             }
         }
     }
@@ -162,60 +152,15 @@ class Publish extends React.Component {
         }
     }
 
-    // addShift() {
-    //     const tempArr = {
-    //       'EmailID': this.state.emailId,
-    //       'IsChecked': true,
-    //     }
-    //     if(this.state.emailId !== '') {
-    //         const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-    //         if (reg.test(this.state.emailId) == false) 
-    //         {
-    //             this.setState({ emailError:'Please Enter Valid Email Address'});
-    //         } else {
-    //             this.state.recipientsData.push(tempArr);
-    //             this.setState({ emailError: '' });
-    //             this.setState({ recipientsData: this.state.recipientsData, isAdded: false })
-    //         }
-    //     } else {
-    //         this.setState({ emailError: 'Please Enter Email Address'});
-    //     }
-    // }
-
     removeRecipients(email) {
         this.state.recipientsData.forEach((child, index) => {
             if (email === child.EmailID) {
                 const removeIndex = index;
-                // console.log('myIndex-->', removeIndex);
                 this.state.recipientsData.splice(removeIndex, 1);
                 this.setState({ recipientsData: this.state.recipientsData })
             }
         });
     }
-
-    // addShiftContainer = () => {
-    //     return (
-    //         <View>
-    //             <View style={{ backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: Matrics.CountScale(10), marginVertical: Matrics.CountScale(5) }}>
-    //             <TextInput 
-    //                 placeholder={'Enter Emailid'}
-    //                 onChangeText={(text) => {this.setState({ emailId: text })}}
-    //                 autoFocus={true}
-    //                 style={{ padding: Matrics.CountScale(15)}}
-    //                 keyboardType='email-address'
-    //                 // onBlur={() => {this.setState({ isAdded: false }); }}
-    //             />
-    //             <Icon
-    //                 onPress={() => this.addShift()}
-    //                 size={20}
-    //                 name='done'
-    //                 tintColor={Colors.GREY}
-    //             />
-    //             </View>
-    //             <Text style={{ color: 'red' }}>{this.state.emailError}</Text>
-    //         </View>
-    //     );
-    // }
 
     renderRecipients = ({ item, index }) => {
         return (
@@ -226,21 +171,6 @@ class Publish extends React.Component {
                         <Text>{item.FullName}</Text>
                         <Text style={{ marginTop: Matrics.CountScale(5)}}>{item.EmailID}</Text>
                     </View>
-                    {/* <TouchableOpacity onPress={() => this.removeRecipients(item.EmailID)}>
-                        <Image style={{
-                            width: Matrics.CountScale(15), height: Matrics.CountScale(30),
-                            margin: Matrics.CountScale(10), tintColor: Colors.GREY
-                        }} source={Images.Minus} />
-                    </TouchableOpacity> */}
-                    {/* <View style={{ 
-                        borderWidth: 1,
-                        borderColor: Colors.APPCOLOR,
-                        borderRadius: Matrics.CountScale(10),
-                        height: Matrics.CountScale(50),
-                        width: Matrics.CountScale(50),
-                        alignItems: 'center',
-                        marginVertical: Matrics.CountScale(10)
-                    }}> */}
                         <CheckBox
                             checkedIcon={<Image source={Images.CheckBoxChecked} />}
                             uncheckedIcon={<Image source={Images.CheckBoxUncheckedBorder} />}
@@ -252,9 +182,7 @@ class Publish extends React.Component {
                             }}
                             style={{ alignSelf: 'flex-end' }}
                         />
-                    {/* </View> */}
                 </View>
-                // : null
         )
     }
 
@@ -263,19 +191,7 @@ class Publish extends React.Component {
             <View style={{ flex: 1, paddingHorizontal: Matrics.CountScale(15) }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Text style={Styles.labelText}>Recipients:</Text>
-                    {/* <TouchableOpacity onPress={() => {this.setState({ isAdded: true })}}>
-                        <Image style={{
-                            height: Matrics.CountScale(20), width: Matrics.CountScale(20),
-                            tintColor: Colors.APPCOLOR
-                        }}
-                            source={Images.AddBtn} />
-                    </TouchableOpacity> */}
                 </View>
-                {/* {
-                    this.state.isAdded
-                    ? this.addShiftContainer()
-                    : null
-                } */}
                 <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
                     <FlatList
                         style={{ flexGrow: 0 }}

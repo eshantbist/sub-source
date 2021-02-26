@@ -670,7 +670,7 @@ module.exports = {
     async getStoreSchedule(param) {
         authToken = await AsyncStorage.getItem('AuthToken');
         userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
-
+        console.log('kkkkkkkkkkkkkkkkkkkkkkkk',userStoreGuid)
         const other_params = {
             "UserStoreGuid": userStoreGuid,
         }
@@ -700,7 +700,7 @@ module.exports = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': `Bearer BSO0WWa4GRPZ4vIVxL37QBcwIi5aWF9_dTjgHuZbgojW3h3pYYq75TNuUa6Wjri2Gg677tKlLzgG6JjueIC7msk-b6kSuYa7QS6Py40ut_Q28yVCRO38quf-SjmgcunJ4OLRzGt_gsJFsCiJqOIV0GXVv-noDQQLpA1XmmLHHoD-j0sZaaC3YfEji1UbNr9hr9xzXs8SQyGPDTs8xxlafWa6qLQz6lFnhqht6BOfKdqlSIIYmHWaBynnEoTMDuNunsYr_IgMwXeXGR3NbakMD3YkOrFAwVHh8yWQjI_NSWPRQz8CnoQM1Yq5fgrK4nqAfAXT1mDte2cLMlgX1eZ_5wsxX9GjkIYdbSJFk9hnHxCGZXc5CodIrtbHdRZS0nUFD37hu1gFxbAynGyzHT1iILWNXUQGXWjIVsZCn36fk-wpE1ZsnE5oJssFf4CKFZ8UroC8KqD5D0TCb1NPA--5EVNEnNMu_q7NQO0EolQ0NY9Gt3OnFVWRcQgH0O1LgkUZLGCqvMZVR5FLfVRrao8GO8aZ9J5AjVEGm31Jn2Vey5iqFfCUtDkYZ8F2IyL2wpxkEp3cL5l2jFoqMkmpin-fU-xftmeonyDxzmMJoL-vbYI9mJwCM-3z6dw6i3v7hw1xjoC7WOSDEoMV-n57IYT0CA`
+                'Authorization': `Bearer ${authToken}`
             },
         }).then((response) => response.json())
     },

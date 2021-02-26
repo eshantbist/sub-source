@@ -514,7 +514,6 @@ class HireNewEmployee extends React.Component {
             BusinessTypeID: 1,
             jsonData,
         });
-        // this.setState({ loading: false });
     }
 
     //----------->>>Render Method-------------->>>
@@ -535,12 +534,7 @@ class HireNewEmployee extends React.Component {
                 </View>
                 <ScrollView onScrollEndDrag={() => setTimeout(() => {
                     this.myComponent.measure((fx, fy, width, height, px, py) => {
-                        this.setState({ topSpace: py - 20, topStoreSpace: py - 90 })
-                        // console.log(height)
-                        // console.log(fx)
-                        // console.log(py)
-                        // console.log(fy)
-                        // console.log('112....', py)
+                        this.setState({ topSpace: py - 20, topStoreSpace: py - 90 });
                     })
 
                 }, 100)}>
@@ -558,7 +552,6 @@ class HireNewEmployee extends React.Component {
                         {
                             this.state.isMinor
                             ?
-                                // <Text style={Styles.cardHeaderText}>Attach Documents</Text>
                                 this.employeeDocuments()
                             : null
                         }
@@ -616,17 +609,10 @@ class HireNewEmployee extends React.Component {
                     onChangeText={val => this.setState({ email: val, errorEmail: '' })}
                     error={this.state.errorEmail}
                 />
-                {/* <View style={{ flexDirection: 'row' }}> */}
-                    {/* {console.log('selectedStore-->', this.state.selectedStore)} */}
                     <Dropdown
                         containerStyle={{
-                            // alignSelf: 'flex-start',
                             top: Matrics.CountScale(20), marginLeft: Matrics.CountScale(10),
                             borderBottomColor: Colors.LIGHTGREY, borderBottomWidth: 1,
-                            // textAlign: 'left',
-                            // width: '100%',
-                            // backgroundColor: 'blue',
-                            // marginTop: Matrics.CountScale(10),
                             marginHorizontal: Matrics.CountScale(10)
                         }}
                         containerWidth={(Dimensions.get('window').width-50)}
@@ -659,7 +645,6 @@ class HireNewEmployee extends React.Component {
                         error={this.state.errorPosId}
                         keyboardType='numeric'
                     />
-                {/* </View> */}
 
                 <View renderToHardwareTextureAndroid={true} ref={view => { this.myComponent = view; }}
                 style={{ flexDirection: 'row',paddingVertical: Matrics.CountScale(10) }}
@@ -741,10 +726,7 @@ class HireNewEmployee extends React.Component {
                     isVisible={this.state.isDateTimePickerVisible}
                     onConfirm={this.handleDatePicked}
                     onCancel={this.hideDateTimePicker}
-                    // date={this.state.dateOfBirth ? new Date(this.state.dateOfBirth) : new Date(twelYearAbove)}
                     date={this.state.dateOfBirth ? new Date(this.state.dateOfBirth): new Date()}
-                    // maximumDate={new Date(twelYearAbove)}
-                    // maximumDate={new Date('2015-07-15')}
                 />
             </View>
         )
@@ -796,14 +778,6 @@ class HireNewEmployee extends React.Component {
                 containerStyle={
                     [Styles.cardContainer,
                     {
-                    //     // alignSelf: 'flex-start',
-                    //     top: Matrics.CountScale(20), marginLeft: Matrics.CountScale(10),
-                    //     borderBottomColor: Colors.LIGHTGREY, borderBottomWidth: 1,
-                    //     // textAlign: 'left',
-                    //     // width: '100%',
-                    //     // backgroundColor: 'blue',
-                        // marginTop: Matrics.CountScale(10),
-                        // marginHorizontal: Matrics.CountScale(10)
                         paddingTop: Matrics.CountScale(10)
                     }]
                 }
@@ -931,14 +905,12 @@ const Styles = StyleSheet.create({
     pickerContainer: {
         borderTopColor: '#ccc',
         marginTop: Matrics.CountScale(5),
-        // borderTopWidth: Matrics.CountScale(1)
     },
     picker: {
         flex: 1,
         flexDirection: "row",
         height: Platform.OS === "ios" ? Matrics.CountScale(220) : null,
         borderBottomColor: '#ccc',
-        // borderBottomWidth: Matrics.CountScale(1)
     },
     errorText: {
         color: 'red',
@@ -955,6 +927,5 @@ const mapStateToProps = (state) => {
     };
 }
 
-// export default HireNewEmployee;
 export default connect(mapStateToProps, { getUserRoleRequest, getStoreListWithSettingRequest, getStoreSettingDetailsListRequest, EmployeeExistenceCheckOnHiringRequest, HireNewEmployeeManageRequest })(HireNewEmployee);
 

@@ -26,7 +26,6 @@ class Card extends React.Component {
                         alignItems: 'center',
                         justifyContent: 'center',
                         flex: 1, flexDirection: 'row',
-                        // backgroundColor:'red'
                         top: Matrics.CountScale(3)
                     }}>
                     <TouchableOpacity
@@ -67,8 +66,6 @@ class Card extends React.Component {
                                     {this.props.item.FirstName} {this.props.item.LastName}
                                 </Text>
                                 <Text style={[Styles.sendStatusText, 
-                                    // this.props.item.DisplayStatusName == 'Hiring Packet in process' ? { color: Colors.RED } : { color: Colors.APPCOLOR }
-                                    // this.props.item.StatusName == 'completed' ? { color: Colors.APPCOLOR } : { color: Colors.RED }
                                 ]}>
                                     {
                                         (!(this.props.item.StatusID==6561 || this.props.item.StatusID==6573)) && (!(this.props.item.StatusName == 'declined' || this.props.item.StatusName == 'voided' ||(this.props.item.BGCStatusID==6 || this.props.item.BGCStatusID==10 || this.props.item.EverifyStatusID == 13)))

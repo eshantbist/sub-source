@@ -53,9 +53,11 @@ class ConfirmPassword extends React.Component {
   onRsetPassword(){
     // navigation.navigate("Congrats")
     if (this.state.password == '') {
-      this.setState({ PasswordError: "Please Enter The Password" })
+      this.setState({ PasswordError: "Please enter the password" })
     } else if(this.state.repeatPassword == '') {
-      this.setState({ repeatPasswordError: "Please Enter The RepeatPassword" })
+      this.setState({ repeatPasswordError: "Please enter the repeatPassword" })
+    } else if(this.state.password != this.state.repeatPassword){
+      this.setState({ repeatPasswordError: `Password & Repeat password don't match` });
     } else {
       this.setState({ loading: true });
       this.props.ChangePasswordRequest({ PassKey: this.state.password, NewPassKey: this.state.repeatPassword, ConfirmPassKey: this.state.repeatPassword })
@@ -130,11 +132,8 @@ const Styles = StyleSheet.create({
     marginRight: Matrics.CountScale(20),
     marginBottom: Matrics.CountScale(30)
   },
-  // inputBox: {
-  //   marginHorizontal: Matrics.CountScale(20)
-  // },
   PasswordInput: {
-    marginTop: Matrics.CountScale(60)
+    marginTop: Matrics.CountScale(40),
   },
   buttonView: {
     marginTop: Matrics.CountScale(70)

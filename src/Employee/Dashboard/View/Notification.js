@@ -29,10 +29,12 @@ class Notification extends React.Component {
     }
 
     callGetNotifications() {
-        console.log('api call-->', this.state.pageNo)
+        // console.log('api call-->', this.state.pageNo)
         this.props.getNotificationListDetails({
             MessageType: 4,
-            IsInbox: true, PageSize: this.state.pageSize, PageNo: this.state.pageNo
+            IsInbox: true,
+            PageSize: this.state.pageSize,
+            PageNo: this.state.pageNo,
         })
     }
 
@@ -94,9 +96,6 @@ class Notification extends React.Component {
     }
 
     render() {
-        console.log('len-->', this.state.notifications.length)
-        console.log('notificationTotal-->', this.state.notificationTotal)
-        console.log('loadmore-->', this.state.loadmore )
         return (
             <View style={Styles.pageBody}>
                 <Header titleText={'Notification'} navigation={this.props.navigation}></Header>

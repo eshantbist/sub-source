@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import CalendarPicker from '../../../CustomComponent/react-native-calendar-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-// import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import DocumentPicker from 'react-native-document-picker';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -16,7 +15,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import SearchableDropdown from '../../../CustomComponent/react-native-searchable-dropdown';
 import _ from 'lodash';
 import moment from 'moment';
-import ModalFilterPicker from 'react-native-modal-filter-picker';
 import {
   getWeatherDetailsListRequest,
   CreateEmployeeTimeOff,
@@ -166,7 +164,6 @@ class WeeklySummarySheet extends React.Component {
         userRole: [],
         StoresList:[],
         hoursBasicAsUserStoreId: [],
-        // newTimeoffDataArr: [],
         weekEndDateError: '',
         showpunchSection: false,
         punchInTime: '',
@@ -207,7 +204,6 @@ class WeeklySummarySheet extends React.Component {
     async UNSAFE_componentWillMount() {
       self = this;
       this.focusListener = this.props.navigation.addListener('didFocus', async () => {
-        // console.log('will summary global.selectedStore-->', parseInt(global.selectedStore,10))
         await this.setState({ 
             selectedStoreId: parseInt(global.selectedStore,10), 
             lastFilterselectedStoreId: parseInt(global.selectedStore,10), 
@@ -254,19 +250,6 @@ class WeeklySummarySheet extends React.Component {
         }
       });
 
-    //   console.log('date-->', moment.utc(WeekEndingDate).format())
-    //   console.log('StoreId-->', this.state.selectedStoreId)
-
-    //   if(this.state.selectedStoreId == -1) {
-    //   if(this.state.isLoad) {
-    //     this.headerfilterFlag = false;
-    //     this.timeOffReasonsFlag = false;
-
-    //     this.props.getHeaderFilterValuesRequest({ StoreId: this.state.selectedStoreId, RoleId: this.state.selectedRoleId, FilterId: -1, BusinessTypeId: 1 });
-    //     this.props.getTimeOffReasonsListRequest();
-        
-    //   } else
-      
       if(this.state.selectedStoreId !== -1) {
         this.weatherListFlag = false;
         this.weekDayStatusFlag = false;
@@ -282,16 +265,6 @@ class WeeklySummarySheet extends React.Component {
     }
 
     async UNSAFE_componentWillReceiveProps(nextProps) {
-        // console.log('will receive',this.createTimeofFlag);
-        // console.log('header filter loading-->',  this.state.loading)
-        // console.log('header filter isFromFilter-->',  this.state.isFromFilter)
-        // console.log('header filter headerfilterFlag-->',  this.headerfilterFlag)
-        // console.log('header filter weekDayStatusFlag-->',  this.weekDayStatusFlag)
-        // console.log('header filter weatherListFlag-->',  this.weatherListFlag)
-        // console.log('header filter WeeklySummarySheetFlag-->',  this.WeeklySummarySheetFlag)
-        // console.log('header filter timeOffReasonsFlag-->',  this.timeOffReasonsFlag)
-        // console.log('header filter getWeeklySummarySheetDataSuccess-->',  nextProps.resSummarySheet.getWeeklySummarySheetDataSuccess)
-
         if(nextProps.resSummarySheet.getWeeklySummarySheetDataSuccess === undefined && this.state.loading && this.state.isFromFilter){
             this.WeeklySummarySheetFlag = false;
             this.setState({
@@ -300,8 +273,7 @@ class WeeklySummarySheet extends React.Component {
         }
 
       if(nextProps.headerFiltervalues.getHeaderFilterValuesSuccess && this.state.loading && !this.headerfilterFlag && !this.state.getFilterData) {
-        this.headerfilterFlag = true
-        console.log('in value change success')
+        this.headerfilterFlag = true;
         if(this.headerfilterFlag && this.weekDayStatusFlag && this.weekDatesFlag && this.weatherListFlag && this.WeeklySummarySheetFlag &&  this.timeOffReasonsFlag)
             this.setState({ loading: false })
 
@@ -371,7 +343,6 @@ class WeeklySummarySheet extends React.Component {
         this.setState({ loading: false});
 
         let data = nextProps.resWeeklySchedule.data;
-        console.log('weekdates-->', data);
         if(data.Status == 1) {
             this.setState({ weekDatesList: data.Days});
         }
@@ -457,29 +428,7 @@ class WeeklySummarySheet extends React.Component {
             if (this.state.basicListArr.length > 0 && this.state.hoursBasicListArr.length > 0) {
                 this.setEmpData()
             }
-        } 
-
-        // console.log('in summary sheet data');
-        // let data = nextProps.resSummarySheet.data;
-        // if(data.Status == 1) {
-        //     this.WeeklySummarySheetFlag = true;
-        //     await this.setState({ 
-        //         basicListArr: data.Data.Employees,
-        //         hoursBasicListArr: data.Data.EmployeeHours,
-        //         bottomHoursBasicListArr: data.Data.BottomHours,
-        //         bottomTotalBasicListArr: data.Data.BottomTotal,
-        //     });
-        //     if (this.state.basicListArr.length > 0 && this.state.hoursBasicListArr.length > 0) {
-        //         console.log('after filter')
-        //         this.setEmpData()
-        //     }
-        // } else {
-        //     this.WeeklySummarySheetFlag = true;
-        // }
-
-        // if(this.headerfilterFlag && this.weekDayStatusFlag && this.weekDatesFlag && this.weatherListFlag && this.WeeklySummarySheetFlag &&  this.timeOffReasonsFlag)
-        //     this.setState({ loading: false, refreshing: false });
-        
+        }
       }
       else if(nextProps.resSummarySheet.getEmployeePunchDetailSuccess) {
         let data = nextProps.resSummarySheet.data;
@@ -638,7 +587,6 @@ class WeeklySummarySheet extends React.Component {
     }
 
     getTimeoff = (UserStoreGuid,TimeOffCombineID) => {
-        // console.log('getTimeOff-->', UserStoreGuid);
         return new Promise(resolve => {
           fetch(`https://api.subsource.com/GetEmployeeTimeOff/?UserStoreGuid=${UserStoreGuid}&TimeOffCombineID=${TimeOffCombineID}&PageNumber=1&PageSize=20`,{ 
             method: 'GET', 
@@ -789,12 +737,6 @@ class WeeklySummarySheet extends React.Component {
     }
 
     async onSelectFile() {
-        // DocumentPicker.show({
-        //     filetype: [DocumentPickerUtil.allFiles()],
-        // }, (error, res) => {
-        //     if (res != null)
-        //         this.setState({ attachFile: res.fileName })
-        // });
         try {
             const res = await DocumentPicker.pick({
                 type: [DocumentPicker.types.allFiles],
@@ -812,9 +754,8 @@ class WeeklySummarySheet extends React.Component {
     }
 
     _renderItem({ item, index }) {
-        // console.log('is closed-->', !item.isClosed, '---', item.WeekDate)
       return(
-        <TouchableOpacity style={{ flexDirection: 'row', }} 
+        <TouchableOpacity key={index} style={{ flexDirection: 'row', }} 
             onPress={() => { 
                 self.setState({ dayIndex: index, selectedDate: item.WeekDate, selectedDayId: item.DayID, selectedDayIsOpen: !item.isClosed, }) 
                 if(index >= 6){
@@ -830,8 +771,6 @@ class WeeklySummarySheet extends React.Component {
             disabled={index == 0 ? true : false}
         >
           <View style={{ flex: 1, alignItems: 'center', backgroundColor: self.state.dayIndex == index ? Colors.SKYBLUE : null,
-        //   paddingVertical: Matrics.CountScale(20)
-        //    paddingVertical: item.WeekDate === 'Total' ? Matrics.CountScale(43) : Matrics.CountScale(10) 
             height: Matrics.CountScale(110)
            }}>
             {
@@ -916,10 +855,6 @@ class WeeklySummarySheet extends React.Component {
     }
 
     onUpdatePunchDetails() {
-        // console.log('puchDetailArr-->', this.state.puchDetailArr)
-        // console.log('punchInArr-->', this.state.punchInArr)
-        // console.log('punchOutArr-->', this.state.punchOutArr)
-        // console.log('TotalHoursArr-->', this.state.TotalHoursArr)
         if(this.state.adjustReason !== '') {
             let punchData = [];
             if(this.state.puchDetailArr.length > this.state.puchDetailIntialLen){
@@ -933,7 +868,6 @@ class WeeklySummarySheet extends React.Component {
                     if(newChild.PunchID === "") {
                         newChild.AdjDescription = this.state.adjustReason;
                     }
-                    // console.log('finalafter child-->', newChild);
                     punchData.push(newChild);
                 });
             } else {
@@ -978,13 +912,6 @@ class WeeklySummarySheet extends React.Component {
     }
 
     onCreateTimeOff() {
-        // if( this.state.timeoffStartDate === '') {
-        //     this.setState({ startDateError: 'Please Select The StartDate' });
-        // } else if (this.state.timeoffEndDate === ''){
-        //     this.setState({ endDateError: 'Please Select The EndDate'});
-        // } else if(this.state.timeoffEndDate  <= this.state.timeoffStartDate){
-        //     this.setState({ endDateError: 'End date should be greater than Start date' });
-        // } else 
         if(this.state.selectedReasonId === ''){
             this.setState({ resonError: 'Please select the reson' });
         } else if (this.state.timeoffNotes === ''){
@@ -992,16 +919,6 @@ class WeeklySummarySheet extends React.Component {
         } else if(this.state.UserStoreGUID === ''){
             this.setState({ resonDetailError: 'Something wrong please try again!' });
         } else {
-            // const dataTimeoff = {   
-            //     "StartDate": moment(this.state.timeoffStartDate).format('MM-DD-YYYY'),
-            //     "EndDate": moment(this.state.timeoffEndDate).format('MM-DD-YYYY'),
-            //     "ReasonID": this.state.selectedReasonId,
-            //     "ReasonDetail": this.state.timeoffNotes,
-            //     "AttachmentName": this.state.attachFile,
-            //     "UserStoreGuid": this.state.UserStoreGUID,
-            //     "OldTimeOffCombineID": 0,
-            //     "IsFromSchedule": 0
-            // }
             const dataTimeoff = {
                 // "AttachmentFilePath": "",
                 "AttachmentName": this.state.attachFile,
@@ -1046,7 +963,7 @@ class WeeklySummarySheet extends React.Component {
 
     logrenderitem = ({item, index}) => {
         return(
-            <View style={{borderBottomColor: 'black', borderBottomWidth: 1 }}>
+            <View key={index} style={{borderBottomColor: 'black', borderBottomWidth: 1 }}>
                 <View style={{ marginHorizontal: Matrics.CountScale(5), flexDirection: 'row'}}>
                     <View style={{ width: '30%' }}>
                         <Text style={Styles.titleFontStyle}>Previous Shift</Text>
@@ -1078,22 +995,12 @@ class WeeklySummarySheet extends React.Component {
     }
 
     renderUserRole = ({item, index})  => {
-        // console.log('item-->', item);
-        console.log('basiclist-->',this.state.bottomHoursBasicListArr)
         
         let resTotalHours = this.state.bottomHoursBasicListArr.filter(t => t.Header == 'Total Hours' && t.DayID == this.state.selectedDayId && t.DayDate == this.state.selectedDate);
         
         let TotalUnitArr = this.state.bottomTotalBasicListArr.filter(tu => tu.DayID == this.state.selectedDayId && tu.DayDate == this.state.selectedDate);
-        
+
         let resPayrollDollars = this.state.bottomHoursBasicListArr.filter(t => t.Header == 'Payroll Dollars' && t.DayID == this.state.selectedDayId && t.DayDate == this.state.selectedDate);
-      
-        // console.log('resTotalHours-->', resTotalHours)
-        // console.log('item-->', item.data)
-        // console.log('hoursBasicListArr-->',JSON.stringify(this.state.hoursBasicListArr));
-        // console.log('hoursBasicAsUserStoreId-->', this.state.hoursBasicAsUserStoreId)
-        // console.log('length-->', Object.keys(item.data).length);
-        // console.log('bottomHoursBasicListArr-->', JSON.stringify(this.state.bottomHoursBasicListArr));
-        // console.log('bottomTotalBasicListArr-->', JSON.stringify(this.state.bottomTotalBasicListArr));
         let WeTotalHoursRG = 0;
         let WeTotalHoursOT = 0;
         let WeTotalHoursDT = 0;
@@ -1143,10 +1050,8 @@ class WeeklySummarySheet extends React.Component {
             WeCokePercentage = WeCokePercentage + child.CokePercentage / 7;
             WeTotalCOGPercentage = WeTotalCOGPercentage + child.TotalCOGPercentage / 7;
         });
-    //    console.log('WeProductivity-->', WeProductivity);
-        // console.log('selected date-->', this.state.selectedDate)
         return(
-            <View>
+            <View key={index}>
                 {
                     item.RoleName == "Weekly summary"
                     ? <View style={{ borderColor: Colors.APPCOLOR, borderWidth: 2 }} />
@@ -1175,6 +1080,7 @@ class WeeklySummarySheet extends React.Component {
                                     ? resData[0].IsAbsent 
                                         ? // absonse emp
                                             <TextColumn 
+                                                key={index}
                                                 name={res.FullName} 
                                                 ProfilePicture={res.ProfilePicture} 
                                                 ISProfilePicture={true} 
@@ -1299,7 +1205,7 @@ class WeeklySummarySheet extends React.Component {
                             </View>
                     :item.data.length > 0  // Total Column logic
                         ? 
-                            item.data.map(res => {
+                            item.data.map((res, index )=> {
                                 let TotalRG = 0;
                                 let TotalOT = 0;
                                 let TotalDT = 0;
@@ -1316,6 +1222,7 @@ class WeeklySummarySheet extends React.Component {
                                 })
                                 return(
                                     <TextColumn 
+                                        key={index}
                                         name={res.FullName} 
                                         ProfilePicture={res.ProfilePicture}
                                         ISProfilePicture={true} 
@@ -1380,44 +1287,15 @@ class WeeklySummarySheet extends React.Component {
     //----------->>>Render Method-------------->>>
 
     render() {
-        // console.log('render');
-        // console.log('absenceReason-->', this.state.absenceReason);
-        // console.log('selectedDate-->', this.state.selectedDate);
-        // console.log('this.state.dayIndex-->', this.state.dayIndex);
-        // console.log('this.state.selectedDayId-->', this.state.selectedDayId);
-        // console.log('selectedDayIsOpen-->',this.state.selectedDayIsOpen);
-        // console.log('empRoleWiseData-->',this.state.empRoleWiseData.length);
-        // console.log('hoursBasicListArr-->',this.state.hoursBasicListArr.length);
-        // console.log('bottomHoursBasicListArr-->',this.state.bottomHoursBasicListArr.length);
-        // console.log('bottomTotalBasicListArr-->',this.state.bottomTotalBasicListArr.length);
-        // console.log('hoursBasicAsUserStoreId-->',this.state.hoursBasicAsUserStoreId.length);
-        // console.log('selectedDate-->',this.state.selectedDate);
-        // console.log('newTimeoffDataArr-->', this.state.newTimeoffDataArr.length);
         return (
             <View style={{ flex: 1, backgroundColor: Colors.WHITE }}>
                 <View style={{paddingTop: Platform.OS == 'ios' ? (Matrics.screenHeight == 812 ? 30 : 20) : 0, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',}}>
                     <View style={{  flex: 1, flexDirection: 'row',justifyContent: 'flex-start'}} />
                     <View>
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, fontFamily: Fonts.NunitoSansRegular }}>Weekly Summary Sheet</Text>
-                        {/* <Dropdown
-                            containerStyle={{ justifyContent: 'center' }}
-                            pickerStyle={{ top: Matrics.headerHeight }}
-                            data={this.state.StoresList}
-                            value={this.state.selectedStoreName}
-                            onChangeText={(value, index, data) => this.onSelectStore(value, index, data)}
-                            valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber}
-                            inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                            overlayStyle={{ borderWidth: 2 }}
-                            dropdownOffset={{ left: 0 }}
-                            // dropdownPosition={5}
-                            fontSize={17}
-                            itemCount={8}
-                            rippleColor='white'
-                            rippleCentered={true}
-                            selectedTextStyle={{ textAlign: 'center'}}
-                        /> */}
+                    
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{this.state.selectedStoreName}</Text>
-                        {/* <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${this.state.WeekEndingDate}`}</Text> */}
+                        
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${moment(this.state.WeekEndingDate).format('MM.DD.YYYY')}`}</Text>
                     </View>
 
@@ -1430,18 +1308,6 @@ class WeeklySummarySheet extends React.Component {
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                {/* <FlatList 
-                    data={this.state.FinalWeekDatesDataArr}
-                    renderItem={this._renderItem.bind(this)}
-                    extraData={this.state}
-                    pagingEnabled
-                    horizontal={true}
-                    removeClippedSubviews={true}
-                    onViewableItemsChanged={this.handleViewableItemsChanged}
-                    viewabilityConfig={this.viewabilityConfig}
-                    showsHorizontalScrollIndicator={false}
-                    style={{ width: Matrics.screenWidth / 2 }}
-                /> */}
                   <Carousel
                       ref={(c) => { this._carousel = c; }}
                       data={this.state.FinalWeekDatesDataArr}
@@ -1453,27 +1319,15 @@ class WeeklySummarySheet extends React.Component {
                       inactiveSlideOpacity={1}
                       extraData={this.state}
                       onSnapToItem={(index) => { 
-                        //   console.log('index-->',index); console.log('prev-->',index);
                         this.setState({ 
                             dayIndex: index+1, 
                             selectedDate: this.state.FinalWeekDatesDataArr[index+1].WeekDate, 
                             selectedDayId: this.state.FinalWeekDatesDataArr[index+1].DayID, 
                             selectedDayIsOpen: !this.state.FinalWeekDatesDataArr[index+1].isClosed, 
                         });
-                        // if(this.state.prevIndex == 5){
-                        //     console.log('kkkk')
-                        //     this._carousel.snapToPrev({animated: true, fireCallback: true});
-                        // }
                     }}
-                    // scrollEnabled={ (this.state.dayIndex == 6 || this.state.dayIndex == 7) && this.state.prevIndex == 5 ? true : (this.state.dayIndex == 6 || this.state.dayIndex == 7) ? false  : true}
-                    scrollEnabled={ (this.state.dayIndex == 8) && this.state.prevIndex == 6 ? true : (this.state.dayIndex == 8) ? false  : true}
-                    // onBeforeSnapToItem = {(slideIndex) => console.log('before-->', slideIndex)}
-                    // scrollEnabled={(this.state.dayIndex == 6 || this.state.dayIndex == 7) && this.state.dayIndex != 5 ? false : true}
-                    // onScroll={(e) => console.log('scroll-->',e)}
-                    // onScroll={({nativeEvent:{contentOffset:{x, y}}}) => {
-                    //     console.log("offset : x=", x, "y=", y);
-                    //     global.Yordinate = y;
-                    //   }}
+                    
+                    scrollEnabled={ (this.state.dayIndex == 8) && this.state.prevIndex == 6 ? true : (this.state.dayIndex == 8) ? false  : true} 
                   />
                   
                 </View>
@@ -1571,7 +1425,7 @@ class WeeklySummarySheet extends React.Component {
                                             style={{ height: Matrics.CountScale(100)}}
                                             renderItem={({ item, index }) => {
                                                 return(
-                                                    <View style={Styles.modalContentRowStyle}>
+                                                    <View key={index} style={Styles.modalContentRowStyle}>
                                                         <Text style={Styles.titleFontStyle} onPress={() => {
                                                                 this._showTimePicker('punchInTime', index, item.PunchIn,item.PunchOut);
                                                                 this.setState({ punchInTime: item.PunchIn })
@@ -1598,17 +1452,7 @@ class WeeklySummarySheet extends React.Component {
                                                         </Text>
                                                         <Text style={Styles.titleFontStyle}>
                                                             {
-                                                                // this.state.punchInArr.length == 0 && this.state.punchOutArr.length == 0 
-                                                                // ? item.TotalHours
-                                                                // : this.state.punchInArr.length > 0 && this.state.punchOutArr.length == 0
-                                                                //     ?  this.state.punchInArr[index] !== undefined
-                                                                //         ? Global.getTimeDiff(moment(this.state.punchInArr[index],'hh:mm:ss').format('hh:mm:ss'),item.PunchOut)
-                                                                //         : Global.getTimeDiff(item.PunchIn, item.PunchOut)
-                                                                //     :  this.state.punchInArr.length > 0 && this.state.punchOutArr.length > 0
-                                                                //         ? this.state.punchInArr[index] !== undefined && this.state.punchOutArr[index] !== undefined
-                                                                //             : Global.getTimeDiff(moment(this.state.punchInArr[index],'hh:mm:ss').format('hh:mm:ss'),
-                                                                //             moment(this.state.punchOutArr[index],'hh:mm:ss').format('hh:mm:ss'))
-                                                                    
+                                                                
                                                                 this.state.punchInArr.length > 0 && this.state.punchOutArr.length == 0
                                                                 ?   this.state.punchInArr[index] !== undefined
                                                                     ? Global.getTimeDiff(moment(this.state.punchInArr[index],'hh:mm:ss').format('HH:mm:ss'),item.PunchOut) 
@@ -1745,14 +1589,6 @@ class WeeklySummarySheet extends React.Component {
                                     ? this.state.punchInTime ? moment(`2000/10/1 ${moment(this.state.punchInTime, "h:mm A").format('hh:mm A')}`).toDate() : new Date() 
                                     : this.state.punchOutTime ? moment(`2000/10/1 ${moment(this.state.punchOutTime, "h:mm A").format('hh:mm A')}`).toDate() : new Date()
                         }
-                        // date={this.state.timeFlag === 'InTime' 
-                        // ? this.state.inTime 
-                        //     ? moment(`2000/10/1 ${moment(this.state.inTime, "h:mm A").format('hh:mm A')}`).toDate() 
-                        //     : new Date()
-                        // : this.state.outTime 
-                        //     ? moment(`2000/10/1 ${moment(this.state.outTime, "h:mm A").format('hh:mm A')}`).toDate()
-                        //     : new Date()
-                        // }
                     />
                 </Modal>
 
@@ -1776,7 +1612,6 @@ class WeeklySummarySheet extends React.Component {
                                                 containerStyle={{ alignSelf: 'center' }}
                                                 containerWidth={180}
                                                 data={this.state.absenceReason}
-                                                // value={'Select Reason'}
                                                 value={this.state.selectedReasonId ? this.state.selectedReasonName : 'Select Reason'}
                                                 onChangeText={(value, index, data) => this.onSelectReason(value, index, data)}
                                                 valueExtractor={({ ReasonName }) => ReasonName}
@@ -1818,16 +1653,6 @@ class WeeklySummarySheet extends React.Component {
                                     </TouchableOpacity>
                                 </View>
                             </View>
-                            {/* <DateTimePicker
-                                isVisible={this.state.isDateTimePickerVisible}
-                                onConfirm={this._handleDatePicked}
-                                onCancel={this._hideDateTimePicker}
-                                date={
-                                    this.state.dateFlag == 'startDate'
-                                    ? this.state.timeoffStartDate ? new Date(this.state.timeoffStartDate) : new Date()
-                                    : this.state.timeoffEndDate ? new Date(this.state.timeoffEndDate) : new Date()
-                                }
-                            /> */}
                         </KeyboardAwareScrollView>
                     </View>
                 </Modal>
@@ -1909,7 +1734,6 @@ class WeeklySummarySheet extends React.Component {
                                             textStyle: {color: Colors.WHITE}, 
                                             containerStyle: [],
                                         }]}
-                                        // maxDate={this.state.currentWeekEndDate}
                                     />
                                     : null
                                 }
@@ -2003,11 +1827,6 @@ class WeeklySummarySheet extends React.Component {
                                 </TouchableOpacity>
                             </KeyboardAwareScrollView>
                         </View>
-                        {/* <DateTimePicker
-                            isVisible={this.state.isDateTimePickerVisible}
-                            onConfirm={this._handleDatePicked}
-                            onCancel={this._hideDateTimePicker}
-                        /> */}
                         <LoadWheel visible={this.state.loading} />
                     </View>
                 </Modal>
@@ -2092,8 +1911,6 @@ const Styles = StyleSheet.create({
     },
     modalContentRowStyle: {
         flexDirection: 'row', 
-        // borderBottomWidth: 1,
-        // borderColor: Colors.BORDERCOLOR,
         paddingVertical: Matrics.CountScale(5),
         justifyContent: 'space-between',
         marginHorizontal: Matrics.CountScale(10)

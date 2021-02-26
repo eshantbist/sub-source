@@ -14,7 +14,9 @@ class NotificationCard extends React.Component {
                 onPress={() => {
                     this.props.navigation.navigate(this.props.root);
                 }}
-                style={[Styles.notificationCard, { backgroundColor: this.props.isRead ? 'yellow' : 'white' }]}>
+                style={[Styles.notificationCard, { 
+                    // backgroundColor: this.props.isRead ? 'yellow' : 'white' 
+                }]}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ flex: 0.2 }}></View>
                     <Text style={Styles.dateText}>
@@ -74,7 +76,7 @@ const Styles = {
         fontFamily: Fonts.NunitoSansSemiRegular
     },
     imgStyle: {
-        margin: Matrics.CountScale(10),
+        marginHorizontal: Matrics.CountScale(10),
         borderRadius: Matrics.CountScale(18),
         height: Matrics.CountScale(35),
         width: Matrics.CountScale(35)

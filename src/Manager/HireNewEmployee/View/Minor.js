@@ -4,7 +4,6 @@ import { Colors, Fonts, Matrics, Images, MasterCss } from '@Assets';
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-// import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import DocumentPicker from 'react-native-document-picker';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -83,9 +82,6 @@ export default class Minor extends React.Component {
       )
     });
     const minorData = this.props.navigation.getParam('minorData');
-    console.log('minor screen minorData-->',minorData)
-    console.log('minorData-->',typeof minorData)
-    console.log('len-->',Object.keys(minorData).length)
     if(Object.keys(minorData).length > 0){
       this.setState({
         HSGchecked: minorData.MinorData.IsGraduate,
@@ -163,7 +159,6 @@ export default class Minor extends React.Component {
   _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
   _handleDatePicked = (date) => {
-    // console.log('A date has been picked: ', moment(date).format('MMM DD, ddd'));
     this._hideDateTimePicker();
     if(this.state.dateFlag == 'issueDate'){
         this.setState({ issueDate: moment(date).format('MM/DD/YYYY'), issueDateError: '' });
@@ -181,31 +176,7 @@ export default class Minor extends React.Component {
     
   };
 
-  // _showTimePicker(val) {
-  //   this.setState({ isTimePickerVisible: true, timeFlag: val });
-  // } 
-  // _hideTimePicker = () => this.setState({ isTimePickerVisible: false });
-  // _handleTimePicked = async (time) => {
-  //     console.log('A date has been picked: ', time);
-  //     let val = moment.parseZone(time).format('HH:mm')
-  //     if (this.state.timeFlag == 'InTime') {
-  //         await this.setState({ InTime: val, InTimeError: '' })
-  //     }
-  //     else if (this.state.timeFlag == 'OutTime') {
-  //         await this.setState({ OutTime: val, OutTimeError: '' })
-  //     }
-  //     this._hideTimePicker();
-  // };
-
-
   async onSelectFile() {
-    // DocumentPicker.show({
-    //     filetype: [DocumentPickerUtil.allFiles()],
-    // }, (error, res) => {
-    //     console.log('***name', res);
-    //     if (res != null)
-    //         this.setState({ permitFile: res.fileName, PermitFilePath: res.uri, permitFileError: '' })
-    // });
     try {
         const res = await DocumentPicker.pick({
             type: [DocumentPicker.types.allFiles],
@@ -223,17 +194,7 @@ export default class Minor extends React.Component {
   }
 
   onClickOfSubmit() {
-    // console.log('offsession-->', this.state.offSessionChecked)
-    // let reg = /^\d{1,2}:\d{2}([ap]m)?$/;
-    // let reg = /^(\d{1,2}):(\d{2})([ap]m)?$/;
-    // let reg = /(0[1-9])|(1[0-2]):([0-5][0-9])\s((a|p|A|P)(m|M))/;
-    // let reg = /^(\d{1,2}):(\d{2})(:00)?([ap]m)?$/;
     let reg = /^(0[1-9]|[1][0-2]):([0-5][0-9])((a|p|A|P)(m|M))$/;
-
-    console.log('checkreg-->RE-->',reg.test(this.state.InTime));
-    // const xIn = moment(this.state.InTime, 'HH:mmA',true);
-    // const xOut = moment(this.state.InTime, 'HH:mmA',true);
-    // console.log('checkreg-->',xIn.isValid());
 
     const MinorData = {
       "MinorID":0,
@@ -353,19 +314,6 @@ export default class Minor extends React.Component {
     var date1 = new Date('01/01/2011 '+ moment(this.state.OutTime, "h:mm A").format('h:mm A')); 
     var date2 = new Date('01/01/2011 '+ moment(this.state.InTime, "h:mm A").format('h:mm A'));
 
-    // console.log('issueDate-->',this.state.issueDate)
-    // console.log('expirationDate-->', this.state.expirationDate)
-    // console.log('IssueDate-->', IssueDate)
-    // console.log('ExpiryDate-->',ExpiryDate)
-    // console.log('workingHoursWe1-->',this.state.workingHoursWe1)
-    // console.log('workingHoursWe1-->',reg.test(this.state.workingHoursWe1))
-    // console.log('workingHoursWe2-->',this.state.workingHoursWe2)
-    // console.log('workingHoursWe2-->',reg.test(this.state.workingHoursWe2))
-    // console.log('workingHoursTh1-->',this.state.workingHoursTh1)
-    // console.log('workingHoursTh1-->',reg.test(this.state.workingHoursTh1))
-    // console.log('workingHoursTh2-->',this.state.workingHoursTh2)
-    // console.log('workingHoursTh2-->',reg.test(this.state.workingHoursTh2))
-
    let We1We2NotBlank = (this.state.workingHoursWe1 != '' || this.state.workingHoursWe2 != '') ? true : false;
    let Th1Th2NotBlank = (this.state.workingHoursTh1 != '' || this.state.workingHoursTh2 != '') ? true : false;
    let Fr1Fr2NotBlank = (this.state.workingHoursFr1 != '' || this.state.workingHoursFr2 != '') ? true : false;
@@ -374,11 +322,8 @@ export default class Minor extends React.Component {
    let Mo1Mo2NotBlank = (this.state.workingHoursMo1 != '' || this.state.workingHoursMo2 != '') ? true : false;
    let Tu1Tu2NotBlank = (this.state.workingHoursTu1 != '' || this.state.workingHoursTu2 != '') ? true : false;
 
-  //  console.log('We1We2NotBlank-->',We1We2NotBlank)
-  //  console.log('Th1Th2NotBlank-->',Th1Th2NotBlank)
 
     if(this.state.HSGchecked === false) {
-      // console.log('if');
       if( this.state.issueDate === '') {
         this.setState({ issueDateError: 'Please select the issue date' });
       } else if (this.state.expirationDate === ''){
@@ -474,24 +419,6 @@ export default class Minor extends React.Component {
         ){
           alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
         }
-        // else if(
-        //   (this.state.workingHoursWe1 == '' || reg.test(this.state.workingHoursWe1) === false) ||
-        //   (this.state.workingHoursWe2 == '' || reg.test(this.state.workingHoursWe2) === false) ||
-        //   (this.state.workingHoursTh1 == '' || reg.test(this.state.workingHoursTh1) === false) ||
-        //   (this.state.workingHoursTh2 == '' || reg.test(this.state.workingHoursTh2) === false) ||
-        //   (this.state.workingHoursFr1 == '' || reg.test(this.state.workingHoursFr1) === false) ||
-        //   (this.state.workingHoursFr2 == '' || reg.test(this.state.workingHoursFr2) === false) ||
-        //   (this.state.workingHoursSa1 == '' || reg.test(this.state.workingHoursSa1) === false) ||
-        //   (this.state.workingHoursSa2 == '' || reg.test(this.state.workingHoursSa2) === false) ||
-        //   (this.state.workingHoursSu1 == '' || reg.test(this.state.workingHoursSu1) === false) ||
-        //   (this.state.workingHoursSu2 == '' || reg.test(this.state.workingHoursSu2) === false) ||
-        //   (this.state.workingHoursMo1 == '' || reg.test(this.state.workingHoursMo1) === false) ||
-        //   (this.state.workingHoursMo2 == '' || reg.test(this.state.workingHoursMo2) === false) ||
-        //   (this.state.workingHoursTu1 == '' || reg.test(this.state.workingHoursTu1) === false) ||
-        //   (this.state.workingHoursTu2 == '' || reg.test(this.state.workingHoursTu2) === false) 
-        // ) {
-        //   alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
-        // }
         else {
           console.log('save Data');
           this.props.navigation.goBack();
@@ -569,9 +496,6 @@ export default class Minor extends React.Component {
         this.props.navigation.state.params.callbackData({ MinorData });
       }
     }
-    // else if(this.state.permitFile === '') {
-    //   this.setState({ permitFileError: 'please select permitfile' });
-    // } 
     else {
       console.log('save Data else');
       this.props.navigation.goBack();
@@ -599,7 +523,6 @@ export default class Minor extends React.Component {
           </View>
 
           <Text style={Styles.cardHeaderText}>Work Restrictions per Work Permit</Text>
-          {/* <View style={Styles.cardContainer}> */}
           {
             this.state.HSGchecked
             ? null
@@ -622,8 +545,6 @@ export default class Minor extends React.Component {
               </Text>
             </View>
             <Text style={Styles.errorText}>{this.state.permitFileError}</Text>
-            
-          {/* </View> */}
 
           {
             this.state.HSGchecked
@@ -679,12 +600,6 @@ export default class Minor extends React.Component {
                           onChangeText={(text) => this.setState({InTime: text, InTimeError: ''})}
                           value={this.state.InTime}
                         />
-                        {/* <TouchableOpacity 
-                          onPress={() => this._showTimePicker('InTime')} 
-                          style={[Styles.cardContainer,{ width: Matrics.CountScale(160)}]}
-                        >
-                        <Text style={Styles.cardText}>{this.state.InTime == '' ? 'In Time' : this.state.InTime}</Text>
-                        </TouchableOpacity> */}
                         <Text style={Styles.errorText}>{this.state.InTimeError}</Text>
                       </View>
                       <View style={{width: '50%'}}>
@@ -696,15 +611,8 @@ export default class Minor extends React.Component {
                           onChangeText={(text) => this.setState({OutTime: text, OutTimeError: ''})}
                           value={this.state.OutTime}
                         />
-                        {/* <TouchableOpacity 
-                          onPress={() => this._showTimePicker('OutTime')} 
-                          style={[Styles.cardContainer,{ width: Matrics.CountScale(160)}]}
-                        >
-                          <Text style={Styles.cardText}>{this.state.OutTime == '' ? 'Out Time' : this.state.OutTime}</Text>
-                        </TouchableOpacity> */}
                         <Text style={[Styles.errorText,{ marginLeft: Matrics.CountScale(9)}]}>
                           {this.state.OutTimeError}
-                          {/* Out Time ShouldBe GraterThan To InTime */}
                         </Text>
                       </View>
                     </View>
@@ -726,12 +634,6 @@ export default class Minor extends React.Component {
           isVisible={this.state.isDateTimePickerVisible}
           onConfirm={this._handleDatePicked}
           onCancel={this._hideDateTimePicker}
-          // date={
-          //   this.state.dateFlag == 'issueDate'
-          //   ? this.state.issueDate ? new Date(this.state.issueDate) : new Date()
-          //   : this.state.expirationDate ? new Date(this.state.expirationDate) : new Date()
-          // }
-
           date={
             this.state.dateFlag == 'issueDate'
             ? this.state.issueDate ? new Date(this.state.issueDate) : new Date()
@@ -741,23 +643,8 @@ export default class Minor extends React.Component {
                   ? this.state.startDate ? new Date(this.state.startDate) : new Date()
                   : this.state.endDate ? new Date(this.state.endDate) : new Date()
             
-        }
-          
-        />
-        {/* <DateTimePicker
-          isVisible={this.state.isTimePickerVisible}
-          onConfirm={this._handleTimePicked}
-          onCancel={this._hideTimePicker}
-          mode={'time'}
-          date={this.state.timeFlag === 'InTime' 
-          ? this.state.InTime 
-              ? moment(`2000/10/1 ${moment(this.state.InTime, "h:mm A").format('hh:mm A')}`).toDate() 
-              : new Date()
-          : this.state.OutTime 
-              ? moment(`2000/10/1 ${moment(this.state.OutTime, "h:mm A").format('hh:mm A')}`).toDate()
-              : new Date()
           }
-        /> */}
+        />
       </View>
     );
   }
@@ -778,7 +665,6 @@ export default class Minor extends React.Component {
           style={[Styles.inputStyle,{
             backgroundColor: this.state.anyHoursCheckedWe ? '#e7e7e7' : '#ffffff'
           }]}
-          // placeholder={'Type here'}
           onChangeText={(text) => this.setState({hoursWe: text})}
           value={this.state.hoursWe}
           keyboardType='numeric'
@@ -820,7 +706,6 @@ export default class Minor extends React.Component {
         style={[Styles.inputStyle,{
           backgroundColor: this.state.anyHoursCheckedTh ? '#e7e7e7' : '#ffffff'
         }]}
-        // placeholder={'Type here'}
         onChangeText={(text) => this.setState({hoursTh: text})}
         value={this.state.hoursTh}
         keyboardType='numeric'
@@ -861,7 +746,6 @@ export default class Minor extends React.Component {
         style={[Styles.inputStyle,{
           backgroundColor: this.state.anyHoursCheckedFr ? '#e7e7e7' : '#ffffff'
         }]}
-        // placeholder={'Type here'}
         onChangeText={(text) => this.setState({hoursFr: text})}
         value={this.state.hoursFr}
         keyboardType='numeric'
@@ -902,7 +786,6 @@ export default class Minor extends React.Component {
         style={[Styles.inputStyle,{
           backgroundColor: this.state.anyHoursCheckedSa ? '#e7e7e7' : '#ffffff'
         }]}
-        // placeholder={'Type here'}
         onChangeText={(text) => this.setState({hoursSa: text})}
         value={this.state.hoursSa}
         keyboardType='numeric'
@@ -943,7 +826,6 @@ export default class Minor extends React.Component {
         style={[Styles.inputStyle,{
           backgroundColor: this.state.anyHoursCheckedSu ? '#e7e7e7' : '#ffffff'
         }]}
-        // placeholder={'Type here'}
         onChangeText={(text) => this.setState({hoursSu: text})}
         value={this.state.hoursSu}
         containerStyle={{ alignSelf: 'center'}}
@@ -986,7 +868,6 @@ export default class Minor extends React.Component {
         style={[Styles.inputStyle,{
           backgroundColor: this.state.anyHoursCheckedMo ? '#e7e7e7' : '#ffffff'
         }]}
-        // placeholder={'Type here'}
         onChangeText={(text) => this.setState({hoursMo: text})}
         value={this.state.hoursMo}
         keyboardType='numeric'
@@ -1027,7 +908,6 @@ export default class Minor extends React.Component {
         style={[Styles.inputStyle,{
           backgroundColor: this.state.anyHoursCheckedTu ? '#e7e7e7' : '#ffffff'
         }]}
-        // placeholder={'Type here'}
         onChangeText={(text) => this.setState({hoursTu: text})}
         value={this.state.hoursTu}
         keyboardType='numeric'
@@ -1070,7 +950,6 @@ export default class Minor extends React.Component {
               <TextInput 
                 autoCorrect={false}
                 style={[Styles.inputWorkStyle, {alignSelf: 'flex-end', right: Matrics.CountScale(5)}]}
-                // placeholder={'Type here'}
                 onChangeText={(text) => this.setState({weeklyMax: text})}
                 value={this.state.weeklyMax}
               />]} 
@@ -1154,15 +1033,12 @@ const Styles = StyleSheet.create({
     fontFamily: Fonts.NunitoSansRegular, 
   },
   inputStyle: {
-    // backgroundColor: '#e7e7e7',
-    // width: Matrics.CountScale(30),
     borderColor: '#b8b8b8',
     borderWidth: 1,
     marginHorizontal: Matrics.CountScale(5),
     height: Matrics.CountScale(40),
   },
   inputWorkStyle: {
-    // backgroundColor: '#e7e7e7',
     borderColor: '#b8b8b8',
     borderWidth: 1,
     width: Matrics.CountScale(65),

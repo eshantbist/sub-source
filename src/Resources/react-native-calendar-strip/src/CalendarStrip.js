@@ -298,6 +298,7 @@ class CalendarStrip extends Component {
     const previousWeekStartDate = this.state.selectedDate
       .clone()
       .subtract(1, "d");
+    console.log('previousWeekStartDate-->', previousWeekStartDate)
     this.setState({ selectedDate: previousWeekStartDate })
     if (this.props.onWeekChanged) {
       if (this.props.useIsoWeekday) {
@@ -309,6 +310,7 @@ class CalendarStrip extends Component {
       }
     }
     let weekData = this.updateWeekData(previousWeekStartDate);
+    console.log('weekData-->', previousWeekStartDate)
     this.setState({ startingDate: previousWeekStartDate, ...weekData });
 
   }

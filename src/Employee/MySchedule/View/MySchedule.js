@@ -20,17 +20,20 @@ import Global from '../../../GlobalFunction'
 class MySchedule extends React.Component {
     state = {
         myScheduleData: [],
-        loading: true,
+        loading: false,
         storelist: [],
         allData: [],
         selectedShopId: 0,
+        selectedShopName: '',
         refreshing: false,
         StartDate: '',
+        storeLoader:  true,
     }
 
     // ======>>>>>>>>> Life Cycle Methods <<<<<<<========
     componentDidMount() {
         this.getMyScheduleData()
+        this.props.getEmployeeStoreRequest()
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -77,126 +80,32 @@ class MySchedule extends React.Component {
                         resultArr.push({ 'title': monthName, 'data': tmpdata })
                     }
                 }
-                this.setState({ myScheduleData: resultArr, allData: resultArr, loading: true })
-                this.props.getEmployeeStoreRequest()
-                console.log('resultArr-->',resultArr)
-                
-                // let dataaa = [
-                //     {
-                //         "title": "December", "data": [
-                //             {
-                //                 "ScheduleDate": "2018-10-31T00:00:00",
-                //                 "InTime": "00:00:00",
-                //                 "OutTime": "00:00:00",
-                //                 "TotalTime": 0,
-                //                 "RequestTypeName": "",
-                //                 "RequestTypeID": 0,
-                //                 "RequestID": "0",
-                //                 "RequestCount": 0,
-                //                 "StoreID": 41,
-                //                 "StoreNumber": "1945",
-                //                 "DailyScheduleID": 0
-                //             },
-                //             {
-                //                 "ScheduleDate": "2018-11-01T00:00:00",
-                //                 "InTime": "00:00:00",
-                //                 "OutTime": "00:00:00",
-                //                 "TotalTime": 0,
-                //                 "RequestTypeName": "",
-                //                 "RequestTypeID": 0,
-                //                 "RequestID": "0",
-                //                 "RequestCount": 0,
-                //                 "StoreID": 41,
-                //                 "StoreNumber": "27117",
-                //                 "DailyScheduleID": 0
-                //             },
-                //             {
-                //                 "ScheduleDate": "2018-11-02T00:00:00",
-                //                 "InTime": "00:00:00",
-                //                 "OutTime": "00:00:00",
-                //                 "TotalTime": 0,
-                //                 "RequestTypeName": "",
-                //                 "RequestTypeID": 0,
-                //                 "RequestID": "0",
-                //                 "RequestCount": 0,
-                //                 "StoreID": 41,
-                //                 "StoreNumber": "3061",
-                //                 "DailyScheduleID": 0
-                //             },
-                //             {
-                //                 "ScheduleDate": "2018-11-03T00:00:00",
-                //                 "InTime": "07:00:00",
-                //                 "OutTime": "13:00:00",
-                //                 "TotalTime": 6,
-                //                 "RequestTypeName": "Swap",
-                //                 "RequestTypeID": 2,
-                //                 "RequestID": "6008",
-                //                 "RequestCount": 1,
-                //                 "StoreID": 41,
-                //                 "StoreNumber": "1945",
-                //                 "DailyScheduleID": 1991079
-                //             },
-                //         ]
-                //     },
-                //     {
-                //         "title": "January", "data": [
-                //             {
-                //                 "ScheduleDate": "2018-10-31T00:00:00",
-                //                 "InTime": "00:00:00",
-                //                 "OutTime": "00:00:00",
-                //                 "TotalTime": 0,
-                //                 "RequestTypeName": "",
-                //                 "RequestTypeID": 0,
-                //                 "RequestID": "0",
-                //                 "RequestCount": 0,
-                //                 "StoreID": 41,
-                //                 "StoreNumber": "1945",
-                //                 "DailyScheduleID": 0
-                //             },
-                //             {
-                //                 "ScheduleDate": "2018-11-01T00:00:00",
-                //                 "InTime": "00:00:00",
-                //                 "OutTime": "00:00:00",
-                //                 "TotalTime": 0,
-                //                 "RequestTypeName": "",
-                //                 "RequestTypeID": 0,
-                //                 "RequestID": "0",
-                //                 "RequestCount": 0,
-                //                 "StoreID": 41,
-                //                 "StoreNumber": "27117",
-                //                 "DailyScheduleID": 0
-                //             }]
-                //     }
-                // ]
-
-               
+                this.setState({ myScheduleData: resultArr, allData: resultArr})
             }
             else {
                 setTimeout(() => { alert(response.Message) }, Global.alert_timeout)
 
             }
         }
-        else if (nextProps.mySchedule.getEmployeeStoreSuccess) {
-            this.setState({ loading: false })
+        else if (nextProps.mySchedule.getEmployeeStoreSuccess && this.state.storeLoader) {
+            this.setState({ storeLoader: false })
             let response = nextProps.mySchedule.data
             console.log(response)
             if (response.Status == 1) {
-
-                let numArr = []
-                response.Data.forEach(element => {
-                    numArr.push({
-                        StoreID: element.StoreID,
-                        DisplayStoreNumber: Number(element.DisplayStoreNumber),
-                        UserStoreID: element.UserStoreID,
-                        UserStoreGuid: element.UserStoreGuid
-                    })
-                });
-
-                this.setState({ storelist: [{ DisplayStoreNumber: 'All Shops' }, ..._.sortBy(numArr, ['DisplayStoreNumber'])] })
+                // let numArr = []
+                // response.Data.forEach(element => {
+                //     numArr.push({
+                //         StoreID: element.StoreID,
+                //         DisplayStoreNumber: Number(element.DisplayStoreNumber),
+                //         UserStoreID: element.UserStoreID,
+                //         UserStoreGuid: element.UserStoreGuid
+                //     })
+                // });
+                // this.setState({ storelist: [{ DisplayStoreNumber: 'All Shops' }, ..._.sortBy(numArr, ['DisplayStoreNumber'])] })
+                this.setState({ storelist: response.Data, selectedShopId: response.Data[0].UserStoreID, selectedShopName: response.Data[0].DisplayStoreNumber });
             }
             else {
-                setTimeout(() => { alert(response.Message) }, Global.alert_timeout)
-
+                setTimeout(() => { alert(response.Message) }, Global.alert_timeout);
             }
         }
         else if (nextProps.mySchedule.openEmployeeShiftSuccess) {
@@ -374,7 +283,7 @@ class MySchedule extends React.Component {
             this.setState({ myScheduleData: this.state.allData })
         }
         else {
-            await this.setState({ selectedShopId: data[index].DisplayStoreNumber })
+            await this.setState({ selectedShopId: data[index].UserStoreID, selectedShopName: data[index].DisplayStoreNumber })
             let newArr = []
             _.forEach(this.state.allData, (res) => {
                 let tmp = _.filter(res.data, (resp) => {
@@ -398,12 +307,6 @@ class MySchedule extends React.Component {
                 <View style={MasterCssEmployee.headerContainer}>
                     <TouchableOpacity style={MasterCssEmployee.leftStyle}
                         onPress={() => {
-
-                            // const setParamsAction = NavigationActions.setParams({
-                            //     params: { tabBarVisible: false },
-                            //     key: 'MySchedule',
-                            // });
-                            // this.props.navigation.dispatch(setParamsAction)
                             this.props.navigation.navigate('History')
                         }}
                     >
@@ -432,12 +335,6 @@ class MySchedule extends React.Component {
                     </View>
                     <TouchableOpacity style={MasterCssEmployee.rightStyle}
                         onPress={() => {
-
-                            // const setParamsAction = NavigationActions.setParams({
-                            //     params: { tabBarVisible: false },
-                            //     key: 'MySchedule',
-                            // });
-                            // this.props.navigation.dispatch(setParamsAction)
                             this.props.navigation.navigate('CreateRequest')
                         }}
                     >
@@ -449,10 +346,10 @@ class MySchedule extends React.Component {
                     <Dropdown
                         containerStyle={{ width: Matrics.CountScale(150), bottom: 25 }}
                         data={this.state.storelist}
-                        value={'All Shops'}
+                        value={this.state.selectedShopName}
                         onChangeText={(value, index, data) => this.onShopChanged(value, index, data)}
                         //onChangeText={(value, index, data) => this.setState({ selectedShopId: data[index].StoreNumber })}
-                        valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber == 'All Shops' ? DisplayStoreNumber : `Shop ${DisplayStoreNumber}`}
+                        valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber == 'All Shops' ? DisplayStoreNumber : `${DisplayStoreNumber}`}
                         inputContainerStyle={{ borderBottomColor: 'transparent', }}
                         overlayStyle={{ borderWidth: 2 }}
                         dropdownOffset={{ top: 32, left: 0 }}

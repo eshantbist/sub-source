@@ -24,7 +24,7 @@ class TextInputView extends React.Component {
                 autoCapitalize={false}
                 ref={this.props.refField}
                 clearButtonMode={this.props.clearButtonMode}
-                //autoCapitalize={"none"}
+                autoCapitalize={"none"}
                 error={this.props.error}
                 placeholderTextColor={this.props.placeholderTextColor}
                 secureTextEntry={this.props.secureTextEntry}

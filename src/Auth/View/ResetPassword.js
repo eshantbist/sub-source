@@ -29,7 +29,6 @@ class ResetPassword extends React.Component {
     if(nextProps.auth.forgotPasswordSuccess && this.state.loading) {
       this.setState({ loading: false })
       const { data } = nextProps.auth
-      console.log('data-->', data);
       if(data.Status === 1) {
         this.props.navigation.navigate("LinkSent")
       } else {

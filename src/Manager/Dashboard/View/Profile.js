@@ -285,7 +285,6 @@ class Profile extends React.Component {
                     <TouchableOpacity
                         onPress={() => {
                             AsyncStorage.clear();
-                            // this.props.navigation.navigate('Login')
                             const resetAction = StackActions.reset({
                                 index: 0,
                                 actions: [NavigationActions.navigate({ routeName: 'Login' })],
@@ -370,7 +369,5 @@ const mapStateToProps = (state) => {
 //======>>>>>>>> Redux Connection <<<<<<=======  
 export default connect(mapStateToProps, {
     getEmployeePersonalDetails,
-    // updateEmployeePersonalDetails,
     getEmployeeBasicDetails
 })(Profile);
-// export default connect(mapStateToProps, null)(Profile);

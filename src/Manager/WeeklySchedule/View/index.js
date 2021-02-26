@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import SearchableDropdown from '../../../CustomComponent/react-native-searchable-dropdown';
-import ModalFilterPicker from 'react-native-modal-filter-picker';
 
 // ======>>>>> Assets <<<<<=========
 import { Colors, Fonts, Images, Matrics, MasterCss } from '@Assets'
@@ -18,7 +17,6 @@ import Collapsible from 'react-native-collapsible';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import CalendarPicker from '../../../CustomComponent/react-native-calendar-picker';
-// import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import DocumentPicker from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment'
@@ -58,9 +56,6 @@ export const TextRow = ({ labelText, contentText, bgColor }) => {
 
 
 export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,ContactNumber,RoleCode, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress, onLayout, selectedJumpEmpName}) => {
-    // if( selectedDate == 'Total')
-    //     console.log('TotalfinalRoleEmployeeData-->',TotalfinalRoleEmployeeData.length)
-    // console.log('selectedJumpEmpName-->', selectedJumpEmpName)
     return (
         <View style={[Styles.rowContainer, { backgroundColor: bgColor, borderBottomColor: Colors.BORDERCOLOR, borderBottomWidth: 2 }]}
             onLayout={(e) => {selectedJumpEmpName != '' ? onLayout(e.nativeEvent.layout.height) : onLayout(0); }}
@@ -111,14 +106,12 @@ export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,Cont
                     selectedDate !== 'Total'
                     ? shiftData.length > 0
                         ?
-                        shiftData.map(res => {
-                            // console.log('date-->1->', res );
-                            // console.log('date-->2->', selectedDate);
+                        shiftData.map((res, index) => {
                             return (
                                 res.ScheduleDate === selectedDate
                                     ? res.DailyScheduleID !== 0
                                         ? 
-                                            <View style={{ paddingTop: Matrics.CountScale(10)}}>
+                                            <View key={index} style={{ paddingTop: Matrics.CountScale(10)}}>
                                                 <TouchableOpacity
                                                     onPress={() => onPress(res)}
                                                     style={{ borderWidth: 1, borderRadius: 3, backgroundColor: Global.getShiftBgColor(res.DayPartColor), borderColor: Global.getShiftBorderColor(res.DayPartColor) }}
@@ -128,7 +121,6 @@ export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,Cont
                                                     </Text>
                                                 </TouchableOpacity>
                                                 <Text style={[Styles.fontStyle, { textAlign: 'center', fontSize: Matrics.CountScale(12) }]}>
-                                                    {/* {Global.getTimeDiff(res.InTime, res.OutTime)} */}
                                                     {res.HoursCount}
                                                 </Text>
                                             </View>
@@ -145,26 +137,17 @@ export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,Cont
                                             </View>
 
                                     :
-                                    // <TouchableOpacity onPress={() => onPress()}>
-                                    //     <Text style={[Styles.fontStyle, { textAlign: 'center', fontSize: Matrics.CountScale(14), }]}>                                      </Text>
-                                    //     {/* <Text style={[Styles.fontStyle, { textAlign: 'center', fontSize: Matrics.CountScale(14) }]}>No shift data available</Text> */}
-                                    // </TouchableOpacity>
                                     null
                             )
                         })
                         :
                         <TouchableOpacity onPress={() => onPress()} style={{ width: '100%',height: Matrics.CountScale(85),}}>
                             <Text style={[Styles.fontStyle, { textAlign: 'center', fontSize: Matrics.CountScale(14), }]}></Text>
-                            {/* <Text style={[Styles.fontStyle, { textAlign: 'center', fontSize: Matrics.CountScale(14) }]}>No shift data available</Text> */}
                         </TouchableOpacity>
                     : 
                     <View style={{ padding: Matrics.CountScale(10) }}>
                         <Text style={[Styles.fontStyle, { textAlign: 'center', fontSize: Matrics.CountScale(12) }]}>
                             {TotalfinalRoleEmployeeData.length > 0 
-                                // ?  TotalfinalRoleEmployeeData[index].FullName == labelText
-                                //     ? TotalfinalRoleEmployeeData[index].TotalShiftHours.toFixed(2) 
-                                //     : 0.00
-                                // : 0.00}
                                 ? 
                                     TotalfinalRoleEmployeeData.map(data => {
                                         return(
@@ -211,7 +194,6 @@ class WeeklySchedule extends React.Component {
         employeeRerurnData: [],
         timeoffResonsData: [],
         selectedDate: '',
-        // userRole: userRole,
         repeatEvery: false,
         timeoffStartDate: '',
         timeoffEndDate: '',
@@ -281,8 +263,6 @@ class WeeklySchedule extends React.Component {
     async UNSAFE_componentWillMount() {
         self = this
         this.focusListener = this.props.navigation.addListener('didFocus', async () => {
-            console.log('will global.selectedStore-->', parseInt(global.selectedStore,10))
-            // console.log('will global.weekenddate-->', global.WeekendDate)
             await this.setState({ 
                 selectedStoreId: parseInt(global.selectedStore,10), 
                 lastFilterselectedStoreId: parseInt(global.selectedStore,10), 
@@ -330,14 +310,6 @@ class WeeklySchedule extends React.Component {
             }
         });
             console.log('will mount-->', this.state.selectedStoreId, '--isload--',this.state.isLoad )
-            // if(this.state.isLoad) {
-            //     this.headerfilterFlag = false;
-            //     this.timeOffReasonsFlag = false;
-
-            //     this.props.getHeaderFilterValuesRequest({ StoreId: this.state.selectedStoreId, RoleId: this.state.selectedRoleId, FilterId: -1, BusinessTypeId: 1 });
-            //     this.props.getTimeOffReasonsListRequest();
-
-            // } else 
             if(this.state.selectedStoreId !== -1) {
                 this.taxListFlag = false;
                 this.infoFlag = false;
@@ -376,15 +348,12 @@ class WeeklySchedule extends React.Component {
     async UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.headerFiltervalues.getHeaderFilterValuesSuccess && this.state.loading && !this.headerfilterFlag && !this.state.getFilterData) {
             this.headerfilterFlag = true;
-            console.log('week1');
             // if (this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
             if (this.taxListFlag && this.idleEmployeeReportFlag && this.headerfilterFlag && this.infoFlag && this.detailsListFlag && this.scheduleEmployeeFlag && this.scheduleEmployeeReturnFlag && this.timeOffReasonsFlag && this.employeeCountFlag && this.sharedEmployeeFlag && this.sharedEmployeeScheduleFlag && this.ScheduleHoursFlag)
                 this.setState({ loading: false });
 
             let data = nextProps.headerFiltervalues.data;
-            console.log('week12-->', data);
             if (data.Status === 1) {
-                console.log('week2');
                 const roleSelect = {
                     RoleID: 0,
                     RoleName: 'Shops'
@@ -396,9 +365,7 @@ class WeeklySchedule extends React.Component {
                     }
                     data.Report.user_list.unshift(userSelect);
                 }
-                console.log('week3');
                 data.Report.role_list.unshift(roleSelect);
-                console.log('store-->', data.Report.store_list);
                 if (data.Report.store_list.length > 0) {
                     var i;
                     for (i = 0; i < data.Report.store_list.length; i++) {
@@ -429,7 +396,6 @@ class WeeklySchedule extends React.Component {
                     lastFilterselectedIndex: index,
                 });
                 if(this.state.getFilterData) {
-                    console.log('kkkkkkkk')
                     this.UNSAFE_componentWillMount();
                 }
             }
@@ -465,7 +431,6 @@ class WeeklySchedule extends React.Component {
                     daysData: data.Average,
                     timeoffEndDate: moment(data.Average[0].DayDate).format('MM-DD-YYYY'), 
                     timeoffStartDate: moment(data.Average[0].DayDate).format('MM-DD-YYYY'),
-                    // selectedDate: data.Average[1].DayDate,
                 });
                 if(this.state.selectedDate != 'Total') {
                     this.setState({ selectedDate: data.Average[1].DayDate });
@@ -502,7 +467,6 @@ class WeeklySchedule extends React.Component {
 
             let data = nextProps.response.data
             if (data.Status == 1) {
-                // console.log('getWeeklyScheduleEmployeeSuccess-->',data.Data._shiftsList )
                 await this.setState({ employeeData: data.Data._shiftsList })
                 if (this.state.employeeData.length > 0 && this.state.employeeRerurnData.length > 0) {
                     this.setEmpData()
@@ -516,7 +480,6 @@ class WeeklySchedule extends React.Component {
 
             let data = nextProps.response.data
             if (data.Status == 1) {
-                // console.log('getWeeklyScheduleEmployeeReturnSuccess-->',data.Data )
                 await this.setState({ employeeRerurnData: data.Data })
                 if (this.state.employeeRerurnData.length > 0) {
                     this.setEmpData()
@@ -571,7 +534,6 @@ class WeeklySchedule extends React.Component {
                 this.setState({ loading: false , refreshing: false})
             let data = nextProps.response.data;
             if (data.Status == 1) {
-                // console.log('sharedEmployeeschedule-->', data);
                 await this.setState({ sharedEmployeeSchedule: data.Data._shiftsList });
 
             }
@@ -626,7 +588,6 @@ class WeeklySchedule extends React.Component {
                 this.setState({ addToScheduleStatusId: '', addToScheduleUserStoreID: '', confirmationModal: false, loading: true });
                 this.idleEmployeeReportFlag = false;
                 this.scheduleEmployeeReturnFlag = false;
-                // this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20 });
                 this.props.getIdleEmployeesReportRequest({ RoleId: this.state.selectedRoleId, FilterId: -1, StoreId: this.state.selectedStoreId, BusinessTypeId: 1, PageNumber: 1, PageSize: 20, orderByColumnName: 'StoreNumber', orderByValue: false});
                 this.props.getWeeklyScheduleEmployeeReturnRequest({ StoreId: this.state.selectedStoreId, WeekEnding: this.state.weekendDate });
             } else {
@@ -642,7 +603,6 @@ class WeeklySchedule extends React.Component {
         }
         else if (nextProps.response.createTimeoffSuccess) {
             let data = nextProps.response.data;
-            // if (data.Status == 1) {
             if(data.Message == 'Employee absence reason saved successfully!') {
                 this.scheduleEmployeeFlag = false;
                 this.scheduleEmployeeReturnFlag = false;
@@ -658,8 +618,6 @@ class WeeklySchedule extends React.Component {
                     attachFilePath: '',
                     loading: true,
                 });
-
-            // } else if (data.Status == 0) {
             } else {
                 await setTimeout(() => {
                     Alert.alert(
@@ -772,9 +730,6 @@ class WeeklySchedule extends React.Component {
         this.setState({ TotalofEmployeeScheduleData })
     }
     setEmpData() {
-    //    console.log('empdata***', this.state.employeeRerurnData)
-    //    console.log('empdata***', this.state.employeeData)
-        //common array
         let empShiftWise = [];
         this.state.employeeRerurnData.forEach((parent) => {
             let shiftData = [];
@@ -803,9 +758,6 @@ class WeeklySchedule extends React.Component {
             empShiftWise.push(EmpData);
         });
         this.setState({ empShiftWise });
-        // console.log('empShiftWise-->', JSON.stringify(empShiftWise));
-        //end of common array
-
         let empRoleData = [];
         _.forEach(empShiftWise, (res) => {
             if (_.some(empRoleData, { 'RoleName': res.RoleName })) {
@@ -818,8 +770,6 @@ class WeeklySchedule extends React.Component {
                 empRoleData.push({ 'RoleName': res.RoleName, 'expand': true, 'data': tmproledata })
             }
         })
-        
-        // console.log('empRoleData-->', JSON.stringify(empRoleData));
 
         let TotalfinalRoleEmployeeData = [];
         empRoleData.forEach(child => {
@@ -839,13 +789,12 @@ class WeeklySchedule extends React.Component {
         });
 
         this.setState({ empRoleData, TotalfinalRoleEmployeeData })
-        // console.log('TotalfinalRoleEmployeeData-->', TotalfinalRoleEmployeeData);
 
     }
 
     setSharedEmpData() {
-        console.log('this.state.sharedEmployee-->',this.state.sharedEmployee)
-        console.log('this.state.sharedEmployeeSchedule-->',this.state.sharedEmployeeSchedule)
+        // console.log('this.state.sharedEmployee-->',this.state.sharedEmployee)
+        // console.log('this.state.sharedEmployeeSchedule-->',this.state.sharedEmployeeSchedule)
         let finalSharedEmployeeData = [];
         let TotalfinalSharedEmployeeData = [];
         _.forEach(this.state.sharedEmployee, (res) => {
@@ -874,7 +823,6 @@ class WeeklySchedule extends React.Component {
         finalSharedEmployeeData.forEach(child => {
             let TotalSharedEmpShiftHours = 0;
             child.shiftData.forEach( data => {
-                // console.log('typeoff-->', Global.getTimeDiff(data.InTime, data.OutTime).replace(/:/g, "."));
                 TotalSharedEmpShiftHours = TotalSharedEmpShiftHours + data.HoursCount;
             });
             TotalfinalSharedEmployeeData.push({
@@ -885,11 +833,10 @@ class WeeklySchedule extends React.Component {
             });
         });
         this.setState({ finalSharedEmployeeData, TotalfinalSharedEmployeeData });
-        console.log('TotalfinalSharedEmployeeData-->', TotalfinalSharedEmployeeData)
+        // console.log('TotalfinalSharedEmployeeData-->', TotalfinalSharedEmployeeData)
     }
 
     getTimeoff = (UserStoreGuid,TimeOffCombineID) => {
-        // console.log('getTimeOff-->', UserStoreGuid);
         return new Promise(resolve => {
           fetch(`https://api.subsource.com/GetEmployeeTimeOff/?UserStoreGuid=${UserStoreGuid}&TimeOffCombineID=${TimeOffCombineID}&PageNumber=1&PageSize=20`,{ 
             method: 'GET', 
@@ -935,9 +882,6 @@ class WeeklySchedule extends React.Component {
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
     _handleDatePicked = (date) => {
-        // if(this.state.selectedVal == 'shift' && this.state.dateFlag == 'endingDate'){
-        //     this.setState({ endingDate: moment(date).format('MM/DD/YYYY'), endingDateError: '' })
-        // } else {
         this._hideDateTimePicker();
         if (this.state.dateFlag == 'startDate') {
             this.setState({ timeoffStartDate: moment(date).format('MM/DD/YYYY'), startDateError: '' });
@@ -949,9 +893,6 @@ class WeeklySchedule extends React.Component {
             }
 
         }
-
-        // }
-
         if (this.state.dateFlag === 'weekending') {
             if (moment(date).format('dddd') === 'Tuesday') {
                 this.setState({ weekendDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: '' })
@@ -992,7 +933,6 @@ class WeeklySchedule extends React.Component {
             }
             
         }
-        // this._hideTimePicker();
     };
 
 
@@ -1000,6 +940,7 @@ class WeeklySchedule extends React.Component {
         const weatherData = self.state.weatherListData.filter( W => W.WeatherDate == item.DayDate);
         return (
             <TouchableOpacity 
+                key={index}
                 onPress={() => { 
                     self.setState({ dayIndex: index, selectedDate: item.DayDate }) 
                     if(index >= 6){
@@ -1011,9 +952,6 @@ class WeeklySchedule extends React.Component {
                         }
                         self._carousel.snapToPrev({animated: true, fireCallback: true});
                     }
-                    // if(index == 7 && self._carousel != undefined){
-                    //     self._carousel.snapToItem(6);
-                    // }
                 }}
                 disabled={index == 0 ? true : false}
                 key={index}
@@ -1024,14 +962,12 @@ class WeeklySchedule extends React.Component {
                 alignItems: 'center', 
                 justifyContent: 'center',
                 height: Matrics.CountScale(120),
-                // paddingVertical: item.DayDate === 'Total' ? Matrics.CountScale(43) : Matrics.CountScale(10), 
                 borderColor: Colors.BORDERCOLOR, 
                 borderRightWidth: self.state.daysData.length - 1 != index ? 1 : 0 }]}>
                     {
                         item.DayDate != 'Total' && item.DayDate != '' ?
                             <Text style={[Styles.fontStyle, self.state.dayIndex == index ? Styles.selectedDayfontStyle : null]}>
                                 {moment(item.DayDate).format('MMM DD, ddd')}
-                                {/* {moment(item.DayDate).format('MMM DD, YYYY ddd')} */}
                             </Text>
                         :
                             <Text style={[Styles.fontStyle, self.state.dayIndex == index ? Styles.selectedDayfontStyle : null]}>{item.DayDate}</Text>
@@ -1039,7 +975,6 @@ class WeeklySchedule extends React.Component {
                    
                     {
                         item.DayDate != 'Total' && item.DayDate != ''  ?
-                        // self.state.weatherListData[index] !== void 0
                         weatherData[0] !== void 0
                             ?   <Image source={self.state.dayIndex == index ? Images.CloudIcon2 : Images.CloudIcon1} style={{ marginVertical: Matrics.CountScale(10) }} />
                             : <View style={{ paddingVertical: Platform.OS == 'ios' ? Matrics.CountScale(28) : Matrics.CountScale(35) }}/>
@@ -1071,6 +1006,7 @@ class WeeklySchedule extends React.Component {
         }
         return (
             <ManagerArtistTextRow
+                key={index}
                 labelText={item.FullName}
                 employeeStatus={item.EmployeeStatus}
                 ContactNumber={ContactNumber}
@@ -1086,7 +1022,6 @@ class WeeklySchedule extends React.Component {
                     if (data !== undefined) {
                         if(data.DailyScheduleID === 0) {
                             await this.getTimeoff(item.UserStoreGUID, data.TimeOffCombineID).then(data => {
-                                // console.log('getTimeOff-->timeOffData-->',data);
                                 Timeoffdata = [];
                                 if(data.Status == 1) {
                                     if( data.Basic.Data.length > 1) {
@@ -1151,21 +1086,8 @@ class WeeklySchedule extends React.Component {
                 }}
                 bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null} 
                 onLayout={(height) => { 
-                    // console.log('height-->', height); 
-                    // console.log('selectedEmpIndex-->', this.state.selectedEmpIndex); 
-                    // console.log('upperSectionHeight-->', this.state.upperSectionHeight); 
-                    // console.log('headContainerHeight-->', this.state.headContainerHeight); 
-                    // console.log('userHeaderHeight-->', this.state.userHeaderHeight); 
-                    // console.log('y-->', (this.state.selectedEmpIndex*height)+this.state.upperSectionHeight+this.state.headContainerHeight); 
-                    // console.log('item-->', this.state.selectedJumpEmpName == item.FullName ? item : {}); 
-                    // this.flatList.scrollToItem({
-                    //     animated: false,
-                    //     item: this.state.selectedJumpEmpName == item.FullName ? item : {} ,
-                    //     viewPosition: height
-                    // })
                     if(this.state.selectedJumpEmpName == item.FullName){
                         this.scrollview.scrollTo({
-                            // y: index == 0 ? (this.state.selectedEmpIndex*2)*(height) : (this.state.selectedEmpIndex*2)*(index*height), 
                             y: this.state.selectedEmpIndex == 1 
                             ?  this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
                             : (this.state.selectedEmpIndex*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight, 
@@ -1180,13 +1102,6 @@ class WeeklySchedule extends React.Component {
     }
 
     async onSelectFile() {
-        // DocumentPicker.show({
-        //     filetype: [DocumentPickerUtil.allFiles()],
-        // }, (error, res) => {
-        //     console.log('***name', res);
-        //     if (res != null)
-        //         this.setState({ attachFile: res.fileName, attachFilePath: res.uri })
-        // });
         try {
             const res = await DocumentPicker.pick({
                 type: [DocumentPicker.types.allFiles],
@@ -1217,9 +1132,8 @@ class WeeklySchedule extends React.Component {
     }
 
     renderSharedEmployee = ({ item, index }) => {
-        if(this.state.selectedDate == 'Total')
-            console.log('TotalfinalSharedEmployeeData-->', this.state.TotalfinalSharedEmployeeData)
-
+        // if(this.state.selectedDate == 'Total')
+        //     console.log('TotalfinalSharedEmployeeData-->', this.state.TotalfinalSharedEmployeeData)
         let ContactNumber = '';
         if(item.ContactNumber != undefined && item.ContactNumber != ''){
             var x = item.ContactNumber;
@@ -1234,7 +1148,6 @@ class WeeklySchedule extends React.Component {
                         <Icon name="user-circle-o" size={20} color="#FF7B2A" />
                         <Text style={[Styles.mainContainerLabel, { color: '#FF7B2A' }]}>{item.FirstName}{item.LastName}</Text>
                     </View>
-                    {/* <Text style={Styles.roleText}>({item.RoleCode})</Text> */}
                     <View style={{ flexDirection: 'row', marginLeft: Matrics.CountScale(25) }}>
                         <Text style={{ flex: 1, fontFamily: Fonts.NunitoSansRegular }}>{ContactNumber}</Text>
                         <Icon
@@ -1252,8 +1165,6 @@ class WeeklySchedule extends React.Component {
                     {
                         this.state.selectedDate != 'Total' && item.shiftData.length > 0
                         ?   item.shiftData.map((data, j) => {
-                            // console.log('data.ScheduleDate-->',data.ScheduleDate)
-                            // console.log('this.state.selectedDate',this.state.selectedDate)
                                 if (data.ScheduleDate === this.state.selectedDate) {
                                     return (
                                         <View key={j} style={Styles.shistContainer}>
@@ -1278,14 +1189,13 @@ class WeeklySchedule extends React.Component {
                         : null
                     }
                 </View>
-
             </View>
         )
     }
 
     renderLinkEmpDetails = ({ item, index }) => {
         return (
-            <View style={Styles.linkContainer}>
+            <View key={index} style={Styles.linkContainer}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={Styles.linkLeftText}>Date:</Text>
                     <Text style={Styles.linkRightText}>{moment(item.CreatedDate).format('MM.DD.YYYY')}</Text>
@@ -1311,10 +1221,8 @@ class WeeklySchedule extends React.Component {
     }
 
     renderUserRole = ({ item, index }) => {
-        // console.log('item-->', item);
-        // console.log('roleindex-->', index, '-----', item.RoleName);
         return (
-            <View style={Styles.containerStyle} >
+            <View key={index} style={Styles.containerStyle} >
                 <TouchableOpacity 
                     onPress={() => {
                         this.state.empRoleData[index].expand = !this.state.empRoleData[index].expand
@@ -1346,7 +1254,7 @@ class WeeklySchedule extends React.Component {
 
     renderIdleEmployee = ({ item, index }) => {
         return (
-            <View style={{ flex: 1, backgroundColor: index % 2 == 0 ? Colors.ROWBGCOLOR : null }}>
+            <View key={index} style={{ flex: 1, backgroundColor: index % 2 == 0 ? Colors.ROWBGCOLOR : null }}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', flex: 1 }}>
                         <Text style={Styles.idleFont}>{item.FirstName} {item.LastName}</Text>
@@ -1370,7 +1278,6 @@ class WeeklySchedule extends React.Component {
     }
 
     resetFilterClick() {
-        // const storesArr =  this.state.Stores[0].StoreID;
         this.setState({
             selectedRoleId : 0,
             selectedStoreId : this.state.Stores.length > 0 ? this.state.Stores[0].StoreID : -1,
@@ -1425,7 +1332,6 @@ class WeeklySchedule extends React.Component {
                     "ShiftValue": 0,
                     "UserStoreGUID": this.state.UserStoreGUID
                 };
-                // console.log('dataADD-->', dataAdd);
                 this.props.CreateUpdateEmployeeSchedule(dataAdd);
             } else {
                 if (this.state.DailyScheduleID === '' && this.state.ScheduleDate === '') {
@@ -1446,7 +1352,6 @@ class WeeklySchedule extends React.Component {
                         "ShiftValue": 0,
                         "UserStoreGUID": this.state.UserStoreGUID
                     }
-                    // console.log('dataEdit-->', dataEdit);
                     this.props.CreateUpdateEmployeeSchedule(dataEdit);
                 }
             }
@@ -1508,22 +1413,9 @@ class WeeklySchedule extends React.Component {
         } else if (this.state.selectedReasonId === '') {
             this.setState({ resonError: 'Please select the reson' });
         }
-        // else if (this.state.timeoffNotes === ''){
-        //     this.setState({ resonDetailError: 'Please Enter The Reason Detail' });
-        // } 
         else if (this.state.UserStoreGUID === '') {
             this.setState({ resonDetailError: 'Something wrong please try again!' });
         } else {
-            // const dataTimeoff = {
-            //     "StartDate": this.state.timeoffStartDate ? moment(this.state.timeoffStartDate).format('MM-DD-YYYY') : moment(this.state.selectedDate).format('MM-DD-YYYY'),
-            //     "EndDate": this.state.timeoffEndDate ? moment(this.state.timeoffEndDate).format('MM-DD-YYYY') : moment(this.state.selectedDate).format('MM-DD-YYYY'),
-            //     "ReasonID": this.state.selectedReasonId,
-            //     "ReasonDetail": this.state.timeoffNotes,
-            //     "AttachmentName": this.state.attachFile,
-            //     "UserStoreGuid": this.state.UserStoreGUID,
-            //     "OldTimeOffCombineID": 0,
-            //     "IsFromSchedule": 0
-            // }
             const dataTimeoff = {
                 "CreatedByFirstName": "",
                 "CreatedByLastName": "",
@@ -1544,7 +1436,6 @@ class WeeklySchedule extends React.Component {
                 "Updated": "",
                 "UserStoreGuid": this.state.UserStoreGUID
             }
-            // console.log('dataTimeoff-->', dataTimeoff);
             this.props.CreateEmployeeTimeOff(dataTimeoff);
             this.setState({
                 startDateError: '',
@@ -1577,7 +1468,7 @@ class WeeklySchedule extends React.Component {
 
     renderJumEmpItem = ({ item, index }) => {
         return (
-            <TouchableOpacity style={Styles.itemContainerStyle} 
+            <TouchableOpacity key={index} style={Styles.itemContainerStyle} 
                 onPress={() => {
                     this.setState({ JumtoEmpModal: false, selectedJumpEmpName: item.FullName, selectedEmpIndex: index+1 });
                 }}
@@ -1591,7 +1482,6 @@ class WeeklySchedule extends React.Component {
                     
                     <View>
                         <Text style={Styles.nameStyle}>{item.FullName}</Text>
-                        {/* <Text style={Styles.shopTextStyle}>Shop #{this.state.ShopName}</Text> */}
                     </View>
                 </View>
                 {
@@ -1604,7 +1494,6 @@ class WeeklySchedule extends React.Component {
                             >
                                 <Image source={Images.Calendar} />
                                 <View>
-                                    {/* <Text style={Styles.timingStyle}>Mar 30, Sat 10.00pm - 12.00pm</Text> */}
                                     <Text style={Styles.timingStyle}>{moment(item.ScheduleDate).format('MMM DD, ddd')} {`${moment(data.InTime, "h:mm A").format('hh:mm a')} - ${moment(data.OutTime, "h:mm A").format('hh:mm a')}`}</Text>
                                 </View>
                             </View>
@@ -1617,43 +1506,13 @@ class WeeklySchedule extends React.Component {
     //----------->>>Render Method-------------->>>
 
     render() {
-        // console.log('daysData-->', this.state.daysData);
-        // console.log('weatherListData-->', this.state.weatherListData);
-        // console.log('empRoleData-->', this.state.empRoleData);
-        // console.log('selectedDate-->', this.state.selectedDate);
-        // console.log('selectedStoreName-->', this.state.selectedStoreName);
-        // console.log('Stores-->', this.state.Stores);
-        // console.log('dayIndex-->', this.state.dayIndex);
-        // if(this.state.selectedDate == 'Total')
-        //     console.log('TotalAVGSales6Weeks-->', this.state.TotalAVGSales6Weeks);
-
-
-        // console.log('TotalScheduleHours-->',this.state.TotalScheduleHours);
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ backgroundColor: Colors.WHITE, paddingTop: Platform.OS == 'ios' ? (Matrics.screenHeight == 812 ? 30 : 20) : 0, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }} />
                     <View>
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, fontFamily: Fonts.NunitoSansRegular }}>Weekly Schedule</Text>
-                        {/* <Dropdown
-                            containerStyle={{ justifyContent: 'center' }}
-                            pickerStyle={{ top: Matrics.headerHeight }}
-                            data={this.state.Stores}
-                            value={this.state.selectedStoreName}
-                            onChangeText={(value, index, data) => this.onSelectStore(value, index, data)}
-                            valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber}
-                            inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                            overlayStyle={{ borderWidth: 2 }}
-                            dropdownOffset={{ left: 0 }}
-                            // dropdownPosition={5}
-                            fontSize={17}
-                            itemCount={8}
-                            rippleColor='white'
-                            rippleCentered={true}
-                            selectedTextStyle={{ textAlign: 'center'}}
-                        /> */}
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{this.state.selectedStoreName}</Text>
-                        {/* <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${this.state.weekendDate}`}</Text> */}
                         <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), top: 5, marginBottom: 10, fontFamily: Fonts.NunitoSansRegular }}>{`W/E ${moment(this.state.weekendDate).format('MM.DD.YYYY')}`}</Text>
                     </View>
 
@@ -1677,7 +1536,6 @@ class WeeklySchedule extends React.Component {
                     <View style={Styles.headContainer} onLayout={(e) => { this.setState({ headContainerHeight: e.nativeEvent.layout.height }) }}>
                         <TouchableOpacity style={Styles.jumpEmpContainer} onPress={() => {
                             this.setState({ JumtoEmpModal: true });
-                            // this.props.navigation.navigate('EmployeeList', {employeeData: this.state.empShiftWise, ShopName: this.state.selectedStoreName})
                         }}>
                             <Image source={Images.SmallUserIcon} style={{ marginHorizontal: Matrics.CountScale(5) }}></Image>
                             <Text style={Styles.jumpEmpTextStyle}>Jump To Employee</Text>
@@ -1712,7 +1570,6 @@ class WeeklySchedule extends React.Component {
                                 onSnapToItem={(index) => {
                                     this.setState({ dayIndex: index+1, selectedDate: this.state.daysData[index+1].DayDate })
                                 }}
-                                // scrollEnabled={this.state.dayIndex == 6 || this.state.dayIndex == 7 ? false : true}
                                 scrollEnabled={ (this.state.dayIndex == 8) && this.state.prevIndex == 6 ? true : (this.state.dayIndex == 8) ? false  : true}
                             />
 
@@ -1794,9 +1651,9 @@ class WeeklySchedule extends React.Component {
                             {
                                 this.state.ScheduleHoursArr.length > 0
                                 ? this.state.selectedDate !== 'Total'
-                                    ? this.state.ScheduleHoursArr.map(data => {
+                                    ? this.state.ScheduleHoursArr.map((data, index )=> {
                                             if (this.state.selectedDate === data.WeekDate) {
-                                                return <Text style={Styles.hoursText}>{(data.ScheduleHours).toFixed(2)}</Text>
+                                                return <Text key={index} style={Styles.hoursText}>{(data.ScheduleHours).toFixed(2)}</Text>
                                             }
                                         })
                                     : <Text style={Styles.hoursText}>{(this.state.TotalScheduleHours).toFixed(2)}</Text>
@@ -1810,9 +1667,6 @@ class WeeklySchedule extends React.Component {
                                 <View style={Styles.headingStyle}>
                                     <Text style={{ color: 'white' }}>SHARED EMPLOYEE SCHEDULE</Text>
                                 </View>
-                                {
-                                    console.log('rr-->',this.state.finalSharedEmployeeData)
-                                }
                                 <FlatList
                                     data={this.state.finalSharedEmployeeData}
                                     extraData={this.state.selectedDate}
@@ -1838,6 +1692,7 @@ class WeeklySchedule extends React.Component {
                                                     if (empdata.WeekDate == this.state.selectedDate) {
                                                         return (
                                                             <TextRow
+                                                                key={index}
                                                                 labelText={`${Global.getTime24to12(TimeArr[0]).toUpperCase()} To ${Global.getTime24to12(TimeArr[1]).toUpperCase()}`}
                                                                 contentText={empdata.EmployeesCount.toFixed(2)}
                                                                 bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null}
@@ -1850,6 +1705,7 @@ class WeeklySchedule extends React.Component {
                                                     let TimeArr = empdata.Timing.split('-');
                                                         return (
                                                             <TextRow
+                                                                key={index}
                                                                 labelText={`${Global.getTime24to12(TimeArr[0]).toUpperCase()} To ${Global.getTime24to12(TimeArr[1]).toUpperCase()}`}
                                                                 contentText={empdata.EmployeesCount.toFixed(2)}
                                                                 bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null}
@@ -1970,28 +1826,10 @@ class WeeklySchedule extends React.Component {
                                             }
                                             <View style={{ marginVertical: Matrics.CountScale(15) }}>
                                                 <Text style={Styles.labelTextStyle}>Ending</Text>
-                                                {/* <TouchableOpacity onPress={() => this._showDateTimePicker('endingDate')} style={Styles.rowViewStyle}>
-                                                    <Text>{this.state.endingDate == '' ? 'Select Date' : this.state.endingDate}</Text>
-                                                </TouchableOpacity> */}
                                                 <Text style={{ fontFamily: Fonts.NunitoSansRegular }}>{moment(this.state.selectedDate).format('MM.DD.YYYY')}</Text>
                                                 <Text style={Styles.errorText}>{this.state.endingDateError}</Text>
                                             </View>
                                         </View>
-
-                                        {/* <View style={{ flexDirection: "row", marginHorizontal: Matrics.CountScale(8), marginBottom: Matrics.CountScale(15), }}>
-                                            <TouchableOpacity
-                                                style={Styles.btnViewStyle}
-                                                onPress={() => this.onAddshift('Add')}
-                                            >
-                                                <View><Text style={Styles.btnTextStyle}>Add Shift</Text></View>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity 
-                                                disabled={this.state.disableEditDeleteShiftButton}
-                                                style={Styles.btnViewStyle} onPress={() => this.deleteShift()}
-                                            >
-                                                <View><Text style={Styles.btnTextStyle}>Delete Shift</Text></View>
-                                            </TouchableOpacity>
-                                        </View> */}
                                         {
                                             this.state.disableEditDeleteShiftButton
                                             ?
@@ -2004,14 +1842,12 @@ class WeeklySchedule extends React.Component {
                                             : 
                                                 <View>
                                                     <TouchableOpacity 
-                                                        // disabled={this.state.disableEditDeleteShiftButton}
                                                         style={Styles.btnViewStyle} 
                                                         onPress={() => this.deleteShift()}
                                                     >
                                                         <View><Text style={Styles.btnTextStyle}>Delete Shift</Text></View>
                                                     </TouchableOpacity>
                                                     <TouchableOpacity
-                                                        // disabled={this.state.disableEditDeleteShiftButton}
                                                         style={Styles.btnViewStyle2}
                                                         onPress={() => this.onAddshift('Edit')}
                                                     >
@@ -2078,20 +1914,6 @@ class WeeklySchedule extends React.Component {
                                                 </TouchableOpacity>
                                                 <Text style={[Styles.rowLabelText, { flex: 1, marginLeft: Matrics.CountScale(15) }]}>{this.state.attachFile ? this.state.attachFile : null}</Text>
                                             </View>
-                                            {/* <View style={{ flexDirection: "row",marginTop: Matrics.CountScale(15), marginBottom: Matrics.CountScale(15), }}>
-                                                <TouchableOpacity
-                                                    style={Styles.btnViewStyle}
-                                                    onPress={() => this.onCreateTimeOff()}
-                                                >
-                                                    <View><Text style={Styles.btnTextStyle}>Add</Text></View>
-                                                </TouchableOpacity>
-                                                <TouchableOpacity 
-                                                    disabled={this.state.disableEditDeleteShiftButton}
-                                                    style={Styles.btnViewStyle} 
-                                                    onPress={() => {this.onDeleteTimeoff()}}>
-                                                    <View><Text style={Styles.btnTextStyle}>Delete</Text></View>
-                                                </TouchableOpacity>
-                                            </View> */}
                                             {
                                                 this.state.disableEditDeleteShiftButton 
                                                 ? 
@@ -2103,7 +1925,6 @@ class WeeklySchedule extends React.Component {
                                                     </TouchableOpacity>
                                                 :
                                                     <TouchableOpacity 
-                                                        // disabled={this.state.disableEditDeleteShiftButton}
                                                         style={[Styles.btnViewStyle,{ marginTop: Matrics.CountScale(15)}]} 
                                                         onPress={() => {this.onDeleteTimeoff()}}>
                                                         <View><Text style={Styles.btnTextStyle}>Delete</Text></View>
@@ -2122,19 +1943,12 @@ class WeeklySchedule extends React.Component {
                             onConfirm={this._handleDatePicked}
                             onCancel={this._hideDateTimePicker}
                             date={
-                                // this.state.dateFlag == 'endingDate'
-                                // ? this.state.endingDate ? new Date(this.state.endingDate) : new Date()
                                 this.state.dateFlag == 'startDate'
                                     ? new Date(this.state.timeoffStartDate)
                                     : new Date(this.state.timeoffEndDate)
 
                             }
                         />
-                        {/* {console.log('SelINtime-->', this.state.shiftinTime)}
-                        {console.log('SelINtime-->', moment(this.state.shiftinTime, "h:mm A").format('hh:mm a'))}
-                        {console.log('SelINtime-->', moment(this.state.shiftinTime, "h:mm A").format('hh:mm A'))}
-                        {console.log('SelINtime-->', moment(`2000/10/1 ${moment(this.state.shiftinTime, "h:mm A").format('hh:mm A')}`).toDate())} */}
-
                         <DateTimePicker
                             isVisible={this.state.isTimePickerVisible}
                             onConfirm={this._handleTimePicked}
@@ -2175,9 +1989,6 @@ class WeeklySchedule extends React.Component {
                                 global.selectedStore = this.state.lastFilterselectedStoreId;
                             }}
                             onRightPress={() => {
-                                // console.log('save'); 
-                                // console.log('save', this.state.weekendDate); 
-                                // console.log('save', this.state.selectedRoleId); 
                                 console.log('save', this.state.selectedStoreId); 
                                 const index = this.state.Stores.length > 0 && this.state.Stores.findIndex(s => s.StoreID === this.state.selectedStoreId);
                                 this.taxListFlag = false;
@@ -2221,7 +2032,6 @@ class WeeklySchedule extends React.Component {
                                 keyboardShouldPersistTaps={'handled'}
                                 enableOnAndroid={true}
                             >
-                                {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}> */}
                                 <View>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker('weekending')}>
@@ -2245,7 +2055,6 @@ class WeeklySchedule extends React.Component {
                                                 textStyle: {color: Colors.WHITE}, 
                                                 containerStyle: [],
                                             }]}
-                                            // maxDate={this.state.currentWeekEndDate}
                                         />
                                         : null
                                 }
@@ -2289,16 +2098,6 @@ class WeeklySchedule extends React.Component {
                                 <View style={{ borderTopWidth:1,  borderTopColor: Colors.BORDERCOLOR, paddingVertical: Matrics.CountScale(15) }}>
                                     <Text style={Styles.pickerLabelStyle}>Shops</Text>
                                 </View>
-                                {/* <Picker
-                                    itemStyle={Styles.pickerItemStyle}
-                                    selectedValue={this.state.selectedStoreId}
-                                    onValueChange={value => {
-                                        const selectedStoreNameArr =  this.state.Stores.filter(s => s.StoreID == value);
-                                        this.setState({ selectedStoreId: value, selectedStoreName: selectedStoreNameArr[0].DisplayStoreNumber})
-                                    }}
-                                >
-                                    {this.getStores()}
-                                </Picker> */}
                                 {!this.state.resetFilter ?
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
@@ -2406,8 +2205,6 @@ class WeeklySchedule extends React.Component {
                                 <Text style={Styles.titleText}>Do you want to add this employee to schedule?</Text>
                                 <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: Matrics.CountScale(10) }}>
                                     <TouchableOpacity style={Styles.confirmBtn} onPress={() => {
-                                        // console.log('adduid-->', this.state.addToScheduleUserStoreID)
-                                        // console.log('addsid-->', this.state.addToScheduleStatusId)
                                         this.props.ChangeEmployeeStatusRequest({ UserStoreID: this.state.addToScheduleUserStoreID, StatusId: 6561, UserStoreGuid: '' });
                                     }}>
                                         <Text style={Styles.confirmBtnText}>Yes</Text>
@@ -2514,7 +2311,6 @@ const Styles = StyleSheet.create({
         margin: Matrics.CountScale(5),
         borderRadius: 5,
         overflow: 'hidden'
-        // padding: Matrics.CountScale(5),
     },
     idleFont: {
         fontFamily: Fonts.NunitoSansRegular,
@@ -2727,8 +2523,6 @@ const Styles = StyleSheet.create({
     }
 });
 const mapStateToProps = (state) => {
-    // console.log('headerFiltervalues-->', state);
-    // console.log('headerFiltervalues-->', state.HirePacket);
     return {
         response: state.WeeklySchedule,
         headerFiltervalues: state.HirePacket,

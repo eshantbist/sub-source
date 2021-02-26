@@ -6,7 +6,6 @@ import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
 import moment from 'moment'
 import { Picker } from '@react-native-community/picker';
-import ModalFilterPicker from 'react-native-modal-filter-picker';
 
 {/* ====>>>>>>>>>>>    Assets   <<<<<<<<<<========== */ }
 import { Colors, Fonts, Matrics, Images } from '@Assets';
@@ -16,11 +15,9 @@ import Header from '../../../Components/Common/Header';
 import { getDashBoardDataRequest, getUserRoleRequest, getFinancialReportRequest, getSalesBuildingReportRequest, getCustomerCommentsCountRequest } from '@Redux/Actions/DashboardActions'
 import { getHeaderFilterValuesRequest } from '@Redux/Actions/HirePacketsActions';
 import Global from '../../../GlobalFunction';
-import DateTimePicker from 'react-native-modal-datetime-picker';
 import CalendarPicker from '../../../CustomComponent/react-native-calendar-picker';
 import SearchableDropdown from '../../../CustomComponent/react-native-searchable-dropdown';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Dropdown } from 'react-native-material-dropdown';
 import AsyncStorage from '@react-native-community/async-storage';
 import { StackActions, NavigationActions } from 'react-navigation';
 
@@ -89,11 +86,6 @@ class Dashboard extends React.Component {
             {
                 title: 'Human Resource',
             },
-            // {
-            //     title: 'White Pocket Sunset',
-            //     subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-            //     illustration: 'https://i.imgur.com/MABUbpDl.jpg'
-            // },
         ],
         filterModal: false,
         selectedRoleId: 0,
@@ -146,55 +138,18 @@ class Dashboard extends React.Component {
         self = this
         this.roleFlag = false;
         this.dashboardDataFlag = false;
-        // this.financialReportFlag = false;
-        // this.salesbuildingReportFlag = false;
-        // this.customerCommentsCount = false;
-
-        // const currentDate = moment().format("MM/DD/YYYY");
         let WeekEndingDate = moment().format("MM/DD/YYYY");
-        console.log('WeekEndingDate-->', WeekEndingDate)
-        // if(moment(currentDate).format('dddd') === 'Tuesday'){
-        //     WeekEndingDate = currentDate;
-        // } else if(moment(currentDate).format('dddd') === 'Monday'){
-        //     WeekEndingDate = moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")
-        // } else {
-        //     WeekEndingDate = moment(currentDate).add(1,'weeks').isoWeekday(2).format("MM/DD/YYYY")
-        // }
-        // console.log('currentDate-->', currentDate) ;
-        // console.log('currentDate-->', moment(currentDate).add(0,'weeks').isoWeekday(2).format("MM/DD/YYYY")) ;
-        // console.log('currentDate-->', moment(currentDate).format('dddd')) ;
 
-
-
-        // this.setState({ WeekEndingDate: '11/20/2018'});
-        // await this.setState({ 
-        //     WeekEndingDate,
-        //     currentWeekEndDate: WeekEndingDate,
-        //     lastFilterWeekEndingDate: WeekEndingDate 
-        // });
-        // global.selectedStore = this.state.selectedStores;
-        // global.WeekendDate = WeekEndingDate;
         this.props.getHeaderFilterValuesRequest({ StoreId: -1, RoleId: 0, FilterId: -1, BusinessTypeId: 1 });
-        // this.props.getDashBoardDataRequest({
-        //     RoleId: this.state.selectedRoleId,
-        //     StoreId: this.state.selectedStores,
-        //     FilterId: -1,
-        //     BusinessTypeId: 1,
-        //     WeekEnding: this.state.WeekEndingDate 
-        // })
         this.focusListener = this.props.navigation.addListener('didFocus', async () => {
-            console.log('dashboard selectedStores-->', parseInt(global.selectedStore,10))
-            console.log('dashboard weekenddate-->',global.WeekendDate)
+            
             if(global.WeekendDate != undefined && global.WeekendDate != ''){
                 WeekEndingDate = global.WeekendDate;
             }
-            console.log('focus WeekEndingDate-->', WeekEndingDate)
-            console.log('focus this.state.Stores-->', this.state.Stores)
             let index = -1;
             if(parseInt(global.selectedStore,10) != -1){
                 index = this.state.Stores.length > 0 && this.state.Stores.findIndex(s => s.StoreID === parseInt(global.selectedStore,10));
             }
-            console.log('index-->',index)
             await this.setState({ 
                 WeekEndingDate,
                 currentWeekEndDate: WeekEndingDate,
@@ -206,10 +161,6 @@ class Dashboard extends React.Component {
             });
             global.selectedStore = this.state.selectedStores;
             global.WeekendDate = WeekEndingDate;
-            
-            //  else {
-            //     index = data.Report.store_list.length > 0 && data.Report.store_list.findIndex(s => s.StoreID === data.Report.store_list[0].StoreID);
-            // }
             this.props.getDashBoardDataRequest({
                 RoleId: this.state.selectedRoleId,
                 StoreId: this.state.selectedStores,
@@ -218,30 +169,6 @@ class Dashboard extends React.Component {
                 WeekEnding: this.state.WeekEndingDate,
             })
         });
-
-        // this.props.getFinancialReportRequest({
-        //     RoleId: this.state.selectedRoleId,
-        //     FilterId: -1, StoreId: global.loginResponse.StoreID, RangeId: 1,
-        //     BusinessTypeId: 1, WeekEnding: '11/22/2016', Quarter: '1',
-        //     Year: 0, FromWeekEnding: '11/22/2016',
-        //     ToWeekEnding: '11/22/2016'
-        // })
-        // this.props.getSalesBuildingReportRequest({
-        //     RoleId: this.state.selectedRoleId,
-        //     FilterId: -1, StoreId: global.loginResponse.StoreID, RangeId: 1,
-        //     BusinessTypeId: 1, WeekEnding: '11/22/2016', Quarter: '1',
-        //     Year: 0, FromWeekEnding: '11/22/2016',
-        //     ToWeekEnding: '11/22/2016'
-        // })
-        // this.props.getCustomerCommentsCountRequest({
-        //     RoleId: this.state.selectedRoleId,
-        //     StoreId: global.loginResponse.StoreID,
-        //     FilterId: -1,
-        //     BusinessTypeId: 1,
-        //     WeekEnding: '11/22/2016'
-        // })
-
-        console.log(global.loginResponse)
     }
 
     async UNSAFE_componentWillReceiveProps(nextProps) {
@@ -266,12 +193,10 @@ class Dashboard extends React.Component {
                 if (data.Report.user_list.length > 0) {
                     const userSelect = {
                         UserID: 0,
-                        // UserName: 'Select User'
                         UserName: `Select ${this.state.selectedRoleName} User`
                     }
                     data.Report.user_list.unshift(userSelect);
                 }
-                // data.Report.store_list.unshift(storeselect);
                 data.Report.role_list.unshift(roleSelect);
                 if (data.Report.store_list.length > 0) {
                     var i;
@@ -282,26 +207,19 @@ class Dashboard extends React.Component {
                         delete data.Report.store_list[i].key1;
                     }
                 }
-                // console.log('NewStores-->', data.Report.store_list);
-                // data.Report.user_list.unshift(userSelect);
-                // console.log("StoreList", data.Report.store_list);
-                // console.log("RoleList",  data.Report.role_list);
-                // console.log("UserList-->",  data.Report.user_list);
                 await this.setState({
                     userRole: data.Report.role_list,
                     Users: data.Report.user_list,
                     Stores: data.Report.store_list,
                 })
             }
-            // console.log(data)
         }
         if (nextProps.response.getDashboardDataSuccess && (this.state.loading || this.state.refreshing)) {
             this.dashboardDataFlag = true
 
             if (this.dashboardDataFlag && this.roleFlag)
-                this.setState({ loading: false, refreshing: false })
-            let data = nextProps.response.data // this.setState({ userRole: data.UserRoleList })
-            // console.log('Data***', JSON.stringify(data));
+                this.setState({ loading: false, refreshing: false });
+            let data = nextProps.response.data;
             if (data.Status == 1) {
                 let keyFinancialData = data.Data._keyFinacialObj;
                 let salesBuilding = data.Data._saleBuildingList ? data.Data._saleBuildingList[0] : [];
@@ -340,61 +258,6 @@ class Dashboard extends React.Component {
                 }
             }
         }
-        // else if (nextProps.response.getFinancialReportSuccess && this.state.loading) {
-        //     this.financialReportFlag = true
-
-        //     if (this.financialReportFlag && this.roleFlag && this.salesbuildingReportFlag && this.customerCommentsCount)
-        //         this.setState({ loading: false })
-
-        //     let data = nextProps.response.data
-
-        //     if (data.Status == 1) {
-        //         let regionReport = data.Report.RegionReport[0].RegionView
-        //         console.log(regionReport)
-        //         this.setState({
-        //             salesPercentage: regionReport.SaleVariance,
-        //             totalSales: this.kFormatter(regionReport.Sales),
-        //             labourPercentage: regionReport.LaborCostPerc,
-        //             productivityPercentage: regionReport.Productivity,
-        //             foodCostPercentage: regionReport.FoodCostPer,
-        //             overTimePercentage: regionReport.OTDThours,
-        //             breakViolationPercentage: regionReport.SaleVariance,
-        //         })
-        //     }
-        //     else {
-        //         this.setState({ loading: false, msg: data.Message, msgModal: true })
-        //     }
-
-        // }
-        // else if (nextProps.response.getSalesBuildingReportSuccess && this.state.loading) {
-        //     this.salesbuildingReportFlag = true
-
-        //     if (this.financialReportFlag && this.roleFlag && this.salesbuildingReportFlag && this.customerCommentsCount)
-        //         this.setState({ loading: false })
-
-        //     let data = nextProps.response.data
-
-        //     if (data.Status == 1) {
-        //         console.log(data)
-        //         // let regionReport = data.Report.RegionReport[0].RegionView
-        //         // console.log(regionReport)
-        //     }
-        //     else {
-        //         this.setState({ loading: false, msg: data.Message, msgModal: true })
-        //     }
-
-        // }
-        // else if (nextProps.response.getCustomerCommentsCountSuccess && this.state.loading) {
-        //     this.customerCommentsCount = true;
-        //     console.log("=====>>>")
-
-        //     if (this.financialReportFlag && this.roleFlag && this.salesbuildingReportFlag && this.customerCommentsCount)
-        //         this.setState({ loading: false })
-
-        //     let data = nextProps.response.data
-        //     console.log(data)
-        //     this.setState({ cmComments: data.Count.CurrentMonthCount, qtdComments: data.Count.QuarterMonthCount, ytdComments: data.Count.CurrentYearCount })
-        // }
         else if (nextProps.response.isRequestFailed) {
             console.log('error')
             this.setState({ loading: false, msg: Global.error_msg, msgModal: true })
@@ -410,37 +273,13 @@ class Dashboard extends React.Component {
         const WeekEndingDateArr = this.state.WeekEndingDate.split('/');
         let CurrentMonth = WeekEndingDateArr[0];
         let QuaterMonthArr = [];
-        // console.log('filter comment-->', WeekEndingDateArr);
-        // console.log('filter comment-->', CurrentMonth);
-        // console.log('filter commentList-->', this.state.customerComments);
-        // console.log('filter commentList-->',JSON.stringify(this.state.customerComments));
-        // let QuaterMonthdate1 = moment(this.state.WeekEndingDate).subtract(1, 'months').format('MM/DD/YYYY').split('/');
-        // let QuaterMonthdate2 = moment(this.state.WeekEndingDate).subtract(2, 'months').format('MM/DD/YYYY').split('/');
-        // let QuaterMonthdate3 = moment(this.state.WeekEndingDate).subtract(3, 'months').format('MM/DD/YYYY').split('/');
-        // let QuarterMonth1 = QuaterMonthdate1[0];
-        // let QuarterMonth2 = QuaterMonthdate2[0];
-        // let QuarterMonth3 = QuaterMonthdate3[0];
-        // console.log('in filter-->QuaterMonth1-->', QuarterMonth1);
-        // console.log('in filter-->QuaterMonth2-->', QuarterMonth2);
-        // console.log('in filter-->QuaterMonth3-->', QuarterMonth3);
-
-        // console.log('in filter-->CurrentMonth-->', CurrentMonth);
-        // if(CurrentMonth == 1 || CurrentMonth == 2 || CurrentMonth == 3 || CurrentMonth == 4) {
-        //     QuaterMonthArr = ['01','02','03','04'];
-        // } else if (CurrentMonth == 5 || CurrentMonth == 6 || CurrentMonth == 7 || CurrentMonth == 8) {
-        //     QuaterMonthArr = ['05','06','07','08'];
-        // } else if(CurrentMonth == 9 || CurrentMonth == 10|| CurrentMonth == 11 || CurrentMonth == 12) {
-        //     QuaterMonthArr = ['09','10','11','12'];
-        // }
         QuaterMonthArr = Global.getQuaterMonth(CurrentMonth);
-        // console.log('QuaterMonthArr-->', QuaterMonthArr);
 
         let QuaterMonthfinalArr = QuaterMonthArr.filter(e => e != CurrentMonth);
         let customerCommentsMonth = [];
         let customerCommentsQTD = [];
         let customerCommentsYTD = this.state.customerComments;
 
-        console.log('QuaterMonthfinalArr-->', QuaterMonthfinalArr);
         customerCommentsMonth = this.state.customerComments.filter((e) => {
             const date = e.VisitTimeStamp.split('T');
             return (date[0].split('-')[1] == CurrentMonth)
@@ -467,15 +306,10 @@ class Dashboard extends React.Component {
                 }
             }
         }
-        // console.log('in filter-->month-->',customerCommentsMonth);
-        // console.log('in filter-->qtd-->',customerCommentsQTD);
-        // console.log('in filter-->ytd-->',customerCommentsYTD);
 
         var sortBy = (function () {
             var toString = Object.prototype.toString,
-                // default parser function
                 parse = function (x) { return x; },
-                // gets the item to be sorted
                 getItem = function (x) {
                     var isObject = x != null && typeof x === "object";
                     var isProp = isObject && this.prop in x;
@@ -508,18 +342,11 @@ class Dashboard extends React.Component {
             desc: true,
             parser: function (item) { return new Date(item); }
         });
-        // console.log('in filter-->month-->',sortedCommentsMonth);
-        // console.log('in filter-->qtd-->',sortedCommentsQTD);
-        // console.log('in filter-->ytd-->',sortedCommentsYTD);
         this.setState({
             customerCommentsMonth: sortedCommentsMonth,
             customerCommentsQTD: sortedCommentsQTD,
             customerCommentsYTD: sortedCommentsYTD
         });
-
-        // this.state.customerComments.forEach(child => {
-        //     console.log('in filter-->child-->',child.VisitTimeStamp );
-        // });
     }
     kFormatter(num) {
         return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math.sign(num) * Math.abs(num)
@@ -528,16 +355,8 @@ class Dashboard extends React.Component {
 
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
     _handleDatePicked = (date) => {
-        // console.log('weekdate-->', date);
-        // console.log('weekdate-->', moment(date).format('dddd'));
-        // console.log('A date has been picked: ', moment(date).format('MMM DD, ddd'));
         this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: '' });
         global.WeekendDate = moment(date).format('MM/DD/YYYY');
-        // if(moment(date).format('dddd') === 'Tuesday') {
-        //     this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: '' })
-        // } else {
-        //     this.setState({ WeekEndingDate: moment(date).format('MM/DD/YYYY'), weekEndDateError: 'Please Select Valid Weekend Date'})
-        // }
         this._hideDateTimePicker();
     };
     getRole() {
@@ -609,7 +428,6 @@ class Dashboard extends React.Component {
 
     Logout(){
         AsyncStorage.clear();
-        // this.props.navigation.navigate('Login')
         const resetAction = StackActions.reset({
             index: 0,
             actions: [NavigationActions.navigate({ routeName: 'Login' })],
@@ -618,57 +436,29 @@ class Dashboard extends React.Component {
     }
     // ==========>>>>> Render Method  <<<<<<<===========
     render() {
-        console.log('selectedStoreIndex-->', this.state.selectedStoreIndex);
         return (
             <View style={{ flex: 1, backgroundColor: Colors.BODYBACKGROUND }}>
 
                 {/* ==========>>>>> Header For Dashboard  <<<<<<<=========== */}
                 <DashboardHeader
-                    // centerText={`W/E ${this.state.WeekEndingDate}`}
                     centerText={`W/E ${moment(this.state.WeekEndingDate).format('MM.DD.YYYY')}`}
-                    // leftText={'Profile'}
                     rightImage={Images.FilterIcon}
                     onRightPress={(val) => {
                         this.setState({ filterModal: true, isDateTimePickerVisible: false })
                     }}
                     onLeftPress={(val) => {
                         this.setState({ showDrodown: !this.state.showDrodown });
-                        // this.props.navigation.navigate('Profile');
                     }}
-                // rightImageStyle={{ height: 15, width: 25, top: -7 }}
-                // leftImageStyle={{ height: 15, width: 25 }}
                 />
 
                 {   
                     this.state.showDrodown && 
-                    // <Modal 
-                    
-                    // >
-                        <View style={Styles.logoutContainer}>
-                            <Text onPress={() => this.Logout()} style={Styles.logoutText}>Logout</Text>
-                        </View>
-                    // </Modal>
-                    // <Dropdown
-                    //     label='Profile'
-                    //     data={this.state.Dropdata}
-                    //     containerStyle={{ alignSelf: 'flex-start' }}
-                    //     onChangeText={(value, index, data) => this.Logout() }
-                    //     itemTextStyle={{ textAlign: 'left' }}
-                    //     overlayStyle={{ top: Platform.OS == 'ios' ? 30 : 0, borderWidth: 0,left: -10 }}
-                    //     dropdownOffset={{ top: 0, left: 0 }}
-                    //     selectedTextStyle={{ textAlign: 'left'}}
-                    //     inputContainerStyle={{ alignSelf: 'stretch', padding: 0, margin: 0 }}
-                    // />
+                    <View style={Styles.logoutContainer}>
+                        <Text onPress={() => this.Logout()} style={Styles.logoutText}>Logout</Text>
+                    </View>
                 }
 
                 {/* ==========>>>>> Page Container  <<<<<<<=========== */}
-
-                {/* <View style={{ alignItems: 'center' }}>
-                    <Text style={Styles.slideTitleStyle}>{this.state.entries[this.state.activeSlide].title}</Text>
-                    <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                        {this.renderIndicator(this.state.entries.length)}
-                    </View>
-                </View> */}
                 <View style={{}}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
 
@@ -723,7 +513,6 @@ class Dashboard extends React.Component {
                     onRequestClose={() => {
                        this.setState({ filterModal:false });
                     }}
-                // transparent={'true'}
                 >
                     <View style={{ flex: 1 }}>
                         <Header centerText='Filter'
@@ -845,9 +634,6 @@ class Dashboard extends React.Component {
                                 {!this.state.resetFilter ?
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
-                                            // const items = this.state.selectedItems;
-                                            // items.push(item)
-                                            console.log('onItemSelect-->', item);
                                             const index = this.state.Stores.findIndex(s => s.StoreID === item.StoreID);
                                             this.setState({ selectedStores: item.StoreID, selectedStoreIndex: index });
                                             global.selectedStore = item.StoreID;
@@ -855,9 +641,6 @@ class Dashboard extends React.Component {
                                         }}
                                         containerStyle={{ padding: 5 }}
                                         onRemoveItem={(item, index) => {
-                                            console.log('on remove-->', item, '--', index)
-                                            // const items = this.state.selectedItems.filter((sitem) => sitem.id !== item.id);
-                                            // this.setState({ selectedItems: items });
                                         }}
                                         itemStyle={{
                                             padding: 10,
@@ -892,24 +675,6 @@ class Dashboard extends React.Component {
                                         }
                                     />
                                     : null}
-
-                                {/* <Text style={Styles.pickerLabelStyle}>No. Of Days</Text>
-                                <Picker
-                                    itemStyle={Styles.pickerItemStyle}
-                                    selectedValue={this.state.selectedNOD}
-                                    onValueChange={value => this.setState({ selectedNOD: value })}
-                                >
-                                    {this.getNOD()}
-                                </Picker>
-                                <Text style={Styles.pickerLabelStyle}>Status</Text>
-                                <Picker
-                                    itemStyle={Styles.pickerItemStyle}
-                                    selectedValue={this.state.selectedStatus}
-                                    onValueChange={value => this.setState({ selectedStatus: value })}
-                                >
-                                    {this.getStatus()}
-                                </Picker> */}
-
                                 <TouchableOpacity
                                     onPress={() => this.onResetFilterClick()}
                                     style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', borderWidth: 1, borderColor: 'red', borderRadius: 5, padding: 10, marginVertical: 40 }}
@@ -920,11 +685,6 @@ class Dashboard extends React.Component {
                             </KeyboardAwareScrollView>
                             </ScrollView>
                         </View>
-                        {/* <DateTimePicker
-                            isVisible={this.state.isDateTimePickerVisible}
-                            onConfirm={this._handleDatePicked}
-                            onCancel={this._hideDateTimePicker}
-                        /> */}
                         <LoadWheel visible={this.state.loading} />
                     </View>
                 </Modal>
@@ -934,70 +694,6 @@ class Dashboard extends React.Component {
             </View>
         )
     }
-
-    // get pagination() {
-    //     const { customerComments, activeSlide } = this.state;
-    //     return (
-    //         <Pagination
-    //             dotsLength={customerComments.length}
-    //             activeDotIndex={activeSlide}
-    //             dotContainerStyle={{ height: Matrics.CountScale(10), padding: 0 }}
-    //             containerStyle={{ paddingTop: 0, paddingBottom: Matrics.CountScale(10) }}
-    //             tappableDots={true}
-    //             dotStyle={{
-    //                 width: Matrics.CountScale(10),
-    //                 height: Matrics.CountScale(10),
-    //                 borderRadius: Matrics.CountScale(5),
-    //                 marginHorizontal: Matrics.CountScale(-10),
-    //                 backgroundColor: 'grey'
-    //             }}
-    //             inactiveDotStyle={{
-    //                 width: Matrics.CountScale(10),
-    //                 height: Matrics.CountScale(10),
-    //                 borderRadius: Matrics.CountScale(5),
-    //                 marginHorizontal: Matrics.CountScale(-10),
-    //                 borderWidth: 1,
-    //                 borderRadius: Matrics.CountScale(5),
-    //                 backgroundColor: 'white'
-    //             }}
-    //             inactiveDotOpacity={0.6}
-    //             inactiveDotScale={0.9}
-    //         />
-    //     );
-    // }
-
-    // _renderCustomerComments({ item, index }) {
-    //     return (
-    //         <View>
-    //             <Text>{item.Comments}</Text>
-    //         </View>
-
-    //     );
-    // }
-
-    // _onMomentumScrollEnd = (e, state, context) => {
-    //     console.log('asvdhj jkasbdjk jdbfjkbdf bdfjk')
-    //     console.log(context.state.index)
-
-    //     this.setState({ activePage: context.state.index })
-
-    // }
-
-    // renderComments(){
-    //     let comments = []
-    //     for(i=0; i< this.state.customerComments.length; i++)
-    //     {
-    //         comments.push(
-    //             <View>
-    //             <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
-    //                 {this.state.customerComments[i].Comments}
-    //             </Text>
-    //             </View>
-    //         );
-
-    //     }
-    //     return comments;
-    // }
     onRefresh = () => {
         this.setState({ refreshing: true });
         this.props.getDashBoardDataRequest({
@@ -1019,7 +715,6 @@ class Dashboard extends React.Component {
 
         return (
             this.state.activeSlide == 0 ?
-                // index == 0 ?
                 <View style={Styles.slideStyle}>
                     <ScrollView showsVerticalScrollIndicator={false}
                         refreshControl={
@@ -1101,20 +796,6 @@ class Dashboard extends React.Component {
                             </View>
                         </View>
                         <View style={Styles.contentContainerStyle}>
-
-                            {/* <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
-                                Once the printer ink run dry it has to be replaced with another inkjet cattridge. There are  many  reputed companies  like canon, epson, Dell mndbf dsfhjgf sndbf fjhbdfj sjf jhd kdsv jkhfe rhf
-                                </Text> */}
-
-                            {/* <Carousel
-                                // style={Styles.guestHeader}
-                                ref={(c) => { this._carousels = c; }}
-                                data={this.state.customerComments}
-                                renderItem={this._renderCustomerComments}
-                                sliderWidth={width - Matrics.CountScale(20)}
-                                itemWidth={width - Matrics.CountScale(20)}
-                            // onSnapToItem={(index) => this.setState({ activeCommentSlide: index })}
-                            /> */}
                             <View style={{ overflow: 'hidden' }}>
                                 <Swiper height={Matrics.CountScale(160)} showsPagination={false}
                                     key={
@@ -1146,9 +827,6 @@ class Dashboard extends React.Component {
                                                 this.setState({ scrollEnabled: true })
                                             }, 1000)
                                             this.setState({ clearId: clearId });
-                                            // this.setState({ scrollEnabled: true })
-                                            // if (!this.state.scrollEnabled)
-                                            // setTimeout(() => { this.setState({ scrollEnabled: true }) }, 100)
 
                                         }
                                     }}
@@ -1157,7 +835,6 @@ class Dashboard extends React.Component {
                                         this.setState({ activePage: context.state.index + 1 })
 
                                     }} >
-                                    {/* {this.renderComments()} */}
                                     {
                                         this.state.NPSDisplay === 'QTD'
                                             ? this.state.customerCommentsQTD.length > 0 && this.state.customerServices && this.state.customerServices.QuarterMonthCount !== 0
@@ -1208,22 +885,8 @@ class Dashboard extends React.Component {
                                                     })
                                                     : <Text style={Styles.labelText}>No comments available for Current Month.</Text>
                                     }
-                                    {/* <View>
-                                    <Text>slide 1</Text>
-                                    </View>
-                                    <View>
-                                    <Text>slide 2</Text>
-                                    </View>
-                                    <View>
-                                    <Text>slide 3</Text>
-                                    </View> */}
                                 </Swiper>
                             </View>
-
-                            <View>
-                                {/* {this.pagination} */}
-                            </View>
-
                             {
                                 len > 0
                                     ? <Text style={[Styles.labelText, { textAlign: 'center' }]}>{this.state.activePage}/ {len}</Text>
@@ -1257,7 +920,6 @@ class Dashboard extends React.Component {
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ flex: 1 }}>
                                 <View style={[Styles.contentContainerStyle, { paddingHorizontal: 0, alignItems: 'center', borderWidth: 2, borderColor: Colors.ORANGE }]}>
-                                    {/* <Text style={Styles.empNeedTextStyle}>{this.state.humanResource && this.state.humanResource.RequiredMore}</Text> */}
                                     <Text style={Styles.empNeedTextStyle}>{this.state.humanResource && this.state.employeeNeed >= this.state.humanResource.ActiveEmployee ? this.state.employeeNeed - this.state.humanResource.ActiveEmployee : 0}</Text>
                                     <Text style={[Styles.labelText, { fontSize: Matrics.CountScale(14) }]}>Employees needed</Text>
                                 </View>
@@ -1427,7 +1089,6 @@ const Styles = {
     filterModalContainer: {
         flex: 1,
         backgroundColor: Colors.WHITE,
-        // width: '100%',
 
     },
     optionTextStyle: {
@@ -1444,8 +1105,6 @@ const Styles = {
         textAlign: 'center' ,
     }
 }
-// export default Dashboard
-//Props Connection
 const mapStateToProps = (state) => {
     console.log(state, "sstates");
 
@@ -1454,6 +1113,5 @@ const mapStateToProps = (state) => {
         headerFiltervalues: state.HirePacket,
     };
 }
-//Redux Connection  
 export default connect(mapStateToProps, { getHeaderFilterValuesRequest, getUserRoleRequest, getDashBoardDataRequest, getFinancialReportRequest, getCustomerCommentsCountRequest, getSalesBuildingReportRequest })(Dashboard);
 

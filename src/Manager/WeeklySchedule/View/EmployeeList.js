@@ -68,7 +68,6 @@ class WeeklySchedule extends React.Component {
                             >
                                 <Image source={Images.Calendar} />
                                 <View>
-                                    {/* <Text style={Styles.timingStyle}>Mar 30, Sat 10.00pm - 12.00pm</Text> */}
                                     <Text style={Styles.timingStyle}>{moment(item.ScheduleDate).format('MMM DD, ddd')} {`${moment(data.InTime, "h:mm A").format('hh:mm a')} - ${moment(data.OutTime, "h:mm A").format('hh:mm a')}`}</Text>
                                 </View>
                             </View>

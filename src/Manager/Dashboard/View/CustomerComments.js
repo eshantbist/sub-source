@@ -87,8 +87,6 @@ const Styles = StyleSheet.create({
     pageContainer: {
         flex: 1,
         marginVertical: Matrics.CountScale(5),
-        // justifyContent: "center",
-        // backgroundColor: Colors.WHITE
     },
     commentContainerStyle: {
         marginVertical: Matrics.CountScale(5),
