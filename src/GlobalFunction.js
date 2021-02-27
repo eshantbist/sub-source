@@ -53,6 +53,22 @@ const Global = {
         return hour + ':' + min;
     },
 
+    getTime12To24WithoutSpace(time) {
+        var PM = time.match('pm') ? true : false
+    
+        time = time.split(':')
+        var min = time[1]
+        
+        if (PM) {
+            var hour = 12 + parseInt(time[0],10)
+            var min = time[1].replace('pm', '')
+        } else {
+            var hour = time[0]
+            var min = time[1].replace('am', '')       
+        }
+        return hour + ':' + min;
+    },
+
     getQuaterMonth(currentMonth) {
         var quaterMonth = [];
         if(currentMonth == '01'){

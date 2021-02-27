@@ -36,11 +36,7 @@ export const watchEmployeeAvailabilityAsync = function* watchEmployeeAvailabilit
 export const watchSaveUpdateEmployeeAvailabilityAsync = function* watchSaveUpdateEmployeeAvailabilityAsync({ params }) {
     try {
         console.log('---------------SAGA CALLING AVAILABILITY', params)
-        for(i=0; i < params.DeleteShift.length; i++)
-        {
-            yield call(Api.deleteEmployeeAvailability, {EmployeeAvailabilityID:params.DeleteShift[i]}) 
-        }
-        const response = yield call(Api.saveUpdateEmployeeAvailability, params.UpdateShift)
+        const response = yield call(Api.saveUpdateEmployeeAvailability, params)
         yield put({ type: SAVE_UPDATE_EMPLOYEE_AVAILABILITY_SUCCESS, payload: response });
     }
     catch (e) {
@@ -54,12 +50,12 @@ export const watchSaveUpdateEmployeeAvailabilityAsync = function* watchSaveUpdat
 export const watchDeleteEmployeeAvailabilityAsync = function* watchDeleteEmployeeAvailabilityAsync({ params }) {
     try {
         console.log('---------------SAGA CALLING AVAILABILITY', params)
-        let response;
-        for(i=0; i < params.DeleteShift.length; i++)
-        {
-            response= yield call(Api.deleteEmployeeAvailability, {EmployeeAvailabilityID:params.DeleteShift[i]}) 
-        }
-        //const response = yield call(Api.deleteEmployeeAvailability, params)
+        // let response;
+        // for(i=0; i < params.DeleteShift.length; i++)
+        // {
+        //     response= yield call(Api.deleteEmployeeAvailability, {EmployeeAvailabilityID:params.DeleteShift[i]}) 
+        // }
+        const response = yield call(Api.deleteEmployeeAvailability, params)
         yield put({ type: DELETE_EMPLOYEE_AVAILABILITY_SUCCESS, payload: response });
     }
     catch (e) {

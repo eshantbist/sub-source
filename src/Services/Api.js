@@ -412,38 +412,45 @@ module.exports = {
         }).then((response) => response.json())
     },
     async saveUpdateEmployeeAvailability(param) {
-        console.log(param)
+        console.log('saveUpdateEmployeeAvailability',param)
         userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
 
-        return fetch(`${ENVIRONMENT}/SaveUpdateEmployeeAvailabilityList/?UserStoreGuid=` + userStoreGuid, {
+        // return fetch(`${ENVIRONMENT}/SaveUpdateEmployeeAvailabilityList/?UserStoreGuid=` + userStoreGuid, {
+        return fetch(`${ENVIRONMENT}/SaveUpdateEmployeeAvailability/?UserStoreGuid=` + userStoreGuid, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.user.access_token
             },
             body: JSON.stringify(param)
         }).then((response) => response.json())
     },
 
 
-    async deleteEmployeeAvailability(param) {
+    async deleteEmployeeAvailability(params) {
         console.log(params, "Params")
         userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
         const other_params = {
             "UserStoreGuid": userStoreGuid,
         }
 
-        let params = Object.assign(param, other_params);
-        var formBody = [];
-        for (var property in params) {
-            var encodedKey = encodeURIComponent(property);
-            var encodedValue = encodeURIComponent(params[property]);
-            formBody.push(encodedKey + "=" + encodedValue);
-        }
-        formBody = formBody.join("&");
-        return fetch(`${ENVIRONMENT}/DeleteEmployeeAvailability/?` + formBody, {
+        // let param = Object.assign(other_params,params);
+        // var formBody = [];
+        // for (var property in param) {
+        //     var encodedKey = encodeURIComponent(property);
+        //     var encodedValue = encodeURIComponent(param[property]);
+        //     formBody.push(encodedKey + "=" + encodedValue);
+        // }
+        // formBody = formBody.join("&");
+        // console.log('formBody-->', formBody);
+        console.log('url-->', `${ENVIRONMENT}/DeleteEmployeeAvailability/` + userStoreGuid + '/' + params.id);
+        console.log('url-->', 'https://testapi.subsource.com/DeleteEmployeeAvailability/AFB771FC-38B9-4EF1-A200-A8BD973F1B84/1549');
+        return fetch(`${ENVIRONMENT}/DeleteEmployeeAvailability/` + userStoreGuid + '/' + params.id, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.user.access_token
             },
         }).then((response) => response.json())
     },

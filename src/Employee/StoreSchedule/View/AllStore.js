@@ -9,7 +9,7 @@ import _ from 'lodash'
 
 /*  =============>>>>>>>>> Assets <<<<<<<<<<============= */
 import { getStoreSchedule, getAllStoreRequest } from '@Redux/Actions/StoreScheduleAction';
-import CalendarStrip from '../../../Resources/react-native-calendar-strip'
+import CalendarStrip from '../../../Resources/react-native-calendar-strip';
 import { Dropdown } from 'react-native-material-dropdown'
 import { Colors, Fonts, Matrics, Images, MasterCssEmployee } from '@Assets'
 import { LoadWheel } from "@Components";
@@ -185,6 +185,7 @@ class AllStore extends React.Component {
                 </View >
             }
         ]
+
         // { console.log(this.UserStoreGuid) }
         // console.log('kk-->', data)
         // return (data.length > 0 &&
@@ -196,10 +197,12 @@ class AllStore extends React.Component {
                         this.setState({ openIndex: index })
                     }}
                     scroll={event => this._allowScroll(event)}
-                    autoClose={true} buttonWidth={Matrics.CountScale(250)}
+                    autoClose={true} 
+                    buttonWidth={Matrics.CountScale(250)}
                     right={swipeoutBtns} 
                     disabled={this.state.changeClass}
-                    backgroundColor={'transparent'}>
+                    backgroundColor={'transparent'}
+                >
                     <TouchableOpacity onPress={() => { this.props.navigation.navigate('StoreSchedule', { offers: this.offers, userInfo: item, userShiftInfo: data }); }}
                         disabled={item.UserStoreGuid != this.UserStoreGuid}
                     >
@@ -353,26 +356,25 @@ class AllStore extends React.Component {
             end: moment().add(3, 'days')  // total 4 days enabled
         }];
         let datesBlacklist = [moment().add(1, 'days')]; // 1 day disabled
-        // console.log('kk-->', this.state.selectedDate)
+        console.log('selectedDate-->', this.state.selectedDate)
         return (
-            <View style={{ top : -20 }}>
+            <View style={{ top : -20, }}>
                 <CalendarStrip
                     calendarAnimation={{ type: 'sequence', duration: 100 }}
                     startingDate={moment(this.state.selectedDate)}
-                    selectedDate={moment(this.state.selectedDate)}
+                    // selectedDate={moment(this.state.selectedDate)}
                     daySelectionAnimation={{
                         type: 'border',
                         duration: 500,
                         borderWidth: 1,
-                        borderHighlightColor: Colors.APPCOLOR
+                        borderHighlightColor: Colors.APPCOLOR,
                     }}
                     ref='calender'
                     style={Styles.calendarStyle}
+                    calendarColor={Colors.WHITE}
                     calendarHeaderStyle={{
                         color: Colors.BLACK,
-                        paddingBottom: Matrics.CountScale(5),
                     }}
-                    calendarColor={Colors.WHITE}
                     highlightDateNumberStyle={{
                         color: Colors.APPCOLOR,
                         borderRadius: 10
@@ -391,10 +393,7 @@ class AllStore extends React.Component {
                         console.log('onDateSelected-->', data);
                         this.setState({ selectedDate: Global.getDateValue(data._d), loading: true });
                         this.props.getStoreSchedule({ StartDate:  moment(Global.getDateValue(data._d)).format('MM/DD/YYYY'), IsMobile: 1 });
-                        //console.log()
-                        // console.log(data._d)
                     }}
-                    scrollable={true}
                     iconContainer={{ flex: 0.1 }}
                 />
             </View>
@@ -410,7 +409,8 @@ class AllStore extends React.Component {
                 onPress: (val) => {
                     //this.props.navigation.navigate('StoreSchedule');
                 },
-                component: <View
+                component: 
+                <View
                     style={{
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -436,7 +436,12 @@ class AllStore extends React.Component {
         return (
 
             <View >
-                <Swipeout autoClose={true} buttonWidth={Matrics.CountScale(250)} right={swipeoutBtns} disabled={this.state.changeClass} backgroundColor={'transparent'}>
+                <Swipeout 
+                    autoClose={true} buttonWidth={Matrics.CountScale(250)} 
+                    right={swipeoutBtns} 
+                    disabled={this.state.changeClass} 
+                    backgroundColor={'transparent'}
+                >
 
                     <View style={Styles.card}>
                         <View style={Styles.cardContent}>

@@ -189,7 +189,6 @@ class CreateAvailability extends React.Component {
                                                 if (this.state.initialData.length > this.state.shiftTime.length) {
                                                     for (i = 0; i < this.state.initialData.length; i++) {
                                                         if (i < this.state.shiftTime.length) {
-
                                                             resData.push(Object.assign(this.state.shiftTime[i], { EmployeeAvailabilityID: this.state.initialData[i].EmployeeAvailabilityID }))
                                                             //resData.push({DayID:this.state.shiftTime[i].DayID,EmployeeAvailabilityID:this.state.initialData[i].EmployeeAvailabilityID,InTime:this.state.shiftTime[i].InTime, NameOfDay:this.state.shiftTime[i].NameOfDay,OutTime:this.state.shiftTime[i].OutTime}) 
                                                         }
@@ -209,7 +208,25 @@ class CreateAvailability extends React.Component {
                                                         }
                                                     }
                                                 }
-                                                this.props.saveUpdateEmployeeAvailability({ UpdateShift: resData, DeleteShift: deleteData })
+                                                // this.props.saveUpdateEmployeeAvailability({ UpdateShift: resData, DeleteShift: deleteData })
+                                                function change(data) {
+                                                    data.InTime = Global.getTime12To24WithoutSpace(data.InTime);
+                                                    data.OutTime = Global.getTime12To24WithoutSpace(data.OutTime);
+                                                  };
+                                                if(resData.length > 0){
+                                                    resData.forEach((data) => {
+                                                        change(data);
+                                                        this.props.saveUpdateEmployeeAvailability(data);
+                                                    })
+                                                }
+                                                // this.props.saveUpdateEmployeeAvailability({
+                                                //     "DayID": 4,
+                                                //     "EmployeeAvailabilityID": 0,
+                                                //     "InTime": "15:00",
+                                                //     "NameOfDay": "",
+                                                //     "OutTime": "16:00"
+                                                // });
+                                                
                                             }
                                             else {
                                                 let deleteData = []
@@ -217,7 +234,7 @@ class CreateAvailability extends React.Component {
                                                     deleteData.push(this.state.initialData[i].EmployeeAvailabilityID)
                                                 }
                                                 console.log('deleteData-->',deleteData)
-                                                this.props.deleteEmployeeAvailability({ DeleteShift: deleteData })
+                                                // this.props.deleteEmployeeAvailability({ DeleteShift: deleteData })
                                             }
                                         }
                                     },
@@ -650,7 +667,7 @@ class CreateAvailability extends React.Component {
 
     /* =======>>>>>>  Time display Class  <<<<<<======== */
     renderTime() {
-        // console.log('shiftTime-->', JSON.stringify(this.state.shiftTime));
+        console.log('shiftTime-->', this.state.shiftTime);
         // console.log('isAddShift-->', this.state.isAddShift);
         // console.log('isAddShift-->f->', !this.state.isAddShift);
         return (
@@ -702,7 +719,13 @@ class CreateAvailability extends React.Component {
                                         {Global.getTime24to12(item.InTime)} - {Global.getTime24to12(item.OutTime) == '12:00am' ? '11:59pm' : Global.getTime24to12(item.OutTime)}
                                     </Text>
                                 </View>
-                                <TouchableOpacity onPress={() => { this.deleteShift(index) }} style={Styles.imageContainer}>
+                                <TouchableOpacity 
+                                onPress={() => { 
+                                    // this.deleteShift(index)
+                                    // console.log('kk-->', item.EmployeeAvailabilityID)
+                                    this.props.deleteEmployeeAvailability({ id: item.EmployeeAvailabilityID })
+                                }} 
+                                style={Styles.imageContainer}>
                                     <Image style={Styles.minusImgStyle} source={Images.RedMinusIcon}></Image>
                                 </TouchableOpacity>
                             </TouchableOpacity>
