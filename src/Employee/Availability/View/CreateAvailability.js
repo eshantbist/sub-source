@@ -156,6 +156,47 @@ class CreateAvailability extends React.Component {
         }
     };
 
+    onDeleteClick(EmployeeAvailabilityID){
+        Alert.alert('Delete Confirmation', 'Do you want to delete this availability?',
+        [
+            {
+                text: 'OK', onPress: () => {
+                    this.props.deleteEmployeeAvailability({ id: EmployeeAvailabilityID });
+                }
+            },
+            {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+            },
+        ],
+        { cancelable: false });
+    }
+
+    change(data) {
+        data.InTime = Global.getTime12To24WithoutSpace(data.InTime);
+        data.OutTime = Global.getTime12To24WithoutSpace(data.OutTime);
+    };
+
+    onSaveClick(index){
+        Alert.alert('', 'Please, understand that if you have updated your availability, management needs two weeks before we can apply your new availability to the schedule, updated availability also needs management approval as it cause scheduling challenge.',
+        [
+            {
+                text: 'OK', onPress: () => {
+                    console.log('initialData-->',this.state.initialData)
+                    console.log('shiftTime-->',this.state.shiftTime)
+                    // console.log('index-->',this.state.shiftTime[1])
+                    let data = this.state.shiftTime[index];
+                    this.change(data);
+                    this.setState({ loading: true });
+                    this.props.saveUpdateEmployeeAvailability(data);
+                }
+            },
+        ],
+        { cancelable: false }
+        )
+    }
+
     render() {
         return (
             <View style={Styles.pageBody}>
@@ -173,7 +214,8 @@ class CreateAvailability extends React.Component {
                             My Availability
                         </Text>
                     </View>
-                    <TouchableOpacity style={MasterCssEmployee.headerTextContainerStyle}
+                    <View style={MasterCssEmployee.headerTextContainerStyle} />
+                    {/* <TouchableOpacity style={MasterCssEmployee.headerTextContainerStyle}
                         onPress={() => {
                             // this.setState({ modalVisible: true })
                             Alert.alert('', 'Please, understand that if you have updated your availability, management needs two weeks before we can apply your new availability to the schedule, updated availability also needs management approval as it cause scheduling challenge.',
@@ -244,7 +286,7 @@ class CreateAvailability extends React.Component {
                         }}
                     >
                         <Text style={MasterCssEmployee.headerRightTextStyle}>Save</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
                 {/* =======>>>>>> Header End <<<<<<<=======  */}
 
@@ -271,7 +313,7 @@ class CreateAvailability extends React.Component {
                 this.state.shiftTime[this.state.selectedItemIndex].InTime = this.state.InTime
                 this.state.shiftTime[this.state.selectedItemIndex].OutTime = this.state.OutTime
             }
-            this.setState({ shiftTime: this.state.shiftTime })
+            this.setState({ shiftTime: this.state.shiftTime, isAddShift: !this.state.isAddShift })
             if (!(this.state.shiftTime[0].InTime.startsWith('00:00') && this.state.shiftTime[0].OutTime.startsWith('23:59')) && this.state.allDay == true)
                 this.setState({ allDay: false })
             else if (this.state.shiftTime[0].InTime.startsWith('00:00') && this.state.shiftTime[0].OutTime.startsWith('23:59') && this.state.allDay == false)
@@ -349,7 +391,7 @@ class CreateAvailability extends React.Component {
                     !this.state.notAvailable && !this.state.allDay ?
                         <View style={{ marginTop: Matrics.CountScale(40) }}>
                             <View style={Platform.OS === 'ios' ? Styles.timeContainer 
-                            : [Styles.timeContainer, { borderBottomColor: '#ccc', borderBottomWidth: 1}]}>
+                            : [Styles.timeContainer]}>
                                 <TouchableOpacity
                                     onPress={() => {
                                         this.setState({ Active: 'from' });
@@ -541,8 +583,9 @@ class CreateAvailability extends React.Component {
                 {/* {this.renderSchedule()} */}
                 {
                     // this.state.selectedTime && !this.state.selectedTime.startsWith('12:00')
-                    this.state.selectedTime && !this.state.isAddShift
+                    // this.state.selectedTime && !this.state.isAddShift
                     // this.state.selectedTime
+                    !this.state.isAddShift
                     ?
                     <View style={[Styles.timeTextContainer, { flexDirection: 'row'  }]}>
                         <Text style={[Styles.timeTextStyle, { color: Colors.APPCOLOR  }]}>
@@ -553,7 +596,7 @@ class CreateAvailability extends React.Component {
                         <TouchableOpacity onPress={() => {this.updateValue()}}>
                             <Image 
                                 source={Images.CalenderSelectedIcon}
-                                style={{ height: Matrics.CountScale(18), width: Matrics.CountScale(18), alignSelf: 'center' }}
+                                style={{ height: Matrics.CountScale(18), width: Matrics.CountScale(18), alignSelf: 'center', marginTop: Matrics.CountScale(5) }}
                             />
                         </TouchableOpacity>
                     </View>
@@ -640,8 +683,8 @@ class CreateAvailability extends React.Component {
             DayID: this.state.shiftTime[0].DayID, 
             EmployeeAvailabilityID: 0, 
             NameOfDay: this.state.shiftTime[0].NameOfDay, 
-            InTime: this.state.InTime, 
-            OutTime: this.state.OutTime 
+            InTime: '12:00am', 
+            OutTime: '11:59pm'
         })
         // this.setTime(this.state.InTime, this.state.OutTime)
         this.setState({ shiftTime: this.state.shiftTime, timeIndex: this.state.timeIndex + 1, Active: 'from' })
@@ -667,7 +710,7 @@ class CreateAvailability extends React.Component {
 
     /* =======>>>>>>  Time display Class  <<<<<<======== */
     renderTime() {
-        console.log('shiftTime-->', this.state.shiftTime);
+        // console.log('shiftTime-->', this.state.shiftTime);
         // console.log('isAddShift-->', this.state.isAddShift);
         // console.log('isAddShift-->f->', !this.state.isAddShift);
         return (
@@ -719,15 +762,23 @@ class CreateAvailability extends React.Component {
                                         {Global.getTime24to12(item.InTime)} - {Global.getTime24to12(item.OutTime) == '12:00am' ? '11:59pm' : Global.getTime24to12(item.OutTime)}
                                     </Text>
                                 </View>
+                                <TouchableOpacity onPress={() => this.onSaveClick(index)}>
+                                    <Image source={Images.RoundedDoneIcon} style={Styles.DoneIcon} />
+                                </TouchableOpacity>
                                 <TouchableOpacity 
-                                onPress={() => { 
-                                    // this.deleteShift(index)
-                                    // console.log('kk-->', item.EmployeeAvailabilityID)
-                                    this.props.deleteEmployeeAvailability({ id: item.EmployeeAvailabilityID })
-                                }} 
-                                style={Styles.imageContainer}>
+                                    onPress={() => { this.deleteShift(index) }} 
+                                    style={Styles.imageContainer}
+                                >
                                     <Image style={Styles.minusImgStyle} source={Images.RedMinusIcon}></Image>
                                 </TouchableOpacity>
+                                {
+                                    item.EmployeeAvailabilityID != 0 &&
+                                    <TouchableOpacity onPress={() => this.onDeleteClick(item.EmployeeAvailabilityID)}>
+                                        <Image source={Images.TrashIcon} style={[Styles.DoneIcon, {
+                                            marginRight: Matrics.CountScale(5)
+                                        }]} />
+                                    </TouchableOpacity>
+                                }
                             </TouchableOpacity>
                             {/* {
                                 index == this.state.timeIndex
@@ -832,12 +883,12 @@ const Styles = {
         fontWeight: '400'
     },
     pickerContainer: {
-        borderTopColor: '#ccc',
+        // borderTopColor: '#ccc',
         marginTop: Matrics.CountScale(5),
-        borderTopWidth: Matrics.CountScale(1),
+        // borderTopWidth: Matrics.CountScale(1),
         borderBottomColor: '#ccc', 
         borderBottomWidth: 1,
-        marginBottom: Matrics.CountScale(20),
+        marginBottom: Matrics.CountScale(10),
     },
     picker: {
         flex: 1,
@@ -897,9 +948,11 @@ const Styles = {
         alignItems: 'flex-end'
     },
     minusImgStyle: {
-        height: Matrics.CountScale(15),
-        margin: Matrics.CountScale(8),
-        width: Matrics.CountScale(15),
+        height: Matrics.CountScale(20),
+        width: Matrics.CountScale(20),
+        alignSelf: 'center',
+        marginTop: Matrics.CountScale(5),
+        marginRight: Matrics.CountScale(5),
     },
     addImgStyle: {
         height: Matrics.CountScale(18),
@@ -914,6 +967,13 @@ const Styles = {
         paddingLeft: Matrics.CountScale(5),
         alignItems: 'flex-end'
     },
+    DoneIcon: {
+        height: Matrics.CountScale(20),
+        width: Matrics.CountScale(20),
+        alignSelf: 'center',
+        marginTop: Matrics.CountScale(5),
+        // backgroundColor: 'white'
+    }
 }
 // export default CreateAvailability;
 

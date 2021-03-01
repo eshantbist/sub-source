@@ -118,7 +118,9 @@ class Profile extends React.Component {
             })
         }
         if (nextProps.data.employeePersonalDetailsSuccess) {
-            const data = nextProps.data.employeePersonalDetailsdata.Data
+            const data = nextProps.data.employeePersonalDetailsdata.Data;
+            // console.log('profileData-->', data)
+            // console.log('data.ProfilePicture-->', data.ProfilePicture)
             this.setState({
                 university: 'University of ' + data.State,
                 address1: data.Address1,
@@ -140,7 +142,7 @@ class Profile extends React.Component {
         }
         setTimeout(() => {
             this.setState({ loading: false })
-        },1000)
+        },2000)
     }
     updateInfo() {
         this.setState({ loading: true })

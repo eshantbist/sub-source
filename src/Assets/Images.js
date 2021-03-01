@@ -98,7 +98,9 @@ const images = {
   HeaderDots: require('./Images/Employee/Dashboard/headerDots.png'),
   ProcessingDotIcon: require('./Images/Employee/processingDot.png'),
   CalenderSelectedIcon: require('./Images/Employee/Dashboard/calenderSelected.png'),
+  RoundedDoneIcon: require('./Images/Employee/Dashboard/RoundedDone.png'),
   CalenderCloseIcon: require('./Images/Employee/Dashboard/calenderClose.png'),
+  TrashIcon: require('./Images/Employee/Dashboard/Trash.png'),
 
   //common
   EmpBackIcon: require('./Images/Employee/back.png'),

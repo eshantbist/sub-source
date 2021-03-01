@@ -212,7 +212,7 @@ class EditProfileEmployee extends React.Component {
             //this.props.updateEmployeePersonalDetails({  })
             this.props.updateEmployeePersonalDetails({
                 // imageParams: Object.keys(this.state.profileImage).length == 0 ? {} : { UserStoreGuid: userStoreGuid, Image: this.state.profileImage.data, ImageTypeID: 1 },
-                imageParams: Object.keys(this.state.profileImage).length == 0 ? {} : {Image: this.state.profileImage.data, ImageTypeID: 1 },
+                imageParams: Object.keys(this.state.profileImage).length == 0 ? {} : {Image: 'data:image/jpeg;base64,'+this.state.profileImage.data, ImageTypeID: 1 },
                 detailsParams: {
                     UserStoreGuid: userStoreGuid,
                     FirstName: this.state.firstName,

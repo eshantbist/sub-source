@@ -305,20 +305,25 @@ module.exports = {
     //     });
     // },
 
-    updateEmployeePersonalDetails(params) {
+    async updateEmployeePersonalDetails(params) {
+        authToken = await AsyncStorage.getItem('AuthToken');
         return fetch(`${ENVIRONMENT}/UpdateEmployeePersonalDetails/`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
             },
             body: JSON.stringify(params)
         }).then(response => response.json());
     },
-    updateEmployeeImage(params) {
+    async updateEmployeeImage(params) {
+        console.log('updateEmployeeImage')
+        authToken = await AsyncStorage.getItem('AuthToken');
         return fetch(`${ENVIRONMENT}/UpdateEmployeeImages/`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
             },
             body: JSON.stringify(params)
         }).then(response => response.json());

@@ -276,7 +276,7 @@ class AllStore extends React.Component {
     }
 
     render() {
-        console.log('this.state.storeScheduleData-->',this.state.storeScheduleData)
+        // console.log('this.state.storeScheduleData-->',this.state.storeScheduleData)
         return (
             <View style={Styles.pageBody}>
 
@@ -356,7 +356,7 @@ class AllStore extends React.Component {
             end: moment().add(3, 'days')  // total 4 days enabled
         }];
         let datesBlacklist = [moment().add(1, 'days')]; // 1 day disabled
-        console.log('selectedDate-->', this.state.selectedDate)
+        // console.log('selectedDate-->', this.state.selectedDate)
         return (
             <View style={{ top : -20, }}>
                 <CalendarStrip
