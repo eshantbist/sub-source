@@ -4,8 +4,6 @@ const Global = {
     error_msg: 'Request Failed....',
     alert_timeout: 200,
     getTimeDiff(start, end) {
-        console.log('start-->', start)
-        console.log('end-->', end)
         this.start = start.split(":");
         this.end = end.split(":");
         var time1 = ((parseInt(this.start[0]) * 60) + parseInt(this.start[1]))

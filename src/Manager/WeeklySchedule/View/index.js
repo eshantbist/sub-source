@@ -423,6 +423,10 @@ class WeeklySchedule extends React.Component {
                 DayDate: '',
             }
             if (data.Status == 1) {
+                data.Average.sort(function(a, b){ 
+      
+                    return new Date(a.DayDate) - new Date(b.DayDate); 
+                });
                 if(data.Average.length == 7){
                     data.Average.push({DayDate: 'Total'});
                     data.Average.unshift(extraDate);
@@ -1146,7 +1150,7 @@ class WeeklySchedule extends React.Component {
                 <View style={Styles.rowTitleStyle}>
                     <View style={{ flexDirection: 'row' }}>
                         <Icon name="user-circle-o" size={20} color="#FF7B2A" />
-                        <Text style={[Styles.mainContainerLabel, { color: '#FF7B2A' }]}>{item.FirstName}{item.LastName}</Text>
+                        <Text numberOfLines={2} style={[Styles.mainContainerLabel, { color: '#FF7B2A' }]}>{item.FirstName} {item.LastName}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', marginLeft: Matrics.CountScale(25) }}>
                         <Text style={{ flex: 1, fontFamily: Fonts.NunitoSansRegular }}>{ContactNumber}</Text>
@@ -1553,6 +1557,7 @@ class WeeklySchedule extends React.Component {
                             </TouchableOpacity>
                         </View>
                     </View>
+                    {console.log('dayIndex-->', this.state.dayIndex)}
                     <View style={{ marginHorizontal: Matrics.CountScale(5) }} >
                         <View style={Styles.containerStyle} ref={view => { this.myComponent = view; }} 
                             onLayout={(e) => { this.setState({ upperSectionHeight: e.nativeEvent.layout.height }) }}
@@ -1567,10 +1572,11 @@ class WeeklySchedule extends React.Component {
                                 inactiveSlideScale={1}
                                 inactiveSlideOpacity={1}
                                 extraData={this.state}
-                                onSnapToItem={(index) => {
-                                    this.setState({ dayIndex: index+1, selectedDate: this.state.daysData[index+1].DayDate })
+                                onSnapToItem={async (index) => {
+                                    await this.setState({ dayIndex: index+1, selectedDate: this.state.daysData[index+1].DayDate })
                                 }}
                                 scrollEnabled={ (this.state.dayIndex == 8) && this.state.prevIndex == 6 ? true : (this.state.dayIndex == 8) ? false  : true}
+                                lockScrollWhileSnapping={true}
                             />
 
                             <View style={{ alignItems: 'center', marginHorizontal: Matrics.CountScale(5) }}>

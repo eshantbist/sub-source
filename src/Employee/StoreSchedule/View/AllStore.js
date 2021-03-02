@@ -272,7 +272,7 @@ class AllStore extends React.Component {
 
     pullToRefresh = async () => {
         await this.setState({ refreshing: true })
-        this.props.getStoreSchedule({ StartDate: this.state.selectedDate, IsMobile: 1 })
+        this.props.getStoreSchedule({ StartDate: this.state.selectedDate, IsMobile: 0 })
     }
 
     render() {
@@ -383,16 +383,16 @@ class AllStore extends React.Component {
                     highlightDateNameStyle={{
                         color: Colors.APPCOLOR
                     }}
-                    onWeekChanged={(data) => { 
+                    onWeekChanged={(data, start, end) => { 
                         console.log('onWeekChanged-->',data); 
                         console.log('sle-->',moment(Global.getDateValue(data._d)).format('MM/DD/YYYY')); 
                         this.setState({ selectedDate: moment(Global.getDateValue(data._d)).format('MM/DD/YYYY'), loading: true });
-                        this.props.getStoreSchedule({ StartDate:  moment(Global.getDateValue(data._d)).format('MM/DD/YYYY'), IsMobile: 1 })
+                        this.props.getStoreSchedule({ StartDate:  moment(Global.getDateValue(data._d)).format('MM/DD/YYYY'), IsMobile: 0 })
                     }}
                     onDateSelected={(data) => {
                         console.log('onDateSelected-->', data);
                         this.setState({ selectedDate: Global.getDateValue(data._d), loading: true });
-                        this.props.getStoreSchedule({ StartDate:  moment(Global.getDateValue(data._d)).format('MM/DD/YYYY'), IsMobile: 1 });
+                        this.props.getStoreSchedule({ StartDate:  moment(Global.getDateValue(data._d)).format('MM/DD/YYYY'), IsMobile: 0 });
                     }}
                     iconContainer={{ flex: 0.1 }}
                 />

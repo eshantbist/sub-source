@@ -644,8 +644,8 @@ public final class R {
         public static final int notification_tile_bg = 0x7f06008d;
         public static final int notify_panel_notification_icon_bg = 0x7f06008e;
         public static final int redbox_top_border_background = 0x7f06008f;
-        public static final int tooltip_frame_dark = 0x7f06012b;
-        public static final int tooltip_frame_light = 0x7f06012c;
+        public static final int tooltip_frame_dark = 0x7f06012c;
+        public static final int tooltip_frame_light = 0x7f06012d;
     }
     public static final class id {
         private id() {}

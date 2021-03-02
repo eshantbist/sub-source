@@ -708,20 +708,25 @@ class HireNewEmployee extends React.Component {
         // console.log('5year-->',twelYearAbove);
         
         return (
-            <View style={Styles.cardContainer}>
-                <TouchableOpacity style={{  marginHorizontal: Matrics.CountScale(10), flexDirection: "row" }} onPress={() => this.showDateTimePicker()}>
-                    <Text style={{ color: Colors.APPCOLOR, flex:1, fontSize: Matrics.CountScale(18), marginTop: Matrics.CountScale(10)}}>{this.state.dateOfBirth == '' ? 'Select Date' : this.state.dateOfBirth}</Text>
+            <View style={[Styles.cardContainer, { flex:1,
+            alignItems:'center',
+            justifyContent:'center', paddingVertical: Matrics.CountScale(10)}]}>
+                <TouchableOpacity style={{  marginHorizontal: Matrics.CountScale(10), flexDirection: "row",}} onPress={() => this.showDateTimePicker()}>
+                    <Text style={{ color: Colors.APPCOLOR, flex:1, fontSize: Matrics.CountScale(18)}}>{this.state.dateOfBirth == '' ? 'Select Date' : this.state.dateOfBirth}</Text>
                     <Image 
                         source={Images.StoreActiveIcon} 
                         style={{ 
-                            height: Matrics.CountScale(20),
-                            width: Matrics.CountScale(20),
+                            height: Matrics.CountScale(22),
+                            width: Matrics.CountScale(23),
                             alignSelf: 'flex-end',
                             marginRight: Matrics.CountScale(10),
                         }}
                     />
                 </TouchableOpacity>
-                <Text style={Styles.errorText}>{this.state.errorDob}</Text>
+                {
+                    this.state.errorDob &&
+                    <Text style={Styles.errorText}>{this.state.errorDob}</Text>
+                }
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
                     onConfirm={this.handleDatePicked}

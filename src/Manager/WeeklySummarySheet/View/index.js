@@ -507,9 +507,6 @@ class WeeklySummarySheet extends React.Component {
         } else if(this.state.weekDatesList.length > 0) {
             FinalWeekDatesDataArr = this.state.weekDatesList;
         }
-
-
-        
         FinalWeekDatesDataArr.push({WeekDate: 'Total', isClosed: false });
         const extraDate = {
             DayID: 0,
@@ -517,8 +514,6 @@ class WeeklySummarySheet extends React.Component {
             isClosed: false
         }
         FinalWeekDatesDataArr.unshift(extraDate);
-        console.log('FinalWeekDatesDataArr-->', FinalWeekDatesDataArr);
-        
         this.setState({ 
             FinalWeekDatesDataArr,
             selectedDayId: FinalWeekDatesDataArr[1].DayID,
@@ -782,7 +777,8 @@ class WeeklySummarySheet extends React.Component {
                     <View style={{ paddingHorizontal: Matrics.CountScale(25), marginTop: Matrics.CountScale(5) }}>
                         <Text style={[Styles.fontStyle, { color: self.state.dayIndex == index ? 'white' : null, fontWeight: 'bold' }]}>{moment(item.WeekDate).format('MMM DD, ddd')}</Text>
                         {self.state.weatherListData[index] !== void 0
-                            ? <Image source={self.state.dayIndex == index ? Images.CloudIcon2 : Images.CloudIcon1} style={{ marginVertical: Platform.OS == 'ios' ? Matrics.CountScale(10) : Matrics.CountScale(13)}} />
+                            ? <Image source={self.state.dayIndex == index ? Images.CloudIcon2 : Images.CloudIcon1} 
+                            style={{ alignSelf: 'center', marginVertical: Matrics.CountScale(10),}} />
                             : <View style={{ paddingVertical: Platform.OS == 'ios' ? Matrics.CountScale(27) : Matrics.CountScale(35) }}/>
                             
                         }
@@ -1326,7 +1322,7 @@ class WeeklySummarySheet extends React.Component {
                             selectedDayIsOpen: !this.state.FinalWeekDatesDataArr[index+1].isClosed, 
                         });
                     }}
-                    
+                    lockScrollWhileSnapping={true}
                     scrollEnabled={ (this.state.dayIndex == 8) && this.state.prevIndex == 6 ? true : (this.state.dayIndex == 8) ? false  : true} 
                   />
                   
@@ -1845,11 +1841,13 @@ const Styles = StyleSheet.create({
         backgroundColor: Colors.WHITE
     },
     fontStyle: {
-        fontFamily: Fonts.NunitoSansRegular
+        fontFamily: Fonts.NunitoSansRegular,
+        textAlign: 'center',
     },
     SmallFontStyle: {
         fontSize: Matrics.CountScale(12),
-        fontFamily: Fonts.NunitoSansRegular
+        fontFamily: Fonts.NunitoSansRegular,
+        textAlign: 'center',
     },
     borderStyle: {
         borderColor: Colors.BORDERCOLOR,

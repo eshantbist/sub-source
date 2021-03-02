@@ -101,6 +101,7 @@ const images = {
   RoundedDoneIcon: require('./Images/Employee/Dashboard/RoundedDone.png'),
   CalenderCloseIcon: require('./Images/Employee/Dashboard/calenderClose.png'),
   TrashIcon: require('./Images/Employee/Dashboard/Trash.png'),
+  WhiteTrashIcon: require('./Images/Employee/Dashboard/whiteTrash.png'),
 
   //common
   EmpBackIcon: require('./Images/Employee/back.png'),
