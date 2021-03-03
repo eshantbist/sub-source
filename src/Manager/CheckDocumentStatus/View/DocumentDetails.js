@@ -81,7 +81,7 @@ class DocumentDetails extends React.Component {
             if (data.Status == 1) {
                 const empListData = data.Report._list;
                 const recipientsListArr = data.Report._recipientsList;
-                empData = empListData.filter(E => E.DocusignEnvelopeID == this.state.Employeedata.DocusignEnvelopeID);
+                const empData = empListData.filter(E => E.DocusignEnvelopeID == this.state.Employeedata.DocusignEnvelopeID);
                 if(empData.length > 0){
                     this.setState({ Employeedata: empData[0] })
                 }
@@ -89,7 +89,7 @@ class DocumentDetails extends React.Component {
             }
         } else if(nextProps.response.CheckDocumentStatus.UpdateBGCEverifyStatusSuccess) {
             let data = nextProps.response.CheckDocumentStatus.data;
-            if(data.Status == 1) {
+            if(data.Status > 0) {
                 this.props.getCheckDocumentStatusHiringReturnRequest(this.state.HiringData);
             } else {
                 Alert.alert(
@@ -298,9 +298,9 @@ class DocumentDetails extends React.Component {
                     <Text style={Styles.sentByStatusTextStyle}>{this.state.Employeedata ? `Sent by ${this.state.Employeedata.SentBy}`: null} {CDate}</Text>
                 </View>
                 <View style={[Styles.hireStatusContainer, { margin: Matrics.CountScale(0),}]}>
-                    <Text 
-                    style={[Styles.headerTextStyle, { textAlign: 'center', marginBottom: Matrics.CountScale(10) }]}>
-                        Hire Packet Status</Text>
+                    {/* <Text style={[Styles.headerTextStyle, { textAlign: 'center', marginBottom: Matrics.CountScale(10) }]}>
+                        Hire Packet Status
+                    </Text> */}
                     {
                         recipientArr.length > 0 
                         ?   recipientArr[0].data.map((child, index) => {
@@ -324,7 +324,8 @@ class DocumentDetails extends React.Component {
                                                     height: 8,
                                                     marginTop: index == 0 ? Matrics.CountScale(5) : 0,
                                                     marginRight: Matrics.CountScale(10),
-                                                    tintColor: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED,
+                                                    // tintColor: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED,
+                                                    tintColor: child.StatusName == 'completed' ? Colors.APPCOLOR : child.StatusName != 'created' ? Colors.RED : 'black' ,
                                                 }} 
                                                 source={Images.GreenDotIcon}
                                             />
@@ -339,7 +340,8 @@ class DocumentDetails extends React.Component {
                                                         ?  Matrics.CountScale(65)
                                                         :  Matrics.CountScale(15),
                                                         marginRight: Matrics.CountScale(10),
-                                                        tintColor: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED,
+                                                        // tintColor: child.StatusName == 'completed' ? Colors.APPCOLOR : Colors.RED,
+                                                        tintColor: child.StatusName == 'completed' ? Colors.APPCOLOR : child.StatusName != 'created' ? Colors.RED : 'black' ,
                                                     }} 
                                                     source={Images.LineIcon}
                                                 />
@@ -561,11 +563,13 @@ class DocumentDetails extends React.Component {
             td: (x, c) => <View style={tdStyle}>{c}</View>
           }
 
+          console.log('kkk--->', this.state.Employeedata);
+
         return (
             <View style={Styles.hireStatusContainer}>
                 <View style={Styles.hireStatusCardHeader}>
                     <View style={Styles.hireStatusHeaderCardPart1}>
-                        {this.renderStatusIndicatorIcon(false)}
+                        {this.renderStatusIndicatorIcon(this.state.Employeedata.DisplayStatusName, 'Hirestatus')}
                     </View>
                     <View style={Styles.hireStatusHeaderCardPart2}>
                         <TouchableOpacity style={Styles.headerTextContainer} onPress={() => this.setState({ hireStatuShow: !this.state.hireStatuShow })}>
@@ -587,13 +591,15 @@ class DocumentDetails extends React.Component {
             </View>
         );
     }
-    renderStatusIndicatorIcon(val) {
-
-        if (val)
+    renderStatusIndicatorIcon(val, status) {
+        if (val == 'Employee Created' && status == 'Hirestatus' )
+            return (<Image style={{ width: 15, margin: 5, marginLeft: 0, height: 15 }} source={Images.RightIcon}></Image>)
+        else if (val != 'Pending' && status == 'E-Verify' ) 
+            return (<Image style={{ width: 15, margin: 5, marginLeft: 0, height: 15 }} source={Images.RightIcon}></Image>)
+        else if (val != 'Pending' && status == 'BGC' ) 
             return (<Image style={{ width: 15, margin: 5, marginLeft: 0, height: 15 }} source={Images.RightIcon}></Image>)
         else
             return (<Image style={{ width: 15, margin: 5, marginLeft: 0, height: 15 }} source={Images.ClockIcon} ></Image >)
-
     }
     renderPDFimg(val) {
         if (val)
@@ -607,7 +613,7 @@ class DocumentDetails extends React.Component {
             <View style={Styles.hireStatusContainer}>
                 <View style={Styles.hireStatusCardHeader}>
                     <View style={Styles.hireStatusHeaderCardPart1}>
-                        {this.renderStatusIndicatorIcon(false)}
+                        {this.renderStatusIndicatorIcon(this.state.Employeedata.EverifyStatus, 'E-Verify')}
                     </View>
                     <View style={[Styles.hireStatusHeaderCardPart2, { borderBottomWidth: 0 }]}>
                         <View style={Styles.headerTextContainer}>
@@ -669,7 +675,7 @@ class DocumentDetails extends React.Component {
             <View style={[Styles.hireStatusContainer, { bottom: Matrics.CountScale(20)}]}>
                 <View style={Styles.hireStatusCardHeader}>
                     <View style={Styles.hireStatusHeaderCardPart1}>
-                        {this.renderStatusIndicatorIcon(true)}
+                        {this.renderStatusIndicatorIcon(this.state.Employeedata.BGCStatus, 'BGC')}
                     </View>
                     <View style={[Styles.hireStatusHeaderCardPart2, { borderBottomWidth: 0 }]}>
                         <View style={Styles.headerTextContainer}>

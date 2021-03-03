@@ -661,7 +661,9 @@ class CheckDoucmentStatus extends React.Component {
                                 keyboardShouldPersistTaps={'handled'}
                                 enableOnAndroid={true}
                             >
-                                <Text style={Styles.pickerLabelStyle}>Role</Text>
+                                <View style={[Styles.labelBorderStyle, {borderTopWidth: 0}]}>
+                                    <Text style={Styles.pickerLabelStyle}>Role</Text>
+                                </View>
                                 <Picker
                                     itemStyle={Styles.pickerItemStyle}
                                     selectedValue={this.state.selectedRoleId}
@@ -682,8 +684,10 @@ class CheckDoucmentStatus extends React.Component {
                                 </Picker>
                                 {
                                     this.state.userList.length > 0 &&
-                                    <View>
+                                    <View style={{ borderTopWidth:1,borderTopColor: Colors.BORDERCOLOR, paddingTop: Matrics.CountScale(15) }}>
+                                        <View style={{ borderBottomWidth: 1, borderBottomColor: Colors.BORDERCOLOR, paddingBottom: Matrics.CountScale(15)  }}>
                                         <Text style={Styles.pickerLabelStyle}>Users</Text>
+                                        </View>
                                         <Picker
                                             itemStyle={Styles.pickerItemStyle}
                                             selectedValue={this.state.selectedUsers}
@@ -750,7 +754,10 @@ class CheckDoucmentStatus extends React.Component {
                                         }
                                     />
                                     : null}
-                                <View style={{ borderBottomWidth:1,  borderBottomColor: Colors.BORDERCOLOR, paddingVertical: Matrics.CountScale(15) }}>
+                                <View 
+                                style={[Styles.labelBorderStyle,{ borderTopWidth: 0}]}
+                                // style={{ borderBottomWidth:1,  borderBottomColor: Colors.BORDERCOLOR, paddingVertical: Matrics.CountScale(15) }}
+                                >
                                     <Text style={Styles.pickerLabelStyle}>No. Of Days</Text>
                                 </View>
                                 <Picker
@@ -884,7 +891,8 @@ const Styles = StyleSheet.create({
     },
     pickerLabelStyle: {
         fontSize: Matrics.CountScale(16),
-        fontFamily: Fonts.NunitoSansRegular
+        fontFamily: Fonts.NunitoSansRegular,
+        marginLeft: Matrics.CountScale(10), 
     },
     errorText: {
         color: 'red',

@@ -663,7 +663,7 @@ export default class Minor extends React.Component {
         <TextInput 
           autoCorrect={false}
           style={[Styles.inputStyle,{
-            backgroundColor: this.state.anyHoursCheckedWe ? '#e7e7e7' : '#ffffff'
+            // backgroundColor: this.state.anyHoursCheckedWe ? '#e7e7e7' : '#ffffff'
           }]}
           onChangeText={(text) => this.setState({hoursWe: text})}
           value={this.state.hoursWe}
@@ -704,7 +704,7 @@ export default class Minor extends React.Component {
       <TextInput 
         autoCorrect={false}
         style={[Styles.inputStyle,{
-          backgroundColor: this.state.anyHoursCheckedTh ? '#e7e7e7' : '#ffffff'
+          // backgroundColor: this.state.anyHoursCheckedTh ? '#e7e7e7' : '#ffffff'
         }]}
         onChangeText={(text) => this.setState({hoursTh: text})}
         value={this.state.hoursTh}
@@ -744,7 +744,7 @@ export default class Minor extends React.Component {
       <TextInput 
         autoCorrect={false}
         style={[Styles.inputStyle,{
-          backgroundColor: this.state.anyHoursCheckedFr ? '#e7e7e7' : '#ffffff'
+          // backgroundColor: this.state.anyHoursCheckedFr ? '#e7e7e7' : '#ffffff'
         }]}
         onChangeText={(text) => this.setState({hoursFr: text})}
         value={this.state.hoursFr}
@@ -784,7 +784,7 @@ export default class Minor extends React.Component {
       <TextInput 
         autoCorrect={false}
         style={[Styles.inputStyle,{
-          backgroundColor: this.state.anyHoursCheckedSa ? '#e7e7e7' : '#ffffff'
+          // backgroundColor: this.state.anyHoursCheckedSa ? '#e7e7e7' : '#ffffff'
         }]}
         onChangeText={(text) => this.setState({hoursSa: text})}
         value={this.state.hoursSa}
@@ -824,7 +824,7 @@ export default class Minor extends React.Component {
       <TextInput 
         autoCorrect={false}
         style={[Styles.inputStyle,{
-          backgroundColor: this.state.anyHoursCheckedSu ? '#e7e7e7' : '#ffffff'
+          // backgroundColor: this.state.anyHoursCheckedSu ? '#e7e7e7' : '#ffffff'
         }]}
         onChangeText={(text) => this.setState({hoursSu: text})}
         value={this.state.hoursSu}
@@ -866,7 +866,7 @@ export default class Minor extends React.Component {
       <TextInput 
         autoCorrect={false}
         style={[Styles.inputStyle,{
-          backgroundColor: this.state.anyHoursCheckedMo ? '#e7e7e7' : '#ffffff'
+          // backgroundColor: this.state.anyHoursCheckedMo ? '#e7e7e7' : '#ffffff'
         }]}
         onChangeText={(text) => this.setState({hoursMo: text})}
         value={this.state.hoursMo}
@@ -906,7 +906,7 @@ export default class Minor extends React.Component {
       <TextInput 
         autoCorrect={false}
         style={[Styles.inputStyle,{
-          backgroundColor: this.state.anyHoursCheckedTu ? '#e7e7e7' : '#ffffff'
+          // backgroundColor: this.state.anyHoursCheckedTu ? '#e7e7e7' : '#ffffff'
         }]}
         onChangeText={(text) => this.setState({hoursTu: text})}
         value={this.state.hoursTu}

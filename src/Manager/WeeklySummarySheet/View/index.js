@@ -46,7 +46,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 const SLIDER_WIDTH = viewportWidth;
 let self = '';
 
-export const TextColumn = ({ name,ProfilePicture,ISProfilePicture, selectedDayIsOpen, RG, OT, DT, BW, bgColor, nullRecord, onBWPress, onRGPress, onRGLongPress, onAbsencePress, onRgDisable, onBwDisable }) => {
+export const TextColumn = ({ name,employeeStatus,ProfilePicture,ISProfilePicture, selectedDayIsOpen, RG, OT, DT, BW, bgColor, nullRecord, onBWPress, onRGPress, onRGLongPress, onAbsencePress, onRgDisable, onBwDisable }) => {
     return (
         <View style={[Styles.rowContainer, { backgroundColor: bgColor }]}>
             <View style={{ width: '48%', flexDirection:'row' }}>
@@ -67,9 +67,15 @@ export const TextColumn = ({ name,ProfilePicture,ISProfilePicture, selectedDayIs
                         }}
                     />  
                 }
-                <Text style={[Styles.headingStyle,{ flexWrap: 'wrap', flex: 1 }]} >{name}</Text>
+                <View>
+                    <Text style={[Styles.headingStyle,{ flexWrap: 'wrap', flex: 1 }]} >{name}</Text>
+                    {
+                        (employeeStatus == 'Resigned' || employeeStatus == 'Terminate') &&
+                        <Text style={{ marginLeft: Matrics.CountScale(10), fontFamily: Fonts.NunitoSansRegular}}> ({employeeStatus == 'Resigned' ? 'R' : 'T'})</Text>
+                    }
+                </View>
+                
             </View>
-
             {
                 nullRecord ? 
                     <View style={[Styles.columnContentStyle, { flex: 1 }]}>
@@ -1078,6 +1084,7 @@ class WeeklySummarySheet extends React.Component {
                                             <TextColumn 
                                                 key={index}
                                                 name={res.FullName} 
+                                                employeeStatus={res.EmployeeStatus}
                                                 ProfilePicture={res.ProfilePicture} 
                                                 ISProfilePicture={true} 
                                                 nullRecord={true} 
@@ -1111,6 +1118,7 @@ class WeeklySummarySheet extends React.Component {
                                         
                                             <TextColumn 
                                                 name={res.FullName} 
+                                                employeeStatus={res.EmployeeStatus}
                                                 selectedDayIsOpen={this.state.selectedDayIsOpen}
                                                 ProfilePicture={res.ProfilePicture}
                                                 ISProfilePicture={true} 
@@ -1220,6 +1228,7 @@ class WeeklySummarySheet extends React.Component {
                                     <TextColumn 
                                         key={index}
                                         name={res.FullName} 
+                                        employeeStatus={res.EmployeeStatus}
                                         ProfilePicture={res.ProfilePicture}
                                         ISProfilePicture={true} 
                                         RG={TotalRG != 0 ? parseFloat(TotalRG).toFixed(2) : null} 
@@ -1307,23 +1316,26 @@ class WeeklySummarySheet extends React.Component {
                   <Carousel
                       ref={(c) => { this._carousel = c; }}
                       data={this.state.FinalWeekDatesDataArr}
-                      renderItem={this._renderItem.bind(this)}
+                      renderItem={this._renderItem}
                       sliderWidth={SLIDER_WIDTH}
                       itemWidth={Matrics.screenWidth / 2}
                       activeSlideAlignment={'start'}
                       inactiveSlideScale={1}
                       inactiveSlideOpacity={1}
                       extraData={this.state}
-                      onSnapToItem={(index) => { 
-                        this.setState({ 
+                      onSnapToItem={async (index) => { 
+                        await this.setState({ 
                             dayIndex: index+1, 
                             selectedDate: this.state.FinalWeekDatesDataArr[index+1].WeekDate, 
                             selectedDayId: this.state.FinalWeekDatesDataArr[index+1].DayID, 
                             selectedDayIsOpen: !this.state.FinalWeekDatesDataArr[index+1].isClosed, 
                         });
+                        if(index >= 6){
+                            await this.setState({ prevIndex: index });
+                        }
                     }}
+                    scrollEnabled={ (this.state.dayIndex == 8) && this.state.prevIndex == 6 ? true : (this.state.dayIndex == 8) ? false  : true}
                     lockScrollWhileSnapping={true}
-                    scrollEnabled={ (this.state.dayIndex == 8) && this.state.prevIndex == 6 ? true : (this.state.dayIndex == 8) ? false  : true} 
                   />
                   
                 </View>
@@ -1709,7 +1721,7 @@ class WeeklySummarySheet extends React.Component {
                                 <View>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker('weekending')}>
-                                        <Text>{this.state.WeekEndingDate ? moment(this.state.WeekEndingDate).format('MM.DD.YYYY') : 'Select Date'}</Text>
+                                        <Text style={Styles.pickerLabelStyle}>{this.state.WeekEndingDate ? moment(this.state.WeekEndingDate).format('MM.DD.YYYY') : 'Select Date'}</Text>
                                     </TouchableOpacity>
                                 </View>
                                 {
@@ -1869,6 +1881,11 @@ const Styles = StyleSheet.create({
     headingStyle: {
         fontFamily: Fonts.NunitoSansRegular,
         padding: Matrics.CountScale(10),
+    },
+    pickerLabelStyle: {
+        fontSize: Matrics.CountScale(16),
+        fontFamily: Fonts.NunitoSansRegular,
+        marginLeft: Matrics.CountScale(10), 
     },
     columnContentStyle: {
         width: '25%',

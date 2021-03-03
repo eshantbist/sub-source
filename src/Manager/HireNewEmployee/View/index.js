@@ -724,7 +724,7 @@ class HireNewEmployee extends React.Component {
                     />
                 </TouchableOpacity>
                 {
-                    this.state.errorDob &&
+                    this.state.errorDob != '' &&
                     <Text style={Styles.errorText}>{this.state.errorDob}</Text>
                 }
                 <DateTimePicker

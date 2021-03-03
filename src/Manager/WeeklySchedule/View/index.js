@@ -31,6 +31,7 @@ import {
 } from '@Redux/Actions/WeeklyScheduleActions';
 import { getHeaderFilterValuesRequest } from '@Redux/Actions/HirePacketsActions';
 import Global from '../../../GlobalFunction';
+import styles from 'react-native-material-dropdown/src/components/dropdown/styles';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
@@ -58,7 +59,7 @@ export const TextRow = ({ labelText, contentText, bgColor }) => {
 export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,ContactNumber,RoleCode, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress, onLayout, selectedJumpEmpName}) => {
     return (
         <View style={[Styles.rowContainer, { backgroundColor: bgColor, borderBottomColor: Colors.BORDERCOLOR, borderBottomWidth: 2 }]}
-            onLayout={(e) => {selectedJumpEmpName != '' ? onLayout(e.nativeEvent.layout.height) : onLayout(0); }}
+            onLayout={(e) => {console.log('layout call'); selectedJumpEmpName != '' ? onLayout(e.nativeEvent.layout.height) : onLayout(0); }}
             key={selectedJumpEmpName}
         >
             <View style={Styles.rowTitleStyle}>
@@ -70,10 +71,10 @@ export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,Cont
                             : labelText
                         }
                     </Text>
-                    {
+                    {/* {
                         (employeeStatus == 'Resigned' || employeeStatus == 'Terminate') &&
                         <Text style={{fontFamily: Fonts.NunitoSansRegular}}> ({employeeStatus == 'Resigned' ? 'R' : 'T'})</Text>
-                    }
+                    } */}
                 </View>
                 {
                     employeeStatus == 'Active'
@@ -946,6 +947,7 @@ class WeeklySchedule extends React.Component {
             <TouchableOpacity 
                 key={index}
                 onPress={() => { 
+                    console.log('onPress-->', index)
                     self.setState({ dayIndex: index, selectedDate: item.DayDate }) 
                     if(index >= 6){
                         self.setState({ prevIndex: index-1 });
@@ -1090,11 +1092,15 @@ class WeeklySchedule extends React.Component {
                 }}
                 bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null} 
                 onLayout={(height) => { 
+                    // console.log('selectedJumpEmpName-->',this.state.selectedJumpEmpName)
+                    // console.log('FullName-->',item.FullName)
                     if(this.state.selectedJumpEmpName == item.FullName){
                         this.scrollview.scrollTo({
                             y: this.state.selectedEmpIndex == 1 
                             ?  this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
-                            : (this.state.selectedEmpIndex*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight, 
+                            : this.state.selectedEmpIndex == 2
+                            ? ((this.state.selectedEmpIndex-1)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
+                            : ((this.state.selectedEmpIndex)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight, 
                             animated: true
                         });
                     }
@@ -1557,7 +1563,6 @@ class WeeklySchedule extends React.Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    {console.log('dayIndex-->', this.state.dayIndex)}
                     <View style={{ marginHorizontal: Matrics.CountScale(5) }} >
                         <View style={Styles.containerStyle} ref={view => { this.myComponent = view; }} 
                             onLayout={(e) => { this.setState({ upperSectionHeight: e.nativeEvent.layout.height }) }}
@@ -1573,8 +1578,12 @@ class WeeklySchedule extends React.Component {
                                 inactiveSlideOpacity={1}
                                 extraData={this.state}
                                 onSnapToItem={async (index) => {
-                                    await this.setState({ dayIndex: index+1, selectedDate: this.state.daysData[index+1].DayDate })
+                                    await this.setState({ dayIndex: index+1, selectedDate: this.state.daysData[index+1].DayDate });
+                                    if(index >= 6){
+                                        await this.setState({ prevIndex: index });
+                                    }
                                 }}
+                                // scrollEnabled={ (this.state.dayIndex == 8) && this.state.prevIndex == 6 ? true : (this.state.dayIndex == 8) ? false  : true}
                                 scrollEnabled={ (this.state.dayIndex == 8) && this.state.prevIndex == 6 ? true : (this.state.dayIndex == 8) ? false  : true}
                                 lockScrollWhileSnapping={true}
                             />
@@ -1603,7 +1612,8 @@ class WeeklySchedule extends React.Component {
                                                 ? (this.state.daysData[this.state.dayIndex].AVGSales6Weeks / this.state.daysData[this.state.dayIndex].TotalHoursScheduled).toFixed(2)
                                                 : 0
                                                 : null
-                                            : this.state.TotalScheduledProductivity != 0 ? this.state.TotalScheduledProductivity.toFixed(2) : null
+                                            : !isNaN(this.state.TotalScheduledProductivity) &&
+                                                this.state.TotalScheduledProductivity != 0 ? this.state.TotalScheduledProductivity.toFixed(2): 0
                                             : null
                                         } 
                                         bgColor={Colors.ROWBGCOLOR} />
@@ -2041,7 +2051,7 @@ class WeeklySchedule extends React.Component {
                                 <View>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker('weekending')}>
-                                        <Text>{this.state.weekendDate ? moment(this.state.weekendDate).format('MM.DD.YYYY') : 'Select Date'}</Text>
+                                        <Text style={Styles.pickerLabelStyle}>{this.state.weekendDate ? moment(this.state.weekendDate).format('MM.DD.YYYY') : 'Select Date'}</Text>
                                     </TouchableOpacity>
                                 </View>
                                 {
@@ -2443,6 +2453,11 @@ const Styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: Colors.BORDERCOLOR,
         paddingVertical: Matrics.CountScale(15),
+    },
+    pickerLabelStyle: {
+        fontSize: Matrics.CountScale(16),
+        fontFamily: Fonts.NunitoSansRegular,
+        marginLeft: Matrics.CountScale(10)
     },
     confirmBtn: {
         backgroundColor: Colors.APPCOLOR,

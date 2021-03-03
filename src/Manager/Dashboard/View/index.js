@@ -147,7 +147,7 @@ class Dashboard extends React.Component {
                 WeekEndingDate = global.WeekendDate;
             }
             let index = -1;
-            if(parseInt(global.selectedStore,10) != -1){
+            if(parseInt(global.selectedStore,10) != -1 && !isNaN(parseInt(global.selectedStore,10))){
                 index = this.state.Stores.length > 0 && this.state.Stores.findIndex(s => s.StoreID === parseInt(global.selectedStore,10));
             }
             await this.setState({ 
@@ -202,8 +202,8 @@ class Dashboard extends React.Component {
                     var i;
                     for (i = 0; i < data.Report.store_list.length; i++) {
                         data.Report.store_list[i].name = data.Report.store_list[i]['DisplayStoreNumber'];
-                        data.Report.store_list[i].label = data.Report.store_list[i]['DisplayStoreNumber'];
-                        data.Report.store_list[i].key = data.Report.store_list[i]['StoreID'];
+                        // data.Report.store_list[i].label = data.Report.store_list[i]['DisplayStoreNumber'];
+                        data.Report.store_list[i].id = data.Report.store_list[i]['StoreID'];
                         delete data.Report.store_list[i].key1;
                     }
                 }
@@ -452,10 +452,11 @@ class Dashboard extends React.Component {
                 />
 
                 {   
-                    this.state.showDrodown && 
+                    this.state.showDrodown ? 
                     <View style={Styles.logoutContainer}>
                         <Text onPress={() => this.Logout()} style={Styles.logoutText}>Logout</Text>
                     </View>
+                    : <View style={[Styles.logoutContainer, { backgroundColor: Colors.BODYBACKGROUND }]} />
                 }
 
                 {/* ==========>>>>> Page Container  <<<<<<<=========== */}
@@ -565,7 +566,7 @@ class Dashboard extends React.Component {
                                 <View>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker()}>
-                                        <Text>{this.state.WeekEndingDate ? moment(this.state.WeekEndingDate).format('MM.DD.YYYY') : 'Select Date'}</Text>
+                                        <Text style={Styles.pickerLabelStyle}>{this.state.WeekEndingDate ? moment(this.state.WeekEndingDate).format('MM.DD.YYYY') : 'Select Date'}</Text>
                                     </TouchableOpacity>
                                 </View>
                                 {
@@ -631,7 +632,7 @@ class Dashboard extends React.Component {
                                 <View style={{ borderTopWidth:1,  borderTopColor: Colors.BORDERCOLOR, paddingVertical: Matrics.CountScale(15) }}>
                                     <Text style={Styles.pickerLabelStyle}>Shops</Text>
                                 </View>
-                                {!this.state.resetFilter ?
+                                {!this.state.resetFilter && this.state.Stores.length > 0 ?
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
                                             const index = this.state.Stores.findIndex(s => s.StoreID === item.StoreID);
@@ -845,7 +846,7 @@ class Dashboard extends React.Component {
                                                                 <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM.DD.YYYY, hh:mm a')}</Text></Text>
 
                                                             </View>
-                                                            <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
+                                                            <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginLeft: 0, marginVertical: Matrics.CountScale(20) }]}>
                                                                 {res.Comments}
                                                             </Text>
                                                         </TouchableOpacity>
@@ -862,7 +863,7 @@ class Dashboard extends React.Component {
                                                                     <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM.DD.YYYY, hh:mm a')}</Text></Text>
 
                                                                 </View>
-                                                                <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
+                                                                <Text numberOfLines={4} style={[Styles.pickerLabelStyle, {marginLeft: 0, marginVertical: Matrics.CountScale(20) }]}>
                                                                     {res.Comments}
                                                                 </Text>
                                                             </TouchableOpacity>
@@ -877,7 +878,7 @@ class Dashboard extends React.Component {
                                                                     <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM.DD.YYYY, hh:mm a')}</Text></Text>
 
                                                                 </View>
-                                                                <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginVertical: Matrics.CountScale(20) }]}>
+                                                                <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginLeft: 0, marginVertical: Matrics.CountScale(20) }]}>
                                                                     {res.Comments}
                                                                 </Text>
                                                             </TouchableOpacity>
@@ -969,11 +970,12 @@ const Styles = {
     },
     pickerItemStyle: {
         fontSize: Matrics.CountScale(18),
-        fontFamily: Fonts.NunitoSansRegular
+        fontFamily: Fonts.NunitoSansRegular, 
     },
     pickerLabelStyle: {
         fontSize: Matrics.CountScale(16),
-        fontFamily: Fonts.NunitoSansRegular
+        fontFamily: Fonts.NunitoSansRegular,
+        marginLeft: Matrics.CountScale(10)
     },
     dotStyle: {
         height: Matrics.CountScale(10),
@@ -1098,6 +1100,7 @@ const Styles = {
         backgroundColor: Colors.WHITE,
         paddingVertical: Matrics.CountScale(5),
         width: Matrics.CountScale(100),
+        height: Matrics.CountScale(30),
     },
     logoutText: {
         fontFamily: Fonts.NunitoSansRegular,
