@@ -155,8 +155,8 @@ class CheckDoucmentStatus extends React.Component {
                     userRoleList: data.Report.role_list,
                     userList: data.Report.user_list,
                     storeList: data.Report.store_list,
-                    selectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber  : 'Select Shop',
-                    lastFilterselectedselectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber  : 'Select Store',
+                    selectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber  : 'All Shops',
+                    lastFilterselectedselectedStoreName: selectedStoreArr.length > 0 ? selectedStoreArr[0].DisplayStoreNumber  : 'All Shops',
                 });
                 if(parseInt(global.selectedStore,10) != ''){
                     const index = data.Report.store_list.length > 0 && data.Report.store_list.findIndex(s => s.StoreID === parseInt(global.selectedStore,10));
@@ -736,7 +736,7 @@ class CheckDoucmentStatus extends React.Component {
                                         resetValue={false}
                                         textInputProps={
                                             {
-                                                placeholder: "Select Shop",
+                                                placeholder: "All Shops",
                                                 underlineColorAndroid: "transparent",
                                                 style: {
                                                     padding: 12,

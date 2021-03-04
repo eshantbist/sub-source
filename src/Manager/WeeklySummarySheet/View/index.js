@@ -571,7 +571,7 @@ class WeeklySummarySheet extends React.Component {
             empRoleWiseData, 
             // newTimeoffDataArr 
         });
-        console.log('empRoleWiseData-->setemp-->', empRoleWiseData);
+        // console.log('empRoleWiseData-->setemp-->', empRoleWiseData);
         let hoursBasicAsUserStoreId = [];
         _.forEach(this.state.hoursBasicListArr, (res) => {
             if (_.some(hoursBasicAsUserStoreId, { 'UserStoreID': res.UserStoreID })) {
@@ -642,9 +642,7 @@ class WeeklySummarySheet extends React.Component {
     _hideTimePicker = () => this.setState({ isTimePickerVisible: false });
 
     _handleTimePicked = async (time) => {
-        console.log('timeFlag-->',this.state.timeFlag);
-        let val = moment.parseZone(time).format('HH:mm')
-        console.log('val-->',val);
+        let val = moment.parseZone(time).format('HH:mm');
         this._hideTimePicker();
         if (this.state.timeFlag == 'InTime') {
             await this.setState({ inTime: val })
@@ -742,7 +740,6 @@ class WeeklySummarySheet extends React.Component {
             const res = await DocumentPicker.pick({
                 type: [DocumentPicker.types.allFiles],
             });
-            console.log('***name', res);
             if (res != null)
             this.setState({ attachFile: res.fileName })
         } catch (err) {
@@ -906,7 +903,7 @@ class WeeklySummarySheet extends React.Component {
                     punchData.push(newChild);
                 });
             }
-            console.log('punchData-->', punchData);
+            // console.log('punchData-->', punchData);
             this.props.UpdateEmployeePunchDetailRequest(punchData);
         } else {
             this.setState({adjustReasonError: 'Please enter the adjust reason'});
@@ -936,7 +933,7 @@ class WeeklySummarySheet extends React.Component {
                 "UserStoreGuid": this.state.UserStoreGUID,
                 "IsFormSchedule": 0,
             }
-            console.log('dataTimeoff-->', dataTimeoff)
+            // console.log('dataTimeoff-->', dataTimeoff)
             this.createTimeofFlag = false;
             this.props.CreateEmployeeTimeOff(dataTimeoff);
             this.setState({
@@ -1111,7 +1108,7 @@ class WeeklySummarySheet extends React.Component {
                                                         Timeoffdata = data.Basic.Data[0];
                                                     }
                                                     this.setState({ Timeoffdata, selectedReasonId: Timeoffdata.ReasonID, selectedReasonName: Timeoffdata.ReasonName, timeoffNotes: Timeoffdata.ReasonDetail });
-                                                    console.log('Timeoffdata-->', Timeoffdata);
+                                                    // console.log('Timeoffdata-->', Timeoffdata);
                                                 });
                                             }} />    
                                         : // emp name shift data
@@ -1282,10 +1279,6 @@ class WeeklySummarySheet extends React.Component {
                 }
             </View>
         )
-    }
-
-    handleViewableItemsChanged = async (info) => {
-        console.log('info-->', info)
     }
 
 

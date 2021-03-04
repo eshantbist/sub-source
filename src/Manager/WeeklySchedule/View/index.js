@@ -59,7 +59,7 @@ export const TextRow = ({ labelText, contentText, bgColor }) => {
 export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,ContactNumber,RoleCode, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress, onLayout, selectedJumpEmpName}) => {
     return (
         <View style={[Styles.rowContainer, { backgroundColor: bgColor, borderBottomColor: Colors.BORDERCOLOR, borderBottomWidth: 2 }]}
-            onLayout={(e) => {console.log('layout call'); selectedJumpEmpName != '' ? onLayout(e.nativeEvent.layout.height) : onLayout(0); }}
+            onLayout={(e) => {selectedJumpEmpName != '' ? onLayout(e.nativeEvent.layout.height) : onLayout(0); }}
             key={selectedJumpEmpName}
         >
             <View style={Styles.rowTitleStyle}>
@@ -310,7 +310,7 @@ class WeeklySchedule extends React.Component {
 
             }
         });
-            console.log('will mount-->', this.state.selectedStoreId, '--isload--',this.state.isLoad )
+            // console.log('will mount-->', this.state.selectedStoreId, '--isload--',this.state.isLoad )
             if(this.state.selectedStoreId !== -1) {
                 this.taxListFlag = false;
                 this.infoFlag = false;
@@ -947,7 +947,6 @@ class WeeklySchedule extends React.Component {
             <TouchableOpacity 
                 key={index}
                 onPress={() => { 
-                    console.log('onPress-->', index)
                     self.setState({ dayIndex: index, selectedDate: item.DayDate }) 
                     if(index >= 6){
                         self.setState({ prevIndex: index-1 });
@@ -1494,7 +1493,7 @@ class WeeklySchedule extends React.Component {
                         <Text style={Styles.nameStyle}>{item.FullName}</Text>
                     </View>
                 </View>
-                {
+                {/* {
                     item.ShiftData.length > 0 &&
                     item.ShiftData.map((data, i) => {
                         return(
@@ -1509,7 +1508,7 @@ class WeeklySchedule extends React.Component {
                             </View>
                         )
                     })
-                }
+                } */}
             </TouchableOpacity>
         )
     }
@@ -1698,39 +1697,37 @@ class WeeklySchedule extends React.Component {
                             <View style={Styles.headingStyle}>
                                 <Text style={{ color: 'white' }}># OF EMPLOYEES SCHEDULED</Text>
                             </View>
-
                             <View>
                                 {
-                                    this.state.selectedDate !== 'Total'
-                                        ?  this.state.ofEmployeeScheduleData.length > 0
-                                            ?   this.state.ofEmployeeScheduleData.map((empdata, index) => {
-                                                    let TimeArr = empdata.Timing.split('-');
-                                                    if (empdata.WeekDate == this.state.selectedDate) {
-                                                        return (
-                                                            <TextRow
-                                                                key={index}
-                                                                labelText={`${Global.getTime24to12(TimeArr[0]).toUpperCase()} To ${Global.getTime24to12(TimeArr[1]).toUpperCase()}`}
-                                                                contentText={empdata.EmployeesCount.toFixed(2)}
-                                                                bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null}
-                                                            />
-                                                        )
-                                                    }
-                                                })
-                                            : this.state.TotalofEmployeeScheduleData.length > 0
-                                                ? this.state.TotalofEmployeeScheduleData.map((empdata, index) => {
-                                                    let TimeArr = empdata.Timing.split('-');
-                                                        return (
-                                                            <TextRow
-                                                                key={index}
-                                                                labelText={`${Global.getTime24to12(TimeArr[0]).toUpperCase()} To ${Global.getTime24to12(TimeArr[1]).toUpperCase()}`}
-                                                                contentText={empdata.EmployeesCount.toFixed(2)}
-                                                                bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null}
-                                                            />
-                                                        )
-                                                    })
-                                                : null
-                                        :
-                                        <Text style={{ textAlign: 'center', fontFamily: Fonts.NunitoSansRegular, marginVertical: Matrics.CountScale(10) }}>Oops! Their Is Nothing To Display</Text>
+                                    this.state.selectedDate !== 'Total' &&  this.state.ofEmployeeScheduleData.length > 0
+                                    ?   this.state.ofEmployeeScheduleData.map((empdata, index) => {
+                                            let TimeArr = empdata.Timing.split('-');
+                                            if (empdata.WeekDate == this.state.selectedDate) {
+                                                return (
+                                                    <TextRow
+                                                        key={index}
+                                                        labelText={`${Global.getTime24to12(TimeArr[0]).toUpperCase()} To ${Global.getTime24to12(TimeArr[1]).toUpperCase()}`}
+                                                        contentText={empdata.EmployeesCount.toFixed(2)}
+                                                        bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null}
+                                                    />
+                                                )
+                                            }
+                                        })
+                                    : this.state.selectedDate == 'Total' && this.state.TotalofEmployeeScheduleData.length > 0
+                                        ? this.state.TotalofEmployeeScheduleData.map((empdata, index) => {
+                                            let TimeArr = empdata.Timing.split('-');
+                                                return (
+                                                    <TextRow
+                                                        key={index}
+                                                        labelText={`${Global.getTime24to12(TimeArr[0]).toUpperCase()} To ${Global.getTime24to12(TimeArr[1]).toUpperCase()}`}
+                                                        contentText={empdata.EmployeesCount}
+                                                        bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null}
+                                                    />
+                                                )
+                                            })
+                                        : null
+                                    // :
+                                    // <Text style={{ textAlign: 'center', fontFamily: Fonts.NunitoSansRegular, marginVertical: Matrics.CountScale(10) }}>Oops! Their Is Nothing To Display</Text>
                                 }
                             </View>
 
@@ -2005,7 +2002,6 @@ class WeeklySchedule extends React.Component {
                                 global.selectedStore = this.state.lastFilterselectedStoreId;
                             }}
                             onRightPress={() => {
-                                console.log('save', this.state.selectedStoreId); 
                                 const index = this.state.Stores.length > 0 && this.state.Stores.findIndex(s => s.StoreID === this.state.selectedStoreId);
                                 this.taxListFlag = false;
                                 this.infoFlag = false;
@@ -2118,7 +2114,6 @@ class WeeklySchedule extends React.Component {
                                     <SearchableDropdown
                                         onItemSelect={(item) => {
                                             const index = this.state.Stores.findIndex(s => s.StoreID === item.StoreID);
-                                            console.log('storeId-->', item.StoreID)
                                             this.setState({ selectedStoreId: item.StoreID, selectedStoreName: item.DisplayStoreNumber, selectedStoreIndex: index });
                                             global.selectedStore = item.StoreID;
                                         }}
@@ -2519,9 +2514,11 @@ const Styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     itemContainerStyle: {
-        backgroundColor: 'white', borderRadius: Matrics.CountScale(5),
-        marginVertical: Matrics.CountScale(5), marginHorizontal: Matrics.CountScale(15),
-        padding: Matrics.CountScale(10)
+        backgroundColor: 'white',
+        borderRadius: Matrics.CountScale(5),
+        marginVertical: Matrics.CountScale(5), 
+        marginHorizontal: Matrics.CountScale(15),
+        // padding: Matrics.CountScale(10)
     },
     nameStyle: {
         fontFamily: Fonts.NunitoSansRegular,
