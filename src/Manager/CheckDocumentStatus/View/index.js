@@ -68,6 +68,7 @@ class CheckDoucmentStatus extends React.Component {
         lastFilterselectedIndex: -1,
         resetFilter: false,
         showShop: false,
+        updateTitleArr: true,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -173,8 +174,10 @@ class CheckDoucmentStatus extends React.Component {
                 this.setState({ loading: false, refreshing: false });
 
             let data = nextProps.response.CheckDocumentStatus.data;
+            console.log('data-->',data)
             if (data.Status == 1) {
                 empListData[this.state.selectedIndex] = data.Report._list;
+                console.log('titlearr-->',data.Report._tilesObj)
                 await this.setState({
                     TitlesArr: data.Report._tilesObj,
                     empListArr: empListData,
@@ -183,12 +186,18 @@ class CheckDoucmentStatus extends React.Component {
                 });
                 this.getNumberOfPage();
             } else {
+                console.log('else',this.state.updateTitleArr)
                 empListData[this.state.selectedIndex] = data.Report != null ? data.Report._list : [] ;
-                this.setState({ empListArr: empListData.length == 1 && empListData[0].length == 0 ? [] : empListData, TitlesArr: [], 
+                this.setState({ empListArr: empListData.length == 1 && empListData[0].length == 0 ? [] : empListData, 
+                    // TitlesArr: [], 
                     TotalEmployeeCount: data.Report != null ? data.Report.PagingStats.TotalCount : 0,
                     recipientsListArr:  data.Report != null ? data.Report._recipientsList : [],
                     Totalpage: data.Report != null && 0,
+                    updateTitleArr: true
                 });
+                if(this.state.updateTitleArr){
+                    this.setState({TitlesArr: []});
+                }
             }
         } else if (nextProps.response.CheckDocumentStatus.GetCheckDocumentStatusEnvelopVoidSuccess) {
             let data = nextProps.response.CheckDocumentStatus.data;
@@ -528,25 +537,25 @@ class CheckDoucmentStatus extends React.Component {
                 {/* header end */}
                 <View >
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        <TouchableOpacity onPress={() => { this.onClickedActionRequired() }} >
+                        <TouchableOpacity onPress={() => { this.setState({ updateTitleArr: false }); this.onClickedActionRequired() }} >
                             <View style={[Styles.statusCardContainer, selected == 'ActionRequired' ? { backgroundColor: Colors.ACTIONREQUIRE } : { borderColor: Colors.ACTIONREQUIRE, borderWidth: 1.5 }]}>
                                 <Text style={[Styles.countTextStyle, selected == 'ActionRequired' ? { color: Colors.WHITE } : { color: Colors.ACTIONREQUIRE }]}>{Object.keys(this.state.TitlesArr).length > 0 ? this.state.TitlesArr.ActionRequired : 0}</Text>
                                 <Text style={[Styles.labelTextStyle, selected == 'ActionRequired' ? { color: Colors.WHITE } : { color: Colors.ACTIONREQUIRE }]}>Action Required</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { this.onClickedInProgress() }} >
+                        <TouchableOpacity onPress={() => { this.setState({ updateTitleArr: false }); this.onClickedInProgress() }} >
                             <View style={[Styles.statusCardContainer, selected == 'InProgress' ? { backgroundColor: Colors.INPROGRESS } : { borderColor: Colors.INPROGRESS, borderWidth: 1.5 }]}>
                                 <Text style={[Styles.countTextStyle, selected == 'InProgress' ? { color: Colors.WHITE } : { color: Colors.INPROGRESS }]}>{Object.keys(this.state.TitlesArr).length > 0 ? this.state.TitlesArr.InProcess : 0}</Text>
                                 <Text style={[Styles.labelTextStyle, selected == 'InProgress' ? { color: Colors.WHITE } : { color: Colors.INPROGRESS }]}>In Process</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { this.onClickedCompleted() }} >
+                        <TouchableOpacity onPress={() => { this.setState({ updateTitleArr: false }); this.onClickedCompleted() }} >
                             <View style={[Styles.statusCardContainer, selected == 'Completed' ? { backgroundColor: Colors.COMPLETED } : { borderColor: Colors.COMPLETED, borderWidth: 1.5 }]}>
                                 <Text style={[Styles.countTextStyle, selected == 'Completed' ? { color: Colors.WHITE } : { color: Colors.COMPLETED }]}>{Object.keys(this.state.TitlesArr).length > 0 ? this.state.TitlesArr.Completed : 0}</Text>
                                 <Text style={[Styles.labelTextStyle, selected == 'Completed' ? { color: Colors.WHITE } : { color: Colors.COMPLETED }]}>Completed</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { this.onClickedTotal() }} >
+                        <TouchableOpacity onPress={() => { this.setState({ updateTitleArr: false }); this.onClickedTotal() }} >
                             <View style={[Styles.statusCardContainer, selected == 'Total' ? { backgroundColor: Colors.TOTAL } : { borderColor: Colors.TOTAL, borderWidth: 1.5 }]}>
                                 <Text style={[Styles.countTextStyle, selected == 'Total' ? { color: Colors.WHITE } : { color: Colors.TOTAL }]}>{Object.keys(this.state.TitlesArr).length > 0 ? this.state.TitlesArr.Total : 0}</Text>
                                 <Text style={[Styles.labelTextStyle, selected == 'Total' ? { color: Colors.WHITE } : { color: Colors.TOTAL }]}>Total</Text>

@@ -593,13 +593,13 @@ class DocumentDetails extends React.Component {
     }
     renderStatusIndicatorIcon(val, status) {
         if (val == 'Employee Created' && status == 'Hirestatus' )
-            return (<Image style={{ width: 15, margin: 5, marginLeft: 0, height: 15 }} source={Images.RightIcon}></Image>)
+            return (<Image style={{ width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(5) }} source={Images.RightIcon}></Image>)
         else if (val != 'Pending' && status == 'E-Verify' ) 
-            return (<Image style={{ width: 15, margin: 5, marginLeft: 0, height: 15 }} source={Images.RightIcon}></Image>)
+            return (<Image style={{  width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(5) }} source={Images.RightIcon}></Image>)
         else if (val != 'Pending' && status == 'BGC' ) 
-            return (<Image style={{ width: 15, margin: 5, marginLeft: 0, height: 15 }} source={Images.RightIcon}></Image>)
+            return (<Image style={{  width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(5) }} source={Images.RightIcon}></Image>)
         else
-            return (<Image style={{ width: 15, margin: 5, marginLeft: 0, height: 15 }} source={Images.ClockIcon} ></Image >)
+            return (<Image style={{ width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(5) }} source={Images.ClockIcon} ></Image >)
     }
     renderPDFimg(val) {
         if (val)
@@ -817,7 +817,7 @@ const Styles = StyleSheet.create({
         padding: Matrics.CountScale(5)
     },
     hireStatusHeaderCardPart1: {
-        flex: 0.1
+        // flex: 0.1,
     },
     hireStatusHeaderCardPart2: {
         borderBottomColor: Colors.LIGHTGREY,

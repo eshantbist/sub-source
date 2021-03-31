@@ -14,6 +14,7 @@ import { getUserRoleRequest } from '@Redux/Actions/DashboardActions'
 import { Colors, Fonts, Matrics, Images, MasterCss } from '@Assets'
 import { TextInputView, Button, LoadWheel } from "@Components";
 
+const deviceHeight = Dimensions.get('window').height;
 // ======>>>>> Class Declaration <<<<<=========
 class HireNewEmployee extends React.Component {
     
@@ -62,6 +63,8 @@ class HireNewEmployee extends React.Component {
         PositionType: '',
         attachFile: '',
         minorData: [],
+        errorDob: '',
+        hireEmpLoader: false,
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -85,8 +88,8 @@ class HireNewEmployee extends React.Component {
         setTimeout(() => {
             this.myComponent.measure((fx, fy, width, height, px, py) => {
                 this.topSpace = py - 20
-                this.topStoreSpace = py - 90
-                this.setState({ topSpace:  this.topSpace, topStoreSpace: this.topStoreSpace})
+                this.topStoreSpace = py-(90+Matrics.CountScale(45))
+                this.setState({ topSpace:  this.topSpace, topStoreSpace: this.topStoreSpace })
             })
         }, 100);
     }
@@ -144,7 +147,6 @@ class HireNewEmployee extends React.Component {
 
             let data = nextProps.response.data;
             if (data.Status === 1) {
-                console.log('data123-->', data)
                 this.setState({ storeWithSettingArr: data.Data });
             }
         } else if(nextProps.response.GetStoreSettingDetailsListSuccess) {
@@ -155,13 +157,13 @@ class HireNewEmployee extends React.Component {
                     this.getStoreidforMinorAge();
                 }
             }
-        } else if(nextProps.response.EmployeeExistenceCheckOnHiringSuccess) {
+        } else if(nextProps.response.EmployeeExistenceCheckOnHiringSuccess && this.state.hireEmpLoader) {
             let data = nextProps.response.data;
             console.log('hdata-->', data);
             if(data.Status === 0 && data.Message === 'No such employee exists!'){
                 this.hireEmployeeSaveData(); 
             } else if(data.Status === 1 && data.Data.length > 0) {
-                this.setState({ loading: false });
+                this.setState({ hireEmpLoader: false });
                 Alert.alert(
                     '',
                     'Employee Already Exists.',
@@ -170,14 +172,14 @@ class HireNewEmployee extends React.Component {
                     ]
                 );
             } else {
-                this.setState({ loading: false });
+                this.setState({ hireEmpLoader: false });
             }
         }
-        else if(nextProps.response.HireNewEmployeeManageSuccess) {
+        else if(nextProps.response.HireNewEmployeeManageSuccess && this.state.hireEmpLoader) {
             let data = nextProps.response.data;
             console.log('hiredata-->', data);
             if(data.Status === 0) {
-                this.setState({ loading: false });
+                this.setState({ hireEmpLoader: false });
                 Alert.alert(
                     '',
                     data.Message,
@@ -186,7 +188,7 @@ class HireNewEmployee extends React.Component {
                     ]
                 );
             } else {
-                this.setState({ loading: false });
+                this.setState({ hireEmpLoader: false });
                 Alert.alert(
                     '',
                     data.Message,
@@ -284,7 +286,7 @@ class HireNewEmployee extends React.Component {
                             onPress: () => console.log("Cancel Pressed"),
                             style: "cancel"
                         },
-                        {text: 'OK', onPress: () => {console.log('minorData123-->', this.state.minorData); this.props.navigation.navigate('Minor', { callbackData: this.callbackFunction, minorData: this.state.minorData})},},
+                        {text: 'OK', onPress: () => { this.props.navigation.navigate('Minor', { callbackData: this.callbackFunction, minorData: this.state.minorData})},},
                     ],
                     { tintColor: 'green' }
                 );
@@ -403,7 +405,7 @@ class HireNewEmployee extends React.Component {
             errorWageType: '',
             errorwageRate: '',
             errorPosition: '',
-            loading: true,
+            hireEmpLoader: true,
         });
         const jsonData = {
             "FirstName": this.state.firstName,
@@ -435,7 +437,7 @@ class HireNewEmployee extends React.Component {
     }
 
     hireEmployeeSaveData() {
-        console.log('hireEmployeeSaveData');
+        console.log('hireEmployeeSaveData', this.state.loading);
         let jsonData = {};
         if(this.state.isMinor){
             jsonData = {"_objEmpDetail":
@@ -534,7 +536,10 @@ class HireNewEmployee extends React.Component {
                 </View>
                 <ScrollView onScrollEndDrag={() => setTimeout(() => {
                     this.myComponent.measure((fx, fy, width, height, px, py) => {
-                        this.setState({ topSpace: py - 20, topStoreSpace: py - 90 });
+                        this.setState({ topSpace: py - 20, 
+                            // topStoreSpace: py -90
+                            topStoreSpace: py-(90+Matrics.CountScale(45))
+                        });
                     })
 
                 }, 100)}>
@@ -556,12 +561,14 @@ class HireNewEmployee extends React.Component {
                             : null
                         }
                         
-
-                        <Text style={Styles.cardHeaderText}>Additional Options</Text>
+                        {
+                            this.state.selectedStore != '' &&
+                            <Text style={Styles.cardHeaderText}>Additional Options</Text>
+                        }
                         {this.employeeOptions()}
                     </View>
                 </ScrollView>
-                <LoadWheel visible={this.state.loading} />
+                <LoadWheel visible={this.state.loading || this.state.hireEmpLoader} />
             </View>
         );
     }
@@ -609,6 +616,7 @@ class HireNewEmployee extends React.Component {
                     onChangeText={val => this.setState({ email: val, errorEmail: '' })}
                     error={this.state.errorEmail}
                 />
+                {console.log('topStoreSpace', this.state.topStoreSpace)}
                     <Dropdown
                         containerStyle={{
                             top: Matrics.CountScale(20), marginLeft: Matrics.CountScale(10),
@@ -668,7 +676,7 @@ class HireNewEmployee extends React.Component {
                                     valueExtractor={({ type }) => type}
                                     inputContainerStyle={{ borderBottomColor: 'transparent', alignSelf: 'stretch', padding: 0, margin: 0 }}
                                     itemTextStyle={{ textAlign: 'left' }}
-                                    overlayStyle={{ top: this.state.topSpace, borderWidth: 0 }}
+                                    overlayStyle={{ top: this.state.topSpace, borderWidth: 0,  }}
                                     dropdownOffset={{ top: 0, left: 0 }}
                                     fontSize={17}
                                     itemCount={8}
@@ -708,10 +716,13 @@ class HireNewEmployee extends React.Component {
         // console.log('5year-->',twelYearAbove);
         
         return (
-            <View style={[Styles.cardContainer, { flex:1,
-            alignItems:'center',
-            justifyContent:'center', paddingVertical: Matrics.CountScale(10)}]}>
-                <TouchableOpacity style={{  marginHorizontal: Matrics.CountScale(10), flexDirection: "row",}} onPress={() => this.showDateTimePicker()}>
+            <View style={[Styles.cardContainer, { 
+                flex:1,
+                alignItems:'center',
+                justifyContent:'center', 
+                paddingVertical: Matrics.CountScale(10)
+            }]}>
+                <TouchableOpacity style={{ marginHorizontal: Matrics.CountScale(10), flexDirection: "row",}} onPress={() => this.showDateTimePicker()}>
                     <Text style={{ color: Colors.APPCOLOR, flex:1, fontSize: Matrics.CountScale(18)}}>{this.state.dateOfBirth == '' ? 'Select Date' : this.state.dateOfBirth}</Text>
                     <Image 
                         source={Images.StoreActiveIcon} 
@@ -724,9 +735,9 @@ class HireNewEmployee extends React.Component {
                     />
                 </TouchableOpacity>
                 {
-                    this.state.errorDob != '' &&
-                    <Text style={Styles.errorText}>{this.state.errorDob}</Text>
-                }
+                    this.state.errorDob != '' && 
+                    <Text style={[Styles.errorText]}>{this.state.errorDob}</Text>
+                } 
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
                     onConfirm={this.handleDatePicked}
@@ -811,6 +822,7 @@ class HireNewEmployee extends React.Component {
 
     employeeOptions() {
         return (
+            this.state.selectedStore != '' &&
             <View style={Styles.cardContainer}>
                 {
                      this.state.isBGCAutomatedEnabled == true

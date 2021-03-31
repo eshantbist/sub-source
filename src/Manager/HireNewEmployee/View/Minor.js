@@ -676,7 +676,7 @@ export default class Minor extends React.Component {
             style={[Styles.inputWorkStyle,{
               backgroundColor: this.state.anyHoursCheckedWe ? '#e7e7e7' : '#ffffff'
             }]}
-            placeholder={this.state.anyHoursCheckedWe ? '12:00' :'HH:MM'}
+            placeholder={this.state.anyHoursCheckedWe ? '12:00am ' :'HH:MM'}
             onChangeText={(text) => this.setState({workingHoursWe1: text})}
             value={this.state.workingHoursWe1}
             editable={this.state.anyHoursCheckedWe ? false : true}
@@ -686,7 +686,7 @@ export default class Minor extends React.Component {
             style={[Styles.inputWorkStyle,{
               backgroundColor: this.state.anyHoursCheckedWe ? '#e7e7e7' : '#ffffff'
             }]}
-            placeholder={this.state.anyHoursCheckedWe ? '11:59' :'HH:MM'}
+            placeholder={this.state.anyHoursCheckedWe ? '11:59pm' :'HH:MM'}
             onChangeText={(text) => this.setState({workingHoursWe2: text})}
             value={this.state.workingHoursWe2}
             editable={this.state.anyHoursCheckedWe ? false : true}
@@ -717,7 +717,7 @@ export default class Minor extends React.Component {
           style={[Styles.inputWorkStyle,{
             backgroundColor: this.state.anyHoursCheckedTh ? '#e7e7e7' : '#ffffff'
           }]}
-          placeholder={this.state.anyHoursCheckedTh ? '12:00' :'HH:MM'}
+          placeholder={this.state.anyHoursCheckedTh ? '12:00am' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursTh1: text})}
           value={this.state.workingHoursTh1}
           editable={this.state.anyHoursCheckedTh ? false : true}
@@ -727,7 +727,7 @@ export default class Minor extends React.Component {
           style={[Styles.inputWorkStyle,{
             backgroundColor: this.state.anyHoursCheckedTh ? '#e7e7e7' : '#ffffff'
           }]}
-          placeholder={this.state.anyHoursCheckedTh ? '11:59':'HH:MM'}
+          placeholder={this.state.anyHoursCheckedTh ? '11:59pm':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursTh2: text})}
           value={this.state.workingHoursTh2}
           editable={this.state.anyHoursCheckedTh ? false : true}
@@ -757,7 +757,7 @@ export default class Minor extends React.Component {
           style={[Styles.inputWorkStyle,{
             backgroundColor: this.state.anyHoursCheckedFr ? '#e7e7e7' : '#ffffff'
           }]}
-          placeholder={this.state.anyHoursCheckedFr ? '12:00' :'HH:MM'}
+          placeholder={this.state.anyHoursCheckedFr ? '12:00am' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursFr1: text})}
           value={this.state.workingHoursFr1}
           editable={this.state.anyHoursCheckedFr ? false : true}
@@ -767,7 +767,7 @@ export default class Minor extends React.Component {
           style={[Styles.inputWorkStyle,{
             backgroundColor: this.state.anyHoursCheckedFr ? '#e7e7e7' : '#ffffff'
           }]}
-          placeholder={this.state.anyHoursCheckedFr ? '11:59':'HH:MM'}
+          placeholder={this.state.anyHoursCheckedFr ? '11:59pm':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursFr2: text})}
           value={this.state.workingHoursFr2}
           editable={this.state.anyHoursCheckedFr ? false : true}
@@ -797,7 +797,7 @@ export default class Minor extends React.Component {
           style={[Styles.inputWorkStyle,{
             backgroundColor: this.state.anyHoursCheckedSa ? '#e7e7e7' : '#ffffff'
           }]}
-          placeholder={this.state.anyHoursCheckedSa ? '12:00' :'HH:MM'}
+          placeholder={this.state.anyHoursCheckedSa ? '12:00am' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursSa1: text})}
           value={this.state.workingHoursSa1}
           editable={this.state.anyHoursCheckedSa ? false : true}
@@ -807,7 +807,7 @@ export default class Minor extends React.Component {
           style={[Styles.inputWorkStyle,{
             backgroundColor: this.state.anyHoursCheckedSa ? '#e7e7e7' : '#ffffff'
           }]}
-          placeholder={this.state.anyHoursCheckedSa ? '11:59':'HH:MM'}
+          placeholder={this.state.anyHoursCheckedSa ? '11:59pm':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursSa2: text})}
           value={this.state.workingHoursSa2}
           editable={this.state.anyHoursCheckedSa ? false : true}
@@ -838,7 +838,7 @@ export default class Minor extends React.Component {
           style={[Styles.inputWorkStyle,{
             backgroundColor: this.state.anyHoursCheckedSu ? '#e7e7e7' : '#ffffff'
           }]}
-          placeholder={this.state.anyHoursCheckedSu ? '12:00' :'HH:MM'}
+          placeholder={this.state.anyHoursCheckedSu ? '12:00am' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursSu1: text})}
           value={this.state.workingHoursSu1}
           containerStyle={{ alignSelf: 'center'}}
@@ -849,7 +849,7 @@ export default class Minor extends React.Component {
           style={[Styles.inputWorkStyle,{
             backgroundColor: this.state.anyHoursCheckedSu ? '#e7e7e7' : '#ffffff'
           }]}
-          placeholder={this.state.anyHoursCheckedSu ? '11:59':'HH:MM'}
+          placeholder={this.state.anyHoursCheckedSu ? '11:59pm':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursSu2: text})}
           value={this.state.workingHoursSu2}
           editable={this.state.anyHoursCheckedSu ? false : true}
@@ -879,7 +879,7 @@ export default class Minor extends React.Component {
           style={[Styles.inputWorkStyle,{
             backgroundColor: this.state.anyHoursCheckedMo ? '#e7e7e7' : '#ffffff'
           }]}
-          placeholder={this.state.anyHoursCheckedMo ? '12:00' :'HH:MM'}
+          placeholder={this.state.anyHoursCheckedMo ? '12:00am' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursMo1: text})}
           value={this.state.workingHoursMo1}
           editable={this.state.anyHoursCheckedMo ? false : true}
@@ -889,7 +889,7 @@ export default class Minor extends React.Component {
           style={[Styles.inputWorkStyle,{
             backgroundColor: this.state.anyHoursCheckedMo ? '#e7e7e7' : '#ffffff'
           }]}
-          placeholder={this.state.anyHoursCheckedMo ? '11:59':'HH:MM'}
+          placeholder={this.state.anyHoursCheckedMo ? '11:59pm':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursMo2: text})}
           value={this.state.workingHoursMo2}
           editable={this.state.anyHoursCheckedMo ? false : true}
@@ -919,7 +919,7 @@ export default class Minor extends React.Component {
           style={[Styles.inputWorkStyle,{
             backgroundColor: this.state.anyHoursCheckedTu ? '#e7e7e7' : '#ffffff'
           }]}
-          placeholder={this.state.anyHoursCheckedTu ? '12:00' :'HH:MM'}
+          placeholder={this.state.anyHoursCheckedTu ? '12:00am' :'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursTu1: text})}
           value={this.state.workingHoursTu1}
           editable={this.state.anyHoursCheckedTu ? false : true}
@@ -929,7 +929,7 @@ export default class Minor extends React.Component {
           style={[Styles.inputWorkStyle,{
             backgroundColor: this.state.anyHoursCheckedTu ? '#e7e7e7' : '#ffffff'
           }]}
-          placeholder={this.state.anyHoursCheckedTu ? '11:59':'HH:MM'}
+          placeholder={this.state.anyHoursCheckedTu ? '11:59pm':'HH:MM'}
           onChangeText={(text) => this.setState({workingHoursTu2: text})}
           value={this.state.workingHoursTu2}
           editable={this.state.anyHoursCheckedTu ? false : true}

@@ -20,6 +20,7 @@ import SearchableDropdown from '../../../CustomComponent/react-native-searchable
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from '@react-native-community/async-storage';
 import { StackActions, NavigationActions } from 'react-navigation';
+import { FlatList } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -220,6 +221,7 @@ class Dashboard extends React.Component {
             if (this.dashboardDataFlag && this.roleFlag)
                 this.setState({ loading: false, refreshing: false });
             let data = nextProps.response.data;
+            console.log('data-->',data)
             if (data.Status == 1) {
                 let keyFinancialData = data.Data._keyFinacialObj;
                 let salesBuilding = data.Data._saleBuildingList ? data.Data._saleBuildingList[0] : [];
@@ -253,6 +255,7 @@ class Dashboard extends React.Component {
                     employeeNeed: empNeed,
                     progressPercentage
                 });
+                console.log('nonSubSales-->',this.state.nonSubSales)
                 if (customerComments.length > 0) {
                     this.filterCustomerComments();
                 }
@@ -495,7 +498,26 @@ class Dashboard extends React.Component {
                         {this.renderIndicator(this.state.entries.length)}
                     </View>
                 </View>
-
+                {/* <FlatList 
+                    horizontal
+                    data={this.state.entries}
+                    renderItem={this._renderItem}
+                    extraData={this.state}
+                    keyExtractor={(item, index) => index.toString()}
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={true}
+                    snapToAlignment="center"    
+                    onScroll={async (e) => {
+                        let offset = await e.nativeEvent.contentOffset.x;
+                        let index = await Math.round(parseInt(offset) / parseInt(Matrics.screenWidth));   // your cell height
+                        console.log('index-->', index)
+                        await this.setState({ activeSlide: index });
+                        index == 1 && !this.state.scrollEnabled ? this.setState({ scrollEnabled: true }) : null
+                        // if (previewScrollIndex != index) {
+                        //     setPreviewScrollIndex(index)
+                        // }
+                    }}       
+                />            */}
                 <Carousel
                     scrollEnabled={this.state.scrollEnabled}
                     removeClippedSubviews={true}
@@ -504,8 +526,15 @@ class Dashboard extends React.Component {
                     renderItem={this._renderItem}
                     sliderWidth={Matrics.screenWidth}
                     itemWidth={Matrics.screenWidth}
-                    onSnapToItem={(index) => {
-                        this.setState({ activeSlide: index })
+                    // onSnapToItem={async (index) => {
+                    //     console.log('snap to item', index)
+                    //     await this.setState({ activeSlide: index })
+                    //     index == 1 && !this.state.scrollEnabled ? this.setState({ scrollEnabled: true }) : null
+                    // }}
+                    // lockScrollWhileSnapping={true}
+                    // onBeforeSnapToItem = {(slideIndex) => console.log('onBeforeSnapToItem')}
+                    onBeforeSnapToItem={async (index) => {
+                        await this.setState({ activeSlide: index })
                         index == 1 && !this.state.scrollEnabled ? this.setState({ scrollEnabled: true }) : null
                     }}
                 />
@@ -706,7 +735,268 @@ class Dashboard extends React.Component {
         })
     }
 
+    _renderItemNew = ({ item, index }) => {
+        console.log('index', index)
+        if(index == 0){
+            return this.renderSlide1()
+        }else{
+            return this.renderSlide2()
+        }
+    }       
+    renderSlide1(){
+        let len = 0;
+        this.state.NPSDisplay === 'QTD' && this.state.customerServices && this.state.customerServices.QuarterMonthCount !== 0
+            ? len = this.state.customerCommentsQTD.length
+            : this.state.NPSDisplay === 'YTD' && this.state.customerServices && this.state.customerServices.CurrentYearCount !== 0
+                ? len = this.state.customerCommentsYTD.length
+                : len = this.state.customerCommentsMonth.length;
+        return(
+            <View style={Styles.slideStyle}>
+                    <ScrollView showsVerticalScrollIndicator={false}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={this.onRefresh}
+                            />
+                        }
+                    >
+                        <Text style={Styles.labelText}>Financial</Text>
+                        <View style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'center' }}>
+                            <InfoViewContainer bgColor={Colors.PARROT} labelText={'SALES'} imgSrc={Images.Sales} contentText={this.state.totalSales} />
+                            <InfoViewContainer bgColor={Colors.ORANGE} labelText={'LABOR'} imgSrc={Images.Labor} contentText={this.state.labourPercentage != undefined && `${this.state.labourPercentage}%`} />
+                            <InfoViewContainer bgColor={Colors.PURPLE} labelText={'PRODUCTIVITY'} imgSrc={Images.Productivity} contentText={this.state.productivityPercentage} />
+                            <InfoViewContainer bgColor={Colors.SKY} labelText={'FOOD COST'} imgSrc={Images.FoodCost} contentText={this.state.foodCostPercentage != undefined && `${this.state.foodCostPercentage}%`} />
+                            <InfoViewContainer bgColor={Colors.ORANGERED} labelText={'OVERTIME'} imgSrc={Images.Overtime} contentText={this.state.overTimePercentage} />
+                            <InfoViewContainer bgColor={Colors.DARKAPPCOLOR} labelText={'BREAK VIOLATION'} imgSrc={Images.BreakViolation} contentText={this.state.breakViolationPercentage} />
+
+                        </View>
+                        <Text style={Styles.labelText}>Sales Building</Text>
+                        <View style={[Styles.contentContainerStyle, { flexDirection: 'row' }]}>
+                            <View style={{ flex: 1, alignItems: 'center' }} >
+                                <Image source={Images.SalesBuilding} />
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Text style={Styles.salesBuildingText}>{this.state.nonSubSales !== undefined ? `${this.state.nonSubSales}%` : null}</Text>
+                                <Text style={Styles.labelText}>Non-Sub Sales</Text>
+                            </View>
+
+                        </View>
+                        <Text style={Styles.labelText}>Customer Services</Text>
+                        <View style={Styles.contentContainerStyle}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <TouchableOpacity onPress={() => { this.setState({ NPSDisplay: 'Month' }) }}>
+                                    <Text style={[Styles.serviceLabelStyle, { color: this.state.NPSDisplay === 'Month' ? Colors.DARKAPPCOLOR : null }]}>Current Month <Text style={{ color: Colors.ORANGE }}>{this.state.customerServices && this.state.customerServices.CurrentMonthCount}</Text></Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => { this.setState({ NPSDisplay: 'QTD' }) }}>
+                                    <Text style={[Styles.serviceLabelStyle, { color: this.state.NPSDisplay === 'QTD' ? Colors.DARKAPPCOLOR : null }]}>QTD <Text style={{ color: Colors.ORANGE }}>{this.state.customerServices && this.state.customerServices.QuarterMonthCount}</Text></Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => { this.setState({ NPSDisplay: 'YTD' }) }}>
+                                    <Text style={[Styles.serviceLabelStyle, { color: this.state.NPSDisplay === 'YTD' ? Colors.DARKAPPCOLOR : null }]}>YTD <Text style={{ color: Colors.ORANGE }}>{this.state.customerServices && this.state.customerServices.CurrentYearCount}</Text></Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={Styles.borderStyle}>
+                                <Image source={Images.Excellent} />
+                            </View>
+                            <View style={{ flexDirection: 'row', paddingVertical: Matrics.CountScale(10) }}>
+                                <View style={{ flex: 1}}>
+                                    <View style={Styles.serviceRowStyle}>
+                                        <Image source={Images.NPSScore} />
+                                        <Text style={[Styles.salesBuildingText, { marginLeft: Matrics.CountScale(15)}]}>
+                                            {
+                                                this.state.NPSDisplay === 'QTD'
+                                                    ? this.state.customerServices && this.state.customerServices.NPSQuarterScore
+                                                    : this.state.NPSDisplay === 'YTD'
+                                                        ? this.state.customerServices && this.state.customerServices.NPSYearScore
+                                                        : this.state.customerServices && this.state.customerServices.NPSScore
+                                            }
+                                        </Text>
+                                    </View>
+                                    <Text style={[Styles.labelText, { textAlign: 'center' }]}>OSAT Score</Text>
+                                </View>
+
+                                <View style={{ flex: 1 }}>
+                                    <View style={Styles.serviceRowStyle}>
+                                        <Image source={Images.NPSCount} />
+                                        <Text style={[Styles.salesBuildingText, { marginLeft: Matrics.CountScale(15) }]}>
+                                            {
+                                                this.state.NPSDisplay === 'QTD'
+                                                    ? this.state.customerServices && this.state.customerServices.NPSQuarterCount
+                                                    : this.state.NPSDisplay === 'YTD'
+                                                        ? this.state.customerServices && this.state.customerServices.NPSYearCount
+                                                        : this.state.customerServices && this.state.customerServices.NPSCount
+                                            }
+                                        </Text>
+                                    </View>
+                                    <Text style={[Styles.labelText, { textAlign: 'center' }]}>OSAT Count</Text>
+                                </View>
+                            </View>
+                        </View>
+                        <View style={Styles.contentContainerStyle}>
+                            <View style={{ overflow: 'hidden' }}>
+                                <Swiper height={Matrics.CountScale(160)} showsPagination={false}
+                                    key={
+                                        this.state.NPSDisplay === 'QTD'
+                                            ? this.state.customerCommentsQTD.length
+                                            : this.state.NPSDisplay === 'YTD'
+                                                ? this.state.customerCommentsYTD.length
+                                                : this.state.customerCommentsMonth.length
+                                    }
+                                    scrollEnabled={true}
+
+                                    onTouchStart={() => {
+                                        if (Platform.OS == 'android') {
+                                            // if(this.sta)
+                                            this.setState({ scrollEnabled: false })
+                                            clearTimeout(this.state.clearId)
+                                            clearTimeout(this.state.clearscrollId)
+                                            var clearscrollId = setTimeout(() => {
+                                                if (!this.state.scrollEnabled)
+                                                    this.setState({ scrollEnabled: true })
+                                            }, 1000)
+                                            this.setState({ clearscrollId: clearscrollId });
+                                        }
+                                    }}
+
+                                    onTouchEnd={() => {
+                                        if (Platform.OS == 'android') {
+                                            var clearId = setTimeout(() => {
+                                                this.setState({ scrollEnabled: true })
+                                            }, 1000)
+                                            this.setState({ clearId: clearId });
+
+                                        }
+                                    }}
+                                    onPageScrollStateChanged={(e) => { console.log(e) }}
+                                    onMomentumScrollEnd={(e, state, context) => {
+                                        this.setState({ activePage: context.state.index + 1 })
+
+                                    }} >
+                                    {
+                                        this.state.NPSDisplay === 'QTD'
+                                            ? this.state.customerCommentsQTD.length > 0 && this.state.customerServices && this.state.customerServices.QuarterMonthCount !== 0
+                                                ? this.state.customerCommentsQTD.map((res, index) => {
+                                                    return (
+                                                        <TouchableOpacity key={index} onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
+                                                            <View style={Styles.bottomBorderStyle}>
+                                                                <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM.DD.YYYY, hh:mm a')}</Text></Text>
+
+                                                            </View>
+                                                            <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginLeft: 0, marginVertical: Matrics.CountScale(20) }]}>
+                                                                {res.Comments}
+                                                            </Text>
+                                                        </TouchableOpacity>
+                                                    )
+                                                })
+                                                : <Text style={Styles.labelText}>No comments available for Quater-To-Date.</Text>
+                                            : this.state.NPSDisplay === 'YTD' && this.state.customerServices && this.state.customerServices.CurrentYearCount !== 0
+                                                ?
+                                                this.state.customerCommentsYTD.length > 0
+                                                    ? this.state.customerCommentsYTD.map((res, index) => {
+                                                        return (
+                                                            <TouchableOpacity key={index} onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
+                                                                <View style={Styles.bottomBorderStyle}>
+                                                                    <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM.DD.YYYY, hh:mm a')}</Text></Text>
+
+                                                                </View>
+                                                                <Text numberOfLines={4} style={[Styles.pickerLabelStyle, {marginLeft: 0, marginVertical: Matrics.CountScale(20) }]}>
+                                                                    {res.Comments}
+                                                                </Text>
+                                                            </TouchableOpacity>
+                                                        )
+                                                    })
+                                                    : <Text style={Styles.labelText}>No comments available for Year-To-Date.</Text>
+                                                : this.state.customerCommentsMonth.length > 0
+                                                    ? this.state.customerCommentsMonth.map((res, index) => {
+                                                        return (
+                                                            <TouchableOpacity key={index} onPress={() => this.props.navigation.navigate('CustomerComments', { commentsData: this.state.customerComments })}>
+                                                                <View style={Styles.bottomBorderStyle}>
+                                                                    <Text style={[Styles.labelText, { color: Colors.PARROT }]}>{res.DisplayStoreNumber} - <Text style={Styles.labelText}>{moment(res.VisitTimeStamp).format('MM.DD.YYYY, hh:mm a')}</Text></Text>
+
+                                                                </View>
+                                                                <Text numberOfLines={4} style={[Styles.pickerLabelStyle, { marginLeft: 0, marginVertical: Matrics.CountScale(20) }]}>
+                                                                    {res.Comments}
+                                                                </Text>
+                                                            </TouchableOpacity>
+                                                        )
+                                                    })
+                                                    : <Text style={Styles.labelText}>No comments available for Current Month.</Text>
+                                    }
+                                </Swiper>
+                            </View>
+                            {
+                                len > 0
+                                    ? <Text style={[Styles.labelText, { textAlign: 'center' }]}>{this.state.activePage}/ {len}</Text>
+                                    : null
+                            }
+                        </View>
+                        <Text style={Styles.labelText}>Operation Overview</Text>
+                        <View style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'center' }}>
+                            <OperationOverViewContainer labelText={'University of Subway'}
+                                imgSrc={Images.University} ><Text style={[Styles.labelValueStyle, { color: Colors.PARROT }]}>{this.state.current}
+                                    <Text style={{ color: 'black', fontSize: Matrics.CountScale(16) }}> / {this.state.total}</Text></Text></OperationOverViewContainer>
+                            <OperationOverViewContainer labelText={'Employees Needed'} fontStyle={{ color: Colors.ORANGE }}
+                                textValue={this.state.employeeNeed} imgSrc={Images.EmpNeed} onPress={() => { this.setState({ activeSlide: 1 }) }} />
+                            <OperationOverViewContainer labelText={'In Full Compliance'}
+                                textValue={this.state.operationOverview && this.state.operationOverview.InFullCompliance} imgSrc={Images.FullComp} />
+                            <OperationOverViewContainer labelText={'Out of Compliance'} fontStyle={{ fontWeight: 'bold' }}
+                                textValue={this.state.operationOverview && this.state.operationOverview.OutOfCompliance} imgSrc={Images.OutOfComp} />
+                        </View>
+                    </ScrollView>
+                </View >
+        )
+    }
+    renderSlide2(){
+        return(
+            <View style={Styles.slideStyle}>
+                    <ScrollView showsVerticalScrollIndicator={false}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={this.onRefresh}
+                            />
+                        }
+                    >
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ flex: 1 }}>
+                                <View style={[Styles.contentContainerStyle, { paddingHorizontal: 0, alignItems: 'center', borderWidth: 2, borderColor: Colors.ORANGE }]}>
+                                    <Text style={Styles.empNeedTextStyle}>{this.state.humanResource && this.state.employeeNeed >= this.state.humanResource.ActiveEmployee ? this.state.employeeNeed - this.state.humanResource.ActiveEmployee : 0}</Text>
+                                    <Text style={[Styles.labelText, { fontSize: Matrics.CountScale(14) }]}>Employees needed</Text>
+                                </View>
+                            </View>
+
+                            <View style={{ flex: 1 }}>
+                                <View style={[Styles.contentContainerStyle, { flex: 1, justifyContent: 'space-around' }]}>
+                                    <Text style={Styles.progressText}><Text style={{ color: Colors.PARROT }}>{this.state.humanResource && this.state.humanResource.ActiveEmployee}</Text> of {this.state.employeeNeed}</Text>
+                                    <View style={{ height: 10, backgroundColor: Colors.LIGHTGREY, borderRadius: 10 }}>
+                                        <View style={{ height: 10, width: `${this.state.progressPercentage}%`, borderRadius: 10, backgroundColor: Colors.PARROT }}></View>
+                                    </View>
+                                    <Text style={[Styles.labelText, { fontSize: Matrics.CountScale(14) }]}>Active Employees</Text>
+                                </View></View>
+                        </View>
+                        <View style={Styles.contentContainerStyle}>
+                            <HRTextContent labelText={'Onborading issues'} textValue={this.state.humanResource && this.state.humanResource.OnBoardingIssues} bulletColor={Colors.RED} />
+                            <HRTextContent labelText={'Exp. Work Permits'} textValue={this.state.humanResource && this.state.humanResource.ExpiredWorkPermits} bulletColor={Colors.PURPLE} />
+                            <HRTextContent labelText={'Exp. 1-9 Documents'} textValue={this.state.humanResource && this.state.humanResource.ExpiredI9Documents} bulletColor={Colors.SKY} />
+                            <HRTextContent labelText={'Anti-Harassment Cert.'} textValue={this.state.humanResource && this.state.humanResource.AntiHarassmentCertification} bulletColor={Colors.YELLOW} />
+                        </View>
+                        <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
+                            <OperationOverViewContainer labelText={'Onboarding'} contentStyle={{ fontSize: Matrics.CountScale(14) }}
+                                textValue={this.state.humanResource && this.state.humanResource.OnBoarding} imgSrc={Images.Onboarding} />
+                            <OperationOverViewContainer labelText={'Ready to Work'} contentStyle={{ fontSize: Matrics.CountScale(14) }}
+                                textValue={this.state.humanResource && this.state.humanResource.ReadyToWork} imgSrc={Images.ReadyToWork} />
+                            <OperationOverViewContainer labelText={'Employees over 30 hours'} contentStyle={{ fontSize: Matrics.CountScale(14) }}
+                                textValue={this.state.humanResource && this.state.humanResource.EmployeeOver30Hours} imgSrc={Images.EmpOverHour} />
+                            <OperationOverViewContainer labelText={'Unknown Employees'} contentStyle={{ fontSize: Matrics.CountScale(14) }}
+                                textValue={this.state.humanResource && this.state.humanResource.UnknownEmployeesCount} imgSrc={Images.UnknownEmp} />
+                        </View>
+                    </ScrollView>
+
+
+                </View >
+        )
+    }
     _renderItem = ({ item, index }) => {
+        // console.log('this.state.activeSlide-->',this.state.activeSlide)
         let len = 0;
         this.state.NPSDisplay === 'QTD' && this.state.customerServices && this.state.customerServices.QuarterMonthCount !== 0
             ? len = this.state.customerCommentsQTD.length
@@ -967,6 +1257,7 @@ const Styles = {
     slideStyle: {
         flex: 1,
         padding: Matrics.CountScale(10),
+        // width: '100%'
     },
     pickerItemStyle: {
         fontSize: Matrics.CountScale(18),
