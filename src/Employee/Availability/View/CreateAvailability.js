@@ -210,7 +210,7 @@ class CreateAvailability extends React.Component {
                         onPress={() => {
                             this.props.navigation.goBack();
                         }}
-                        style={[MasterCssEmployee.headerTextContainerStyle,{ flex: 0.45}]}>
+                        style={MasterCssEmployee.headerTextContainerStyle}>
                         <Text style={MasterCssEmployee.headerLeftTextStyle} >Cancel</Text>
                     </TouchableOpacity>
                     <View style={MasterCssEmployee.centerStyle}>

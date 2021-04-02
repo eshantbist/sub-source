@@ -10,7 +10,7 @@ const isX = Platform.OS === "ios" && (d.height == 812 || d.width == 812) ? true 
 const MasterCss = {
     headerTextContainerStyle: {
         justifyContent: 'center',
-        flex: 0.40,
+        flex: 0.45,
         // borderWidth: 1,
     },
     iconContainerStyle: {

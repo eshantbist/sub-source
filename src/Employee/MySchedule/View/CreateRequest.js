@@ -154,7 +154,7 @@ class CreateRequest extends React.Component {
                                 EndDate: endDate,
                                 ReasonID: this.state.selectedReasonId,
                                 ReasonDetail: this.state.notes,
-                                AttachmentName: this.state.attachFile.fileName ? this.state.attachFile.fileName : '',
+                                AttachmentName: this.state.attachFile.name ? this.state.attachFile.name : '',
                                 OldTimeOffCombineID: 0,
                                 IsFromSchedule: 0 
                             }
@@ -288,11 +288,13 @@ class CreateRequest extends React.Component {
                 </TouchableOpacity>
 
                 {/* ====>>>>>>>>>>> Attached label <<<<<<<<<<==========> */}
+                {console.log('file-->',this.state.attachFile)}
                 <View style={Styles.rowStyle}>
                     <TouchableOpacity style={Styles.attachContainer} onPress={() => this.onAttach()}>
                         <Image style={Styles.attachImgStyle} source={Images.AttachIcon}></Image>
-                        <Text style={Styles.attachTextStyle}>
-                            {this.state.attachFile.fileName ? this.state.attachFile.fileName : 'Attach file'}
+                        <Text numberOfLines={1} style={Styles.attachTextStyle}>Attach file</Text>
+                        <Text style={Styles.attachFileStyle} numberOfLines={1} onPress={() => { this.onSelectFile() }}>
+                            {this.state.attachFile.name ? this.state.attachFile.name : ''}
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -430,7 +432,16 @@ const Styles = {
     attachTextStyle: {
         color: Colors.APPCOLOR,
         fontSize: Matrics.CountScale(17),
-        paddingLeft: Matrics.CountScale(10)
+        paddingLeft: Matrics.CountScale(10),
+        flex:1,
+        width: '50%',
+    },
+    attachFileStyle: {
+        color: Colors.APPCOLOR,
+        fontSize: Matrics.CountScale(17),
+        marginRight: Matrics.CountScale(10),
+        alignSelf: 'flex-end',
+        width: '50%',
     }
 }
 // export default CreateRequest;

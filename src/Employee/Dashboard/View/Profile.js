@@ -240,6 +240,7 @@ class Profile extends React.Component {
 
     //   ====>>>>>>>>>>>    User Details Content   <<<<<<<<<<========== 
     renderPageContent() {
+        console.log('this.state.address1-->',this.state.address1)
         return (
             <ScrollView style={{ paddingTop: Matrics.CountScale(10), backgroundColor: Colors.WHITE }}>
                 {/* <View style={Styles.inputBox}>
