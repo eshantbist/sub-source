@@ -623,7 +623,7 @@ class CheckDoucmentStatus extends React.Component {
                                     selectedStatus: this.state.lastFilterselectedStatus,
                                     selectedUsers: this.state.lastFilterselectedUserId,
                                     Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
-                                    selectedStoreIndex: this.state.lastFilterselectedIndex
+                                    selectedStoreIndex: this.state.lastFilterselectedIndex,
                                 })
                                 global.selectedStore = this.state.lastFilterselectedStores;
                             }}
@@ -661,6 +661,7 @@ class CheckDoucmentStatus extends React.Component {
                                     lastFilterselectedselectedStoreName: this.state.selectedStoreName,
                                     lastFilterselectedUserId: this.state.selectedUsers,
                                     lastFilterselectedIndex: index,
+                                    updateTitleArr: true,
                                 })
                             }}
                         />

@@ -58,7 +58,8 @@ export const TextRow = ({ labelText, contentText, bgColor }) => {
 
 export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,ContactNumber,RoleCode, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress, onLayout, selectedJumpEmpName}) => {
     return (
-        <View style={[Styles.rowContainer, { backgroundColor: bgColor, borderBottomColor: Colors.BORDERCOLOR, borderBottomWidth: 2 }]}
+        <View style={[Styles.rowContainer, { backgroundColor: bgColor, borderBottomColor: Colors.BORDERCOLOR, borderBottomWidth: 2, 
+            height: Matrics.CountScale(100) }]}
             onLayout={(e) => {selectedJumpEmpName != '' ? onLayout(e.nativeEvent.layout.height) : onLayout(0); }}
             key={selectedJumpEmpName}
         >
@@ -1092,17 +1093,24 @@ class WeeklySchedule extends React.Component {
                 bgColor={index % 2 == 0 ? Colors.ROWBGCOLOR : null} 
                 onLayout={(height) => { 
                     // console.log('selectedJumpEmpName-->',this.state.selectedJumpEmpName)
-                    // console.log('FullName-->',item.FullName)
-                    if(this.state.selectedJumpEmpName == item.FullName){
-                        this.scrollview.scrollTo({
-                            y: this.state.selectedEmpIndex == 1 
-                            ?  this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
-                            : this.state.selectedEmpIndex == 2
-                            ? ((this.state.selectedEmpIndex-1)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
-                            : ((this.state.selectedEmpIndex)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight, 
-                            animated: true
-                        });
-                    }
+                    // console.log('selectedEmpIndex-->',this.state.selectedEmpIndex)
+                    // console.log('upperSectionHeight-->',this.state.upperSectionHeight)
+                    // console.log('headContainerHeight-->',this.state.headContainerHeight)
+                    // console.log('userHeaderHeight-->',this.state.userHeaderHeight)
+                    // console.log('height-->',height)
+                    // console.log('scroll-->',((this.state.selectedEmpIndex)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight)
+                    // // console.log('FullName-->',item.FullName)
+                    // if(this.state.selectedJumpEmpName == item.FullName){
+                    //     this.scrollview.scrollTo({
+                    //         y: this.state.selectedEmpIndex == 1 
+                    //         ?  this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
+                    //         : this.state.selectedEmpIndex == 2
+                    //         ? ((this.state.selectedEmpIndex-1)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
+                    //         // : ((this.state.selectedEmpIndex)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight, 
+                    //         : 1075, 
+                    //         animated: true
+                    //     });
+                    // }
                     
                 }}
                 selectedJumpEmpName={this.state.selectedJumpEmpName}
@@ -1480,6 +1488,24 @@ class WeeklySchedule extends React.Component {
             <TouchableOpacity key={index} style={Styles.itemContainerStyle} 
                 onPress={() => {
                     this.setState({ JumtoEmpModal: false, selectedJumpEmpName: item.FullName, selectedEmpIndex: index+1 });
+                    const height =  Matrics.CountScale(100);
+                    // console.log('selectedEmpIndex-->',index+1)
+                    // console.log('upperSectionHeight-->',this.state.upperSectionHeight)
+                    // console.log('headContainerHeight-->',this.state.headContainerHeight)
+                    // console.log('userHeaderHeight-->',this.state.userHeaderHeight)
+                    // console.log('height-->',height)
+                    // console.log('scroll-->',((index+1)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight)
+                    this.scrollview.scrollTo({
+                        y: 
+                        index+1 == 1 
+                        ?  this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
+                        : index+1 == 2
+                        ? ((index+1-1)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
+                        : 
+                        ((index+1)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight, 
+                        // : 1075, 
+                        animated: true
+                    });
                 }}
             >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
