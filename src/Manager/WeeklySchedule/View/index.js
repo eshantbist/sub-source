@@ -1161,9 +1161,9 @@ class WeeklySchedule extends React.Component {
         return (
             <View key={index} style={[Styles.rowContainer, { backgroundColor: index % 2 == 0 ? Colors.ROWBGCOLOR : null }]}>
                 <View style={Styles.rowTitleStyle}>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
                         <Icon name="user-circle-o" size={20} color="#FF7B2A" />
-                        <Text numberOfLines={2} style={[Styles.mainContainerLabel, { color: '#FF7B2A' }]}>{item.FirstName} {item.LastName}</Text>
+                        <Text numberOfLines={3} style={[Styles.mainContainerLabel, { color: '#FF7B2A' }]}>{item.FirstName} {item.LastName}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', marginLeft: Matrics.CountScale(25) }}>
                         <Text style={{ flex: 1, fontFamily: Fonts.NunitoSansRegular }}>{ContactNumber}</Text>

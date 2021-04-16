@@ -563,8 +563,6 @@ class DocumentDetails extends React.Component {
             td: (x, c) => <View style={tdStyle}>{c}</View>
           }
 
-          console.log('kkk--->', this.state.Employeedata);
-
         return (
             <View style={Styles.hireStatusContainer}>
                 <View style={Styles.hireStatusCardHeader}>
@@ -594,9 +592,9 @@ class DocumentDetails extends React.Component {
     renderStatusIndicatorIcon(val, status) {
         if (val == 'Employee Created' && status == 'Hirestatus' )
             return (<Image style={{ width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(5) }} source={Images.RightIcon}></Image>)
-        else if (val != 'Pending' && status == 'E-Verify' ) 
+        else if ((val == 'E-Verification completed' || val == 'Manually Approved') && status == 'E-Verify' ) 
             return (<Image style={{  width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(5) }} source={Images.RightIcon}></Image>)
-        else if (val != 'Pending' && status == 'BGC' ) 
+        else if ((val == 'Manually Approved' || val == 'BGC Approved')&& status == 'BGC' ) 
             return (<Image style={{  width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(5) }} source={Images.RightIcon}></Image>)
         else
             return (<Image style={{ width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(5) }} source={Images.ClockIcon} ></Image >)
@@ -609,6 +607,7 @@ class DocumentDetails extends React.Component {
     }
     EVerifyStatus() {
         let EVerify = this.state.Employeedata ? this.state.Employeedata.EverifyFilePath ? true : false : false;
+        console.log('Employeedata-->', this.state.Employeedata)
         return (
             <View style={Styles.hireStatusContainer}>
                 <View style={Styles.hireStatusCardHeader}>
