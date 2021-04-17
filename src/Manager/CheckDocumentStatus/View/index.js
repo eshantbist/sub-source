@@ -754,7 +754,10 @@ class CheckDoucmentStatus extends React.Component {
                                                     borderColor: '#ccc',
                                                     borderRadius: 5,
                                                 },
-                                                onTextChange: text => console.log(text)
+                                                onTextChange: text => console.log('text',text),
+                                                // onBlur: (text) => {
+                                                //     console.log('blure',this.state.selectedStores)
+                                                // }
                                             }
                                         }
                                         listProps={

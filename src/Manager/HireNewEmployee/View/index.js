@@ -583,15 +583,20 @@ class HireNewEmployee extends React.Component {
                     returnKeyType={"next"}
                     labelFontSize={14}
                     containerStyle={Styles.Inputcommon}
+                    lineWidth={0}
+                    activeLineWidth={0}
                     onChangeText={val => this.setState({ firstName: val, errorFirstName: '' })}
                     error={this.state.errorFirstName}
                 />
+                <View />
                 <TextInputView
                     label="Middle Name"
                     fontSize={18}
                     value={this.state.middleName}
                     labelFontSize={14}
                     containerStyle={Styles.Inputcommon}
+                    lineWidth={0}
+                    activeLineWidth={0}
                     returnKeyType={"next"}
                     onChangeText={val => this.setState({ middleName: val, })}
                     maxLength = {1}
@@ -601,6 +606,8 @@ class HireNewEmployee extends React.Component {
                     fontSize={18}
                     containerStyle={Styles.Inputcommon}
                     labelFontSize={14}
+                    lineWidth={0}
+                    activeLineWidth={0}
                     value={this.state.lastName}
                     returnKeyType={"next"}
                     onChangeText={val => this.setState({ lastName: val, errorLastName: '' })}
@@ -612,6 +619,8 @@ class HireNewEmployee extends React.Component {
                     containerStyle={Styles.Inputcommon}
                     value={this.state.email}
                     labelFontSize={14}
+                    lineWidth={0}
+                    activeLineWidth={0}
                     returnKeyType={"next"}
                     onChangeText={val => this.setState({ email: val, errorEmail: '' })}
                     error={this.state.errorEmail}
@@ -645,9 +654,14 @@ class HireNewEmployee extends React.Component {
                     <TextInputView
                         label="POS ID *"
                         fontSize={18}
-                        containerStyle={[Styles.Input]}
+                        containerStyle={[Styles.Input, {
+                            borderBottomColor: Colors.LIGHTGREY,
+                            borderBottomWidth: 1,
+                        }]}
                         value={this.state.posId}
                         labelFontSize={14}
+                        lineWidth={0}
+                        activeLineWidth={0}
                         returnKeyType={"next"}
                         onChangeText={val => this.setState({ posId: val, errorPosId: '' })}
                         error={this.state.errorPosId}
@@ -690,18 +704,21 @@ class HireNewEmployee extends React.Component {
                         </View>
                     : null
                 } 
-                
-
                 <TextInputView
                     label="Wage Rate *"
                     fontSize={18}
-                    containerStyle={Styles.Input}
+                    containerStyle={[Styles.Input,{
+                        borderBottomColor: Colors.DARK_GREY,
+                        borderBottomWidth: 1,
+                    }]}
                     value={this.state.wageRate}
                     labelFontSize={14}
                     returnKeyType={"next"}
                     onChangeText={val => this.setState({ wageRate: val, errorwageRate: '' })}
                     error={this.state.errorwageRate}
                     keyboardType='numeric'
+                    lineWidth={0}
+                    activeLineWidth={0}
                 />
             </View>
         )
@@ -889,6 +906,9 @@ const Styles = StyleSheet.create({
         marginHorizontal: Matrics.CountScale(10),
         marginBottom: 0,
         margin: 0,
+        borderBottomColor: Colors.LIGHTGREY,
+        borderBottomWidth: 1,
+        paddingBottom: 0
     },
     Input: {
         margin: Matrics.CountScale(10),

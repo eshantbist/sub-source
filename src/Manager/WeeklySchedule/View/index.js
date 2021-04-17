@@ -1502,7 +1502,7 @@ class WeeklySchedule extends React.Component {
                         : index+1 == 2
                         ? ((index+1-1)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
                         : 
-                        ((index+1)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight, 
+                        ((index)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight, 
                         // : 1075, 
                         animated: true
                     });

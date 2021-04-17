@@ -39,6 +39,8 @@ class TextInputView extends React.Component {
                 multiline={this.props.multiline}
                 maxLength={this.props.maxLength}
                 keyboardType={this.props.keyboardType}
+                lineWidth={this.props.lineWidth}
+                activeLineWidth={this.props.activeLineWidth}
             />
         )
     }

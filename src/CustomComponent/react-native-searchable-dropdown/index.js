@@ -173,7 +173,7 @@ export default class SearchableDropDown extends Component {
         key: 'onBlur',
         val: () => {
           this.props.onBlur && this.props.onBlur()
-          this.setState({ focus: false })
+          this.setState({ focus: false });
         }
       },
       {
