@@ -24,7 +24,10 @@ import {
     GET_END_EMPLOYEEMENT_REASON_FAIL,
 
     SAVE_UPDATE_USER_DEVICES_SUCCESS,
-    SAVE_UPDATE_USER_DEVICES_FAIL
+    SAVE_UPDATE_USER_DEVICES_FAIL,
+
+    GET_NOTIFICATION_DETAILS_SUCCESS,
+    GET_NOTIFICATION_DETAILS_FAIL
 
 } from '@Types/DashboardTypes'
 
@@ -84,6 +87,11 @@ export default (state = INITIAL_STATE, action) => {
             return { SaveUpdateUserDevicesSuccess: true, data: action.payload };
         case SAVE_UPDATE_USER_DEVICES_FAIL:
             return { SaveUpdateUserDevicesFail: true };
+
+        case GET_NOTIFICATION_DETAILS_SUCCESS:
+            return { getNotificationDataSuccess: true, notificationData: action.payload };
+        case GET_NOTIFICATION_DETAILS_FAIL:
+            return { getNotificationDataFail: true };
 
         default:
             return state;

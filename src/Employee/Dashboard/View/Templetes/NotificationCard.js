@@ -12,7 +12,7 @@ class NotificationCard extends React.Component {
         return (
             <TouchableOpacity
                 onPress={() => {
-                    this.props.navigation.navigate(this.props.root);
+                    this.props.navigation.navigate(this.props.root,{ MessageGuid: this.props.MessageGuid});
                 }}
                 style={[Styles.notificationCard, { 
                     // backgroundColor: this.props.isRead ? 'yellow' : 'white' 

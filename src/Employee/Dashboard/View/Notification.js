@@ -89,6 +89,7 @@ class Notification extends React.Component {
                 navigation={this.props.navigation}
                 imgSrc={item.ProfilePicture}
                 text={item.MessageSubject}
+                MessageGuid={item.MessageGuid}
                 time={moment.parseZone(item.MessageDate).format('DD MMMM, hh:mm a')}
                 isRead={item.IsRead}
             />
@@ -128,16 +129,16 @@ class Notification extends React.Component {
     }
 
     //  ====>>>>>>>>>>> Render Class for Notification Card <<<<<<<<<<==========
-    renderNotificationCards() {
-        return (
-            <ScrollView>
-                <NotificationCard root={'NotificationDetail'} navigation={this.props.navigation} text={'approve your day off request'} name={'Cameron Peters'} ></NotificationCard>
-                <NotificationCard root={'SwapOfferDetails'} navigation={this.props.navigation} text={'approve swap request between you and'} name={'Justin Collins'} name2={'Sarah Conner'}></NotificationCard>
-                <NotificationCard root={'SwapOfferDetails'} navigation={this.props.navigation} text={'offer you a shift to switch'} button={true} name={'Martha  Brayan'}></NotificationCard>
-                <NotificationCard root={'NotificationDetail'} navigation={this.props.navigation} text={'approve your day off request'} name={'Bradley neal'}></NotificationCard>
-            </ScrollView>
-        );
-    }
+    // renderNotificationCards() {
+    //     return (
+    //         <ScrollView>
+    //             <NotificationCard root={'NotificationDetail'} navigation={this.props.navigation} text={'approve your day off request'} name={'Cameron Peters'} ></NotificationCard>
+    //             <NotificationCard root={'SwapOfferDetails'} navigation={this.props.navigation} text={'approve swap request between you and'} name={'Justin Collins'} name2={'Sarah Conner'}></NotificationCard>
+    //             <NotificationCard root={'SwapOfferDetails'} navigation={this.props.navigation} text={'offer you a shift to switch'} button={true} name={'Martha  Brayan'}></NotificationCard>
+    //             <NotificationCard root={'NotificationDetail'} navigation={this.props.navigation} text={'approve your day off request'} name={'Bradley neal'}></NotificationCard>
+    //         </ScrollView>
+    //     );
+    // }
 }
 
 

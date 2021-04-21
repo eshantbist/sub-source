@@ -11,7 +11,7 @@ class SwapOfferCard extends React.Component {
         return (
             <TouchableOpacity
                 onPress={() => {
-                    this.props.navigation.navigate('NotificationDetail');
+                    this.props.navigation.navigate('NotificationDetail',{MessageGuid: ''});
                 }}
                 style={Styles.swapOfferCard}>
                 <View style={{ flex: 1, flexDirection: 'row' }}>

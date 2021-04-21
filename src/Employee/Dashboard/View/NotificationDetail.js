@@ -1,15 +1,53 @@
 {/* ====>>>>>>>>>>> Libraries <<<<<<<<<<==========>  */ }
 import React from 'react';
+import { connect } from 'react-redux';
 import { View, Image, ScrollView, BackHandler, TouchableOpacity, Text } from 'react-native';
-
+import moment from "moment";
+import HTML from 'react-native-render-html';
+import {
+    getNotificationDetails
+} from '@Redux/Actions/DashboardEmployeeActions';
+import { WebView } from 'react-native-webview';
 {/* ====>>>>>>>>>>> Assets <<<<<<<<<<==========>  */ }
-import { Colors, Fonts, Matrics, MasterCssEmployee, Images } from '@Assets'
+import { Colors, Fonts, Matrics, MasterCssEmployee, Images } from '@Assets';
+import { LoadWheel, LoadMore, CustomModal } from "@Components";
 import Header from './Templetes/Header';
+
 
 {/* ====>>>>>>>>>>> Class Declaration <<<<<<<<<<==========>  */ }
 class NotificationDetail extends React.Component {
+    state = {
+        loading: true,
+        msgModal: false,
+        notificationDetails: [],
+    }
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+        const MessageGuid = this.props.navigation.getParam('MessageGuid');;
+        console.log('MessageGuid',MessageGuid)
+        this.props.getNotificationDetails({
+            MessageGuid: MessageGuid,
+        })
+    }
+
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        if (nextProps.data.getNotificationDataSuccess && this.state.loading) {
+            this.setState({ loading: false });
+            let response = nextProps.data.notificationData
+            console.log('response-->',response)
+            if (response.Status == 1) {
+                this.setState({ notificationDetails: response.Data })
+                console.log('notificationDetails-->',response.Data)
+            }
+            else {
+                console.log('kk else')
+                this.setState({ loading: false, msg: response.Message, msgModal: true });
+            }
+        }
+        else if (nextProps.data.getNotificationDetailsFail && this.state.loading) {
+            console.log('kk else if')
+            this.setState({ loading: false, msg: Global.error_msg, msgModal: true });
+        }
     }
 
     componentWillUnmount() {
@@ -50,66 +88,105 @@ class NotificationDetail extends React.Component {
     }
     /* ====>>>>>>>>>>> Notification Detail Render Method <<<<<<<<<<==========>  */
     renderNotificationDetail() {
+        {
+            Object.keys(this.state.notificationDetails).length > 0 &&
+            console.log('kk-->',this.state.notificationDetails.Detail.Body)
+        }
+        
         return (
-            <ScrollView style={{ padding: Matrics.CountScale(10) }}>
-                {/* ====>>>>>>>>>>>    RequestApprove Button    <<<<<<<<<<========== */}
-                <View style={Styles.requestBtn}>
-                    <Image style={Styles.requestApproveImg} source={Images.RequestApprove}></Image>
-                    <Text style={{ color: 'white', fontFamily: Fonts.NunitoSansSemiRegular, fontSize: Matrics.CountScale(17), alignSelf: 'center', flex: 2 }}>
-                        Request approved</Text>
-                </View>
+            <View style={{ flex: 1 }}>
+                {
+                    Object.keys(this.state.notificationDetails).length > 0
+                    ?
+                    <ScrollView style={{ padding: Matrics.CountScale(10) }}>
+                        {/* ====>>>>>>>>>>>    RequestApprove Button    <<<<<<<<<<========== */}
+                        {/* <View style={Styles.requestBtn}>
+                            <Image style={Styles.requestApproveImg} source={Images.RequestApprove}></Image>
+                            <Text style={{ color: 'white', fontFamily: Fonts.NunitoSansSemiRegular, fontSize: Matrics.CountScale(17), alignSelf: 'center', flex: 2 }}>
+                                Request approved</Text>
+                        </View> */}
 
-                {/* ====>>>>>>>>>>>    Request dates container    <<<<<<<<<<========== */}
-                <View style={{ paddingTop: Matrics.CountScale(20) }}>
-                    <Text style={Styles.containerHeaders}>
-                        Requested dates:
-                    </Text>
-                    <Text style={Styles.containerBody}>
-                        Mar 12, Fri at 12:30pm</Text>
-                </View>
+                        {/* ====>>>>>>>>>>>    Request dates container    <<<<<<<<<<========== */}
+                        <View style={{ paddingTop: Matrics.CountScale(20) }}>
+                            <Text style={Styles.containerHeaders}>
+                                Sender Name:
+                            </Text>
+                            <Text style={Styles.containerBody}>{this.state.notificationDetails.Detail.SenderName}</Text>
+                        </View>
+
+                        {/* ====>>>>>>>>>>>    Request dates container    <<<<<<<<<<========== */}
+                        <View style={{ paddingTop: Matrics.CountScale(20) }}>
+                            <Text style={Styles.containerHeaders}>
+                                Requested dates:
+                            </Text>
+                            <Text style={Styles.containerBody}>
+                                {moment(this.state.notificationDetails.Detail.MessageDate).format('MM-DD-YYYY LT')}
+                                </Text>
+                            {/* <Text>Mar 12, Fri at 12:30pm</Text> */}
+                        </View>
 
 
-                {/* ====>>>>>>>>>>>    Reason Container   <<<<<<<<<<========== */}
-                <View style={{ paddingTop: Matrics.CountScale(20) }}>
-                    <Text style={Styles.containerHeaders}>
-                        Reason:
-                    </Text>
-                    <Text style={Styles.containerBody}>
-                        Comment on the importantance ofan life.
-                    </Text>
-                </View>
+                        {/* ====>>>>>>>>>>>    Reason Container   <<<<<<<<<<========== */}
+                        <View style={{ paddingTop: Matrics.CountScale(20) }}>
+                            <Text style={Styles.containerHeaders}>
+                                Reason:
+                            </Text>
+                            <Text style={Styles.containerBody}>
+                                {this.state.notificationDetails.Detail.Subject}
+                            </Text>
+                        </View>
 
 
-                {/* ====>>>>>>>>>>>    Notes Container   <<<<<<<<<<========== */}
-                <View style={{ paddingTop: Matrics.CountScale(20) }}>
-                    <Text style={Styles.containerHeaders}>
-                        Note:
-                    </Text>
-                    <Text style={Styles.containerBody}>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                        It has survived not only five centuries, but also the leap into electronic typesetting,
-                        remaining essentially unchanged.
-                      </Text>
-                </View>
+                        {/* ====>>>>>>>>>>>    Notes Container   <<<<<<<<<<========== */}
+                        <View style={{ paddingTop: Matrics.CountScale(20)  }}>
+                            <Text style={Styles.containerHeaders}>
+                                Note:
+                            </Text>
+                            <HTML 
+                                html={this.state.notificationDetails.Detail.Body} 
+                                ignoredStyles={['font-family', 'display','width',]}
+                                // style={{ borderWidth: 5, borderColor: 'green' }}
+                            />
+                            {/* <WebView 
+                                source={{ html: this.state.notificationDetails.Detail.Body }}
+                                style={{
+                                    borderWidth: 5, borderColor: 'green',
+                                    height: Matrics.CountScale(200),
+                                }}
+                            /> */}
+                            {/* <Text style={Styles.containerBody}>
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                                It has survived not only five centuries, but also the leap into electronic typesetting,
+                                remaining essentially unchanged.
+                            </Text> */}
+                        </View>
 
-                {/* ====>>>>>>>>>>>    Document Download Container   <<<<<<<<<<========== */}
-
-                <View style={Styles.documentContainer}>
-                    <View style={{ justifyContent: 'center', flex: 0.2 }}>
-                        <Image style={Styles.fileIconStyle} source={Images.FileIcon}></Image>
-                    </View>
-                    <View style={{ justifyContent: 'center', alignItems: 'flex-start', flex: 1 }}>
-                        <Text style={{ fontFamily: Fonts.NunitoSansSemiBold, fontSize: Matrics.CountScale(17), color: Colors.BLACK }}>
-                            Document.pdf
-                         </Text>
-                    </View>
-                    <View style={Styles.downloadIconContainer}>
-                        <Image style={Styles.downloadIconStyle} source={Images.DownloadIcon}></Image>
-                    </View>
-                </View>
-            </ScrollView >
+                        {/* ====>>>>>>>>>>>    Document Download Container   <<<<<<<<<<========== */}
+                        {
+                            this.state.notificationDetails.Attachments.length > 0 &&
+                            <View style={Styles.documentContainer}>
+                                <View style={{ justifyContent: 'center', flex: 0.2 }}>
+                                    <Image style={Styles.fileIconStyle} source={Images.FileIcon}></Image>
+                                </View>
+                                <View style={{ justifyContent: 'center', alignItems: 'flex-start', flex: 1 }}>
+                                    <Text style={{ fontFamily: Fonts.NunitoSansSemiBold, fontSize: Matrics.CountScale(17), color: Colors.BLACK }}>
+                                        {this.state.notificationDetails.Attachments[0]}
+                                    </Text>
+                                </View>
+                                <View style={Styles.downloadIconContainer}>
+                                    <Image style={Styles.downloadIconStyle} source={Images.DownloadIcon}></Image>
+                                </View>
+                            </View>
+                        }
+                        <View style={{height: 50}} />
+                    </ScrollView>
+                    : <LoadWheel visible={this.state.loading} />
+                }
+                <CustomModal visible={this.state.msgModal} title={this.state.msg}
+                    ButtonText={'OK'} onPress={() => this.setState({ msgModal: false })} />
+            </View >
         );
     }
 }
@@ -198,4 +275,11 @@ const Styles = {
         width: Matrics.CountScale(20)
     }
 }
-export default NotificationDetail;
+const mapStateToProps = (state) => {
+    return {
+        data: state.DashboardEmployee,
+    };
+}
+export default connect(mapStateToProps, {
+    getNotificationDetails
+})(NotificationDetail);

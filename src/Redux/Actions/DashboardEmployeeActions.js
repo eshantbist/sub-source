@@ -7,7 +7,8 @@ import {
     UPDATE_EMPLOYEE_PERSONAL_DETAILS_REQUESTING,
     GET_NOTIFICATION_LIST_REQUESTING,
     GET_END_EMPLOYEEMENT_REASON_REQUESTING,
-    SAVE_UPDATE_USER_DEVICES_REQUESTING
+    SAVE_UPDATE_USER_DEVICES_REQUESTING,
+    GET_NOTIFICATION_DETAILS_REQUESTING,
 } from '@Types/DashboardTypes';
 
 //--->>Function to request User Login----->>>>>
@@ -56,6 +57,13 @@ export const updateEmployeePersonalDetails = (params) => {
 export const getNotificationListDetails = (params) => {
     return {
         type: GET_NOTIFICATION_LIST_REQUESTING,
+        params
+    };
+}
+
+export const getNotificationDetails = (params) => {
+    return {
+        type: GET_NOTIFICATION_DETAILS_REQUESTING,
         params
     };
 }

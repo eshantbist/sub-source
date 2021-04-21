@@ -378,6 +378,26 @@ module.exports = {
             },
         }).then((response) => response.json())
     },
+    async getNotificationDetail(param) {
+        console.log(param)
+        authToken = await AsyncStorage.getItem('AuthToken');
+        let params = Object.assign(param);
+        var formBody = [];
+        for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        return fetch(`${ENVIRONMENT}/GetEmployeeMessageDetail/?` + formBody, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${authToken}`
+            },
+        }).then((response) => response.json())
+    },
     getEndEmployementReasonType(params) {
         var formBody = [];
         for (var property in params) {

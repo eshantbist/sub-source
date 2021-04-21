@@ -37,7 +37,12 @@ import {
 
     SAVE_UPDATE_USER_DEVICES_REQUESTING,
     SAVE_UPDATE_USER_DEVICES_SUCCESS,
-    SAVE_UPDATE_USER_DEVICES_FAIL
+    SAVE_UPDATE_USER_DEVICES_FAIL,
+
+    GET_NOTIFICATION_DETAILS_REQUESTING,
+    GET_NOTIFICATION_DETAILS_SUCCESS,
+    GET_NOTIFICATION_DETAILS_FAIL
+
 } from '@Types/DashboardTypes'
 import Api from '../../Services/Api';
 /************************ Reason function ****************************/
@@ -156,6 +161,16 @@ export const watchGetNotificationListAsync = function* watchGetNotificationListA
     }
 }
 
+export const watchGetNotificationDetailsAsync = function* watchGetNotificationDetailsAsync({ params }) {
+    try {
+        const response = yield call(Api.getNotificationDetail, params)
+        yield put({ type: GET_NOTIFICATION_DETAILS_SUCCESS, payload: response });
+    }
+    catch (e) {
+        yield put({ type: GET_NOTIFICATION_DETAILS_FAIL, payload: e });
+    }
+}
+
 export const getEndEmployeementReasonTypeAsync = function* getEndEmployeementReasonTypeAsync({ params }) {
 
     try {
@@ -190,6 +205,7 @@ const watch = function* watch() {
     yield takeEvery(GET_NOTIFICATION_LIST_REQUESTING, watchGetNotificationListAsync);
     yield takeEvery(GET_END_EMPLOYEEMENT_REASON_REQUESTING, getEndEmployeementReasonTypeAsync);
     yield takeEvery(SAVE_UPDATE_USER_DEVICES_REQUESTING, updateUserDeviceAsync);
+    yield takeEvery(GET_NOTIFICATION_DETAILS_REQUESTING, watchGetNotificationDetailsAsync);
 }
 
 export default watch;
