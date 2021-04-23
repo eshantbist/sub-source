@@ -538,6 +538,7 @@ class Dashboard extends React.Component {
                         index == 1 && !this.state.scrollEnabled ? this.setState({ scrollEnabled: true }) : null
                     }}
                 />
+                {console.log('kk-->', this.state.isDateTimePickerVisible)}
                 <Modal
                     visible={this.state.filterModal}
                     onRequestClose={() => {

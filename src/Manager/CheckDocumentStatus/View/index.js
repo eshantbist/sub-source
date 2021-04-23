@@ -132,7 +132,7 @@ class CheckDoucmentStatus extends React.Component {
                 }
                 const storeselect = {
                     StoreID: -1,
-                    DisplayStoreNumber: 'Select Shop'
+                    DisplayStoreNumber: 'All Shops'
                 }
                 if(data.Report.user_list.length > 0){
                     const userSelect = {
@@ -142,6 +142,7 @@ class CheckDoucmentStatus extends React.Component {
                     data.Report.user_list.unshift(userSelect);
                 }
                 data.Report.role_list.unshift(roleSelect);
+                data.Report.store_list.unshift(storeselect);
                 if (data.Report.store_list.length > 0) {
                     var i;
                     for (i = 0; i < data.Report.store_list.length; i++) {
