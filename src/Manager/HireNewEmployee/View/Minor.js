@@ -102,50 +102,50 @@ export default class Minor extends React.Component {
           if(element.WeekDayName == 'Wednesday'){
             this.setState({
               anyHoursCheckedWe: element.PlaceHolderInTime == '12:00' ? true : false,
-              workingHoursWe1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
-              workingHoursWe2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              // workingHoursWe1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              // workingHoursWe2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
               hoursWe: element.HoursAllowed,
             })
           } else if(element.WeekDayName == 'Thursday'){
             this.setState({
               anyHoursCheckedTh: element.PlaceHolderInTime == '12:00' ? true : false,
-              workingHoursTh1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
-              workingHoursTh2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              // workingHoursTh1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              // workingHoursTh2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
               hoursTh: element.HoursAllowed,
             })
           } else if(element.WeekDayName == 'Friday'){
             this.setState({
               anyHoursCheckedFr: element.PlaceHolderInTime == '12:00' ? true : false,
-              workingHoursFr1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
-              workingHoursFr2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              // workingHoursFr1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              // workingHoursFr2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
               hoursFr: element.HoursAllowed,
             })
           } else if(element.WeekDayName == 'Saturday'){
             this.setState({
               anyHoursCheckedSa: element.PlaceHolderInTime == '12:00' ? true : false,
-              workingHoursSa1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
-              workingHoursSa2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              // workingHoursSa1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              // workingHoursSa2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
               hoursSa: element.HoursAllowed,
             })
           } else if(element.WeekDayName == 'Sunday'){
             this.setState({
               anyHoursCheckedSu: element.PlaceHolderInTime == '12:00' ? true : false,
-              workingHoursSu1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
-              workingHoursSu2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              // workingHoursSu1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              // workingHoursSu2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
               hoursSu: element.HoursAllowed,
             })
           } else if(element.WeekDayName == 'Monday'){
             this.setState({
               anyHoursCheckedMo: element.PlaceHolderInTime == '12:00' ? true : false,
-              workingHoursMo1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
-              workingHoursMo2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              // workingHoursMo1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              // workingHoursMo2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
               hoursMo: element.HoursAllowed,
             })
           } else if(element.WeekDayName == 'Tuesday'){
             this.setState({
               anyHoursCheckedTu: element.PlaceHolderInTime == '12:00' ? true : false,
-              workingHoursTu1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
-              workingHoursTu2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
+              // workingHoursTu1: element.PlaceHolderInTime == '12:00' ? '12:00' : element.InTime,
+              // workingHoursTu2: element.PlaceHolderOutTime == '11:59' ?  '11:59' : element.OutTime,
               hoursTu: element.HoursAllowed,
             })
           }
@@ -321,7 +321,12 @@ export default class Minor extends React.Component {
    let Su1Su2NotBlank = (this.state.workingHoursSu1 != '' || this.state.workingHoursSu2 != '') ? true : false;
    let Mo1Mo2NotBlank = (this.state.workingHoursMo1 != '' || this.state.workingHoursMo2 != '') ? true : false;
    let Tu1Tu2NotBlank = (this.state.workingHoursTu1 != '' || this.state.workingHoursTu2 != '') ? true : false;
-
+ console.log('We1We2NotBlank-->', We1We2NotBlank)
+ console.log('workingHoursWe1-->', this.state.workingHoursWe1)
+ console.log('workingHoursWe1-->', this.state.workingHoursWe2)
+ console.log('Th1Th2NotBlank-->', Th1Th2NotBlank)
+ console.log('workingHoursTh1-->', this.state.workingHoursTh1)
+ console.log('workingHoursTh2-->', this.state.workingHoursTh2)
 
     if(this.state.HSGchecked === false) {
       if( this.state.issueDate === '') {
@@ -345,10 +350,10 @@ export default class Minor extends React.Component {
         } else if(this.state.OutTime === ''){
           this.setState({ OutTimeError: 'please select OutTime' });
         } else if(reg.test(this.state.InTime) === false){
-          alert('Invalid InTime! Time should be in HH:MMam/pm format. There should not be space in between MM(minutes) and AM/PM');
+          alert('Invalid InTime! Time should be in HH:MMam/pm format. There should not be space in between MM(minutes) and AM/PM 1');
           // this.setState({ InTimeError: 'Invalid InTime!\n Time should be in HH:MMam/pm\n Format. There should not\n be space in between \nMM(minutes) and AM/PM' });
         } else if(reg.test(this.state.OutTime)=== false) {
-          alert('Invalid OutTime! Time should be in HH:MMam/pm format. There should not be space in between MM(minutes) and AM/PM');
+          alert('Invalid OutTime! Time should be in HH:MMam/pm format. There should not be space in between MM(minutes) and AM/PM 2');
           // this.setState({ OutTimeError: 'Invalid OutTime!\n Time should be in HH:MMam/pm\n Format. There should not\n be space in between \nMM(minutes) and AM/PM' });
         } else if(date2 >= date1){
           this.setState({ OutTimeError: 'OutTime shouldbe graterthan to InTime' });
@@ -381,43 +386,43 @@ export default class Minor extends React.Component {
           ((this.state.workingHoursWe1 == '' && reg.test(this.state.workingHoursWe1) === false) ||
           (this.state.workingHoursWe2 == '' && reg.test(this.state.workingHoursWe2) === false) )
         ) {
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 3');
         }
         else if( Th1Th2NotBlank == true &&
           ((this.state.workingHoursTh1 == '' || reg.test(this.state.workingHoursTh1) === false) ||
           (this.state.workingHoursTh2 == '' || reg.test(this.state.workingHoursTh2) === false) )
         ){
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 4');
         }
         else if( Fr1Fr2NotBlank == true &&
           ((this.state.workingHoursFr1 == '' || reg.test(this.state.workingHoursFr1) === false) ||
           (this.state.workingHoursFr2 == '' || reg.test(this.state.workingHoursFr2) === false) )
         ){
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 5');
         }
         else if( Sa1Sa2NotBlank == true &&
           ((this.state.workingHoursSa1 == '' || reg.test(this.state.workingHoursSa1) === false) ||
           (this.state.workingHoursSa2 == '' || reg.test(this.state.workingHoursSa2) === false) )
         ){
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 6');
         }
         else if( Su1Su2NotBlank == true &&
           ((this.state.workingHoursSu1 == '' || reg.test(this.state.workingHoursSu1) === false) ||
           (this.state.workingHoursSu2 == '' || reg.test(this.state.workingHoursSu2) === false) )
         ){
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 7');
         }
         else if( Mo1Mo2NotBlank == true &&
           ((this.state.workingHoursMo1 == '' || reg.test(this.state.workingHoursMo1) === false) ||
           (this.state.workingHoursMo2 == '' || reg.test(this.state.workingHoursMo2) === false) )
         ){
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 8');
         }
         else if( Tu1Tu2NotBlank == true &&
           ((this.state.workingHoursTu1 == '' || reg.test(this.state.workingHoursTu1) === false) ||
           (this.state.workingHoursTu2 == '' || reg.test(this.state.workingHoursTu2) === false) )
         ){
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 9');
         }
         else {
           console.log('save Data');
@@ -453,43 +458,43 @@ export default class Minor extends React.Component {
         ((this.state.workingHoursWe1 == '' && reg.test(this.state.workingHoursWe1) === false) ||
         (this.state.workingHoursWe2 == '' && reg.test(this.state.workingHoursWe2) === false) )
       ) {
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 10');
       }
       else if( Th1Th2NotBlank == true &&
         ((this.state.workingHoursTh1 == '' || reg.test(this.state.workingHoursTh1) === false) ||
         (this.state.workingHoursTh2 == '' || reg.test(this.state.workingHoursTh2) === false) )
       ){
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 11');
       }
       else if( Fr1Fr2NotBlank == true &&
         ((this.state.workingHoursFr1 == '' || reg.test(this.state.workingHoursFr1) === false) ||
         (this.state.workingHoursFr2 == '' || reg.test(this.state.workingHoursFr2) === false) )
       ){
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 12');
       }
       else if( Sa1Sa2NotBlank == true &&
         ((this.state.workingHoursSa1 == '' || reg.test(this.state.workingHoursSa1) === false) ||
         (this.state.workingHoursSa2 == '' || reg.test(this.state.workingHoursSa2) === false) )
       ){
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 13');
       }
       else if( Su1Su2NotBlank == true &&
         ((this.state.workingHoursSu1 == '' || reg.test(this.state.workingHoursSu1) === false) ||
         (this.state.workingHoursSu2 == '' || reg.test(this.state.workingHoursSu2) === false) )
       ){
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 14');
       }
       else if( Mo1Mo2NotBlank == true &&
         ((this.state.workingHoursMo1 == '' || reg.test(this.state.workingHoursMo1) === false) ||
         (this.state.workingHoursMo2 == '' || reg.test(this.state.workingHoursMo2) === false) )
       ){
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 15');
       }
       else if( Tu1Tu2NotBlank == true &&
         ((this.state.workingHoursTu1 == '' || reg.test(this.state.workingHoursTu1) === false) ||
         (this.state.workingHoursTu2 == '' || reg.test(this.state.workingHoursTu2) === false) )
       ){
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 16');
       }
        else {
         this.props.navigation.goBack();

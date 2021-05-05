@@ -591,13 +591,13 @@ class DocumentDetails extends React.Component {
     }
     renderStatusIndicatorIcon(val, status) {
         if (val == 'Employee Created' && status == 'Hirestatus' )
-            return (<Image style={{ width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(5) }} source={Images.RightIcon}></Image>)
+            return (<Image style={{ width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(6), marginRight: Matrics.CountScale(5) }} source={Images.RightIcon}></Image>)
         else if ((val == 'E-Verification completed' || val == 'Manually Approved') && status == 'E-Verify' ) 
-            return (<Image style={{  width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(5) }} source={Images.RightIcon}></Image>)
+            return (<Image style={{  width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(6), marginRight: Matrics.CountScale(5) }} source={Images.RightIcon}></Image>)
         else if ((val == 'Manually Approved' || val == 'BGC Approved')&& status == 'BGC' ) 
-            return (<Image style={{  width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(5) }} source={Images.RightIcon}></Image>)
+            return (<Image style={{  width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(6), marginRight: Matrics.CountScale(5) }} source={Images.RightIcon}></Image>)
         else
-            return (<Image style={{ width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(5), marginRight: Matrics.CountScale(5) }} source={Images.ClockIcon} ></Image >)
+            return (<Image style={{ width: Matrics.CountScale(15), height: Matrics.CountScale(15), marginTop: Matrics.CountScale(6), marginRight: Matrics.CountScale(5) }} source={Images.ClockIcon} ></Image >)
     }
     renderPDFimg(val) {
         if (val)
