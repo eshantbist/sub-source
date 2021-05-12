@@ -273,7 +273,22 @@ class HireNewEmployee extends React.Component {
         console.log('minorAge-->',this.state.minorAge);
         this.hideDateTimePicker();
         if(age < 12 ){
-            this.setState({ errorDob: 'Please Select Valid Date Of Birth.'})
+            // this.setState({ errorDob: 'Please Select Valid Date Of Birth.'})
+            setTimeout(() => {
+                Alert.alert(
+                    '',
+                    'Please Select Valid Date Of Birth.',
+                    [
+                        {
+                            text: "Cancel",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel"
+                        },
+                        {text: 'OK', onPress: () => {}},
+                    ],
+                    { tintColor: 'green' }
+                );
+            }, 500);
         }else if(this.state.selectedStore!== '' && age <= this.state.minorAge) {
             this.setState({ errorDob: '', isMinor: true});
             setTimeout(() => {

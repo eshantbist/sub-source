@@ -1489,21 +1489,30 @@ class WeeklySchedule extends React.Component {
                 onPress={() => {
                     this.setState({ JumtoEmpModal: false, selectedJumpEmpName: item.FullName, selectedEmpIndex: index+1 });
                     const height =  Matrics.CountScale(100);
-                    // console.log('selectedEmpIndex-->',index+1)
-                    // console.log('upperSectionHeight-->',this.state.upperSectionHeight)
-                    // console.log('headContainerHeight-->',this.state.headContainerHeight)
+                    // console.log('selectedEmpIndex-->',index)
+                    // console.log('upperSectionHeight-car and data->',this.state.upperSectionHeight)
+                    // console.log('headContainerHeight-jumto emp header->',this.state.headContainerHeight)
                     // console.log('userHeaderHeight-->',this.state.userHeaderHeight)
                     // console.log('height-->',height)
+                    const currentUserStoreID = item.UserStoreID;
+                    let roleCount = 1;
+                    if(this.state.empRoleData.length > 0){
+                        for(let i=0; i<this.state.empRoleData.length; i++){
+                            const currentMatch = this.state.empRoleData[i].data.filter(F => F.UserStoreID == currentUserStoreID);
+                            roleCount++;
+                            if(currentMatch.length > 0){
+                                break;
+                            }
+                        }
+                    }
                     // console.log('scroll-->',((index+1)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight)
                     this.scrollview.scrollTo({
                         y: 
                         index+1 == 1 
-                        ?  this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
-                        : index+1 == 2
-                        ? ((index+1-1)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
-                        : 
-                        ((index)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight, 
-                        // : 1075, 
+                        ?  this.state.upperSectionHeight+this.state.headContainerHeight+(this.state.userHeaderHeight)
+                        // : index+1 == 2
+                        // ? ((index)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+this.state.userHeaderHeight
+                        : ((index)*height)+this.state.upperSectionHeight+this.state.headContainerHeight+(roleCount*this.state.userHeaderHeight), 
                         animated: true
                     });
                 }}
