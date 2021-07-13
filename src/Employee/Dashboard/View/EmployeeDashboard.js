@@ -14,6 +14,7 @@ import DeviceInfo from 'react-native-device-info';
 import { connect } from 'react-redux';
 import moment from "moment";
 import _ from 'lodash';
+import messaging from '@react-native-firebase/messaging';
 
 // =======>>>>>>>>  Assets   <<<<<<<<<<<=========
 import { TextInputView, Button, LoadWheel, ResignModal } from "@Components";
@@ -78,6 +79,11 @@ class EmployeeDashboard extends React.Component {
         // });
         DeviceId = DeviceInfo.getUniqueId();
         console.log('DeviceInfo123-->', DeviceId);
+
+        this.checkNotificationPermission();
+        this.registerAppWithFCM();
+        this.getToken();
+
         // ======>>>>>>> API CALLS  <<<<<<<========
         this.props.getEmployeeTotalWorkedHours({
             WeekEndDate: WeekEndingDate
@@ -110,10 +116,38 @@ class EmployeeDashboard extends React.Component {
         })
     }
 
+    checkNotificationPermission = async () => {
+        const enabled = await messaging().requestPermission();
+        consoe.log('permission-->', enabled)
+        if (enabled) {
+          this.getToken();
+        } else {
+          promptForNotificationPermission();
+        }
+    };
+    registerAppWithFCM = async () => {
+        if (Platform.OS === 'ios') {
+          await messaging().registerDeviceForRemoteMessages();
+          await messaging().setAutoInitEnabled(true);
+        }
+        //    console.log("permission",per);
+      }
+    
+    getToken() {
+        messaging()
+          .getToken()
+          .then(async token => {
+            console.log('devicetoken-->',token)
+            global.deviceToken = token;
+          });
+    }
+
     componentDidMount() {
         this.profileflag = false
         this.feedbackflag = false
     }
+    
+
     UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.data.employeeWorkHourSuccess) {
             this.feedbackflag = true

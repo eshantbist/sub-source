@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "967884367557",
+    "project_id": "subsource-56635",
+    "storage_bucket": "subsource-56635.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967884367557:android:01735cd09b70ee3e61b2ac",
+        "android_client_info": {
+          "package_name": "com.subsourcemanagerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "967884367557-b5bp0afu406942jbibi268usutgtvsua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALjE-HkNUuXeo6WD996cKuQ34B2W_3Orw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "967884367557-b5bp0afu406942jbibi268usutgtvsua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

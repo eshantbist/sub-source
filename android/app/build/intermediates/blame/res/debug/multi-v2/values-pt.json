@@ -4,7 +4,7 @@
             "outputFile": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-pt/values-pt.xml",
             "map": [
                 {
-                    "source": "/Users/c100-177/.gradle/caches/transforms-3/0282f2d2854501c302a8bcda93fb631c/transformed/core-1.1.0/res/values-pt/values-pt.xml",
+                    "source": "/Users/c100-177/.gradle/caches/transforms-3/964c240021d9a05704b93b94f5c9c20f/transformed/core-1.1.0/res/values-pt/values-pt.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/Users/c100-177/.gradle/caches/transforms-3/1b0d095aa5df94c4622fceee50386f6e/transformed/appcompat-1.1.0/res/values-pt/values-pt.xml",
+                    "source": "/Users/c100-177/.gradle/caches/transforms-3/c2feb2104818df080a19c0e3cf74a7d1/transformed/appcompat-1.1.0/res/values-pt/values-pt.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
