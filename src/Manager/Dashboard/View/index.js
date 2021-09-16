@@ -221,7 +221,7 @@ class Dashboard extends React.Component {
             if (this.dashboardDataFlag && this.roleFlag)
                 this.setState({ loading: false, refreshing: false });
             let data = nextProps.response.data;
-            console.log('data-->',data)
+            console.log('Dashboarddata-->','---',nextProps.response)
             if (data.Status == 1) {
                 let keyFinancialData = data.Data._keyFinacialObj;
                 let salesBuilding = data.Data._saleBuildingList ? data.Data._saleBuildingList[0] : [];
@@ -538,7 +538,6 @@ class Dashboard extends React.Component {
                         index == 1 && !this.state.scrollEnabled ? this.setState({ scrollEnabled: true }) : null
                     }}
                 />
-                {console.log('kk-->', this.state.isDateTimePickerVisible)}
                 <Modal
                     visible={this.state.filterModal}
                     onRequestClose={() => {

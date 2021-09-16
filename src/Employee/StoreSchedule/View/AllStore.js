@@ -187,7 +187,6 @@ class AllStore extends React.Component {
         ]
 
         // { console.log(this.UserStoreGuid) }
-        // console.log('kk-->', data)
         // return (data.length > 0 &&
         return (!_.isEmpty(data) &&
             <View >

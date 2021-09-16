@@ -88,11 +88,6 @@ class NotificationDetail extends React.Component {
     }
     /* ====>>>>>>>>>>> Notification Detail Render Method <<<<<<<<<<==========>  */
     renderNotificationDetail() {
-        {
-            Object.keys(this.state.notificationDetails).length > 0 &&
-            console.log('kk-->',this.state.notificationDetails.Detail.Body)
-        }
-        
         return (
             <View style={{ flex: 1 }}>
                 {

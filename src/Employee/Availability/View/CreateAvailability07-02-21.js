@@ -321,7 +321,6 @@ class CreateAvailability extends React.Component {
                                 <Switch
                                     value={this.state.notAvailable}
                                     onValueChange={async(val) => {
-                                        console.log('kk-->',this.state)
                                         if (this.state.notAvailable == true && this.state.InHours == '12' && this.state.InMin == '00' && this.state.InStatus == 'am' && this.state.OutHours == '11' && this.state.OutMin == '59' && this.state.OutStatus == 'pm') {
                                             console.log('1345454')
                                             this.state.shiftTime[0].OutTime = '23:59:59';

@@ -61,8 +61,6 @@ class EmployeeDashboard extends React.Component {
     // ======>>>>>>> Life Cycle Methods  <<<<<<<========
     async UNSAFE_componentWillMount() {
         const UserId = await AsyncStorage.getItem('UserID');
-        console.log('userId-->', UserId);
-        console.log('DeviceInfo-->', DeviceInfo);
         let DeviceId = '';
 
         const currentDate = moment(new Date()).format("MM/DD/YYYY");
@@ -94,31 +92,37 @@ class EmployeeDashboard extends React.Component {
             PageNo: '1'
         });
         this.props.getEmployeePersonalDetails()
-
+        console.log('global.deviceToken-->', global.deviceToken);
         this.props.SaveUpdateUserDevices({
             "UserID": UserId,
-            "DeviceID": DeviceId,
+            // "DeviceID": DeviceId,
+            "DeviceID": global.deviceToken,
             "IsDeleted": 0
         })
-        console.log('4 api call -->');
         let sdate = new Date();
-        // let startDate = Global.getDateValue(sdate)
-        // let endDate = Global.getDateAfterSomeMonth(sdate, 2)
-
-        let startDate = '11-21-2018'
-        let endDate = '12-06-2018'
+        let startDate = Global.getDateValue(sdate);
+        var date = new Date();
+        date.setDate(date.getDate() + 6);
+        var getYear = date.getFullYear().toString();
+        var month = date.getMonth() + 1;
+        var getMonth = month < 10 ? `0${month}` : month
+        var dt = date.getDate();
+        var getDate = dt < 10 ? `0${dt}` : dt
+        let endDate = `${getMonth.toString()}-${getDate.toString()}-${getYear.toString()}`
+        // let endDate = Global.getDateAfterSomeMonth(sdate, 2);
+        // let startDate = '11-21-2018'
+        // let endDate = '12-06-2018'
 
         this.props.getMyScheduleRequest({ StartDate: startDate, EndDate: endDate })
 
         this.props.getNotificationListDetails({
             MessageType: 4,
-            IsInbox: true, PageSize: 1, PageNo: 1
+            IsInbox: true, PageSize: 5, PageNo: 1
         })
     }
 
     checkNotificationPermission = async () => {
         const enabled = await messaging().requestPermission();
-        consoe.log('permission-->', enabled)
         if (enabled) {
           this.getToken();
         } else {
@@ -130,7 +134,6 @@ class EmployeeDashboard extends React.Component {
           await messaging().registerDeviceForRemoteMessages();
           await messaging().setAutoInitEnabled(true);
         }
-        //    console.log("permission",per);
       }
     
     getToken() {
@@ -150,22 +153,21 @@ class EmployeeDashboard extends React.Component {
 
     UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.data.employeeWorkHourSuccess) {
-            this.feedbackflag = true
+            this.feedbackflag = true;
             if (this.profileflag && this.feedbackflag) {}
-                this.setState({ loading: false })
-            console.log('workhours-->', nextProps.data.employeeWorkHourdata)
+                this.setState({ loading: false });
+            // console.log('workhours-->', nextProps.data.employeeWorkHourdata)
             if(nextProps.data.employeeWorkHourdata.Data != null)
                 this.setState({ workedHours: nextProps.data.employeeWorkHourdata.Data.TotalHours })
         }
         else if (nextProps.data.employeePersonalDetailsSuccess) {
-            this.profileflag = true
+            this.profileflag = true;
             if (this.profileflag && this.feedbackflag)
                 this.setState({ loading: false })
-            let response = nextProps.data.employeePersonalDetailsdata
-            console.log('response-->', response.Status);
+            let response = nextProps.data.employeePersonalDetailsdata;
             if (response.Status == 1) {
-                const data = nextProps.data.employeePersonalDetailsdata.Data
-                console.log('userDetails-->', data);
+                const data = nextProps.data.employeePersonalDetailsdata.Data;
+                // console.log('userDetails-->', data);
                 this.setState({
                     university: 'University of ' + data.State,
                     address1: data.Address1,
@@ -183,7 +185,6 @@ class EmployeeDashboard extends React.Component {
                 })
             }
             else {
-                console.log('in else logout');
                 AsyncStorage.clear();
                 // this.navigateToScreen('Login')
                 const resetAction = StackActions.reset({
@@ -201,7 +202,7 @@ class EmployeeDashboard extends React.Component {
         else if (nextProps.data.employeeGuestFeedbackSuccess && this.state.feedbackAction) {
             this.setState({ feedbackAction: false })
             let data = nextProps.data.employeeGuestFeedbackdata
-            console.log('feedback-->' + JSON.stringify(data));
+            // console.log('feedback-->' + JSON.stringify(data));
             if(data.Status === 1){
                 this.setState({ entries: data.Data.FeedBack, totalFeedback: data.Data.TotalRecords })
             }
@@ -214,8 +215,7 @@ class EmployeeDashboard extends React.Component {
         }
         else if (nextProps.data.SaveUpdateUserDevicesSuccess) {
             // let data = nextProps.data.SaveUpdateUserDevicesSuccess.data
-            let data = nextProps.data.data
-            console.log('data-->', data);
+            let data = nextProps.data.data;
         }
         else if (nextProps.data.employeePersonalDetailsFail || nextProps.data.employeeGuestFeedbackFail || nextProps.data.getNotificationDetailsFail || nextProps.mySchedule.getMyScheduleFailed || nextProps.data.SaveUpdateUserDevicesFail) {
             this.setState({ loading: false })
@@ -226,9 +226,9 @@ class EmployeeDashboard extends React.Component {
 
         if (nextProps.mySchedule.getMyScheduleSuccess) {
             //this.setState({ loading: false })
-            let response = nextProps.mySchedule.data
+            let response = nextProps.mySchedule.data;
+            // console.log('responsemySchedule-->',response);
             if (response.Status == 1) {
-
                 this.setState({ schedule: response.Data[0] })
                 console.log('today', response.Data[0])
             }
