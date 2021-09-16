@@ -4,7 +4,7 @@
             "outputFile": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-xlarge-v4/values-xlarge-v4.xml",
             "map": [
                 {
-                    "source": "/Users/c100-177/.gradle/caches/transforms-3/c2feb2104818df080a19c0e3cf74a7d1/transformed/appcompat-1.1.0/res/values-xlarge-v4/values-xlarge-v4.xml",
+                    "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/914c794e711d7849f62bef3b2328c935/appcompat-1.1.0/res/values-xlarge-v4/values-xlarge-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7",
                         "startColumns": "4,4,4,4,4,4",

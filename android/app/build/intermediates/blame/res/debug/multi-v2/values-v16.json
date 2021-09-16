@@ -4,17 +4,7 @@
             "outputFile": "/Volumes/DATA/Krishna/ReactNativeApps/SubsourceApps/combindLatestSubsourceApp/02-09-2020/new/subsourcemanagerapp/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v16/values-v16.xml",
             "map": [
                 {
-                    "source": "/Users/c100-177/.gradle/caches/transforms-3/964c240021d9a05704b93b94f5c9c20f/transformed/core-1.1.0/res/values-v16/values-v16.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "65",
-                        "endOffsets": "116"
-                    }
-                },
-                {
-                    "source": "/Users/c100-177/.gradle/caches/transforms-3/c2feb2104818df080a19c0e3cf74a7d1/transformed/appcompat-1.1.0/res/values-v16/values-v16.xml",
+                    "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/914c794e711d7849f62bef3b2328c935/appcompat-1.1.0/res/values-v16/values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -30,6 +20,16 @@
                         "endLines": "6",
                         "endColumns": "12",
                         "endOffsets": "289"
+                    }
+                },
+                {
+                    "source": "/Users/c100-177/.gradle/caches/transforms-2/files-2.1/d4c2a8704db7634d05bba29003ddea13/core-1.1.0/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
                     }
                 }
             ]
