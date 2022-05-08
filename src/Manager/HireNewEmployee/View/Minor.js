@@ -356,7 +356,7 @@ export default class Minor extends React.Component {
           alert('Invalid OutTime! Time should be in HH:MMam/pm format. There should not be space in between MM(minutes) and AM/PM 2');
           // this.setState({ OutTimeError: 'Invalid OutTime!\n Time should be in HH:MMam/pm\n Format. There should not\n be space in between \nMM(minutes) and AM/PM' });
         } else if(date2 >= date1){
-          this.setState({ OutTimeError: 'OutTime shouldbe graterthan to InTime' });
+          this.setState({ OutTimeError: 'To time should be greater than From time' });
         } 
         else if(
           (!this.state.anyHoursCheckedWe) &&

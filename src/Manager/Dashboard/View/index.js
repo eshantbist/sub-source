@@ -437,6 +437,7 @@ class Dashboard extends React.Component {
         });
         this.props.navigation.dispatch(resetAction)
     }
+
     // ==========>>>>> Render Method  <<<<<<<===========
     render() {
         return (
@@ -616,6 +617,7 @@ class Dashboard extends React.Component {
                                                     textStyle: { color: Colors.WHITE },
                                                     containerStyle: [],
                                                 }]}
+                                            
                                         />
                                         : null
                                 }
