@@ -206,18 +206,7 @@ class EditProfileEmployee extends React.Component {
         else if (!Global.validateEmail(this.state.email)) {
             alert('Please Enter valid email')
         }
-        else if(!Global.phoneVerify(this.state.cellphone)){
-            alert('Please Enter valid Cellphone')
-        }
-        else if(!Global.zipVerify(this.state.zip)){
-            alert('Please Enter valid Zip code')
-        }
-        else if(!Global.phoneVerify(this.state.homephone)){
-            alert('Please Enter valid Home Phone')
-        }
         else {
-            // const cell = Global.phoneNoFormat(this.state.cellphone);
-            // const homeCell = Global.phoneNoFormat(this.state.homephone);
             userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
             this.setState({ loading: true })
             //this.props.updateEmployeePersonalDetails({  })
@@ -417,8 +406,6 @@ class EditProfileEmployee extends React.Component {
                         <TextInputView
                             label="Zip"
                             labelFontSize={15}
-                            maxLength={5}
-                            keyboardType={'numeric'}
                             fontSize={18}
                             value={this.state.zip}
                             refField={(r) => { this.zip = r; }}
@@ -460,12 +447,10 @@ class EditProfileEmployee extends React.Component {
                             label="Cell Phone"
                             labelFontSize={15}
                             fontSize={18}
-                            keyboardType={'numeric'}
-                            maxLength={10}
                             value={this.state.cellphone}
                             refField={(r) => { this.cellphone = r; }}
                             returnKeyType={'next'}
-                            onChangeText={val => this.setState({ cellphone: val })}
+                            onChangeText={val => this.setState({ cellphone: Global.phoneNoFormat(val) })}
                             onSubmitEditing={(event) => this.homephone.focus()}
                             containerStyle={Styles.Input}
                         />
@@ -475,11 +460,10 @@ class EditProfileEmployee extends React.Component {
                             label="Home Phone"
                             labelFontSize={15}
                             fontSize={18}
-                            maxLength={10}
                             value={this.state.homephone}
                             refField={(r) => { this.homephone = r; }}
                             returnKeyType={'next'}
-                            onChangeText={val => this.setState({ homephone: val})}
+                            onChangeText={val => this.setState({ homephone: Global.phoneNoFormat(val) })}
                             onSubmitEditing={(event) => this.emergencyName.focus()}
                             containerStyle={Styles.Input}
                         />

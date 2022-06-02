@@ -219,7 +219,7 @@ class CreateAvailability extends React.Component {
                         </Text>
                     </View>
                     <View style={MasterCssEmployee.headerTextContainerStyle} />
-                    <TouchableOpacity style={MasterCssEmployee.headerTextContainerStyle}
+                    {/* <TouchableOpacity style={MasterCssEmployee.headerTextContainerStyle}
                         onPress={() => {
                             // this.setState({ modalVisible: true })
                             Alert.alert('', 'Please, understand that if you have updated your availability, management needs two weeks before we can apply your new availability to the schedule, updated availability also needs management approval as it cause scheduling challenge.',
@@ -290,7 +290,7 @@ class CreateAvailability extends React.Component {
                         }}
                     >
                         <Text style={MasterCssEmployee.headerRightTextStyle}>Save</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
                 {/* =======>>>>>> Header End <<<<<<<=======  */}
 
