@@ -5,9 +5,6 @@ import Store from './src/Redux/Store'
 
 export default class App extends Component {
 
-  UNSAFE_componentWillMount() {
-    console.disableYellowBox = true;
-  }
 
   render() {
     return (

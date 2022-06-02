@@ -16,20 +16,8 @@ import { TextInputView, Button, LoadWheel } from "@Components";
 
 const deviceHeight = Dimensions.get('window').height;
 // ======>>>>> Class Declaration <<<<<=========
-class HireNewEmployee extends React.Component {
-    
-    static navigationOptions = ({ navigation }) => ({
-        // headerTitle: 'Hire New Employee',
-        // headerTitleStyle: MasterCss.headerTitleStyle,
-        // headerRight: navigation.state.params && navigation.state.params.headerRight,
-        // headerLeft:
-        //     <View />
-        header: null,
-    })
-
-    //--------->>>State Initilization----------->>>
-    state = {
-        firstName: "",
+const initialState = {
+    firstName: "",
         middleName: "",
         lastName: "",
         email: "",
@@ -67,6 +55,19 @@ class HireNewEmployee extends React.Component {
         hireEmpLoader: false,
         errorDocuments: ''
     };
+class HireNewEmployee extends React.Component {
+    
+    static navigationOptions = ({ navigation }) => ({
+        // headerTitle: 'Hire New Employee',
+        // headerTitleStyle: MasterCss.headerTitleStyle,
+        // headerRight: navigation.state.params && navigation.state.params.headerRight,
+        // headerLeft:
+        //     <View />
+        header: null,
+    })
+
+    //--------->>>State Initilization----------->>>
+    state = {...initialState};
 
     scrollRef = React.createRef();
 
@@ -291,6 +292,9 @@ class HireNewEmployee extends React.Component {
                     ],
                     { tintColor: 'green' }
                 );
+                this.setState({
+                    dateOfBirth:""    
+                })
             }, 500);
         }else if(this.state.selectedStore!== '' && age <= this.state.minorAge) {
             this.setState({ errorDob: '', isMinor: true, dateOfBirth: moment(date).format('MMMM DD, YYYY'), age});
@@ -373,25 +377,32 @@ class HireNewEmployee extends React.Component {
         if (this.state.position === ''){
             this.setState({ errorPosition: 'Please select the position' });
         } 
-        else if( this.state.firstName === '') {
-            this.setState({ errorFirstName: 'Please enter the firstName' });
-        } else if (this.state.lastName === ''){
-            this.setState({ errorLastName: 'Please enter the lastName' });
-        } else if (this.state.email === ''){
-            this.setState({ errorEmail: 'Please enter the email' });
-        } else if (reg.test(this.state.email) === false){
-            this.setState({ errorEmail: 'Please enter valid email' });
-        } else if (this.state.selectedStore === '' || this.state.selectedStore === 'Selecte Shop'){
+        if( this.state.firstName === '') {
+            this.setState({ errorFirstName: 'First Name is required.' });
+        }  
+        if (this.state.lastName === ''){
+            this.setState({ errorLastName: 'Last Name is required.' });
+        } 
+        if (this.state.email === ''){
+            this.setState({ errorEmail: 'Email Id is required.' });
+        } 
+        if (reg.test(this.state.email) === false){
+            this.setState({ errorEmail: 'Email Id is required.' });
+        } 
+        if (this.state.selectedStore === '' || this.state.selectedStore === 'Selecte Shop'){
             this.setState({ errorStore: 'Please select the store' });
-        } else if (this.state.posId === ''){
-            this.setState({ errorPosId: 'Please enter the posid' });
-        } else if (this.state.posId === `${this.state.StoreID}-`){
-            this.setState({ errorPosId: 'Please enter the posid' });
+        } 
+        if (this.state.posId === ''){
+            this.setState({ errorPosId: 'POS ID is required.' });
+        }  
+        if (this.state.posId === `${this.state.StoreID}-`){
+            this.setState({ errorPosId: 'Please enter valid POS ID' });
         }
-        else if (this.state.wageRate === ''){
-            this.setState({ errorwageRate: 'Please enter ehe wageRate' });
-        } else if (this.state.dateOfBirth === ''){
-            this.setState({ errorDob: 'Please select dateofbirth' });
+        if (this.state.wageRate === ''){
+            this.setState({ errorwageRate: 'Wage Rate is required.' });
+        }  
+        if (this.state.dateOfBirth === ''){
+            this.setState({ errorDob: 'Date of birth is required.   ' });
         } else if(this.state.age < this.state.minorAge && this.state.minorData.length == 0) {
             this.setState({ isMinor: true });
             Alert.alert(
@@ -420,7 +431,6 @@ class HireNewEmployee extends React.Component {
     }
 
     EmployeeExistenceCheck() {
-        console.log('on EmployeeExistenceCheck');
         this.setState({
             errorFirstName: '',
             errorLastName: '',
@@ -455,7 +465,7 @@ class HireNewEmployee extends React.Component {
             "SaltKey":"",
             "SaltKeyIV":""
         };
-        console.log('jsonDta-->', jsonData);
+        this.setState({...initialState})
         this.props.EmployeeExistenceCheckOnHiringRequest({
             BusinessTypeID: 1,
             jsonData,
@@ -655,7 +665,7 @@ class HireNewEmployee extends React.Component {
                 {console.log('topStoreSpace', this.state.topStoreSpace)}
                     <Dropdown
                         containerStyle={{
-                            top: Matrics.CountScale(20), marginLeft: Matrics.CountScale(10),
+                            marginTop: Matrics.CountScale(40), marginLeft: Matrics.CountScale(10),
                             borderBottomColor: Colors.LIGHTGREY, borderBottomWidth: 1,
                             marginHorizontal: Matrics.CountScale(10)
                         }}
@@ -667,7 +677,7 @@ class HireNewEmployee extends React.Component {
                         valueExtractor={({ DisplayStoreNumber }) => DisplayStoreNumber}
                         inputContainerStyle={{ borderBottomColor: 'transparent',padding: 0, margin: 0 }}
                         itemTextStyle={{ textAlign: 'left' }}
-                        overlayStyle={{ top: this.state.topStoreSpace, borderWidth: 0,}}
+                        overlayStyle={{ top: 60, borderWidth: 0,}}
                         dropdownOffset={{ top: 0, left: 0 }}
                         fontSize={17}
                         itemCount={8}
@@ -697,9 +707,9 @@ class HireNewEmployee extends React.Component {
                     />
 
                 <View renderToHardwareTextureAndroid={true} ref={view => { this.myComponent = view; }}
-                style={{ flexDirection: 'row',paddingVertical: Matrics.CountScale(10) }}
+                style={{paddingVertical: Matrics.CountScale(10) }}
                 >
-                    <Text style={[Styles.labelTextStyle, { width: '50%' }]}>Wage Type</Text>
+                    <Text style={[Styles.labelTextStyle]}>Wage Type</Text>
                     <Text style={Styles.wageTextStyle}>{this.state.wageType}</Text>
                 </View>
                 <View style={{ borderBottomColor: Colors.LIGHTGREY, borderBottomWidth: 1, marginHorizontal: Matrics.CountScale(10) }} />
@@ -957,8 +967,9 @@ const Styles = StyleSheet.create({
     wageTextStyle: {
         fontFamily: Fonts.NunitoSansRegular,
         fontSize: Matrics.CountScale(18),
-        width: '50%',
         color:  Colors.DARK_GREY,
+        paddingLeft: Matrics.CountScale(10),
+        marginTop: Matrics.CountScale(10),
     },
     attachIconStyle: {
         height: 20,

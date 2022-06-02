@@ -7,6 +7,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import DocumentPicker from 'react-native-document-picker';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export default class Minor extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -350,10 +351,10 @@ export default class Minor extends React.Component {
         } else if(this.state.OutTime === ''){
           this.setState({ OutTimeError: 'please select OutTime' });
         } else if(reg.test(this.state.InTime) === false){
-          alert('Invalid InTime! Time should be in HH:MMam/pm format. There should not be space in between MM(minutes) and AM/PM 1');
+          alert('Invalid InTime! Time should be in HH:MMam/pm format. There should not be space in between MM(minutes) and AM/PM');
           // this.setState({ InTimeError: 'Invalid InTime!\n Time should be in HH:MMam/pm\n Format. There should not\n be space in between \nMM(minutes) and AM/PM' });
         } else if(reg.test(this.state.OutTime)=== false) {
-          alert('Invalid OutTime! Time should be in HH:MMam/pm format. There should not be space in between MM(minutes) and AM/PM 2');
+          alert('Invalid OutTime! Time should be in HH:MMam/pm format. There should not be space in between MM(minutes) and AM/PM');
           // this.setState({ OutTimeError: 'Invalid OutTime!\n Time should be in HH:MMam/pm\n Format. There should not\n be space in between \nMM(minutes) and AM/PM' });
         } else if(date2 >= date1){
           this.setState({ OutTimeError: 'To time should be greater than From time' });
@@ -386,43 +387,43 @@ export default class Minor extends React.Component {
           ((this.state.workingHoursWe1 == '' && reg.test(this.state.workingHoursWe1) === false) ||
           (this.state.workingHoursWe2 == '' && reg.test(this.state.workingHoursWe2) === false) )
         ) {
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 3');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
         }
         else if( Th1Th2NotBlank == true &&
           ((this.state.workingHoursTh1 == '' || reg.test(this.state.workingHoursTh1) === false) ||
           (this.state.workingHoursTh2 == '' || reg.test(this.state.workingHoursTh2) === false) )
         ){
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 4');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
         }
         else if( Fr1Fr2NotBlank == true &&
           ((this.state.workingHoursFr1 == '' || reg.test(this.state.workingHoursFr1) === false) ||
           (this.state.workingHoursFr2 == '' || reg.test(this.state.workingHoursFr2) === false) )
         ){
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 5');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
         }
         else if( Sa1Sa2NotBlank == true &&
           ((this.state.workingHoursSa1 == '' || reg.test(this.state.workingHoursSa1) === false) ||
           (this.state.workingHoursSa2 == '' || reg.test(this.state.workingHoursSa2) === false) )
         ){
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 6');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
         }
         else if( Su1Su2NotBlank == true &&
           ((this.state.workingHoursSu1 == '' || reg.test(this.state.workingHoursSu1) === false) ||
           (this.state.workingHoursSu2 == '' || reg.test(this.state.workingHoursSu2) === false) )
         ){
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 7');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
         }
         else if( Mo1Mo2NotBlank == true &&
           ((this.state.workingHoursMo1 == '' || reg.test(this.state.workingHoursMo1) === false) ||
           (this.state.workingHoursMo2 == '' || reg.test(this.state.workingHoursMo2) === false) )
         ){
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 8');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
         }
         else if( Tu1Tu2NotBlank == true &&
           ((this.state.workingHoursTu1 == '' || reg.test(this.state.workingHoursTu1) === false) ||
           (this.state.workingHoursTu2 == '' || reg.test(this.state.workingHoursTu2) === false) )
         ){
-          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 9');
+          alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
         }
         else {
           console.log('save Data');
@@ -458,43 +459,43 @@ export default class Minor extends React.Component {
         ((this.state.workingHoursWe1 == '' && reg.test(this.state.workingHoursWe1) === false) ||
         (this.state.workingHoursWe2 == '' && reg.test(this.state.workingHoursWe2) === false) )
       ) {
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 10');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
       }
       else if( Th1Th2NotBlank == true &&
         ((this.state.workingHoursTh1 == '' || reg.test(this.state.workingHoursTh1) === false) ||
         (this.state.workingHoursTh2 == '' || reg.test(this.state.workingHoursTh2) === false) )
       ){
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 11');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
       }
       else if( Fr1Fr2NotBlank == true &&
         ((this.state.workingHoursFr1 == '' || reg.test(this.state.workingHoursFr1) === false) ||
         (this.state.workingHoursFr2 == '' || reg.test(this.state.workingHoursFr2) === false) )
       ){
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 12');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
       }
       else if( Sa1Sa2NotBlank == true &&
         ((this.state.workingHoursSa1 == '' || reg.test(this.state.workingHoursSa1) === false) ||
         (this.state.workingHoursSa2 == '' || reg.test(this.state.workingHoursSa2) === false) )
       ){
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 13');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
       }
       else if( Su1Su2NotBlank == true &&
         ((this.state.workingHoursSu1 == '' || reg.test(this.state.workingHoursSu1) === false) ||
         (this.state.workingHoursSu2 == '' || reg.test(this.state.workingHoursSu2) === false) )
       ){
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 14');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
       }
       else if( Mo1Mo2NotBlank == true &&
         ((this.state.workingHoursMo1 == '' || reg.test(this.state.workingHoursMo1) === false) ||
         (this.state.workingHoursMo2 == '' || reg.test(this.state.workingHoursMo2) === false) )
       ){
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 15');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
       }
       else if( Tu1Tu2NotBlank == true &&
         ((this.state.workingHoursTu1 == '' || reg.test(this.state.workingHoursTu1) === false) ||
         (this.state.workingHoursTu2 == '' || reg.test(this.state.workingHoursTu2) === false) )
       ){
-        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM 16');
+        alert('Invalid Time! Time should be in HH:MMam/pm Format. There should not be space in between MM(minutes) and AM/PM');
       }
        else {
         this.props.navigation.goBack();
@@ -527,7 +528,13 @@ export default class Minor extends React.Component {
             </View>
           </View>
 
-          <Text style={Styles.cardHeaderText}>Work Restrictions per Work Permit</Text>
+          <Text style={Styles.cardHeaderText}>Work Permit Restrictions</Text>
+          {/* <DateTimePickerModal
+            isVisible={true}
+            mode="time"
+            onConfirm={(data)=>{console.warn(data);}}
+            onCancel={()=>{}}
+          /> */}
           {
             this.state.HSGchecked
             ? null
@@ -947,7 +954,7 @@ export default class Minor extends React.Component {
         <Table borderStyle={{borderColor: '#C1C0B9',  borderRadius: 10}}>
           <Row data={this.state.tableHead} flexArr={[1, 1, 2, 3]} style={Styles.tableHead} textStyle={Styles.tableHeadText}/>
           <TableWrapper style={Styles.tableWrapper}>
-            <Col data={this.state.tableTitle} style={Styles.tableTitle} heightArr={Platform.OS === 'ios' ? [50,50] : [45,45]} textStyle={Styles.tableText}/>
+            <Col data={this.state.tableTitle} style={Styles.tableTitle}  textStyle={Styles.tableText}/>
             <Rows data={tableData} flexArr={[1, 2, 3]} style={Styles.tableRow} heightArr={Platform.OS === 'ios' ? [50,50,50,50,50,50,50] : [45,45,45,45,45,45,45]} textStyle={Styles.tableText}/>
           </TableWrapper>
           <Row 

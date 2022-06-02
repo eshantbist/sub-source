@@ -1279,11 +1279,18 @@ class WeeklySchedule extends React.Component {
                         <Text style={Styles.idleFont}>{item.FirstName} {item.LastName}</Text>
                         <Text style={Styles.idleFont}>{item.EmployeeNumber}</Text>
                     </View>
+                    <View>
                     <TouchableOpacity style={Styles.idleButton} onPress={() => {
                         this.setState({ confirmationModal: true, addToScheduleUserStoreID: item.UserStoreID, addToScheduleStatusId: item.EmployeeStatusID })
                     }}>
                         <Text style={Styles.idlebtnText}>Add To Schedule</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={{...Styles.idleButton,backgroundColor: Colors.ORANGERED,}} onPress={() => {
+                        this.props.ChangeEmployeeStatusRequest({ UserStoreID: item.UserStoreID, StatusId: 6562, UserStoreGuid: '' });
+                    }}>
+                        <Text style={Styles.idlebtnText}>Deactivate</Text>
+                    </TouchableOpacity>
+                    </View>
                 </View>
                 <View
                     style={{
@@ -1837,7 +1844,14 @@ class WeeklySchedule extends React.Component {
                                         <View style={{ margin: Matrics.CountScale(15) }}>
                                             <Text style={Styles.labelTextStyle}>Time Period</Text>
                                             <View style={Styles.rowViewStyle}>
-                                                <Text style={Styles.fontStyle} onPress={() => this._showTimePicker('InTime')}>{this.state.shiftinTime ? this.state.shiftinTime : 'From'}<Text onPress={() => this._showTimePicker('OutTime')}> {this.state.shiftoutTime ? this.state.shiftoutTime : 'To'}</Text></Text>
+                                                <View style={{flexDirection:'row',width:'75%'}}>
+                                                    <View style={{width:"50%"}}>
+                                                        <Text style={Styles.fontStyle} onPress={() => this._showTimePicker('InTime')}>{this.state.shiftinTime ? this.state.shiftinTime : 'From'}</Text>    
+                                                    </View>
+                                                    <View style={{width:"50%"}}>
+                                                        <Text onPress={() => this._showTimePicker('OutTime')}> {this.state.shiftoutTime ? this.state.shiftoutTime : 'To'}</Text>
+                                                    </View>
+                                                </View>
                                                 <Image source={Images.DownArrow} style={{ tintColor: Colors.TEXTGREY }} />
                                             </View>
                                             <Text style={Styles.errorText}>{this.state.InTimeError}{this.state.outTimeError}</Text>
@@ -2377,10 +2391,12 @@ const Styles = StyleSheet.create({
     idleButton: {
         backgroundColor: Colors.APPCOLOR,
         borderRadius: 10,
-        padding: Matrics.CountScale(10),
+        padding: Matrics.CountScale(8),
         alignSelf: 'center',
         alignItems: 'flex-end',
-        marginRight: Matrics.CountScale(20)
+        marginRight: Matrics.CountScale(20),
+        marginTop: Matrics.CountScale(10),
+        marginBottom: Matrics.CountScale(5)
     },
     idlebtnText: {
         color: 'white',

@@ -22,6 +22,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { FlatList } from 'react-native';
 import _ from 'lodash';
+import { NavigationEvents } from "react-navigation";
+
 
 const { width } = Dimensions.get('window');
 
@@ -177,6 +179,12 @@ class Dashboard extends React.Component {
         });
     }
 
+    componentDidUpdate(_prevProps, prevState) {
+        if(prevState.activeSlide !== this.state.activeSlide){
+            this._carousel.snapToItem(this.state.activeSlide, true)
+        }
+    }
+
     async UNSAFE_componentWillReceiveProps(nextProps) {
         // console.log('componentWillReceiveProps', nextProps.headerFiltervalues.getHeaderFilterValuesSuccess);
 
@@ -238,6 +246,7 @@ class Dashboard extends React.Component {
             console.log('Dashboarddata-->','---',nextProps.response)
             if (data.Status == 1) {
                 let keyFinancialData = data.Data._keyFinacialObj;
+                let salesData = data.Data._saleobject;
                 let salesBuilding = data.Data._saleBuildingList ? data.Data._saleBuildingList[0] : [];
                 let customerServices = data.Data._customerServiceObj ? data.Data._customerServiceObj : [];
                 let humanResource = data.Data._humanResourceObj ? data.Data._humanResourceObj : [];
@@ -254,7 +263,7 @@ class Dashboard extends React.Component {
                 await this.setState({
                     //             salesPercentage: regionReport.SaleVariance,
                     nonSubSales: salesBuilding ? salesBuilding.TotalNonSubSales : 0,
-                    totalSales: keyFinancialData ? keyFinancialData.Sales : 0,
+                    totalSales: salesData?.CurrentWeekToDaySale || 0,
                     labourPercentage: keyFinancialData ? keyFinancialData.LaborCostPerc : 0,
                     productivityPercentage: keyFinancialData ? keyFinancialData.Productivity : 0,
                     foodCostPercentage: keyFinancialData ? keyFinancialData.FoodCostPer : 0,
@@ -478,7 +487,11 @@ class Dashboard extends React.Component {
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: Colors.BODYBACKGROUND }}>
-
+                <NavigationEvents
+                onWillFocus={() => {
+                    this.setState({ showDrodown: false });
+                }}
+                />
                 {/* ==========>>>>> Header For Dashboard  <<<<<<<=========== */}
                 <DashboardHeader
                     centerText={`W/E ${moment(this.state.WeekEndingDate).format('MM.DD.YYYY')}`}
@@ -634,7 +647,7 @@ class Dashboard extends React.Component {
                                 nestedScrollEnabled
                             >
                                 <View>
-                                    <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>W/E</Text>
+                                    <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>Date</Text>
                                     <TouchableOpacity onPress={() => this._showDateTimePicker()}>
                                         <Text style={Styles.pickerLabelStyle}>{this.state.WeekEndingDate ? moment(this.state.WeekEndingDate).format('MM.DD.YYYY') : 'Select Date'}</Text>
                                     </TouchableOpacity>
