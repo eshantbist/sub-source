@@ -336,7 +336,7 @@ export default class Minor extends React.Component {
         this.setState({ expirationDateError: 'Please select the expiration date'});
       }
       else if(IssueDate >= ExpiryDate){
-        this.setState({ expirationDateError: 'Expiration date should be greater than two issue Date'});
+        this.setState({ expirationDateError: 'Expiration date should be greater than the issue Date'});
       }
       else if(this.state.offSessionChecked === true) {
         console.log('else if')
@@ -523,7 +523,7 @@ export default class Minor extends React.Component {
             />
             <View style={{flex:1, marginTop: Matrics.CountScale(10)}}>
               <Text style={Styles.text}>
-                Minor is a high school graduate and does need a work permit. Minor has provided a copy of his/her school diploma.
+                Minor is a high school graduate and does not need a work permit. Minor has provided a copy of his/her school diploma.
               </Text>
             </View>
           </View>

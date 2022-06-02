@@ -53,7 +53,8 @@ const initialState = {
         minorData: [],
         errorDob: '',
         hireEmpLoader: false,
-}
+        errorDocuments: ''
+    };
 class HireNewEmployee extends React.Component {
     
     static navigationOptions = ({ navigation }) => ({
@@ -67,6 +68,8 @@ class HireNewEmployee extends React.Component {
 
     //--------->>>State Initilization----------->>>
     state = {...initialState};
+
+    scrollRef = React.createRef();
 
     //------------>>>LifeCycle Methods------------->>>
 
@@ -294,7 +297,7 @@ class HireNewEmployee extends React.Component {
                 })
             }, 500);
         }else if(this.state.selectedStore!== '' && age <= this.state.minorAge) {
-            this.setState({ errorDob: '', isMinor: true});
+            this.setState({ errorDob: '', isMinor: true, dateOfBirth: moment(date).format('MMMM DD, YYYY'), age});
             setTimeout(() => {
                 Alert.alert(
                     '',
@@ -303,9 +306,9 @@ class HireNewEmployee extends React.Component {
                         {
                             text: "Cancel",
                             onPress: () => {
-                            this.setState({
-                                dateOfBirth:""
-                            })
+                                this.setState({
+                                    dateOfBirth:""
+                                })
                             },
                             style: "cancel"
                         },
@@ -315,9 +318,8 @@ class HireNewEmployee extends React.Component {
                 );
             }, 500);
         } else {
-            this.setState({ errorDob: ''});
+            this.setState({ errorDob: '', isMinor: false, dateOfBirth: moment(date).format('MMMM DD, YYYY'), age});
         }
-        this.setState({ dateOfBirth: moment(date).format('MMMM DD, YYYY'), age })
         
     };
 
@@ -346,7 +348,7 @@ class HireNewEmployee extends React.Component {
             });
             console.log('***name', res);
             if (res != null)
-                this.setState({ attachFile: res.name, attachFilePath: res.uri })
+                this.setState({ attachFile: res.name, attachFilePath: res.uri, errorDocuments:'' })
         } catch (err) {
             if (DocumentPicker.isCancel(err)) {
                 console.log('cancel');
@@ -419,6 +421,10 @@ class HireNewEmployee extends React.Component {
                 this.EmployeeExistenceCheck();
             }
         }
+        else if(this.state.isMinor && this.state.attachFile === ''){
+            this.setState({errorDocuments: true})
+            this.scrollRef.current.scrollToEnd({animated:true})
+        }
         else {
             this.EmployeeExistenceCheck();
         }
@@ -434,6 +440,7 @@ class HireNewEmployee extends React.Component {
             errorWageType: '',
             errorwageRate: '',
             errorPosition: '',
+            errorDocuments: '',
             hireEmpLoader: true,
         });
         const jsonData = {
@@ -441,7 +448,7 @@ class HireNewEmployee extends React.Component {
             "MiddleName": this.state.middleName,
             "LastName": this.state.lastName,
             "StoreID": this.state.selectedStoreId,
-            "EmpNumber": this.state.posId,
+            "EmpNumber": `${this.state.selectedStore}-${this.state.posId}`,
             "EmailID": this.state.email,
             "DoB": moment(this.state.dateOfBirth).format(),
             "PositionName": this.state.position,
@@ -555,7 +562,7 @@ class HireNewEmployee extends React.Component {
                 <View style={{ backgroundColor: Colors.WHITE, paddingTop: Platform.OS == 'ios' ? (Matrics.screenHeight == 812 ? 30 : 20) : 0, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }} />
                     <View>
-                        <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18),fontFamily: Fonts.NunitoSansRegular }}>Hire New Employee</Text>
+                        <Text style={{ textAlign: 'center', fontSize: Matrics.CountScale(18), fontFamily: Fonts.NunitoSansRegular }}>Hire New Employee</Text>
                     </View>
                     <TouchableOpacity 
                         style={{ flexDirection: 'row', justifyContent: 'flex-end', flex: 1, marginRight: Matrics.CountScale(10) }}
@@ -571,7 +578,8 @@ class HireNewEmployee extends React.Component {
                         });
                     })
 
-                }, 100)}>
+                }, 100)}
+                ref={this.scrollRef}>
                     <View style={Styles.pageBody}>
                         <Text style={Styles.cardHeaderText} 
                             onLayout={(e) => this.setState({ dropdownpostion: e.nativeEvent.layout.height })}
@@ -680,8 +688,9 @@ class HireNewEmployee extends React.Component {
                         animationDuration= {300}
                         selectedTextStyle={{ textAlign: 'left'}}
                     />
+                    
                     <TextInputView
-                        label="POS ID *"
+                        label={"POS ID *"}
                         fontSize={18}
                         containerStyle={[Styles.Input, {
                             borderBottomColor: Colors.LIGHTGREY,
@@ -808,6 +817,7 @@ class HireNewEmployee extends React.Component {
                         {this.state.attachFile ? this.state.attachFile : null}
                     </Text>
                 </View>
+                {!!this.state.errorDocuments && <Text style={{color:"red", fontFamily: Fonts.NunitoSansRegular}}>Please attach documents</Text>}
             </View>
         )
     }

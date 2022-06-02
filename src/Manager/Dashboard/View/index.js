@@ -21,6 +21,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import AsyncStorage from '@react-native-community/async-storage';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { FlatList } from 'react-native';
+import _ from 'lodash';
 import { NavigationEvents } from "react-navigation";
 
 
@@ -93,6 +94,7 @@ class Dashboard extends React.Component {
         filterModal: false,
         selectedRoleId: 0,
         selectedUsers: 0,
+        selectedRegions: 0,
         selectedStores: -1,
         SelectedStoreName: '',
         isDateTimePickerVisible: false,
@@ -104,6 +106,7 @@ class Dashboard extends React.Component {
         userRole: [],
         Users: [],
         Stores: [],
+        Regions:[],
         msgModal: false,
         msg: '',
         customerComments: [],
@@ -128,6 +131,7 @@ class Dashboard extends React.Component {
         refreshing: false,
         selectedRoleName: '',
         lastFilterselectedUserId: 0,
+        lastFilterselectedRegionId:0,
         selectedStoreIndex: -1,
         lastFilterselectedIndex: -1,
         showDrodown: false,
@@ -190,6 +194,7 @@ class Dashboard extends React.Component {
                 this.setState({ loading: false })
 
             let data = nextProps.headerFiltervalues.data;
+            console.log("this is dataaa", data.Report)
             if (data.Status == 1) {
                 const storeselect = {
                     StoreID: -1,
@@ -200,13 +205,20 @@ class Dashboard extends React.Component {
                     RoleID: 0,
                     RoleName: 'Shops'
                 }
+                const roleResgions = {
+                    RoleID: 1,
+                    RoleName: 'Regions'
+                }
                 if (data.Report.user_list.length > 0) {
+                    console.log("I cam here")
                     const userSelect = {
                         UserID: 0,
                         UserName: `Select ${this.state.selectedRoleName} User`
                     }
                     data.Report.user_list.unshift(userSelect);
                 }
+                console.log("initial roles", data.Report.role_list)
+                data.Report.role_list.unshift(roleResgions);
                 data.Report.role_list.unshift(roleSelect);
                 if (data.Report.store_list.length > 0) {
                     var i;
@@ -221,6 +233,7 @@ class Dashboard extends React.Component {
                     userRole: data.Report.role_list,
                     Users: data.Report.user_list,
                     Stores: data.Report.store_list,
+                    Regions: data.Report.region_list
                 })
             }
         }
@@ -238,7 +251,7 @@ class Dashboard extends React.Component {
                 let customerServices = data.Data._customerServiceObj ? data.Data._customerServiceObj : [];
                 let humanResource = data.Data._humanResourceObj ? data.Data._humanResourceObj : [];
                 let operationOverview = data.Data._complianeOverviewObj ? data.Data._complianeOverviewObj : [];
-                let customerComments = data.Data._customerCommentsList ? data.Data._customerCommentsList : [];
+                let customerComments = data.Data._customerCommentsList ? _.uniqBy(data.Data._customerCommentsList, 'CommentID') : [];
                 let total = humanResource ? parseFloat(humanResource.ActiveEmployee * 4) : 0;
                 let current = operationOverview ? parseFloat(operationOverview.UosAvgValue) : 0;
                 let showCurrent = (current > total) ? total : current;
@@ -266,6 +279,7 @@ class Dashboard extends React.Component {
                     progressPercentage
                 });
                 console.log('nonSubSales-->',this.state.nonSubSales)
+                console.log("yyy 1", customerComments?.length)
                 if (customerComments.length > 0) {
                     this.filterCustomerComments();
                 }
@@ -278,12 +292,19 @@ class Dashboard extends React.Component {
 
     }
 
+    componentDidUpdate(_prevProps, prevState) {
+        if(prevState.activeSlide !== this.state.activeSlide){
+            this._carousel.snapToItem(this.state.activeSlide, true)
+        }
+    }
+
     componentWillUnmount() {
         this.focusListener.remove();
     }
 
     filterCustomerComments() {
         const WeekEndingDateArr = this.state.WeekEndingDate.split('/');
+        console.log("month found", this.state.WeekEndingDate)
         let CurrentMonth = WeekEndingDateArr[0];
         let QuaterMonthArr = [];
         QuaterMonthArr = Global.getQuaterMonth(CurrentMonth);
@@ -294,10 +315,10 @@ class Dashboard extends React.Component {
         let customerCommentsYTD = this.state.customerComments;
 
         customerCommentsMonth = this.state.customerComments.filter((e) => {
-            const date = e.VisitTimeStamp.split('T');
-            return (date[0].split('-')[1] == CurrentMonth)
+            const formattedDate = moment(e.VisitTimeStamp).format('MM/DD/YYYY')
+            return moment(formattedDate).isSame(this.state.WeekEndingDate, 'month');
         });
-
+        console.log("these are comments 1", customerCommentsMonth?.length)
         customerCommentsQTD = this.state.customerComments.filter(e =>
             e.VisitTimeStamp.split('T')[0].split('-')[1] == QuaterMonthfinalArr[0] ||
             e.VisitTimeStamp.split('T')[0].split('-')[1] == QuaterMonthfinalArr[1] ||
@@ -306,7 +327,8 @@ class Dashboard extends React.Component {
 
         for (let i = 0; i < customerCommentsYTD.length; i++) {
             for (let j = 0; j < customerCommentsMonth.length; j++) {
-                if (customerCommentsYTD[i].CommentID === customerCommentsMonth[j].CommentID) {
+                console.log("yelp 1", customerCommentsYTD[i])
+                if (customerCommentsYTD?.[i]?.CommentID === customerCommentsMonth[j].CommentID) {
                     customerCommentsYTD.splice(i, 1);
                 }
             }
@@ -314,6 +336,7 @@ class Dashboard extends React.Component {
 
         for (let i = 0; i < customerCommentsYTD.length; i++) {
             for (let j = 0; j < customerCommentsQTD.length; j++) {
+                console.log("yelp 2", customerCommentsYTD[i])
                 if (customerCommentsYTD[i].CommentID === customerCommentsQTD[j].CommentID) {
                     customerCommentsYTD.splice(i, 1);
                 }
@@ -345,6 +368,8 @@ class Dashboard extends React.Component {
             desc: true,
             parser: function (item) { return new Date(item); }
         });
+
+        console.log("these are comments 2", sortedCommentsMonth)
         const sortedCommentsQTD = sortBy(customerCommentsQTD, {
             prop: "VisitTimeStamp",
             desc: true,
@@ -364,7 +389,7 @@ class Dashboard extends React.Component {
     kFormatter(num) {
         return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math.sign(num) * Math.abs(num)
     }
-    _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+    _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: !this.state.isDateTimePickerVisible });
 
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
     _handleDatePicked = (date) => {
@@ -384,6 +409,14 @@ class Dashboard extends React.Component {
         let data = []
         for (i = 0; i < this.state.Users.length; i++) {
             data.push(<Picker.Item label={this.state.Users[i].UserName} value={this.state.Users[i].UserID} />)
+        }
+        return data
+    }
+
+    getRegions(){
+        let data = []
+        for (i = 0; i < this.state.Regions.length; i++) {
+            data.push(<Picker.Item label={this.state.Regions[i].RegionName} value={this.state.Regions[i].RegionID} />)
         }
         return data
     }
@@ -430,9 +463,11 @@ class Dashboard extends React.Component {
             selectedStores: -1,
             WeekEndingDate: this.state.currentWeekEndDate,
             selectedUsers: 0,
+            selectedRegions:0,
             selectedStoreIndex: -1,
             resetFilter: true,
             SelectedStoreName: '',
+            Regions:[]
         })
         setTimeout(() => {
             this.setState({ resetFilter: false })
@@ -447,6 +482,7 @@ class Dashboard extends React.Component {
         });
         this.props.navigation.dispatch(resetAction)
     }
+
     // ==========>>>>> Render Method  <<<<<<<===========
     render() {
         return (
@@ -570,7 +606,9 @@ class Dashboard extends React.Component {
                                     selectedStores: this.state.lastFilterselectedStores,
                                     SelectedStoreName: this.state.lastFilterSelectedStoreName,
                                     selectedUsers: this.state.lastFilterselectedUserId,
+                                    selectedRegions: this.state.lastFilterselectedRegionId,
                                     Users: this.state.lastFilterselectedUserId == 0 ? [] : this.state.Users,
+                                    Regions: this.state.lastFilterselectedRegionId == 0 ? [] : this.state.Regions,
                                     selectedStoreIndex: this.state.lastFilterselectedIndex
                                 });
                                 global.selectedStore = this.state.lastFilterselectedStores;
@@ -593,18 +631,20 @@ class Dashboard extends React.Component {
                                     lastFilterselectedStores: this.state.selectedStores,
                                     lastFilterSelectedStoreName: this.state.SelectedStoreName,
                                     lastFilterselectedUserId: this.state.selectedUsers,
+                                    lastFilterselectedRegionId: this.state.selectedRegions,
                                     lastFilterselectedIndex: index,
 
                                 })
                             }}
                         />
                         <View style={{ flex: 1, padding: Matrics.CountScale(10) }}>
-                            <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={'handled'} >
+                            <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={'handled'} nestedScrollEnabled >
                             <KeyboardAwareScrollView 
                                 extraScrollHeight={100}
                                 keyboardShouldPersistTaps={'handled'} 
                                 contentContainerStyle={{ flex: 1 }} 
                                 enableOnAndroid={true}
+                                nestedScrollEnabled
                             >
                                 <View>
                                     <Text style={[Styles.pickerLabelStyle, { paddingVertical: Matrics.CountScale(10) }]}>Date</Text>
@@ -673,6 +713,27 @@ class Dashboard extends React.Component {
                                         </Picker>
                                     </View>
                                 }
+                                {
+                                    this.state.Regions != '' &&
+                                    <View>
+                                        <View style={Styles.labelBorderStyle}>
+                                            <Text style={Styles.pickerLabelStyle}>Regions</Text>
+                                        </View>
+                                        <Picker
+                                            itemStyle={Styles.pickerItemStyle}
+                                            selectedValue={this.state.selectedRegions}
+                                            onValueChange={value => {
+                                                this.setState({ selectedRegions: value, loading: true })
+                                                this.roleFlag = false;
+                                                this.props.getHeaderFilterValuesRequest({
+                                                    StoreId: -1, RoleId: this.state.selectedRoleId, FilterId: value, BusinessTypeId: 1
+                                                });
+                                            }}
+                                        >
+                                            {this.getRegions()}
+                                        </Picker>
+                                    </View>
+                                }
                                 <View style={{ borderTopWidth:1,  borderTopColor: Colors.BORDERCOLOR, paddingVertical: Matrics.CountScale(15) }}>
                                     <Text style={Styles.pickerLabelStyle}>Shops</Text>
                                 </View>
@@ -718,6 +779,7 @@ class Dashboard extends React.Component {
                                                 nestedScrollEnabled: true,
                                             }
                                         }
+                                        nestedScrollEnabled
                                     />
                                     : null}
                                 <TouchableOpacity
@@ -883,7 +945,7 @@ class Dashboard extends React.Component {
                                     }}
                                     onPageScrollStateChanged={(e) => { console.log(e) }}
                                     onMomentumScrollEnd={(e, state, context) => {
-                                        this.setState({ activePage: context.state.index + 1 })
+                                        this.setState({ activePage: state.index + 1 })
 
                                     }} >
                                     {
