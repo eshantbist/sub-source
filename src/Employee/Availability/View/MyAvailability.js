@@ -70,6 +70,7 @@ class MyAvailability extends React.Component {
                             My Availability
                         </Text>
                     </View>
+                    <Text onPress={()=>this.getEmpAvailability()} style={{position:'absolute',right:20,fontSize: Matrics.CountScale(18),fontFamily: Fonts.NunitoSansRegular,color: 'black'}}>Refresh</Text>
                 </View>
                 {/* =============>>>>>>>>> Header End  <<<<<<<<<<============= */}
 
