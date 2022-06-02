@@ -96,60 +96,56 @@ class Publish extends React.Component {
     }
 
     onClickOfDone() {
-        if (this.state.message !== '') {
-            const empListArr = [];
-            if(this.state.recipientsData.length > 0 && this.state.ReceipientsChecked.length > 0){
-                this.state.recipientsData.forEach((child, index) => {
-                    this.state.ReceipientsChecked.forEach((data, key) => {
-                        if(index == key && data == true){
-                            let empList = {
-                                "ContactNumber": child.ContactNumber,
-                                "CurriculumName": child.CurriculumName,
-                                "CurriculumPercentage": child.CurriculumPercentage,
-                                "DOB": child.DOB,
-                                "DateCompleted": child.DateCompleted,
-                                "DoH": child.DoH,
-                                "EmailID": child.EmailID,
-                                "EmployeeAge": child.EmployeeAge,
-                                "EmployeeNumber": child.EmployeeNumber,
-                                "EmployeeStatus": child.EmployeeStatus,
-                                "EmployeeStatusID": child.EmployeeStatusID,
-                                "Experience": child.Experience,
-                                "FullName": child.FullName,
-                                "IsAvailability": child.IsAvailability,
-                                "IsChecked": true,
-                                "IsLinked": child.IsLinked,
-                                "IsMinorEmployee": child.IsMinorEmployee,
-                                "IsScheduled": child.IsScheduled,
-                                "IsSuggested": child.IsSuggested,
-                                "IsUosMappingAvailable": child.IsUosMappingAvailable,
-                                "ProfilePicture": child.ProfilePicture,
-                                "ReceipientsMessage": this.state.message,
-                                "RoleCode": child.RoleCode,
-                                "RoleID": child.RoleID,
-                                "RoleLevel": child.RoleLevel,
-                                "RoleName": child.RoleName,
-                                "SMSEmailID": child.SMSEmailID,
-                                "UosAllEmpID": child.UosAllEmpID,
-                                "UserID": child.UserID,
-                                "UserStoreGUID": child.UserStoreGUID,
-                                "UserStoreID": child.UserStoreID,
-                                "isUOS": child.isUOS
-                            }
-                            empListArr.push(empList);
+        const empListArr = [];
+        if(this.state.recipientsData.length > 0 && this.state.ReceipientsChecked.length > 0){
+            this.state.recipientsData.forEach((child, index) => {
+                this.state.ReceipientsChecked.forEach((data, key) => {
+                    if(index == key && data == true){
+                        let empList = {
+                            "ContactNumber": child.ContactNumber,
+                            "CurriculumName": child.CurriculumName,
+                            "CurriculumPercentage": child.CurriculumPercentage,
+                            "DOB": child.DOB,
+                            "DateCompleted": child.DateCompleted,
+                            "DoH": child.DoH,
+                            "EmailID": child.EmailID,
+                            "EmployeeAge": child.EmployeeAge,
+                            "EmployeeNumber": child.EmployeeNumber,
+                            "EmployeeStatus": child.EmployeeStatus,
+                            "EmployeeStatusID": child.EmployeeStatusID,
+                            "Experience": child.Experience,
+                            "FullName": child.FullName,
+                            "IsAvailability": child.IsAvailability,
+                            "IsChecked": true,
+                            "IsLinked": child.IsLinked,
+                            "IsMinorEmployee": child.IsMinorEmployee,
+                            "IsScheduled": child.IsScheduled,
+                            "IsSuggested": child.IsSuggested,
+                            "IsUosMappingAvailable": child.IsUosMappingAvailable,
+                            "ProfilePicture": child.ProfilePicture,
+                            "ReceipientsMessage": this.state.message,
+                            "RoleCode": child.RoleCode,
+                            "RoleID": child.RoleID,
+                            "RoleLevel": child.RoleLevel,
+                            "RoleName": child.RoleName,
+                            "SMSEmailID": child.SMSEmailID,
+                            "UosAllEmpID": child.UosAllEmpID,
+                            "UserID": child.UserID,
+                            "UserStoreGUID": child.UserStoreGUID,
+                            "UserStoreID": child.UserStoreID,
+                            "isUOS": child.isUOS
                         }
-                    })
-                });
-            }
-            // console.log('emplistarr-->', empListArr);
-            this.setState({ loading: true });
-            this.props.NotifyEmployeeSchedulesOnPublishRequest({
-                'StoreId': this.state.selectedStoreId, 'DisplayStoreNumber': this.state.selectedStoreName, 'BusinessTypeId': 1, 'WeekEnding': this.state.WeekEndingDate, 'DayID': -1,
-                '_employeeList': empListArr
+                        empListArr.push(empList);
+                    }
+                })
             });
-        } else {
-            this.setState({ messageError: 'Please enter the message' });
         }
+        // console.log('emplistarr-->', empListArr);
+        this.setState({ loading: true });
+        this.props.NotifyEmployeeSchedulesOnPublishRequest({
+            'StoreId': this.state.selectedStoreId, 'DisplayStoreNumber': this.state.selectedStoreName, 'BusinessTypeId': 1, 'WeekEnding': this.state.WeekEndingDate, 'DayID': -1,
+            '_employeeList': empListArr
+        });
     }
 
     removeRecipients(email) {
@@ -162,6 +158,12 @@ class Publish extends React.Component {
         });
     }
 
+    changeEmail=(text,index)=>{
+        const tempData = [...this.state.recipientsData];
+        tempData[index].EmailID = text
+        this.setState(tempData);
+    }
+
     renderRecipients = ({ item, index }) => {
         return (
             // item.EmailID
@@ -169,7 +171,13 @@ class Publish extends React.Component {
                 <View style={{ backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', paddingLeft: Matrics.CountScale(10), marginVertical: Matrics.CountScale(5) }}>
                     <View style={{ flex: 1}}>
                         <Text>{item.FullName}</Text>
-                        <Text style={{ marginTop: Matrics.CountScale(5)}}>{item.EmailID}</Text>
+                        {/* <Text style={{ marginTop: Matrics.CountScale(5)}}>{item.EmailID}</Text> */}
+                        <TextInput
+                            autoCorrect={false}
+                            style={{marginTop: Matrics.CountScale(5)}}
+                            value={item.EmailID}
+                            onChangeText={(text) => { this.changeEmail(text,index); }}
+                        />
                     </View>
                         <CheckBox
                             checkedIcon={<Image source={Images.CheckBoxChecked} />}

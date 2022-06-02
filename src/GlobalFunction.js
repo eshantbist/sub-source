@@ -281,6 +281,14 @@ const Global = {
         // var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         // return re.test(String(email).toLowerCase());
         return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,5}$/i.test(email)
+    },
+    phoneVerify(phone){
+        return /^[6789]\d{9}$/i.test(phone);
+
+    },
+    zipVerify(zipCode){
+        return /^\d{5}$/i.test(zipCode);
+
     }
 }
 

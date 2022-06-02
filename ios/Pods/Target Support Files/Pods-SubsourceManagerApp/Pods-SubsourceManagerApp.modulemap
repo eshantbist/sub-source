@@ -1,6 +1,0 @@
-module Pods_SubsourceManagerApp {
-  umbrella header "Pods-SubsourceManagerApp-umbrella.h"
-
-  export *
-  module * { export * }
-}

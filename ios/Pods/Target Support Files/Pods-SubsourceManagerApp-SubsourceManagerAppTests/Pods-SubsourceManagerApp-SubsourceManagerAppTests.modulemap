@@ -1,6 +1,0 @@
-module Pods_SubsourceManagerApp_SubsourceManagerAppTests {
-  umbrella header "Pods-SubsourceManagerApp-SubsourceManagerAppTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
