@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
         fontSize: Matrics.CountScale(17)
     },
     modalBody: {
-        height: Matrics.CountScale(165),
         width: Matrics.screenWidth - 40,
         backgroundColor: Colors.WHITE,
         borderRadius: 5

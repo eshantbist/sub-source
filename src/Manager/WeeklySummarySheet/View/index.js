@@ -751,9 +751,7 @@ class WeeklySummarySheet extends React.Component {
         }
     }
 
-    _renderItem({ item, index, props }) {
-        console.log("hello there you", self.state.FinalWeekDatesDataArr, self.state.weatherListData)
-        const weatherReport = [{}, ...self.state.weatherListData]
+    _renderItem({ item, index }) {
       return(
         <TouchableOpacity key={index} style={{ flexDirection: 'row', }} 
             onPress={() => { 
@@ -781,15 +779,15 @@ class WeeklySummarySheet extends React.Component {
                 :
                     <View style={{ paddingHorizontal: Matrics.CountScale(25), marginTop: Matrics.CountScale(5) }}>
                         <Text style={[Styles.fontStyle, { color: self.state.dayIndex == index ? 'white' : null, fontWeight: 'bold' }]}>{moment(item.WeekDate).format('MMM DD, ddd')}</Text>
-                        {weatherReport[index] !== void 0
+                        {self.state.weatherListData[index] !== void 0
                             ? <Image source={self.state.dayIndex == index ? Images.CloudIcon2 : Images.CloudIcon1} 
                             style={{ alignSelf: 'center', marginVertical: Matrics.CountScale(10),}} />
                             : <View style={{ paddingVertical: Platform.OS == 'ios' ? Matrics.CountScale(27) : Matrics.CountScale(35) }}/>
                             
                         }
                         <Text style={[Styles.SmallFontStyle, { color: self.state.dayIndex == index ? 'white' : null, fontWeight: 'bold' }]}>
-                        { weatherReport.length > 1 && weatherReport[index] !== void 0
-                            ? `${weatherReport[index].High}, ${weatherReport[index].WeatherTypeName}`
+                        { self.state.weatherListData.length > 0 && self.state.weatherListData[index] !== void 0
+                            ? `${self.state.weatherListData[index].High},${self.state.weatherListData[index].WeatherTypeName}`
                             : null
                         }   
                         </Text>
@@ -797,7 +795,7 @@ class WeeklySummarySheet extends React.Component {
                         !item.isClosed
                         ? 
                             <TouchableOpacity 
-                                onPress={() => props.ManageWeeklySummaryWeekDayStatus({"StoreID":this.state.selectedStoreId,"DayID": this.state.selectedDayId,"WeekEndDate": moment.utc(this.state.WeekEndingDate).format(),"DayDate": this.state.selectedDate,"isClosed":true})} 
+                                onPress={() => this.props.ManageWeeklySummaryWeekDayStatus({"StoreID":this.state.selectedStoreId,"DayID": this.state.selectedDayId,"WeekEndDate": moment.utc(this.state.WeekEndingDate).format(),"DayDate": this.state.selectedDate,"isClosed":true})} 
                                 style={{ position: 'absolute', right: 0, top: 0, marginRight: Matrics.CountScale(5), }}
                             >
                                 <Image source={Images.Lock} />
@@ -1311,7 +1309,7 @@ class WeeklySummarySheet extends React.Component {
                   <Carousel
                       ref={(c) => { this._carousel = c; }}
                       data={this.state.FinalWeekDatesDataArr}
-                      renderItem={(data)=>this._renderItem({...data, props:this.props})}
+                      renderItem={this._renderItem}
                       sliderWidth={SLIDER_WIDTH}
                       itemWidth={Matrics.screenWidth / 2}
                       activeSlideAlignment={'start'}
