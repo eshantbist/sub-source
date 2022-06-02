@@ -13,7 +13,7 @@ class TextInputView extends React.Component {
                 value={this.props.value}
                 baseColor={Colors.DARK_GREY}
                 tintColor={Colors.DARK_GREY}
-                textColor={Colors.BLACK}
+                textColor={this.props.textColor || Colors.BLACK}
                 // fontFamily={Fonts.NunitoSansRegular}
                 fontSize={this.props.fontSize}
                 labelTextStyle={{ fontFamily: Fonts.NunitoSansRegular }}
