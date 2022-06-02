@@ -21,7 +21,7 @@ import DocumentPicker from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment'
 import {Picker} from '@react-native-community/picker';
-import _ from 'lodash'
+import _, { isEmpty } from 'lodash'
 import {
     getPayrollTaxListRequest, getWeeklyScheduleInfoRequest, getWeatherDetailsListRequest, getWeeklyScheduleEmployeeRequest,
     getWeeklyScheduleEmployeeReturnRequest, DeleteEmployeeSchedule, CreateUpdateEmployeeSchedule,
@@ -258,6 +258,7 @@ class WeeklySchedule extends React.Component {
         userHeaderHeight: 0,
         defaultWeekendDate: '',
         showShop: false,
+        shiftNotes:''
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -981,7 +982,7 @@ class WeeklySchedule extends React.Component {
                    
                     {
                         item.DayDate != 'Total' && item.DayDate != ''  ?
-                        weatherData[0] !== void 0
+                        weatherData[0]!==0
                             ?   <Image source={self.state.dayIndex == index ? Images.CloudIcon2 : Images.CloudIcon1} style={{ marginVertical: Matrics.CountScale(10) }} />
                             : <View style={{ paddingVertical: Platform.OS == 'ios' ? Matrics.CountScale(28) : Matrics.CountScale(35) }}/>
                         : null
@@ -990,7 +991,7 @@ class WeeklySchedule extends React.Component {
                     <Text style={[Styles.SmallFontStyle, self.state.dayIndex == index ? Styles.selectedDayfontStyle : null]}>
                         {
                             item.DayDate != 'Total' && item.DayDate != ''? 
-                                weatherData[0] !== void 0
+                                !isEmpty(weatherData[0])
                                 ? `${weatherData[0].High}, ${weatherData[0].WeatherTypeName}` 
                                 : null
                             : null
@@ -1062,7 +1063,7 @@ class WeeklySchedule extends React.Component {
                                 DailyScheduleID: data.DailyScheduleID,
                                 UserStoreGUID: item.UserStoreGUID,
                                 UserStoreID: item.UserStoreID,
-                                Notes: data.Notes,
+                                shiftNotes: data.Notes,
                                 ScheduleDate: data.ScheduleDate,
                                 repeatEvery: data.RepeatType == 0 || data.RepeatType == -1 ? false : true,
                                 repeatEveryType: data.RepeatType == 1 ? 'Week' : 'Day',
@@ -1087,6 +1088,7 @@ class WeeklySchedule extends React.Component {
                             InTimeError: '',
                             outTimeError: '',
                             resonError: '',
+                            shiftNotes:''
                         });
                     }
                 }}
@@ -1340,14 +1342,14 @@ class WeeklySchedule extends React.Component {
                     "InTime": Global.getTime12To24(this.state.shiftinTime),
                     "OutTime": Global.getTime12To24(this.state.shiftoutTime),
                     "IsChecked": false,
-                    "Notes": "",
                     "RepeatType": repeatType,
                     "RepeatDays": repeatDays,
                     "StoreID": this.state.selectedStoreId,
                     "UserStoreID": this.state.UserStoreID,
                     "ScheduleDate": moment(this.state.selectedDate).format('MM/DD/YYYY'),
                     "ShiftValue": 0,
-                    "UserStoreGUID": this.state.UserStoreGUID
+                    "UserStoreGUID": this.state.UserStoreGUID,
+                    "Notes": this.state.shiftNotes
                 };
                 this.props.CreateUpdateEmployeeSchedule(dataAdd);
             } else {
@@ -1360,14 +1362,14 @@ class WeeklySchedule extends React.Component {
                         "InTime": Global.getTime12To24(this.state.shiftinTime),
                         "OutTime": Global.getTime12To24(this.state.shiftoutTime),
                         "IsChecked": false,
-                        "Notes": this.state.Notes,
                         "RepeatType": repeatType,
                         "RepeatDays": repeatDays,
                         "StoreID": this.state.selectedStoreId,
                         "UserStoreID": this.state.UserStoreID,
                         "ScheduleDate": moment(this.state.ScheduleDate, 'YYYY.MM.DD HH:mm').format('MM/DD/YYYY'),
                         "ShiftValue": 0,
-                        "UserStoreGUID": this.state.UserStoreGUID
+                        "UserStoreGUID": this.state.UserStoreGUID,
+                        "Notes": this.state.shiftNotes
                     }
                     this.props.CreateUpdateEmployeeSchedule(dataEdit);
                 }
@@ -1877,6 +1879,14 @@ class WeeklySchedule extends React.Component {
                                                 <Text style={{ fontFamily: Fonts.NunitoSansRegular }}>{moment(this.state.selectedDate).format('MM.DD.YYYY')}</Text>
                                                 <Text style={Styles.errorText}>{this.state.endingDateError}</Text>
                                             </View>
+                                            <TextInput
+                                                multiline={true}
+                                                value={this.state.shiftNotes}
+                                                autoCorrect={false}
+                                                style={{ height: Matrics.CountScale(120), fontFamily: Fonts.NunitoSansRegular, textAlignVertical:"top", borderWidth:2, borderColor:Colors.BORDERCOLOR, padding:10, borderRadius:5 }}
+                                                placeholder={'Type here....'}
+                                                onChangeText={(text) => this.setState({ shiftNotes: text })}
+                                            />
                                         </View>
                                         {
                                             this.state.disableEditDeleteShiftButton
