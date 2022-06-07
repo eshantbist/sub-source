@@ -42,13 +42,16 @@ class CreateRequest extends React.Component {
         notes: '',
         loading: false,
         resonError: '',
+        minDate: '',
+        notesError:''
     }
 
     UNSAFE_componentWillMount() {
+        let dateNow = moment().format('YYYY-MM-DD')
+        let after14DayDate = moment(dateNow, 'YYYY-MM-DD').add(14,'days').format('YYYY-MM-DD');
         date = new Date;
-        dt = moment(date).format('YYYY-MM-DD')
-        selectedDate = { [dt]: { selected: true, selectedColor: Colors.APPCOLOR } }
-        this.setState({ beginDate: date, endDate: date, selectedDate: selectedDate })
+        selectedDate = { [after14DayDate]: { selected: true, selectedColor: Colors.APPCOLOR } }
+        this.setState({ beginDate: after14DayDate, endDate: after14DayDate, selectedDate: selectedDate, minDate:after14DayDate })
         this.props.getLeaveTypeListRequest()
 
 
@@ -145,8 +148,10 @@ class CreateRequest extends React.Component {
                         else if (this.getDateValue(this.state.beginDate) > this.getDateValue(this.state.endDate)) {
                             alert('Leave end date is invalid. Please select valid date')
                         } else if(this.state.selectedReasonId === ''){
-                            this.setState({ resonError: 'Please Select The Reson' });
-                        } 
+                            this.setState({ resonError: 'Please Select The Reason' });
+                        } else if(this.state.notes.trim() === ''){
+                            this.setState({notesError: 'Please add notes'})
+                        }
                         else {
                             this.setState({ loading: true })
                             const  TimeoffArr = {
@@ -189,6 +194,7 @@ class CreateRequest extends React.Component {
 
                                 }}
                                 markedDates={this.state.selectedDate}
+                                minDate={this.state.minDate}
                             // markedDates={{
                             //     '2019-02-16': { selected: true, marked: true },
 
@@ -331,6 +337,7 @@ class CreateRequest extends React.Component {
                 </View>
 
                 {/* ====>>>>>>>>>>> Note textbox <<<<<<<<<<==========> */}
+                <View style={{flex:1}}>
                 <View style={Styles.rowStyle}  >
                     <View>
                         <Text style={Styles.labelText}>Note:</Text>
@@ -338,9 +345,11 @@ class CreateRequest extends React.Component {
                     <View style={{ flex: 1 }}>
                         <TextInput multiline={true} style={{ height: 100, width: '100%' }}
                             value={this.state.notes}
-                            onChangeText={(text) => { this.setState({ notes: text }) }}
+                            onChangeText={(text) => { this.setState({ notes: text, notesError:'' }) }}
                         />
                     </View>
+                </View>
+                <Text style={{color:'red', fontSize:12, marginTop:5}}>{this.state.notesError}</Text>
                 </View>
             </View>
 

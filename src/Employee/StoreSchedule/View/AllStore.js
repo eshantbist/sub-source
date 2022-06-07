@@ -14,6 +14,7 @@ import { Dropdown } from 'react-native-material-dropdown'
 import { Colors, Fonts, Matrics, Images, MasterCssEmployee } from '@Assets'
 import { LoadWheel } from "@Components";
 import Global from '../../../GlobalFunction'
+import DateTimePicker from 'react-native-modal-datetime-picker';
 let self;
 //let UserStoreGuid = JSON.parse(global.user.LoginObject).Login.UserStoreGuid;
 
@@ -30,7 +31,9 @@ class AllStore extends React.Component {
         allStoreData: [],
         refreshing: false,
         storeLoader:  true,
+        isDateTimePickerVisible:false
     }
+    calendarRef = React.createRef();
     UNSAFE_componentWillMount() {
         self = this;
         console.log(this.props, "receive");
@@ -274,9 +277,26 @@ class AllStore extends React.Component {
         this.props.getStoreSchedule({ StartDate: this.state.selectedDate, IsMobile: 0 })
     }
 
+    hideDateTimePicker = () => {
+        this.setState({isDateTimePickerVisible:false})
+    }
+
+    handleDatePicked = (date) => {
+        this.setState({isDateTimePickerVisible:false, selectedDate: moment(date, 'MMMM DD, YYYY').format('MM/DD/YYYY'), loading: true });
+        this.props.getStoreSchedule({ StartDate:  moment(date, 'MMMM DD, YYYY').format('MM/DD/YYYY'), IsMobile: 0 });
+        this.calendarRef.current.setSelectedDate(date)
+    }
+
     render() {
         // console.log('this.state.storeScheduleData-->',this.state.storeScheduleData)
         return (
+            <>
+            {this.state.isDateTimePickerVisible && <DateTimePicker 
+                isVisible={this.state.isDateTimePickerVisible}
+                onConfirm={this.handleDatePicked}
+                onCancel={this.hideDateTimePicker}
+                date={this.state.selectedDate?new Date(moment(this.state.selectedDate, 'MM-DD-YYYY').format('MMMM DD, YYYY')):new Date(this.state.selectedDate)}
+            />}
             <View style={Styles.pageBody}>
 
                 {/*  =============>>>>>>>>> Header Start <<<<<<<<<<============= */}
@@ -345,6 +365,7 @@ class AllStore extends React.Component {
                 </View>
                 <LoadWheel visible={this.state.loading} onRequestClose={() => this.setState({ loading: false })} />
             </View >
+            </>
         );
     }
 
@@ -361,6 +382,7 @@ class AllStore extends React.Component {
                 <CalendarStrip
                     calendarAnimation={{ type: 'sequence', duration: 100 }}
                     startingDate={moment(this.state.selectedDate)}
+                    selectedDate={moment(this.state.selectedDate)}
                     // selectedDate={moment(this.state.selectedDate)}
                     daySelectionAnimation={{
                         type: 'border',
@@ -368,7 +390,7 @@ class AllStore extends React.Component {
                         borderWidth: 1,
                         borderHighlightColor: Colors.APPCOLOR,
                     }}
-                    ref='calender'
+                    ref={this.calendarRef}
                     style={Styles.calendarStyle}
                     calendarColor={Colors.WHITE}
                     calendarHeaderStyle={{
@@ -385,16 +407,19 @@ class AllStore extends React.Component {
                     onWeekChanged={(data, start, end) => { 
                         console.log('onWeekChanged-->',data); 
                         console.log('sle-->',moment(Global.getDateValue(data._d)).format('MM/DD/YYYY')); 
-                        this.setState({ selectedDate: moment(Global.getDateValue(data._d)).format('MM/DD/YYYY'), loading: true });
-                        this.props.getStoreSchedule({ StartDate:  moment(Global.getDateValue(data._d)).format('MM/DD/YYYY'), IsMobile: 0 })
+                        this.setState({ selectedDate: moment(Global.getDateValue(data._d), 'MM-DD-YYYY').format('MM/DD/YYYY'), loading: true });
+                        this.props.getStoreSchedule({ StartDate:  moment(Global.getDateValue(data._d), 'MM-DD-YYYY').format('MM/DD/YYYY'), IsMobile: 0 })
                     }}
                     onDateSelected={(data) => {
                         console.log('onDateSelected-->', data);
-                        this.setState({ selectedDate: Global.getDateValue(data._d), loading: true });
-                        this.props.getStoreSchedule({ StartDate:  moment(Global.getDateValue(data._d)).format('MM/DD/YYYY'), IsMobile: 0 });
+                        this.setState({ selectedDate: moment(Global.getDateValue(data._d), 'MM-DD-YYYY'), loading: true });
+                        this.props.getStoreSchedule({ StartDate:  moment(Global.getDateValue(data._d),'MM-DD-YYYY').format('MM/DD/YYYY'), IsMobile: 0 });
                     }}
                     iconContainer={{ flex: 0.1 }}
                 />
+                <TouchableOpacity style={{position:"absolute", top:28, right:20}} onPress={()=>this.setState({isDateTimePickerVisible:true})}>
+                    <Image style={{ width: Matrics.CountScale(23), height: Matrics.CountScale(21) }} source={`${Images.StoreActiveIcon}`} ></Image>
+                </TouchableOpacity>
             </View>
         )
     }
