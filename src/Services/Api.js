@@ -206,6 +206,17 @@ module.exports = {
     },
     // Employee Module 
 
+    getStateList() {
+        return fetch(`${ENVIRONMENT}/GetStatesList/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + global.user.access_token
+            },
+        }).then(response => {
+            return response;
+        });
+    },
     getEmployeeTotalWorkedHours(params) {
         var formBody = [];
         for (var property in params) {
@@ -261,6 +272,18 @@ module.exports = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        }).then((response) => response.json())
+    },
+    async getStateList() {
+        userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
+        authToken = await AsyncStorage.getItem('AuthToken');
+       
+        return fetch(`${ENVIRONMENT}/GetStatesList/?`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + authToken
             },
         }).then((response) => response.json())
     },

@@ -22,6 +22,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { FlatList } from 'react-native';
 import _ from 'lodash';
+import { NavigationEvents } from "react-navigation";
+
 
 const { width } = Dimensions.get('window');
 

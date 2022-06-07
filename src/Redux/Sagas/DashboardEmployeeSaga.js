@@ -7,6 +7,10 @@ import {
     FETCH_REASONS_REQUESTING,
     FETCH_REASONS_FAIL,
 
+    FETCH_STATE_LIST_SUCCESS,
+    FETCH_STATE_LIST_REQUESTING,
+    FETCH_STATE_LIST_FAIL,
+
     FETCH_EMPLOYEE_HOURS_SUCCESS,
     FETCH_EMPLOYEE_HOURS_REQUESTING,
     FETCH_EMPLOYEE_HOURS_FAIL,
@@ -74,6 +78,18 @@ export const watchEmployeeHoursAsync = function* watchEmployeeHoursAsync({ param
     catch (e) {
         console.log(e, 'error');
         yield put({ type: FETCH_EMPLOYEE_HOURS_FAIL, payload: e });
+    }
+}
+
+/************************ Get State list ****************************/
+
+export const watchStateListAsync = function* watchStateListAsync() {
+    try {
+        const response = yield call(Api.getStateList, {})
+        yield put({ type: FETCH_STATE_LIST_SUCCESS, payload: response });
+    }
+    catch (e) {
+        yield put({ type: FETCH_STATE_LIST_FAIL, payload: e });
     }
 }
 
@@ -198,6 +214,7 @@ export const updateUserDeviceAsync = function* updateUserDeviceAsync({ params })
 const watch = function* watch() {
     yield takeEvery(FETCH_REASONS_REQUESTING, watchReasonAsync);
     yield takeEvery(FETCH_EMPLOYEE_HOURS_REQUESTING, watchEmployeeHoursAsync);
+    yield takeEvery(FETCH_STATE_LIST_REQUESTING, watchStateListAsync);
     yield takeEvery(FETCH_EMPLOYEE_BASIC_DETAILS_REQUESTING, watchEmployeeBasicDetailsAsync);
     yield takeEvery(FETCH_EMPLOYEE_GUEST_FEEDBACK_REQUESTING, watchEmployeeGuestFeedbackAsync);
     yield takeEvery(FETCH_EMPLOYEE_PERSONAL_DETAILS_REQUESTING, watchEmployeePersonalDetailsAsync);
