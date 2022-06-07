@@ -644,7 +644,6 @@ class Dashboard extends React.Component {
                                         ?
                                         <CalendarPicker
                                             onDateChange={this._handleDatePicked}
-                                            // enableWeek="Tue"
                                             selectedDayColor={Colors.APPCOLOR}
                                             selectedDayTextColor={Colors.WHITE}
                                             previousTitle="<"
