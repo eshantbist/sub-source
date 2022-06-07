@@ -1,6 +1,6 @@
 //  ====>>>>>>>>>>> Libraries <<<<<<<<<<==========> 
 import React from 'react';
-import { View, StatusBar, ScrollView, TouchableOpacity, Image, Text, Alert } from 'react-native';
+import { View, StatusBar, ScrollView, TouchableOpacity, Image, Text, Alert,ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import ImagePicker from "react-native-image-crop-picker";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -9,8 +9,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 //  ====>>>>>>>>>>> Assets <<<<<<<<<<==========> 
 import { Colors, Fonts, Matrics, Images, MasterCssEmployee } from '@Assets'
 import { TextInputView, LoadWheel, ImagePickerModal } from "@Components";
-import { getEmployeePersonalDetails, updateEmployeePersonalDetails } from '@Redux/Actions/DashboardEmployeeActions'
+import { getEmployeePersonalDetails, updateEmployeePersonalDetails,getStateList } from '@Redux/Actions/DashboardEmployeeActions'
+
 import Global from '../../../GlobalFunction'
+import { Dropdown } from 'react-native-material-dropdown';
 
 //  ====>>>>>>>>>>> Header start <<<<<<<<<<==========> 
 class EditProfileEmployee extends React.Component {
@@ -37,10 +39,13 @@ class EditProfileEmployee extends React.Component {
         stateId: 0,
         loading: false,
         profileImage: {},
+        coverImage:{},
         imagePickerModal: false,
+        imagePickerModalCover:false,
+        states:[]
     }
     UNSAFE_componentWillMount() {
-        console.log(this.props.navigation.state.params.Data)
+        this.props.getStateList({});
         const { Address1
             , Address2
             , CellPhone
@@ -81,7 +86,8 @@ class EditProfileEmployee extends React.Component {
             name: FirstName + ' ' + MiddleName + ' ' + LastName,
             firstName: FirstName,
             middleName: MiddleName,
-            lastName: LastName
+            lastName: LastName,
+            states:[]
         })
     }
 
@@ -104,6 +110,18 @@ class EditProfileEmployee extends React.Component {
         else if (nextProps.data.updateEmployeePersonalDetailsFail && this.state.loading) {
             this.setState({ loading: false })
             setTimeout(() => { alert(Global.error_msg) }, Global.alert_timeout)
+        }
+        if (nextProps.data.stateListDataSuccess) {
+            if(nextProps.data.stateListData != null)
+                // this.setState({ workedHours: nextProps.data.employeeWorkHourdata.Data })
+                console.warn(nextProps.data.stateListData);
+                let originalData = nextProps.data.stateListData.List.map(item=>{
+                        return {
+                            value:item.StateName,
+                            stateId:item.StateID,
+                        }
+                });
+                this.setState({states:originalData})
         }
     }
 
@@ -150,6 +168,52 @@ class EditProfileEmployee extends React.Component {
                 data: image.data
             };
             this.setState({ profileImage: imgdata });
+        });
+    }
+
+    onPressGalleryCover() {
+        this.setState({ imagePickerModalCover: false })
+        setTimeout(() => { this.ChoosePhotoCover() }, 500)
+    }
+
+    onPressCameraCover() {
+        this.setState({ imagePickerModalCover: false })
+        setTimeout(() => { this.TakePhotoCover() }, 500)
+    }
+
+
+    TakePhotoCover() {
+        ImagePicker.openCamera({
+            width: 300,
+            height: 400,
+            includeBase64: true,
+            cropping: true
+        }).then(image => {
+            let imgdata = {
+                uri: image.path,
+                type: image.mime,
+                name: image.filename == null ? "IMG2.jpg" : image.filename,
+                data: image.data
+            };
+            this.setState({ coverImage: imgdata });
+        });
+    }
+
+    ChoosePhotoCover() {
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            includeBase64: true,
+            cropping: true
+        }).then(image => {
+            console.log('image-->', image)
+            let imgdata = {
+                uri: image.path,
+                type: image.mime,
+                name: image.filename == null ? "IMG2.jpg" : image.filename,
+                data: image.data
+            };
+            this.setState({ coverImage: imgdata });
         });
     }
 
@@ -242,6 +306,30 @@ class EditProfileEmployee extends React.Component {
                     EmergencyContactNumber: this.state.emergencyNumber
                 }
             })
+
+
+            if(Object.keys(this.state.coverImage).length !== 0){
+                this.props.updateEmployeePersonalDetails({
+                    imageParams: {Image: 'data:image/jpeg;base64,'+this.state.coverImage.data, ImageTypeID: 2 },
+                    detailsParams: {
+                        UserStoreGuid: userStoreGuid,
+                        FirstName: this.state.firstName,
+                        MiddleName: this.state.middleName,
+                        LastName: this.state.lastName,
+                        Address1: this.state.address1,
+                        Address2: this.state.address2,
+                        City: this.state.city,
+                        ZipCode: this.state.zip,
+                        CellPhone: this.state.cellphone,
+                        HomePhone: this.state.homephone,
+                        Email: this.state.email,
+                        CountryID: this.state.countryId,
+                        StateID: this.state.stateId,
+                        EmergencyContactName: this.state.emergencyName,
+                        EmergencyContactNumber: this.state.emergencyNumber
+                    }
+                })
+            }
         }
     }
 
@@ -276,18 +364,35 @@ class EditProfileEmployee extends React.Component {
                     onPressGallery={() => this.onPressGallery()}
                     onPressCancel={() => this.setState({ imagePickerModal: false })}
                 />
+                <ImagePickerModal visible={this.state.imagePickerModalCover}
+                    onPressCamera={() => this.onPressCameraCover()}
+                    onPressGallery={() => this.onPressGalleryCover()}
+                    onPressCancel={() => this.setState({ imagePickerModalCover: false })}
+                />
             </View>
         );
     }
 
-
     //    ==========>>>>>  Page Container Starts Here <<<<<<<======== 
+    onSelectState(value, index, data) {
+        this.setState({stateId:data[index].stateId})
+    }
 
     renderPageContent() {
+
         return (
             <View style={{ flex: 1 }}>
                 <KeyboardAwareScrollView style={{ backgroundColor: Colors.WHITE }}>
-                    <View style={Styles.profileImgStyle}>
+                    <TouchableOpacity onPress={() => this.setState({ imagePickerModalCover: true })}>
+                    <ImageBackground
+                        blurRadius={3}
+                        source={Object.keys(this.state.coverImage).length == 0 ?
+                                this.state.coverPhoto != '' ? { uri: this.state.coverPhoto } : Images.DefCoverBg
+                            :
+                            { uri: this.state.coverImage.uri }
+                        }
+                        style={{ flex: 2, backgroundColor: 'black' }}>
+                        <View style={Styles.profileImgStyle}>
 
                         <TouchableOpacity onPress={() => this.setState({ imagePickerModal: true })}>
                             {Object.keys(this.state.profileImage).length == 0 ?
@@ -300,7 +405,10 @@ class EditProfileEmployee extends React.Component {
                         <TouchableOpacity onPress={() => this.setState({ imagePickerModal: true })}>
                             <Text style={{ color: Colors.APPCOLOR, padding: Matrics.CountScale(5), fontSize: Matrics.CountScale(15), fontFamily: Fonts.NunitoSansRegular }}>Change Profile Picture</Text>
                         </TouchableOpacity>
-                    </View>
+                        </View>
+
+                    </ImageBackground>
+                    </TouchableOpacity>
                     <View style={Styles.inputBox}>
                         <TextInputView
                             label="First name"
@@ -401,7 +509,7 @@ class EditProfileEmployee extends React.Component {
                         />
                     </View>
                     <View style={Styles.inputBox}>
-                        <TextInputView
+                        {/* <TextInputView
                             label="State"
                             labelFontSize={15}
                             fontSize={18}
@@ -411,6 +519,24 @@ class EditProfileEmployee extends React.Component {
                             onChangeText={val => this.setState({ state: val })}
                             onSubmitEditing={(event) => this.zip.focus()}
                             containerStyle={Styles.Input}
+                        /> */}
+                        <Text style={{fontFamily: Fonts.NunitoSansRegular, fontSize:16,color:Colors.DARK_GREY}}>State</Text>
+                        <Dropdown
+                            containerStyle={{ borderBottomWidth:0.5,borderBottomColor:Colors.DARK_GREY }}
+                            containerWidth={180}
+                            data={this.state.states}
+                            value={this.state.state}
+                            valueExtractor={({ value }) => value}
+                            onChangeText={(value, index, data) => this.onSelectState(value, index, data)}
+                            inputContainerStyle={{ borderBottomColor: 'transparent', alignSelf: 'stretch', padding: 0, margin: 0 }}
+                            itemTextStyle={{ textAlign: 'left' }}
+                            dropdownOffset={{ top: 0, left: 0 }}
+                            fontSize={17}
+                            itemCount={8}
+                            rippleColor='red'
+                            rippleCentered={true}
+                            error={this.state.resonError}
+                            selectedTextStyle={{ textAlign: 'center'}}
                         />
                     </View>
                     <View style={Styles.inputBox}>
@@ -550,5 +676,6 @@ const mapStateToProps = (state) => {
 //======>>>>>>>> Redux Connection <<<<<<=======  
 export default connect(mapStateToProps, {
     getEmployeePersonalDetails,
-    updateEmployeePersonalDetails
+    updateEmployeePersonalDetails,
+    getStateList
 })(EditProfileEmployee);

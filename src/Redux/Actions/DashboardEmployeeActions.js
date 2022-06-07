@@ -1,6 +1,7 @@
 import {
     FETCH_REASONS_REQUESTING,
     FETCH_EMPLOYEE_HOURS_REQUESTING,
+    FETCH_STATE_LIST_REQUESTING,
     FETCH_EMPLOYEE_BASIC_DETAILS_REQUESTING,
     FETCH_EMPLOYEE_GUEST_FEEDBACK_REQUESTING,
     FETCH_EMPLOYEE_PERSONAL_DETAILS_REQUESTING,
@@ -23,6 +24,13 @@ export const getTimeOffReasons = (params) => {
 export const getEmployeeTotalWorkedHours = (params) => {
     return {
         type: FETCH_EMPLOYEE_HOURS_REQUESTING,
+        params
+    };
+}
+
+export const getStateList = (params) => {
+    return {
+        type: FETCH_STATE_LIST_REQUESTING,
         params
     };
 }

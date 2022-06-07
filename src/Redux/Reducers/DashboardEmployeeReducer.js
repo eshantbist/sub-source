@@ -5,6 +5,9 @@ import {
     FETCH_EMPLOYEE_HOURS_SUCCESS,
     FETCH_EMPLOYEE_HOURS_FAIL,
 
+    FETCH_STATE_LIST_SUCCESS,
+    FETCH_STATE_LIST_FAIL,
+
     FETCH_EMPLOYEE_BASIC_DETAILS_SUCCESS,
     FETCH_EMPLOYEE_BASIC_DETAILS_FAIL,
 
@@ -48,6 +51,12 @@ export default (state = INITIAL_STATE, action) => {
             return { employeeWorkHourSuccess: true, employeeWorkHourdata: action.payload, ...state, };
         case FETCH_EMPLOYEE_HOURS_FAIL:
             return { employeeWorkHourFail: true };
+
+        // ==================================STATE LIST
+        case FETCH_STATE_LIST_SUCCESS:
+            return { stateListDataSuccess: true, stateListData: action.payload, ...state, };
+        case FETCH_STATE_LIST_FAIL:
+            return { stateListDataFail: true };
 
         // ==================================FETCH_EMPLOYEE_BASIC_DETAILS
         case FETCH_EMPLOYEE_BASIC_DETAILS_SUCCESS:
