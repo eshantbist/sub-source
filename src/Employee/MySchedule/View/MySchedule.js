@@ -15,6 +15,7 @@ import {
 } from '@Redux/Actions/MyScheduleActions'
 import { LoadWheel } from "@Components";
 import Global from '../../../GlobalFunction'
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 // ======>>>>>>>>> Class Declaration <<<<<<<========
 class MySchedule extends React.Component {
@@ -26,8 +27,9 @@ class MySchedule extends React.Component {
         selectedShopId: 0,
         selectedShopName: '',
         refreshing: false,
-        StartDate: '',
+        StartDate: moment().format('MMMM DD, YYYY'),
         storeLoader:  true,
+        isDateTimePickerVisible:false,
     }
 
     // ======>>>>>>>>> Life Cycle Methods <<<<<<<========
@@ -136,6 +138,12 @@ class MySchedule extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState){
+        if(prevState.StartDate !== this.state.StartDate){
+            this.getMyScheduleData()
+        }
+    }
+
     pullToRefresh = async () => {
         await this.setState({ refreshing: true })
         this.getMyScheduleData()
@@ -147,16 +155,17 @@ class MySchedule extends React.Component {
         // let startDate = Global.getDateValue(sdate)
         // let endDate = Global.getDateAfterSomeMonth(sdate, 2)
 
-        let startDate = '11-21-2018'
+        // let startDate = '11-21-2018'
         // let startDate = '09-28-2019'
         // let endDate = '12-06-2018'
-        let after14DayDate = moment(startDate, 'MM-DD-YYYY').add(13,'days').format('MM-DD-YYYY');
+        let formattedStartDate = moment(this.state.StartDate, 'MMMM DD, YYYY').format('MM-DD-YYYY')
+        let after14DayDate = moment(formattedStartDate, 'MM-DD-YYYY').add(13,'days').format('MM-DD-YYYY');
         console.log('after14DayDate-->',after14DayDate);
-        this.props.getMyScheduleRequest({ StartDate: startDate, EndDate: after14DayDate })
+        this.props.getMyScheduleRequest({ StartDate: moment(this.state.StartDate, 'MMMM DD, YYYY').format('MM-DD-YYYY'), EndDate: after14DayDate })
         if (this.state.refreshing == false)
             this.setState({ loading: true })
         
-        this.setState({ StartDate: startDate });
+        this.setState({ StartDate: this.state.StartDate });
     }
 
     renderMyScheduleHeader = ({ section: { title } }) => (
@@ -298,8 +307,26 @@ class MySchedule extends React.Component {
 
     }
 
+    hideDateTimePicker = ()=>{
+        this.setState({isDateTimePickerVisible:false})
+    }
+    showDateTimePicker =()=>{
+        this.setState({isDateTimePickerVisible:true})
+    }
+    handleDatePicked =(date)=> {
+        this.hideDateTimePicker();
+        this.setState({ StartDate: moment(date).format('MMMM DD, YYYY') });
+    };
+
     render() {
         return (
+            <>
+            <DateTimePicker 
+                isVisible={this.state.isDateTimePickerVisible}
+                onConfirm={this.handleDatePicked}
+                onCancel={this.hideDateTimePicker}
+                date={new Date(this.state.StartDate)}
+            />
             <View style={Styles.pageBody}>
                 {/* <StatusBar barStyle="dark-content"></StatusBar> */}
 
@@ -342,9 +369,9 @@ class MySchedule extends React.Component {
 
                     </TouchableOpacity>
                 </View>
-                <View  style={{  alignItems: 'center', height: Matrics.CountScale(50),  backgroundColor: 'white',}}>
+                <View style={{ height: Matrics.CountScale(50), backgroundColor: 'white', flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingHorizontal:15}}>
                     <Dropdown
-                        containerStyle={{ width: Matrics.CountScale(150), bottom: 25 }}
+                        containerStyle={{ width: Matrics.CountScale(160), bottom: 10 }}
                         data={this.state.storelist}
                         value={this.state.selectedShopName}
                         onChangeText={(value, index, data) => this.onShopChanged(value, index, data)}
@@ -362,6 +389,9 @@ class MySchedule extends React.Component {
                         //     console.log(val, "selected");
                         // }}
                     />
+                    <TouchableOpacity onPress={this.showDateTimePicker}>
+                        <Text>{this.state.StartDate}</Text>
+                    </TouchableOpacity>
                 </View>
                 {/* ======>>>>>>>>>  Header  end  <<<<<<<======== */}
                 <View style={{ margin: Matrics.CountScale(10), flex: 1 }}>
@@ -382,6 +412,7 @@ class MySchedule extends React.Component {
                 </View>
                 <LoadWheel visible={this.state.loading} />
             </View >
+            </>
         );
     }
 }

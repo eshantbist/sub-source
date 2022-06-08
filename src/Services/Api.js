@@ -727,17 +727,17 @@ module.exports = {
         userStoreGuid = await AsyncStorage.getItem('UserStoreGuid');
         console.log('kkkkkkkkkkkkkkkkkkkkkkkk',userStoreGuid)
         const other_params = {
-            "UserStoreGuid": userStoreGuid,
+            "UserStoreGuid": encodeURIComponent(userStoreGuid),
         }
         let params = Object.assign(param, other_params);
         console.log(params, "Params")
 
         var formBody = [];
         for (var property in params) {
-            var encodedKey = encodeURIComponent(property);
-            var encodedValue = encodeURIComponent(params[property]);
-            formBody.push(encodedKey + "=" + encodedValue);
+            if(property !== 'UserStoreGuid')
+            formBody.push(property + "=" + param[property]);
         }
+        formBody.unshift('UserStoreGuid' + "=" + encodeURIComponent(userStoreGuid));
         formBody = formBody.join("&");
 
         return fetch(`${ENVIRONMENT}/GetEmployeeStoreSchedule/?` + formBody, {
