@@ -2,7 +2,7 @@
 import React from 'react';
 import {
     View, ScrollView, Alert, FlatList, Platform, Picker, Switch, Image,
-    Text, TouchableOpacity
+    Text, TouchableOpacity, Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -13,6 +13,11 @@ import { TextInputView, Button, CustomModal, LoadWheel } from "@Components";
 import { saveUpdateEmployeeAvailability, deleteEmployeeAvailability } from '@Redux/Actions/AvailabilityActions'
 import { Colors, Fonts, Matrics, Images, MasterCssEmployee } from '@Assets'
 import moment from "moment";
+import { Header } from 'react-navigation';
+
+const d = Dimensions.get("window")
+const isX = Platform.OS === "ios" && (d.height == 812 || d.width == 812) ? true : false
+
 // import styles from '../../../Resources/react-native-material-dropdown/src/components/dropdown/styles';
 import styles from 'react-native-material-dropdown/src/components/dropdown/styles';
 
@@ -205,7 +210,14 @@ class CreateAvailability extends React.Component {
         return (
             <View style={Styles.pageBody}>
                 {/* =======>>>>>> Header Start <<<<<<<=======  */}
-                <View style={MasterCssEmployee.headerContainer}>
+                <View style={{backgroundColor: 'white',
+                        height: isX ? 88 : Header.HEIGHT,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent:'space-between',
+                        borderBottomWidth: 0.3,
+                        borderBottomColor: Colors.LIGHTGREY,
+                        paddingTop: Platform.OS === "ios" ? (isX ? 44 : 20) : 0,}}>
                     <TouchableOpacity
                         onPress={() => {
                             this.props.navigation.goBack();
@@ -213,13 +225,10 @@ class CreateAvailability extends React.Component {
                         style={MasterCssEmployee.headerTextContainerStyle}>
                         <Text style={MasterCssEmployee.headerLeftTextStyle} >Cancel</Text>
                     </TouchableOpacity>
-                    <View style={MasterCssEmployee.centerStyle}>
-                        <Text style={MasterCssEmployee.centerTextStyle} >
-                            My Availability
-                        </Text>
-                    </View>
-                    <View style={MasterCssEmployee.headerTextContainerStyle} />
-                    <TouchableOpacity style={MasterCssEmployee.headerTextContainerStyle}
+                    <Text style={{...MasterCssEmployee.centerTextStyle,marginRight:20}} >
+                        My Availability
+                    </Text>
+                    {this.state.notAvailable && <TouchableOpacity style={MasterCssEmployee.headerTextContainerStyle}
                         onPress={() => {
                             // this.setState({ modalVisible: true })
                             Alert.alert('', 'Please, understand that if you have updated your availability, management needs two weeks before we can apply your new availability to the schedule, updated availability also needs management approval as it cause scheduling challenge.',
@@ -266,21 +275,27 @@ class CreateAvailability extends React.Component {
                                                     })
                                                 }
                                                 // this.props.saveUpdateEmployeeAvailability({
-                                                //     "DayID": 4,
+                                                //     "DayID": this.state.shiftTime[0].DayID,
                                                 //     "EmployeeAvailabilityID": 0,
-                                                //     "InTime": "15:00",
-                                                //     "NameOfDay": "",
-                                                //     "OutTime": "16:00"
+                                                //     "InTime": "00:00",
+                                                //     "NameOfDay": this.state.shiftTime[0].NameOfDay,
+                                                //     "OutTime": "00:00",
                                                 // });
-                                                
                                             }
                                             else {
-                                                let deleteData = []
-                                                for (i = 0; i < this.state.initialData.length; i++) {
-                                                    deleteData.push(this.state.initialData[i].EmployeeAvailabilityID)
+                                                // let deleteData = []
+                                                if(this.state.initialData.length){
+                                                    console.warn("here",this.state.initialData);
+                                                    for (i = 0; i < this.state.initialData.length; i++) {
+                                                        this.props.deleteEmployeeAvailability({ id: this.state.initialData[i].EmployeeAvailabilityID })
+                                                    }
                                                 }
-                                                console.log('deleteData-->',deleteData)
-                                                // this.props.deleteEmployeeAvailability({ DeleteShift: deleteData })
+                                                else{
+                                                    this.props.navigation.goBack();
+
+                                                }
+                                                // this.props.deleteEmployeeAvailability({ id: EmployeeAvailabilityID });
+                                                // 
                                             }
                                         }
                                     },
@@ -290,7 +305,7 @@ class CreateAvailability extends React.Component {
                         }}
                     >
                         <Text style={MasterCssEmployee.headerRightTextStyle}>Save</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
                 </View>
                 {/* =======>>>>>> Header End <<<<<<<=======  */}
 
@@ -690,8 +705,8 @@ class CreateAvailability extends React.Component {
             DayID: this.state.shiftTime[0].DayID, 
             EmployeeAvailabilityID: 0, 
             NameOfDay: this.state.shiftTime[0].NameOfDay, 
-            InTime: '12:00am', 
-            OutTime: '11:59pm'
+            InTime: this.state.InTime, 
+            OutTime:  this.state.OutTime,
         })
         // this.setTime(this.state.InTime, this.state.OutTime)
         this.setState({ shiftTime: this.state.shiftTime, timeIndex: this.state.timeIndex + 1, Active: 'from' })
@@ -717,9 +732,10 @@ class CreateAvailability extends React.Component {
 
     /* =======>>>>>>  Time display Class  <<<<<<======== */
     renderTime() {
-        // console.log('shiftTime-->', this.state.shiftTime);
+        // console.warn('shiftTime-->', this.state.shiftTime);
         // console.log('isAddShift-->', this.state.isAddShift);
         // console.log('isAddShift-->f->', !this.state.isAddShift);
+
         return (
             <View>
                 {
