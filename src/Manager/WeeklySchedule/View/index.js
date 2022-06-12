@@ -32,6 +32,7 @@ import {
 import { getHeaderFilterValuesRequest } from '@Redux/Actions/HirePacketsActions';
 import Global from '../../../GlobalFunction';
 import styles from 'react-native-material-dropdown/src/components/dropdown/styles';
+import { CheckBox } from 'react-native-elements';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
@@ -41,6 +42,17 @@ let repeatType = [
     { value: 'Day' },
     { value: 'Week' }
 ];
+
+let weekVal = [
+    { value: 'Su',id:1,checked:true },
+    { value: 'M',id:2, checked:true},
+    { value: 'Tu',id:3,checked:true },
+    { value: 'W',id:4 ,checked:true},
+    { value: 'Th',id:5,checked:true },
+    { value: 'F',id:6 ,checked:true},
+    { value: 'Sa',id:7,checked:true }
+];
+
 let self = ''
 
 
@@ -58,7 +70,7 @@ export const TextRow = ({ labelText, contentText, bgColor }) => {
 
 export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,ContactNumber,RoleCode, shiftData, time, hour, bgColor, selectedDate, onPress, index, TotalfinalRoleEmployeeData, IsLinked, onLinkPress, onLayout, selectedJumpEmpName}) => {
     return (
-        <View style={[Styles.rowContainer, { backgroundColor: bgColor, borderBottomColor: Colors.BORDERCOLOR, borderBottomWidth: 2, 
+        <TouchableOpacity onPress={() => onPress()} style={[Styles.rowContainer, { backgroundColor: bgColor, borderBottomColor: Colors.BORDERCOLOR, borderBottomWidth: 2, 
             height: Matrics.CountScale(100) }]}
             onLayout={(e) => {selectedJumpEmpName != '' ? onLayout(e.nativeEvent.layout.height) : onLayout(0); }}
             key={selectedJumpEmpName}
@@ -164,7 +176,7 @@ export const ManagerArtistTextRow = ({ experience, labelText,employeeStatus,Cont
                     </View>
                 }
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -258,7 +270,8 @@ class WeeklySchedule extends React.Component {
         userHeaderHeight: 0,
         defaultWeekendDate: '',
         showShop: false,
-        shiftNotes:''
+        shiftNotes:'',
+        weeks: weekVal
     };
 
     //------------>>>LifeCycle Methods------------->>>
@@ -1326,7 +1339,7 @@ class WeeklySchedule extends React.Component {
                 repeatType = 2;
             } else if (this.state.repeatEveryType === 'Week') {
                 repeatType = 1;
-                repeatDays = "1,2,3,4,5,6,7";
+                repeatDays = this.state.weeks.filter(item=>item.checked).map(item=>item.id).toString();
             }
         } else {
             repeatType = -1;
@@ -1559,6 +1572,7 @@ class WeeklySchedule extends React.Component {
     //----------->>>Render Method-------------->>>
 
     render() {
+        console.warn(this.state.weeks)
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ backgroundColor: Colors.WHITE, paddingTop: Platform.OS == 'ios' ? (Matrics.screenHeight == 812 ? 30 : 20) : 0, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
@@ -1865,31 +1879,46 @@ class WeeklySchedule extends React.Component {
                                             {
                                                 this.state.repeatEvery
                                                     ?
-                                                    <View style={Styles.rowViewStyle}>
+                                                    <View style={{
+                                                    justifyContent: 'space-between',
+                                                    paddingVertical: Matrics.CountScale(8)}}>
                                                         <Text style={Styles.labelTextStyle}>Select</Text>
                                                         <Dropdown
-                                                            containerStyle={{ alignSelf: 'center' }}
-                                                            pickerStyle={{ top: Matrics.headerHeight }}
                                                             data={repeatType}
                                                             value={this.state.repeatEveryType}
-                                                            inputContainerStyle={{ borderBottomColor: 'transparent', }}
-                                                            overlayStyle={{ top: this.state.topSpace + 150, borderWidth: 0 }}
-                                                            dropdownOffset={{ top: 0, left: 0 }}
-                                                            fontSize={17}
-                                                            itemCount={8}
-                                                            rippleCentered={true}
-                                                            rippleColor='white'
+                                                            
                                                             onChangeText={(val) => {
                                                                 this.setState({ repeatEveryType: val })
                                                             }}
-                                                            selectedTextStyle={{ textAlign: 'center'}}
                                                         />
                                                     </View>
                                                     :
                                                     null
                                             }
+                                            {
+                                                this.state.repeatEvery && this.state.repeatEveryType === "Week" && 
+                                                <View style={{marginTop:30,flexDirection:'row',justifyContent:'space-between'}}>
+                                                    {this.state.weeks.map((item,index)=>{
+                                                        return <View style={{alignItems:'center'}}>
+                                                            <CheckBox
+                                                                checkedIcon={<Image style={{height:20,width:20}} source={Images.CheckBoxChecked} />}
+                                                                uncheckedIcon={<Image style={{height:20,width:20}} source={Images.CheckBoxUnchecked} />}
+                                                                checked={item.checked}
+                                                                containerStyle={{borderWidth:1,height:10,width:10,alignItems:'center'}}
+                                                                onPress={() => {
+                                                                    const newWeekData = this.state.weeks;
+                                                                    newWeekData[index].checked = !newWeekData[index].checked;
+                                                                    this.setState({weeks:newWeekData})
+                                                                }}
+                                                            />
+                                                            <Text>{item.value}</Text>
+                                                        </View>
+                                                    })}
+                                                    
+                                                </View>
+                                            }
                                             <View style={{ marginVertical: Matrics.CountScale(15) }}>
-                                                <Text style={Styles.labelTextStyle}>Ending</Text>
+                                                <Text style={Styles.labelTextStyle}>Ending</Text>   
                                                 <Text style={{ fontFamily: Fonts.NunitoSansRegular }}>{moment(this.state.selectedDate).format('MM.DD.YYYY')}</Text>
                                                 <Text style={Styles.errorText}>{this.state.endingDateError}</Text>
                                             </View>
