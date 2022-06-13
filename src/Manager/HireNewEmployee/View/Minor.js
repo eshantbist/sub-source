@@ -8,6 +8,27 @@ import DocumentPicker from 'react-native-document-picker';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import SearchableDropDown from '../../../CustomComponent/react-native-searchable-dropdown';
+import { Dropdown } from 'react-native-material-dropdown';
+import { FlatList } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native';
+
+const weekInputNames = {
+  workingHoursWe1: 'workingHoursWe1',
+  workingHoursWe2: 'workingHoursWe2',
+  workingHoursTh1: 'workingHoursTh1',
+  workingHoursTh2: 'workingHoursTh2',
+  workingHoursFr1: 'workingHoursFr1',
+  workingHoursFr2: 'workingHoursFr2',
+  workingHoursSa1: 'workingHoursSa1',
+  workingHoursSa2: 'workingHoursSa2',
+  workingHoursSu1: 'workingHoursSu1',
+  workingHoursSu2: 'workingHoursSu2',
+  workingHoursMo1: 'workingHoursMo1',
+  workingHoursMo2: 'workingHoursMo2',
+  workingHoursTu1: 'workingHoursTu1',
+  workingHoursTu2: 'workingHoursTu2',
+};
 
 export default class Minor extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -69,10 +90,35 @@ export default class Minor extends React.Component {
     permitFileError: '',
     InTimeError: '',
     OutTimeError: '',
+    intervals:[],
+    dropdownpostion:0
   };
 
   UNSAFE_componentWillMount() {
-   
+    var getTimeIntervals = function () {
+      let arr = [];
+      for(var i = 1; i<=12; i++){
+        for(var j = 0; j<=45; j=j+15){
+          if(j==0){
+            arr.push(i+":"+'00'+"am");
+            arr.push(i+":"+'00'+"pm");
+          }
+          else{
+              arr.push(i+":"+j+"am");
+              arr.push(i+":"+j+"pm");
+          }
+        }
+      }
+      return arr;
+    }
+    
+  var intervals = getTimeIntervals();
+  let data = intervals.map((item,index)=>({
+    value:item,id:index
+  }))
+    
+   this.setState({intervals:data});
+      
   }
   componentDidMount() {
     this.props.navigation.setParams({
@@ -509,11 +555,45 @@ export default class Minor extends React.Component {
     }
   }
 
+  getStyleByWeek = (dayval) => {
+    switch(dayval){
+      case weekInputNames.workingHoursWe1:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:-50,right:87,zIndex:999};
+      case weekInputNames.workingHoursWe2:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:-50,right:5,zIndex:999};
+      case weekInputNames.workingHoursTh1:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:-10,right:87,zIndex:999};
+      case weekInputNames.workingHoursTh2:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:-10,right:5,zIndex:999};
+      case weekInputNames.workingHoursFr1:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:60,right:87,zIndex:999};
+      case weekInputNames.workingHoursFr2:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:60,right:5,zIndex:999};
+      case weekInputNames.workingHoursSa1:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:90,right:87,zIndex:999};
+      case weekInputNames.workingHoursSa2:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:90,right:5,zIndex:999};
+      case weekInputNames.workingHoursSu1:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:160,right:87,zIndex:999};
+      case weekInputNames.workingHoursSu2:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:160,right:5,zIndex:999};
+      case weekInputNames.workingHoursMo1:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:210,right:87,zIndex:999};
+      case weekInputNames.workingHoursMo2:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:210,right:5,zIndex:999};
+      case weekInputNames.workingHoursTu1:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:260,right:87,zIndex:999};
+      case weekInputNames.workingHoursTu2:
+        return {height:0,width:70,backgroundColor:'white',position:'absolute',top:260,right:5,zIndex:999};
+      default:
+       return {}
+    }
+  }
+
   render() {
     return (
       <View style={Styles.pageContainer}>
-        <ScrollView>
-
+        <ScrollView nestedScrollEnabled={true} keyboardShouldPersistTaps="always">
           <View style={Styles.chkContainer}>
             <CheckBox
               checkedIcon={<Image source={Images.CheckBoxChecked} />}
@@ -632,13 +712,33 @@ export default class Minor extends React.Component {
                 : null
               }
               <Text style={Styles.cardHeaderText}>Maximum Work Hours</Text>
-              <KeyboardAwareScrollView 
-                contentContainerStyle={{ flex: 1 }} 
-                enableOnAndroid={true}
-                enableAutoAutomaticScroll={true}
+              <View
+                style={{ flex: 1,marginTop:50 }} 
               >
+              {Object.values(weekInputNames).map(weekInput=>{
+              return <FlatList keyboardShouldPersistTaps="handled" pointerEvents="box-none" nestedScrollEnabled ref={ref => this[weekInput] = ref} style={this.getStyleByWeek(weekInputNames[weekInput])} data={this.state.intervals} renderItem={(item)=>{
+                if(item.item.value.toLowerCase().startsWith(this.state[weekInput].toLowerCase())){
+                  return <TouchableOpacity onPress={()=>{
+                            let fVal = item.item.value;
+                            if(fVal.length < 7){
+                              fVal = '0' + fVal;
+                            }
+                            this.setState({[weekInput]:fVal}); 
+                            this[weekInput]?.setNativeProps({
+                              style:{
+                              height: 0
+                              }
+                            })
+                          }}>
+                            <Text style={{padding:5}}>{item.item.value}</Text>
+                          </TouchableOpacity>
+                }
+                return null;
+              }}/>
+            })}
+              
                 {this.workHoursTable()}
-              </KeyboardAwareScrollView>
+              </View>
             </View>
           }
         </ScrollView>
@@ -683,13 +783,29 @@ export default class Minor extends React.Component {
         />
         , 
         <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
-          <TextInput 
+          <TextInput
             autoCorrect={false}
             style={[Styles.inputWorkStyle,{
               backgroundColor: this.state.anyHoursCheckedWe ? '#e7e7e7' : '#ffffff'
             }]}
             placeholder={this.state.anyHoursCheckedWe ? '12:00am ' :'HH:MM'}
-            onChangeText={(text) => this.setState({workingHoursWe1: text})}
+            onChangeText={(text) => {
+              this.setState({workingHoursWe1: text});
+              this.workingHoursWe1?.setNativeProps({
+                style:{
+                height: 100
+                }
+                })
+            }}
+            onBlur={()=>{
+              setTimeout(() => {
+                this.workingHoursWe1?.setNativeProps({
+                  style:{
+                    height:0
+                  }
+                  })
+              }, 500);
+            }}
             value={this.state.workingHoursWe1}
             editable={this.state.anyHoursCheckedWe ? false : true}
           />
@@ -699,7 +815,23 @@ export default class Minor extends React.Component {
               backgroundColor: this.state.anyHoursCheckedWe ? '#e7e7e7' : '#ffffff'
             }]}
             placeholder={this.state.anyHoursCheckedWe ? '11:59pm' :'HH:MM'}
-            onChangeText={(text) => this.setState({workingHoursWe2: text})}
+            onChangeText={(text) => {
+              this.setState({workingHoursWe2: text});
+              this.workingHoursWe2?.setNativeProps({
+                style:{
+                height: 100
+                }
+                })
+            }}
+            onBlur={()=>{
+              setTimeout(() => {
+                this.workingHoursWe2?.setNativeProps({
+                  style:{
+                    height:0
+                  }
+                  })
+              }, 500);
+            }}
             value={this.state.workingHoursWe2}
             editable={this.state.anyHoursCheckedWe ? false : true}
           />
@@ -730,7 +862,23 @@ export default class Minor extends React.Component {
             backgroundColor: this.state.anyHoursCheckedTh ? '#e7e7e7' : '#ffffff'
           }]}
           placeholder={this.state.anyHoursCheckedTh ? '12:00am' :'HH:MM'}
-          onChangeText={(text) => this.setState({workingHoursTh1: text})}
+          onChangeText={(text) => {
+            this.setState({workingHoursTh1: text});
+            this.workingHoursTh1?.setNativeProps({
+              style:{
+              height: 100
+              }
+              })
+          }}
+          onBlur={()=>{
+            setTimeout(() => {
+              this.workingHoursTh1?.setNativeProps({
+                style:{
+                  height:0
+                }
+                })
+            }, 500);
+          }}
           value={this.state.workingHoursTh1}
           editable={this.state.anyHoursCheckedTh ? false : true}
         />
@@ -740,7 +888,23 @@ export default class Minor extends React.Component {
             backgroundColor: this.state.anyHoursCheckedTh ? '#e7e7e7' : '#ffffff'
           }]}
           placeholder={this.state.anyHoursCheckedTh ? '11:59pm':'HH:MM'}
-          onChangeText={(text) => this.setState({workingHoursTh2: text})}
+          onChangeText={(text) => {
+            this.setState({workingHoursTh2: text});
+            this.workingHoursTh2?.setNativeProps({
+              style:{
+              height: 100
+              }
+              })
+          }}
+          onBlur={()=>{
+            setTimeout(() => {
+              this.workingHoursTh2?.setNativeProps({
+                style:{
+                  height:0
+                }
+                })
+            }, 500);
+          }}
           value={this.state.workingHoursTh2}
           editable={this.state.anyHoursCheckedTh ? false : true}
         />
@@ -770,7 +934,23 @@ export default class Minor extends React.Component {
             backgroundColor: this.state.anyHoursCheckedFr ? '#e7e7e7' : '#ffffff'
           }]}
           placeholder={this.state.anyHoursCheckedFr ? '12:00am' :'HH:MM'}
-          onChangeText={(text) => this.setState({workingHoursFr1: text})}
+          onChangeText={(text) => {
+            this.setState({workingHoursFr1: text});
+            this.workingHoursFr1?.setNativeProps({
+              style:{
+              height: 100
+              }
+              })
+          }}
+          onBlur={()=>{
+            setTimeout(() => {
+              this.workingHoursFr1?.setNativeProps({
+                style:{
+                  height:0
+                }
+                })
+            }, 500);
+          }}
           value={this.state.workingHoursFr1}
           editable={this.state.anyHoursCheckedFr ? false : true}
         />
@@ -780,7 +960,23 @@ export default class Minor extends React.Component {
             backgroundColor: this.state.anyHoursCheckedFr ? '#e7e7e7' : '#ffffff'
           }]}
           placeholder={this.state.anyHoursCheckedFr ? '11:59pm':'HH:MM'}
-          onChangeText={(text) => this.setState({workingHoursFr2: text})}
+          onChangeText={(text) => {
+            this.setState({workingHoursFr2: text});
+            this.workingHoursFr2?.setNativeProps({
+              style:{
+              height: 100
+              }
+              })
+          }}
+          onBlur={()=>{
+            setTimeout(() => {
+              this.workingHoursFr2?.setNativeProps({
+                style:{
+                  height:0
+                }
+                })
+            }, 500);
+          }}
           value={this.state.workingHoursFr2}
           editable={this.state.anyHoursCheckedFr ? false : true}
         />
@@ -810,7 +1006,23 @@ export default class Minor extends React.Component {
             backgroundColor: this.state.anyHoursCheckedSa ? '#e7e7e7' : '#ffffff'
           }]}
           placeholder={this.state.anyHoursCheckedSa ? '12:00am' :'HH:MM'}
-          onChangeText={(text) => this.setState({workingHoursSa1: text})}
+          onChangeText={(text) => {
+            this.setState({workingHoursSa1: text});
+            this.workingHoursSa1?.setNativeProps({
+              style:{
+              height: 100
+              }
+              })
+          }}
+          onBlur={()=>{
+            setTimeout(() => {
+              this.workingHoursSa1?.setNativeProps({
+                style:{
+                  height:0
+                }
+                })
+            }, 500);
+          }}
           value={this.state.workingHoursSa1}
           editable={this.state.anyHoursCheckedSa ? false : true}
         />
@@ -820,7 +1032,23 @@ export default class Minor extends React.Component {
             backgroundColor: this.state.anyHoursCheckedSa ? '#e7e7e7' : '#ffffff'
           }]}
           placeholder={this.state.anyHoursCheckedSa ? '11:59pm':'HH:MM'}
-          onChangeText={(text) => this.setState({workingHoursSa2: text})}
+          onChangeText={(text) => {
+            this.setState({workingHoursSa2: text});
+            this.workingHoursSa2?.setNativeProps({
+              style:{
+              height: 100
+              }
+              })
+          }}
+          onBlur={()=>{
+            setTimeout(() => {
+              this.workingHoursSa2?.setNativeProps({
+                style:{
+                  height:0
+                }
+                })
+            }, 500);
+          }}
           value={this.state.workingHoursSa2}
           editable={this.state.anyHoursCheckedSa ? false : true}
         />
@@ -851,7 +1079,23 @@ export default class Minor extends React.Component {
             backgroundColor: this.state.anyHoursCheckedSu ? '#e7e7e7' : '#ffffff'
           }]}
           placeholder={this.state.anyHoursCheckedSu ? '12:00am' :'HH:MM'}
-          onChangeText={(text) => this.setState({workingHoursSu1: text})}
+          onChangeText={(text) => {
+            this.setState({workingHoursSu1: text});
+            this.workingHoursSu1?.setNativeProps({
+              style:{
+              height: 100
+              }
+              })
+          }}
+          onBlur={()=>{
+            setTimeout(() => {
+              this.workingHoursSu1?.setNativeProps({
+                style:{
+                  height:0
+                }
+                })
+            }, 500);
+          }}
           value={this.state.workingHoursSu1}
           containerStyle={{ alignSelf: 'center'}}
           editable={this.state.anyHoursCheckedSu ? false : true}
@@ -862,7 +1106,23 @@ export default class Minor extends React.Component {
             backgroundColor: this.state.anyHoursCheckedSu ? '#e7e7e7' : '#ffffff'
           }]}
           placeholder={this.state.anyHoursCheckedSu ? '11:59pm':'HH:MM'}
-          onChangeText={(text) => this.setState({workingHoursSu2: text})}
+          onChangeText={(text) => {
+            this.setState({workingHoursSu2: text});
+            this.workingHoursSu2?.setNativeProps({
+              style:{
+              height: 100
+              }
+              })
+          }}
+          onBlur={()=>{
+            setTimeout(() => {
+              this.workingHoursSu2?.setNativeProps({
+                style:{
+                  height:0
+                }
+                })
+            }, 500);
+          }}
           value={this.state.workingHoursSu2}
           editable={this.state.anyHoursCheckedSu ? false : true}
         />
@@ -892,7 +1152,23 @@ export default class Minor extends React.Component {
             backgroundColor: this.state.anyHoursCheckedMo ? '#e7e7e7' : '#ffffff'
           }]}
           placeholder={this.state.anyHoursCheckedMo ? '12:00am' :'HH:MM'}
-          onChangeText={(text) => this.setState({workingHoursMo1: text})}
+          onChangeText={(text) => {
+            this.setState({workingHoursMo1: text});
+            this.workingHoursMo1?.setNativeProps({
+              style:{
+              height: 100
+              }
+              })
+          }}
+          onBlur={()=>{
+            setTimeout(() => {
+              this.workingHoursMo1?.setNativeProps({
+                style:{
+                  height:0
+                }
+                })
+            }, 500);
+          }}
           value={this.state.workingHoursMo1}
           editable={this.state.anyHoursCheckedMo ? false : true}
         />
@@ -902,7 +1178,23 @@ export default class Minor extends React.Component {
             backgroundColor: this.state.anyHoursCheckedMo ? '#e7e7e7' : '#ffffff'
           }]}
           placeholder={this.state.anyHoursCheckedMo ? '11:59pm':'HH:MM'}
-          onChangeText={(text) => this.setState({workingHoursMo2: text})}
+          onChangeText={(text) => {
+            this.setState({workingHoursMo2: text});
+            this.workingHoursMo2?.setNativeProps({
+              style:{
+              height: 100
+              }
+              })
+          }}
+          onBlur={()=>{
+            setTimeout(() => {
+              this.workingHoursMo2?.setNativeProps({
+                style:{
+                  height:0
+                }
+                })
+            }, 500);
+          }}
           value={this.state.workingHoursMo2}
           editable={this.state.anyHoursCheckedMo ? false : true}
         />
@@ -932,7 +1224,23 @@ export default class Minor extends React.Component {
             backgroundColor: this.state.anyHoursCheckedTu ? '#e7e7e7' : '#ffffff'
           }]}
           placeholder={this.state.anyHoursCheckedTu ? '12:00am' :'HH:MM'}
-          onChangeText={(text) => this.setState({workingHoursTu1: text})}
+          onChangeText={(text) => {
+            this.setState({workingHoursTu1: text});
+            this.workingHoursTu1?.setNativeProps({
+              style:{
+              height: 100
+              }
+              })
+          }}
+          onBlur={()=>{
+            setTimeout(() => {
+              this.workingHoursTu1?.setNativeProps({
+                style:{
+                  height:0
+                }
+                })
+            }, 500);
+          }}
           value={this.state.workingHoursTu1}
           editable={this.state.anyHoursCheckedTu ? false : true}
         />
@@ -942,7 +1250,23 @@ export default class Minor extends React.Component {
             backgroundColor: this.state.anyHoursCheckedTu ? '#e7e7e7' : '#ffffff'
           }]}
           placeholder={this.state.anyHoursCheckedTu ? '11:59pm':'HH:MM'}
-          onChangeText={(text) => this.setState({workingHoursTu2: text})}
+          onChangeText={(text) => {
+            this.setState({workingHoursTu2: text});
+            this.workingHoursTu2?.setNativeProps({
+              style:{
+              height: 100
+              }
+              })
+          }}
+          onBlur={()=>{
+            setTimeout(() => {
+              this.workingHoursTu2?.setNativeProps({
+                style:{
+                  height:0
+                }
+                })
+            }, 500);
+          }}
           value={this.state.workingHoursTu2}
           editable={this.state.anyHoursCheckedTu ? false : true}
         />
