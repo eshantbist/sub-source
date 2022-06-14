@@ -23,6 +23,7 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import { FlatList } from 'react-native';
 import _ from 'lodash';
 import { NavigationEvents } from "react-navigation";
+import DialogMultiPicker from '../../../Components/diaglog-multi-picker';
 
 
 const { width } = Dimensions.get('window');
@@ -139,7 +140,9 @@ class Dashboard extends React.Component {
             value: 'Logout',
         }],
         showShop: false,
-        maxDate: new Date()
+        maxDate: new Date(),
+        userPickerVisible:false,
+        selectedUsersDisplayValue:0
     }
     // ======>>>>>>> Life Cycle Methods  <<<<<<<========
     async UNSAFE_componentWillMount() {
@@ -194,7 +197,6 @@ class Dashboard extends React.Component {
                 this.setState({ loading: false })
 
             let data = nextProps.headerFiltervalues.data;
-            console.log("this is dataaa", data.Report)
             if (data.Status == 1) {
                 const storeselect = {
                     StoreID: -1,
@@ -217,7 +219,6 @@ class Dashboard extends React.Component {
                     }
                     data.Report.user_list.unshift(userSelect);
                 }
-                console.log("initial roles", data.Report.role_list)
                 data.Report.role_list.unshift(roleResgions);
                 data.Report.role_list.unshift(roleSelect);
                 if (data.Report.store_list.length > 0) {
@@ -279,7 +280,6 @@ class Dashboard extends React.Component {
                     progressPercentage
                 });
                 console.log('nonSubSales-->',this.state.nonSubSales)
-                console.log("yyy 1", customerComments?.length)
                 if (customerComments.length > 0) {
                     this.filterCustomerComments();
                 }
@@ -408,7 +408,7 @@ class Dashboard extends React.Component {
     getUsers() {
         let data = []
         for (i = 0; i < this.state.Users.length; i++) {
-            data.push(<Picker.Item label={this.state.Users[i].UserName} value={this.state.Users[i].UserID} />)
+            data.push({label:this.state.Users[i].UserName, value:this.state.Users[i].UserID})
         }
         return data
     }
@@ -467,7 +467,8 @@ class Dashboard extends React.Component {
             selectedStoreIndex: -1,
             resetFilter: true,
             SelectedStoreName: '',
-            Regions:[]
+            Regions:[],
+            selectedUsersDisplayValue:0
         })
         setTimeout(() => {
             this.setState({ resetFilter: false })
@@ -487,6 +488,23 @@ class Dashboard extends React.Component {
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: Colors.BODYBACKGROUND }}>
+                <DialogMultiPicker modalVisible={this.state.userPickerVisible} valueList={this.getUsers()} onDonePress={(selectedValues)=>{
+                    if(selectedValues.length === 0){
+                        this.setState({userPickerVisible:false})
+                        return
+                    }
+                    const formattedValues = selectedValues.map((elem)=>{
+                        return elem.value;
+                    }).join(",");
+                    const formattedLabels = selectedValues.map((elem)=>{
+                        return elem.label;
+                    }).join(",");
+                    this.setState({ selectedUsers: formattedValues, selectedUsersDisplayValue: formattedLabels, loading: true, userPickerVisible:false })
+                    this.roleFlag = false;
+                    this.props.getHeaderFilterValuesRequest({
+                        StoreId: -1, RoleId: this.state.selectedRoleId, FilterId: formattedValues, BusinessTypeId: 1
+                    });
+                }}/>
                 <NavigationEvents
                 onWillFocus={() => {
                     this.setState({ showDrodown: false });
@@ -698,7 +716,7 @@ class Dashboard extends React.Component {
                                         <View style={Styles.labelBorderStyle}>
                                             <Text style={Styles.pickerLabelStyle}>Users</Text>
                                         </View>
-                                        <Picker
+                                        {/* <Picker
                                             itemStyle={Styles.pickerItemStyle}
                                             selectedValue={this.state.selectedUsers}
                                             onValueChange={value => {
@@ -710,7 +728,10 @@ class Dashboard extends React.Component {
                                             }}
                                         >
                                             {this.getUsers()}
-                                        </Picker>
+                                        </Picker> */}
+                                        <TouchableOpacity onPress={()=>{this.setState({userPickerVisible:true})}} style={Styles.userBorderStyle}>
+                                            <Text style={Styles.pickerLabelStyle}>{this.state.selectedUsersDisplayValue===0?'Select Manager User':this.state.selectedUsersDisplayValue}</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 }
                                 {
@@ -1448,6 +1469,9 @@ const Styles = {
         borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: Colors.BORDERCOLOR,
+        paddingVertical: Matrics.CountScale(15),
+    },
+    userBorderStyle:{
         paddingVertical: Matrics.CountScale(15),
     },
     errorText: {
