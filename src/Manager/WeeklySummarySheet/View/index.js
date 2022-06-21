@@ -200,6 +200,7 @@ class WeeklySummarySheet extends React.Component {
         resetFilter: false,
         defaultWeekendDate: '',
         showShop: false,
+        individualAbsenceReason:''
     };
     
     lastTap = null;
@@ -373,6 +374,7 @@ class WeeklySummarySheet extends React.Component {
           this.props.getWeeklySummarySheetDataRequest({ StoreId: this.state.selectedStoreId, WeekEnding: this.state.WeekEndingDate, DayId: -1 });
           this.setState({ 
             absenceReasonModal: false,
+            individualAbsenceReason:'',
             timeoffStartDate: '',
             timeoffEndDate: '',
             selectedReasonId: '',
@@ -390,7 +392,7 @@ class WeeklySummarySheet extends React.Component {
                     '',
                     'Something Wrong Please Try Again!!',
                     [
-                        {text: 'OK',onPress: () => this.setState({ absenceReasonModal: false })},
+                        {text: 'OK',onPress: () => this.setState({ absenceReasonModal: false, individualAbsenceReason:''})},
                     ],
                     {cancelable: false},
                 );
@@ -970,8 +972,8 @@ class WeeklySummarySheet extends React.Component {
                         <Text style={Styles.titleFontStyle}>Previous Shift</Text>
                     </View>
                     <View style={{ width: '75%', flexDirection: 'row', justifyContent: 'space-around'}}>
-                        <Text style={Styles.titleFontStyle}>{moment(item.OldShiftInTime,'HH:mm:ss').format('hh:mm a')}</Text>
-                        <Text style={Styles.titleFontStyle}>{moment(item.OldShiftOutTime,'HH:mm:ss').format('hh:mm a')}</Text>
+                        <Text style={Styles.titleFontStyle}>{item.OldShiftInTime ? moment(item.OldShiftInTime,'HH:mm:ss').format('hh:mm a'): 'N/A'}</Text>
+                        <Text style={Styles.titleFontStyle}>{item.OldShiftOutTime ? moment(item.OldShiftOutTime,'HH:mm:ss').format('hh:mm a'): 'N/A'}</Text>
                     </View>
                 </View>
                 <View style={{ marginHorizontal: Matrics.CountScale(5), flexDirection: 'row'}}>
@@ -979,8 +981,8 @@ class WeeklySummarySheet extends React.Component {
                         <Text style={Styles.titleFontStyle}>Adjusted</Text>
                     </View>
                     <View style={{ width: '75%', flexDirection: 'row', justifyContent: 'space-around'}}>
-                        <Text style={Styles.titleFontStyle}>{moment(item.NewShiftInTime,'HH:mm:ss').format('hh:mm a')}</Text>
-                        <Text style={Styles.titleFontStyle}>{moment(item.NewShiftOutTime,'HH:mm:ss').format('hh:mm a')}</Text>
+                        <Text style={Styles.titleFontStyle}>{item.NewShiftInTime ? moment(item.NewShiftInTime,'HH:mm:ss').format('hh:mm a'): 'N/A'}</Text>
+                        <Text style={Styles.titleFontStyle}>{item.NewShiftOutTime ? moment(item.NewShiftOutTime,'HH:mm:ss').format('hh:mm a'): 'N/A'}</Text>
                     </View>
                 </View>
                 <View style={{ marginHorizontal: Matrics.CountScale(5), flexDirection: 'row'}}>
@@ -1073,12 +1075,12 @@ class WeeklySummarySheet extends React.Component {
                         ?
                             item.data.map((res, index) => {
                                 let resData = this.state.hoursBasicListArr.filter(p => p.UserStoreID == res.UserStoreID && p.DayDate == this.state.selectedDate);
-                                // console.log('resData-->', resData);
+                                console.log('resData-->', resData);
                                 // console.log('fullname-->', res);
                                 return(
                                     resData.length > 0
                                     // ? resData[0].TimeOffCombineID != 0 
-                                    ? resData[0].IsAbsent 
+                                    ? resData[0].IsAbsent
                                         ? // absonse emp
                                             <TextColumn 
                                                 key={index}
@@ -1091,17 +1093,19 @@ class WeeklySummarySheet extends React.Component {
                                                 onAbsencePress={async () => {
                                                 await this.setState({ 
                                                     absenceReasonModal: true, 
+                                                    individualAbsenceReason:resData[0].ReasonName,
                                                     selectedTimeoffRoleName: item.RoleName, 
                                                     selectedTimeofEmpName: res.FullName, 
                                                     selectedTimeofPosid: res.EmployeeNumber,
                                                     UserStoreGUID: res.UserStoreGUID  
                                                 })
                                                 setTimeout(() => {
-                                                    this.myComponent.measure((fx, fy, width, height, px, py) => {
+                                                    if(!resData[0].ReasonName){
+                                                        this.myComponent.measure((fx, fy, width, height, px, py) => {
                                                         // this.topSpace = py - 10
                                                         this.setState({ topSpace: py - 20 })
                                                         // console.log('112....', this.state.topSpace)
-                                                    })
+                                                    })}
                                                 }, 10)
                                                 await this.getTimeoff(res.UserStoreGUID, resData[0].TimeOffCombineID).then(data => {
                                                     // console.log('getTimeOff-->timeOffData-->',data);
@@ -1604,11 +1608,11 @@ class WeeklySummarySheet extends React.Component {
                             <View style={Styles.viewContainer}>
                                 <View style={{ backgroundColor: Colors.APPCOLOR, alignItems: 'center' }}>
                                     <Text style={[Styles.titleFontStyle, { fontSize: Matrics.CountScale(15), color: 'white', paddingVertical: Matrics.CountScale(15) }]}>Absence Reasons</Text>
-                                    <TouchableOpacity style={{ position: 'absolute', right: 0 }} onPress={() => this.setState({ absenceReasonModal: false })}>
+                                    <TouchableOpacity style={{ position: 'absolute', right: 0 }} onPress={() => this.setState({ absenceReasonModal: false,individualAbsenceReason:'' })}>
                                         <Image source={Images.Close} style={{ margin: 15, }} />
                                     </TouchableOpacity>
                                 </View>
-                                <View style={{ backgroundColor: Colors.BODYBACKGROUND }} ref={view => { this.myComponent = view; }}>
+                                {this.state.individualAbsenceReason ?  <Text style={[Styles.titleFontStyle, { fontSize: Matrics.CountScale(15), color: 'black', paddingVertical: Matrics.CountScale(15) }]} ref={view => { this.myComponent = view; }}>{this.state.individualAbsenceReason}</Text> :  <View style={{ backgroundColor: Colors.BODYBACKGROUND }} ref={view => { this.myComponent = view; }}>
                                     <View style={{ width: '100%', flexDirection: 'row', marginTop: Matrics.CountScale(10) }} renderToHardwareTextureAndroid={true} ref={view => { this.myComponent = view; }}>
                                             <Text style={[Styles.rowLabelText, { marginLeft: Matrics.CountScale(15), marginTop: Matrics.CountScale(4) }]}>Reason:</Text>
                                             <Dropdown
@@ -1654,7 +1658,7 @@ class WeeklySummarySheet extends React.Component {
                                     <TouchableOpacity style={Styles.btnViewStyle2} onPress={() => this.onCreateTimeOff()}>
                                         <View><Text style={[Styles.btnTextStyle, { color: 'white' }]}>Save</Text></View>
                                     </TouchableOpacity>
-                                </View>
+                                </View>}
                             </View>
                         </KeyboardAwareScrollView>
                     </View>
