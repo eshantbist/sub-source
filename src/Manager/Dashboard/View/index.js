@@ -840,7 +840,17 @@ class Dashboard extends React.Component {
         }else{
             return this.renderSlide2()
         }
-    }       
+    }   
+    
+    getOsatImage = (osatScore) => {
+        if(osatScore>=0 && osatScore<=49){
+            return <Image source={Images.Poor} />
+        }if(osatScore>=50 && osatScore<=74){
+            return <Image source={Images.Good} />
+        }else{
+            return <Image source={Images.Excellent} />
+        }
+    }
     renderSlide1(){
         let len = 0;
         this.state.NPSDisplay === 'QTD' && this.state.customerServices && this.state.customerServices.QuarterMonthCount !== 0
@@ -848,6 +858,12 @@ class Dashboard extends React.Component {
             : this.state.NPSDisplay === 'YTD' && this.state.customerServices && this.state.customerServices.CurrentYearCount !== 0
                 ? len = this.state.customerCommentsYTD.length
                 : len = this.state.customerCommentsMonth.length;
+
+        const osatScore = this.state.NPSDisplay === 'QTD'
+        ? this.state.customerServices && this.state.customerServices.NPSQuarterScore
+        : this.state.NPSDisplay === 'YTD'
+            ? this.state.customerServices && this.state.customerServices.NPSYearScore
+            : this.state.customerServices && this.state.customerServices.NPSScore
         return(
             <View style={Styles.slideStyle}>
                     <ScrollView showsVerticalScrollIndicator={false}
@@ -893,20 +909,14 @@ class Dashboard extends React.Component {
                                 </TouchableOpacity>
                             </View>
                             <View style={Styles.borderStyle}>
-                                <Image source={Images.Excellent} />
+                                {this.getOsatImage(osatScore)}
                             </View>
                             <View style={{ flexDirection: 'row', paddingVertical: Matrics.CountScale(10) }}>
                                 <View style={{ flex: 1}}>
                                     <View style={Styles.serviceRowStyle}>
                                         <Image source={Images.NPSScore} />
                                         <Text style={[Styles.salesBuildingText, { marginLeft: Matrics.CountScale(15)}]}>
-                                            {
-                                                this.state.NPSDisplay === 'QTD'
-                                                    ? this.state.customerServices && this.state.customerServices.NPSQuarterScore
-                                                    : this.state.NPSDisplay === 'YTD'
-                                                        ? this.state.customerServices && this.state.customerServices.NPSYearScore
-                                                        : this.state.customerServices && this.state.customerServices.NPSScore
-                                            }
+                                            {osatScore}
                                         </Text>
                                     </View>
                                     <Text style={[Styles.labelText, { textAlign: 'center' }]}>OSAT Score</Text>
@@ -1102,6 +1112,12 @@ class Dashboard extends React.Component {
                 ? len = this.state.customerCommentsYTD.length
                 : len = this.state.customerCommentsMonth.length;
 
+        const osatScore = this.state.NPSDisplay === 'QTD'
+        ? this.state.customerServices && this.state.customerServices.NPSQuarterScore
+        : this.state.NPSDisplay === 'YTD'
+            ? this.state.customerServices && this.state.customerServices.NPSYearScore
+            : this.state.customerServices && this.state.customerServices.NPSScore
+
         return (
             this.state.activeSlide == 0 ?
                 <View style={Styles.slideStyle}>
@@ -1148,20 +1164,14 @@ class Dashboard extends React.Component {
                                 </TouchableOpacity>
                             </View>
                             <View style={Styles.borderStyle}>
-                                <Image source={Images.Excellent} />
+                                {this.getOsatImage(osatScore)}
                             </View>
                             <View style={{ flexDirection: 'row', paddingVertical: Matrics.CountScale(10) }}>
                                 <View style={{ flex: 1}}>
                                     <View style={Styles.serviceRowStyle}>
                                         <Image source={Images.NPSScore} />
                                         <Text style={[Styles.salesBuildingText, { marginLeft: Matrics.CountScale(15)}]}>
-                                            {
-                                                this.state.NPSDisplay === 'QTD'
-                                                    ? this.state.customerServices && this.state.customerServices.NPSQuarterScore
-                                                    : this.state.NPSDisplay === 'YTD'
-                                                        ? this.state.customerServices && this.state.customerServices.NPSYearScore
-                                                        : this.state.customerServices && this.state.customerServices.NPSScore
-                                            }
+                                            {osatScore}
                                         </Text>
                                     </View>
                                     <Text style={[Styles.labelText, { textAlign: 'center' }]}>OSAT Score</Text>
