@@ -24,6 +24,8 @@ const images = {
   NPSCount: require('./Images/Dashboard/NPS_count.png'),
   NPSScore: require('./Images/Dashboard/NPS_score.png'),
   Excellent: require('./Images/Dashboard/excellent.png'),
+  Poor: require('./Images/Dashboard/poor.png'),
+  Good: require('./Images/Dashboard/good.png'),
   University: require('./Images/Dashboard/university.png'),
   OutOfComp: require('./Images/Dashboard/out_of_comp.png'),
   FullComp: require('./Images/Dashboard/full_comp.png'),
