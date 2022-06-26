@@ -136,6 +136,8 @@ const images = {
   CoverBg: require('./Images/Employee/cover.png'),
   DefaultCoverBg: require('./Images/Employee/DefaultCover.png'),
   DefCoverBg: require('./Images/Employee/coverBg.png'),
+  NotesIcon: require('./Images/notes-icon-black.png'),
+  AttachmentIcon: require('./Images/attachment.png')
 };
 
 export default images;

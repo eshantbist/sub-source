@@ -351,6 +351,10 @@ class CreateRequest extends React.Component {
                 </View>
                 <Text style={{color:'red', fontSize:12, marginTop:5}}>{this.state.notesError}</Text>
                 </View>
+
+                <TouchableOpacity onPress={()=>this.props.navigation.navigate('LeaveHistory')}>
+                    <Text style={{...MasterCssEmployee.headerLeftTextStyle, marginLeft:5, textDecorationLine:"underline"}}>View Leave History</Text>
+                </TouchableOpacity>
             </View>
 
 
