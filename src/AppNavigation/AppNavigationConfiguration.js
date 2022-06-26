@@ -46,6 +46,7 @@ import MyAvailability from '../Employee/Availability/View/MyAvailability';
 import CreateAvailability from '../Employee/Availability/View/CreateAvailability';
 import AllStore from '../Employee/StoreSchedule/View/AllStore';
 import StoreSchedule from '../Employee/StoreSchedule/View/StoreSchedule';
+import LeaveHistory from '../Employee/MySchedule/View/LeaveHistory'
 
 
 
@@ -350,6 +351,12 @@ const AppNavigator = StackNavigator({
     HistoryDetail: {
         screen: HistoryDetail,
         navigationOptions: {
+            header: null
+        }
+    },
+    LeaveHistory:{
+        screen: LeaveHistory,
+        navigationOptions:{
             header: null
         }
     },
